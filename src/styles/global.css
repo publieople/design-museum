@@ -1,0 +1,85 @@
+@import 'tailwindcss';
+
+/* ── 设计 token：展厅墙是中性色，唯一的强调色是「导览朱红」 ───────────── */
+:root {
+  --surface: #f7f6f3;
+  --raised: #ffffff;
+  --line: #e3e1db;
+  --ink: #16161a;
+  --muted: #5c5c66;
+  --accent: #c9382a;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --surface: #0e0e10;
+    --raised: #17171b;
+    --line: #2a2a31;
+    --ink: #ececef;
+    --muted: #9a9aa6;
+    --accent: #ff5a45;
+  }
+}
+
+@theme inline {
+  --color-surface: var(--surface);
+  --color-raised: var(--raised);
+  --color-line: var(--line);
+  --color-ink: var(--ink);
+  --color-muted: var(--muted);
+  --color-accent: var(--accent);
+
+  --font-sans: ui-sans-serif, system-ui, 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei',
+    'Noto Sans SC', sans-serif;
+  --font-display: 'Space Grotesk Variable', ui-sans-serif, system-ui, 'PingFang SC',
+    'Microsoft YaHei', sans-serif;
+  --font-mono: 'JetBrains Mono Variable', ui-monospace, SFMono-Regular, Menlo, monospace;
+}
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+    -webkit-text-size-adjust: 100%;
+  }
+
+  body {
+    margin: 0;
+    background-color: var(--surface);
+    color: var(--ink);
+    font-family: var(--font-sans);
+    font-size: 16px;
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 2px;
+    border-radius: 2px;
+  }
+
+  ::selection {
+    background: color-mix(in oklab, var(--accent) 25%, transparent);
+  }
+}
+
+/* demo 用到的公共关键帧：交错进场 */
+@keyframes museum-stagger {
+  from {
+    opacity: 0;
+    transform: translateY(var(--stagger-distance, 16px));
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@utility label-mono {
+  font-family: var(--font-mono);
+  font-size: 0.6875rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
