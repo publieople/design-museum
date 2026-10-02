@@ -109,6 +109,7 @@ const entry: Entry = {
       en: `film grain noise overlay, SVG feTurbulence fractalNoise baseFrequency="${frequency}" numOctaves="3" stitchTiles="stitch", data URI background-image repeated 160px tile, opacity: ${opacity}%, mix-blend-mode: ${blend}, pointer-events: none${flicker ? ', steps(6) transform jitter keyframes' : ''}, dithering to hide gradient banding`,
     }
   },
+  loop: 'continuous',
   en: {
     oneLiner: 'A layer of random pixels over the surface that adds texture and hides banding in gradients.',
     whenToUse: [

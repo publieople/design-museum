@@ -77,6 +77,7 @@ const entry: Entry = {
       en: `parallax scrolling, multi-layer scroll depth, each layer translate3d(0, scrollY * ${speed} + ${distance}px, 0), background slower than foreground${reverse ? ', inverted direction' : ''}, driven by requestAnimationFrame inside a passive scroll listener, will-change: transform only while scrolling, respect prefers-reduced-motion`,
     }
   },
+  loop: 'manual',
   en: {
     oneLiner: 'Foreground and background move at different speeds as you scroll, which gives the scene depth.',
     whenToUse: [

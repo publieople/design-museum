@@ -1,7 +1,8 @@
 import { useMemo } from 'react'
 import { useT, useLocale } from '../i18n'
 import { defaultValues } from '../lib/controls'
-import { resolveEntry } from '../lib/localize'
+import { aliasesFor, resolveEntry } from '../lib/localize'
+import { interactionHintKey, shouldAutoLoop } from '../lib/loop'
 import { usePrefs } from '../lib/prefs'
 import { Link } from '../lib/router'
 import { useReplayKey } from '../lib/replay'
@@ -15,7 +16,7 @@ import { resolveStage } from './stageStyles'
 
 interface EntryCardProps {
   entry: Entry
-  /** 卡片缩略演示：默认开启，不可见时不挂载 */
+  /** 卡片缩略演示：默认开启；不在视口里时只挂骨架不挂 demo */
   showDemo?: boolean
 }
 
@@ -28,24 +29,34 @@ export function EntryCard({ entry, showDemo = true }: EntryCardProps) {
 
   const resolved = useMemo(() => resolveEntry(entry, locale), [entry, locale])
   const values = useMemo(() => defaultValues(entry), [entry])
+  const aliases = useMemo(() => aliasesFor(resolved.aliases, locale), [resolved.aliases, locale])
   const stage = resolveStage(entry, stagePref)
-  const showStage = showDemo && inView && hasDemo(entry.slug)
+
+  const title = locale === 'en' ? resolved.nameEn : resolved.nameZh
+  const subtitle = locale === 'en' ? resolved.nameZh : resolved.nameEn
 
   return (
     <li
       ref={ref}
       className="flex flex-col overflow-hidden rounded-lg border border-line bg-raised transition-colors hover:border-accent/50"
     >
-      {showStage ? (
+      {/* 舞台永远渲染：只有它在这儿占住 aspect-ratio 的高度，卡片高度才是恒定的。
+          以前「进视口才渲染整个舞台」会让卡片在滚动中瞬间长高 400px，
+          触发浏览器滚动锚定，页面就会突然往下跳。 */}
+      {showDemo && hasDemo(entry.slug) ? (
         <ErrorBoundary label={entry.slug} message={t('error.renderFailed')}>
           <DemoStage
             compact
             stage={stage}
             className="rounded-none border-x-0 border-t-0"
+            loopable={shouldAutoLoop(entry)}
+            hint={interactionHintKey(entry)}
             onStageChange={() => {}}
             onReplay={replay}
           >
-            <DemoRunner slug={entry.slug} values={values} stage={stage} replayKey={replayKey} fit />
+            {inView ? (
+              <DemoRunner slug={entry.slug} values={values} stage={stage} replayKey={replayKey} fit />
+            ) : null}
           </DemoStage>
         </ErrorBoundary>
       ) : null}
@@ -60,15 +71,19 @@ export function EntryCard({ entry, showDemo = true }: EntryCardProps) {
 
         <h3 className="font-display text-lg font-semibold leading-tight">
           <Link to={`/entry/${resolved.slug}`} className="no-underline">
-            {resolved.nameZh}
+            {title}
           </Link>
         </h3>
 
+        {subtitle !== title ? (
+          <p className="-mt-1 font-mono text-[10px] text-muted">{subtitle}</p>
+        ) : null}
+
         <p className="text-sm text-muted">{resolved.oneLiner}</p>
 
-        {resolved.aliases.length > 0 ? (
+        {aliases.length > 0 ? (
           <p className="mt-auto pt-2 font-mono text-[11px] text-muted">
-            {resolved.aliases.slice(0, 3).join(' / ')}
+            {aliases.slice(0, 3).join(' / ')}
           </p>
         ) : null}
       </div>

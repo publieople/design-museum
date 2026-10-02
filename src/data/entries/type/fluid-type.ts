@@ -61,6 +61,7 @@ const entry: Entry = {
       en: 'fluid type scale, font-size: ' + formula + ', container-type: inline-size, cqw container query units, no media query breakpoints, unitless line-height, responsive typography',
     }
   },
+  loop: 'continuous',
   en: {
     oneLiner: 'Font size scales continuously with the container width, so it never jumps a step at a breakpoint.',
     whenToUse: [

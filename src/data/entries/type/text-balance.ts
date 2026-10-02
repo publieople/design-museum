@@ -90,6 +90,7 @@ const entry: Entry = {
       en: 'text-wrap: ' + mode + ', max-width: ' + width + 'ch, headline line balancing, avoid orphan/widow, only for short text (Chromium caps balance at 6 lines), graceful fallback, no manual br',
     }
   },
+  loop: 'continuous',
   en: {
     oneLiner: 'Line lengths in a multi-line heading are evened out, so the last line no longer holds one orphaned word.',
     whenToUse: [

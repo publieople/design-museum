@@ -111,6 +111,7 @@ const entry: Entry = {
       en: `glassmorphism card, backdrop-filter: blur(${blur}px) saturate(160%), -webkit-backdrop-filter, background: linear-gradient(160deg, rgba(255,255,255,0.16), rgba(255,255,255,0.06)), border: 1px solid rgba(255,255,255,${border}), box-shadow: 0 8px 32px rgba(0,0,0,${shadow}) and inset 0 1px 0 rgba(255,255,255,0.5), border-radius: ${radius}px, translucent frosted panel over colorful gradient, fallback background for unsupported browsers`,
     }
   },
+  loop: 'continuous',
   en: {
     oneLiner: 'A translucent panel with a bright edge and soft shadow, floating over a colorful background.',
     whenToUse: [

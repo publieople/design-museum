@@ -15,6 +15,12 @@ const T = {
   replay: { zh: '重播', en: 'Replay' },
 } as const
 
+const BOX_SIZE = 36
+const PAD_LEFT = 12
+const PAD_RIGHT = 16
+/** 给超调留的可见余量：方块冲过终点时不会撞到容器边缘 */
+const OVERSHOOT_ROOM = 44
+
 export default function SpringDemo({ values, replayKey, locale = 'zh' }: DemoProps) {
   const zh = locale !== 'en'
   const stiffness = numberValue(values, 'stiffness', 260)
@@ -81,7 +87,9 @@ export default function SpringDemo({ values, replayKey, locale = 'zh' }: DemoPro
 
   const shown = reduced ? 1 : progress
   const overshoot = reduced ? 0 : Math.max(0, (run.peak - 1) * 100)
-  const travel = Math.max(24, trackWidth - 40)
+  // 轨道内要让出「起点留白 + 方块 + 终点留白 + 超调空间」，
+  // 否则方块静止时就顶出右边界，超调阶段会被 overflow-hidden 切掉一块。
+  const travel = Math.max(24, trackWidth - BOX_SIZE - PAD_LEFT - PAD_RIGHT - OVERSHOOT_ROOM)
   const x = Math.max(0, shown) * travel
 
   const status = reduced
@@ -107,7 +115,10 @@ export default function SpringDemo({ values, replayKey, locale = 'zh' }: DemoPro
       >
         <span
           className="absolute bottom-3 top-3 w-1 rounded-full"
-          style={{ right: 16, background: 'color-mix(in srgb, var(--stage-ink) 40%, transparent)' }}
+          style={{
+            right: PAD_RIGHT + OVERSHOOT_ROOM,
+            background: 'color-mix(in srgb, var(--stage-ink) 40%, transparent)',
+          }}
         />
         <div
           className="absolute left-3 top-1/2 size-9 rounded-lg"

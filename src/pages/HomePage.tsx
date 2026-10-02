@@ -6,6 +6,7 @@ import { useT, useLocale } from '../i18n'
 import { defaultValues } from '../lib/controls'
 import { resolveEntry } from '../lib/localize'
 import { usePrefs } from '../lib/prefs'
+import { interactionHintKey, shouldAutoLoop } from '../lib/loop'
 import { useReplayKey } from '../lib/replay'
 import { Link } from '../lib/router'
 import { searchEntries } from '../lib/search'
@@ -28,9 +29,16 @@ function Specimen({ entry }: { entry: Entry }) {
   return (
     <li className="flex flex-col gap-3">
       {hasDemo(entry.slug) ? (
-        <Link to={`/entry/${entry.slug}`} className="no-underline" tabIndex={-1} aria-hidden="true">
-          <ErrorBoundary label={entry.slug} message={t('error.renderFailed')}>
-            <DemoStage compact stage={stage} onStageChange={() => {}} onReplay={replay}>
+        <ErrorBoundary label={entry.slug} message={t('error.renderFailed')}>
+          <DemoStage
+            compact
+            stage={stage}
+            loopable={shouldAutoLoop(entry)}
+            hint={interactionHintKey(entry)}
+            onStageChange={() => {}}
+            onReplay={replay}
+          >
+            <Link to={`/entry/${entry.slug}`} className="block" tabIndex={-1} aria-hidden="true">
               <DemoRunner
                 slug={entry.slug}
                 values={values}
@@ -38,9 +46,9 @@ function Specimen({ entry }: { entry: Entry }) {
                 replayKey={replayKey}
                 fit
               />
-            </DemoStage>
-          </ErrorBoundary>
-        </Link>
+            </Link>
+          </DemoStage>
+        </ErrorBoundary>
       ) : null}
       <div>
         <span className="font-mono text-[11px] tracking-wider text-accent">{resolved.code}</span>

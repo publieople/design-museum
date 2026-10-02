@@ -82,6 +82,7 @@ const entry: Entry = {
       en: `staggered entrance, animation-delay: index * ${stagger}ms, each item fades in with opacity 0 → 1 and translateY(${distance}px) → 0, duration ${duration}ms, easing ${easing}, play once on first view, animate transform/opacity only, respect prefers-reduced-motion`,
     }
   },
+  loop: 'replay',
   en: {
     oneLiner: 'A group of elements enters one after another on a fixed interval, not all at once.',
     whenToUse: [

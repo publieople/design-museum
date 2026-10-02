@@ -11,8 +11,12 @@ interface DemoStageProps {
   onStageChange: (stage: StageId) => void
   onReplay: () => void
   children: ReactNode
-  /** 卡片缩略图用：隐藏工具栏、压缩内边距、不参与循环重播 */
+  /** 卡片缩略图用：隐藏工具栏、压缩内边距 */
   compact?: boolean
+  /** 这个演示该不该被循环定时器重挂载；由词条的 loop 策略决定 */
+  loopable?: boolean
+  /** 缩略图角标：卡片里看不出效果时，告诉观众要自己动手 */
+  hint?: 'stage.needsScroll' | null
   className?: string
 }
 
@@ -25,6 +29,8 @@ export function DemoStage({
   onReplay,
   children,
   compact = false,
+  loopable = true,
+  hint = null,
   className = '',
 }: DemoStageProps) {
   const t = useT()
@@ -33,9 +39,10 @@ export function DemoStage({
   const style = STAGE_STYLES[stage]
 
   // 循环重播：靠递增 replayKey 让 demo 重新挂载，demo 侧不需要任何改动。
-  // 缩略图也一起循环——展品不动就不像在展出。
+  // 但不是所有 demo 都适合被重置：进度类会瞬间弹回去、滚动类会跟用户打架、
+  // 自驱类本来就在动。由词条的 loop 策略说了算。
   useEffect(() => {
-    if (!loop) return
+    if (!loop || !loopable) return
     if (
       typeof window !== 'undefined' &&
       window.matchMedia?.('(prefers-reduced-motion: reduce)').matches
@@ -44,7 +51,7 @@ export function DemoStage({
     }
     const timer = window.setInterval(onReplay, LOOP_INTERVAL_MS)
     return () => window.clearInterval(timer)
-  }, [compact, loop, onReplay])
+  }, [loop, loopable, onReplay])
 
   const stageStyle = {
     background: style.background,
@@ -74,6 +81,15 @@ export function DemoStage({
       >
         {children}
       </div>
+
+      {compact && hint ? (
+        <span
+          className="pointer-events-none absolute bottom-2 left-2 rounded-full px-2 py-0.5 font-mono text-[10px] tracking-wide text-white/90 backdrop-blur-md"
+          style={{ background: 'rgba(0,0,0,0.45)' }}
+        >
+          {t(hint)}
+        </span>
+      ) : null}
 
       {compact ? null : (
         // 工具条固定深色半透明底 + 白字：四种舞台背景明度差很大，

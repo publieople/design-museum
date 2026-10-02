@@ -93,6 +93,7 @@ const entry: Entry = {
         'reserve width to avoid layout shift, respect prefers-reduced-motion (render final value)',
     }
   },
+  loop: 'replay',
   en: {
     oneLiner: 'A number races from 0 up to its target value and then holds still.',
     whenToUse: [

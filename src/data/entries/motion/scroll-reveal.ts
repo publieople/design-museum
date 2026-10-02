@@ -80,6 +80,7 @@ const entry: Entry = {
       en: `reveal on scroll, IntersectionObserver with threshold ${threshold}, add class when isIntersecting, transition: opacity ${duration}ms cubic-bezier(0.22, 1, 0.36, 1), transform translateY(${distance}px) to 0, stagger ${delay}ms, unobserve after first intersection, opacity + transform only, respect prefers-reduced-motion`,
     }
   },
+  loop: 'manual',
   en: {
     oneLiner: 'Content fades in and slides up only once it scrolls into view; off-screen items stay hidden.',
     whenToUse: [

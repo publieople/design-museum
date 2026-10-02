@@ -61,6 +61,7 @@ const entry: Entry = {
       en: 'skeleton screen with shimmer, placeholder blocks at currentColor 8-12%, overlay linear-gradient highlight band ' + highlight + '% wide, @keyframes shimmer { from { transform: translateX(-100%) } to { transform: translateX(100%) } }, ' + duration + 'ms linear infinite, ' + rows + ' text rows + avatar circle, animate transform only (never width/background-position), static under prefers-reduced-motion',
     }
   },
+  loop: 'continuous',
   en: {
     oneLiner: 'A grey placeholder block with a light band sweeping across it, showing that the content is still loading.',
     whenToUse: [

@@ -120,6 +120,7 @@ const entry: Entry = {
       en: `gradient border, border: ${width}px solid transparent, background: linear-gradient(...) padding-box, linear-gradient(${angle}deg, hsl(${hue}, 90%, 62%), hsl(${second}, 92%, 55%)) border-box, background-clip: padding-box / border-box, border-radius: ${radius}px, @property registered angle, 6s linear infinite rotation, avoid border-image since it ignores border-radius`,
     }
   },
+  loop: 'continuous',
   en: {
     oneLiner: 'The border is not one color but a gradient running once around the element outline.',
     whenToUse: [

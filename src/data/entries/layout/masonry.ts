@@ -81,6 +81,7 @@ const entry: Entry = {
       en: `masonry layout, CSS multi-column with column-count: ${columns}, column-gap: ${gap}px, items of varying height around ${base}px with break-inside: avoid, fill columns top-to-bottom, collapse to 2 columns on narrow screens, do not equalize item heights`,
     }
   },
+  loop: 'manual',
   en: {
     oneLiner: 'Cards of uneven height drop into the shortest column, so no large gaps open at the bottom.',
     whenToUse: [

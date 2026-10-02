@@ -72,6 +72,7 @@ const entry: Entry = {
       en: 'toast / snackbar component, slides in from ' + place + ', translateY(' + distance + 'px) with 220ms ease-out, auto-dismiss after ' + duration + 'ms, role="status" aria-live="polite", stack up to 3 toasts, animate transform + opacity only, non-blocking, no entry/exit animation under prefers-reduced-motion',
     }
   },
+  loop: 'manual',
   en: {
     oneLiner: 'A short message slides in from the screen edge and dismisses itself after a few seconds, without blocking.',
     whenToUse: [

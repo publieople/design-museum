@@ -82,6 +82,7 @@ const entry: Entry = {
       en: `frosted glass panel, backdrop-filter: blur(${blur}px) saturate(${saturate}%), -webkit-backdrop-filter fallback, background: rgba(255,255,255,${alpha.toFixed(2)}), border: 1px solid rgba(255,255,255,0.18), border-radius: ${radius}px, must sit over visible content behind`,
     }
   },
+  loop: 'continuous',
   en: {
     oneLiner: 'A panel blurs the content behind it, like looking through ground glass.',
     whenToUse: [

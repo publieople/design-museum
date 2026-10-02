@@ -2,6 +2,7 @@ import { ENTRIES } from '../data'
 import { useT } from '../i18n'
 import { defaultValues } from '../lib/controls'
 import { usePrefs } from '../lib/prefs'
+import { interactionHintKey, shouldAutoLoop } from '../lib/loop'
 import { useReplayKey } from '../lib/replay'
 import { DEMO_SLUGS, hasDemo } from '../demos/registry'
 import type { Entry } from '../data/types'
@@ -22,7 +23,13 @@ function DebugRow({ entry, stage }: { entry: Entry; stage: ReturnType<typeof res
         <span className="font-mono text-[11px] text-muted">{entry.slug}</span>
       </div>
       <ErrorBoundary label={entry.slug} message={t('error.renderFailed')}>
-        <DemoStage stage={stage} onStageChange={() => {}} onReplay={replay}>
+        <DemoStage
+          stage={stage}
+          loopable={shouldAutoLoop(entry)}
+          hint={interactionHintKey(entry)}
+          onStageChange={() => {}}
+          onReplay={replay}
+        >
           <DemoRunner
             slug={entry.slug}
             values={defaultValues(entry)}

@@ -107,6 +107,7 @@ const entry: Entry = {
       en: `mesh gradient background, 5 layered radial-gradient() color blobs, transparent color stops at ${spread}% using rgba(r,g,b,0), base color #101018, filter: blur(${softness}px) hue-rotate(${hue}deg), transform: scale(1.3) to hide blur edges${drift ? ', 18s ease-in-out infinite drift animation' : ', static composition'}, no native mesh-gradient property in CSS`,
     }
   },
+  loop: 'continuous',
   en: {
     oneLiner: 'Several radial gradients stacked so color flows in any direction, with no single gradient axis.',
     whenToUse: [

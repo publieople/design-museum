@@ -108,6 +108,7 @@ const entry: Entry = {
       en: `spotlight card glow, ${radius * 2}px circle, radial-gradient(circle, hsla(${hue}, 95%, 70%, ${intensity}), transparent 70%), mix-blend-mode: screen, pointer-events: none, overflow: hidden${follow ? ', follow cursor with pointermove, write transform: translate3d directly to the element (no React state), 120ms ease-out transition on transform, recenter on pointerleave' : ', centered static glow'}, static fallback for touch devices`,
     }
   },
+  loop: 'manual',
   en: {
     oneLiner: 'A soft pool of light that follows the pointer across a card, like a flashlight held to it.',
     whenToUse: [

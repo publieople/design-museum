@@ -63,6 +63,7 @@ const entry: Entry = {
       en: 'magnetic button, pointermove + getBoundingClientRect, offset = (pointer - center) * ' + strength.toFixed(2) + ', clamp to ' + maxDistance + 'px, activation radius ' + radius.toFixed(1) + 'x button size, return with transition ' + duration + 'ms cubic-bezier(0.22, 1, 0.36, 1), transform: translate3d, throttle with requestAnimationFrame, disable under prefers-reduced-motion',
     }
   },
+  loop: 'manual',
   en: {
     oneLiner: 'The button drifts a little toward the pointer as it approaches, then springs back to its resting spot.',
     whenToUse: [

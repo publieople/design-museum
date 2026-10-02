@@ -85,6 +85,7 @@ const entry: Entry = {
       en: 'hover lift micro-interaction, :hover { transform: translateY(-' + lift + 'px) scale(1.02); box-shadow: 0 10px 28px rgba(0,0,0,' + shadowAlpha + '); transition: transform ' + duration + 'ms ' + easing + ' }, transform-only, no top/margin, reset on pointer leave, touch devices keep a static readable state',
     }
   },
+  loop: 'manual',
   en: {
     oneLiner: 'When the pointer moves onto a card, it rises slightly and the shadow deepens, hinting that it is clickable.',
     whenToUse: [

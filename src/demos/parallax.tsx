@@ -80,7 +80,7 @@ export default function ParallaxDemo({ values, replayKey, locale = 'zh' }: DemoP
         ref={boxRef}
         key={replayKey}
         onScroll={onScroll}
-        className="mt-3 h-60 overflow-y-auto overscroll-contain rounded-lg"
+        className="mt-3 h-60 overflow-y-auto overflow-x-hidden overscroll-contain rounded-lg"
         style={{ background: 'color-mix(in srgb, var(--stage-ink) 7%, transparent)' }}
         tabIndex={0}
         aria-label={pick(T.aria, locale)}
@@ -93,8 +93,8 @@ export default function ParallaxDemo({ values, replayKey, locale = 'zh' }: DemoP
               style={{
                 ...layer.style,
                 background: layer.background,
-                opacity: 0.4,
-                filter: 'blur(10px)',
+                opacity: 0.55,
+                filter: 'blur(6px)',
                 transform: 'translate3d(0, ' + offset(layer.factor).toFixed(1) + 'px, 0)',
                 willChange: moving ? 'transform' : undefined,
               }}

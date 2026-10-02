@@ -94,6 +94,7 @@ const entry: Entry = {
         ', forced-colors fallback, contrast at least 4.5:1',
     }
   },
+  loop: 'continuous',
   en: {
     oneLiner: 'The text acts as a mask, so what shows through is the gradient behind it instead of a single color.',
     whenToUse: [

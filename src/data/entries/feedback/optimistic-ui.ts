@@ -59,6 +59,7 @@ const entry: Entry = {
       en: 'optimistic UI like button, ' + (optimistic ? 'update state immediately on click and mark pending, no await' : 'mark pending and disable until the request resolves') + ', simulated latency ' + latency + 'ms, failure rate ' + failureRate + '%, rollback by id on error with an inline error message, handle race conditions (last write wins), useOptimistic, aria-live polite for the error',
     }
   },
+  loop: 'manual',
   en: {
     oneLiner: 'The UI flips to the success state the moment you click, while the request runs and rolls back on failure.',
     whenToUse: [

@@ -88,6 +88,7 @@ const entry: Entry = {
       en: `sticky stacking cards, position: sticky with top: index * ${offset}px, ${count} cards, increasing z-index 1 2 3, previous card scales down to ${100 - shrink}% via transform: scale() with transform-origin: top center, border-radius: ${radius}px, inside an overflow-y: auto scroll container, no overflow: hidden on ancestors, disable the scale under prefers-reduced-motion`,
     }
   },
+  loop: 'manual',
   en: {
     oneLiner: 'Cards scroll up one by one and stack on top of each other as the earlier ones shrink behind.',
     whenToUse: [

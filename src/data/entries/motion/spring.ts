@@ -89,6 +89,7 @@ const entry: Entry = {
       en: `spring animation, stiffness ${stiffness}, damping ${damping}, mass ${mass}, overshoot allowed but settle within ~300ms, animate transform: translateX only, driven by requestAnimationFrame or a spring library (Framer Motion / react-spring), no layout-thrashing properties, respect prefers-reduced-motion`,
     }
   },
+  loop: 'replay',
   en: {
     oneLiner: 'An element driven at its target like it is on a spring, overshooting and settling back.',
     whenToUse: [

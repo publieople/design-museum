@@ -78,6 +78,7 @@ const entry: Entry = {
       en: `scroll-driven animations, animation-timeline: view(), animation-range: entry 0% cover ${cover}%, keyframes on rotateZ(${rotate}deg) and opacity, scroll progress bar via animation-timeline: scroll() with transform: scaleX(), no scroll event listeners, feature-detect with CSS.supports('animation-timeline: scroll()'), fallback to a ${duration}ms reveal with IntersectionObserver, respect prefers-reduced-motion`,
     }
   },
+  loop: 'manual',
   en: {
     oneLiner: 'The scrollbar is the timeline: the scroll position decides exactly which frame is shown.',
     whenToUse: [

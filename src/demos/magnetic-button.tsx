@@ -56,8 +56,12 @@ export default function MagneticButtonDemo({ values, stage, locale = 'zh' }: Dem
         type="button"
         className="cursor-pointer rounded-full px-6 py-3 font-display text-sm font-semibold"
         style={{
+          // 用站点自己的墨色，不再是一块跳出来的蓝紫渐变；靠近时用朱红描边呼应全站强调色
           color: dark ? '#101014' : '#ffffff',
-          background: dark ? '#f2f2f5' : 'linear-gradient(135deg, #2f6bff, #7b2ff7)',
+          background: 'var(--stage-ink)',
+          boxShadow: near
+            ? '0 0 0 3px color-mix(in srgb, var(--accent) 45%, transparent)'
+            : 'none',
           transform:
             'translate3d(' + offset.x.toFixed(1) + 'px, ' + offset.y.toFixed(1) + 'px, 0)',
           transition:

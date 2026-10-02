@@ -102,6 +102,13 @@ export interface Entry {
   controls: Control[]
   /** 随参数实时生成的可复制需求 */
   prompt: (values: ControlValues) => PromptPair
+  /**
+   * 自动循环重播策略，缺省视为 'replay'：
+   * - replay：一次性动画，重播就是再看一遍（进场、按压反馈、数字滚动…）
+   * - continuous：不需要外部重播——它自己在动（骨架微光、渐变漂移），或者本来就是静态的
+   * - manual：要用户滚动 / 拖动 / 指针交互才会动（视差、滚动驱动、粘性、磁吸、手风琴…）
+   */
+  loop?: 'replay' | 'continuous' | 'manual'
   /** 英文覆盖层；缺字段回退中文 */
   en?: EntryTranslation
 }

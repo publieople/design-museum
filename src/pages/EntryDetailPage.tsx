@@ -6,6 +6,7 @@ import { useT, useLocale } from '../i18n'
 import { defaultValues } from '../lib/controls'
 import { buildEntryQuery, parseEntryState, writeTunedValues } from '../lib/entryState'
 import { resolveEntry } from '../lib/localize'
+import { interactionHintKey, shouldAutoLoop } from '../lib/loop'
 import { usePrefs } from '../lib/prefs'
 import { Link, navigate, useRoute } from '../lib/router'
 import { ControlPanel } from '../components/ControlPanel'
@@ -115,6 +116,8 @@ export function EntryDetailPage({ slug }: { slug?: string }) {
             <ErrorBoundary label={entry.slug} message={t('error.renderFailed')}>
               <DemoStage
                 stage={stage}
+                loopable={shouldAutoLoop(entry)}
+                hint={interactionHintKey(entry)}
                 onStageChange={(next) => {
                   dirty.current = true
                   setStageOverride(next)

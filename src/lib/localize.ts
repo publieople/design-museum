@@ -35,6 +35,18 @@ export interface ResolvedEntry {
   prompt: (values: ControlValues) => PromptPair
 }
 
+const CJK = /[\u4e00-\u9fff]/
+
+/**
+ * 别名列表里中英混在一起。英文界面下优先给不含中文的那部分，
+ * 一条都没有（比如纯中文俗称）才退回原列表，总比空着强。
+ */
+export function aliasesFor(aliases: string[], locale: Locale): string[] {
+  if (locale !== 'en') return aliases
+  const latin = aliases.filter((alias) => !CJK.test(alias))
+  return latin.length > 0 ? latin : aliases
+}
+
 export function resolveEntry(entry: Entry, locale: Locale): ResolvedEntry {
   const t = entry.en
   const en = locale === 'en' && t ? t : undefined

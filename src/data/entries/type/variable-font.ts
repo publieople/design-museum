@@ -88,6 +88,7 @@ const entry: Entry = {
         'respect prefers-reduced-motion',
     }
   },
+  loop: 'continuous',
   en: {
     oneLiner: 'A single font file carries a continuous weight axis, so it can stop at any weight.',
     whenToUse: [

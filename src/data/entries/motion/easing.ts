@@ -91,6 +91,7 @@ const entry: Entry = {
       en: `animation-timing-function: ${easing}, transition-timing-function, cubic-bezier() easing curve, duration ${duration}ms, delay ${delay}ms, travel ${distance}%, animate transform only (no left/top), keep one shared easing across buttons and cards, respect prefers-reduced-motion`,
     }
   },
+  loop: 'continuous',
   en: {
     oneLiner: 'How an animation spends its time: fast off the line or soft on arrival, all in one curve.',
     whenToUse: [

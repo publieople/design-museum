@@ -85,6 +85,7 @@ const entry: Entry = {
       en: `horizontal snap slider, scroll container with scroll-snap-type: ${snap}, items with scroll-snap-align: ${align}, scroll-padding: ${padding}px${stop ? ', scroll-snap-stop: always to prevent skipping multiple slides' : ''}, overflow-x: auto container with fixed height, native momentum scrolling and keyboard support, scroll-behavior: auto under prefers-reduced-motion`,
     }
   },
+  loop: 'manual',
   en: {
     oneLiner: 'Scrolling comes to rest on a card instead of stopping halfway between two of them.',
     whenToUse: [

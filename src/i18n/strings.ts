@@ -130,6 +130,8 @@ export const STRINGS = {
   'control.reset': { zh: '恢复默认', en: 'Reset' },
 
   'stage.replay': { zh: '重播', en: 'Replay' },
+  // 这一档里既有滚动驱动也有点击/拖拽驱动，文案要对两者都成立
+  'stage.needsScroll': { zh: '↕ 自己动手试试', en: '↕ Try it yourself' },
   'stage.loop': { zh: '循环', en: 'Loop' },
   'stage.slow': { zh: '慢放', en: 'Slow' },
 

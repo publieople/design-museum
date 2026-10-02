@@ -101,6 +101,7 @@ const entry: Entry = {
         ', animate transform/opacity only, aria-hidden on visual text plus sr-only copy, respect prefers-reduced-motion',
     }
   },
+  loop: 'replay',
   en: {
     oneLiner: 'The characters of a headline drop into place one after another, as if written out letter by letter.',
     whenToUse: [

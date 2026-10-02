@@ -63,6 +63,7 @@ const entry: Entry = {
       en: `bento grid layout, CSS grid, grid-template-columns: repeat(${columns}, minmax(0, 1fr)), grid-auto-rows: ${rowHeight}px, gap: ${gap}px, tiles with grid-column: span / grid-row: span mixing 1x1 2x1 2x2 sizes, border-radius: ${radius}px, all edges aligned to the same column lines, collapse to 2 columns on mobile`,
     }
   },
+  loop: 'manual',
   en: {
     oneLiner: 'Tiles of different sizes lock into one block with aligned edges, so the hierarchy reads at a glance.',
     whenToUse: [

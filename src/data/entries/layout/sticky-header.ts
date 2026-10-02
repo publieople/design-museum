@@ -59,6 +59,7 @@ const entry: Entry = {
       en: `sticky header, position: sticky; top: 0, add backdrop-filter: blur(${blur}px) and border-bottom after ${threshold}px scroll, ${hide ? 'hide on scroll down / reveal on scroll up via transform: translateY(-100%) with 250ms ease-out, compare current vs previous scrollY' : 'always visible'}, animate transform only, throttle scroll handler with requestAnimationFrame`,
     }
   },
+  loop: 'manual',
   en: {
     oneLiner: 'A page header that stays pinned on scroll and often hides on the way down.',
     whenToUse: [

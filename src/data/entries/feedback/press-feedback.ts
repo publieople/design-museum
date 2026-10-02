@@ -71,6 +71,7 @@ const entry: Entry = {
       en: 'button press feedback, :active { transform: scale(' + scale.toFixed(2) + '); transition: transform ' + duration + 'ms }, release back to scale(1) with ' + easing + ', ' + (spring ? 'slight overshoot spring' : 'no bounce') + ', transform-only, keep :focus-visible ring, touch-action: manipulation',
     }
   },
+  loop: 'replay',
   en: {
     oneLiner: 'The moment a finger presses down the button shrinks and darkens, then snaps back on release to confirm the tap.',
     whenToUse: [

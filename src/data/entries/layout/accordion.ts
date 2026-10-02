@@ -82,6 +82,7 @@ const entry: Entry = {
       en: `accordion disclosure pattern, ${mode === 'single' ? 'single-open, only one panel expanded at a time' : 'multi-open, several panels expanded at once'}, expand and collapse duration ${duration}ms with easing ${easing}, header is a real button with aria-expanded and a chevron that ${rotate ? 'rotates 180deg when open' : 'stays static'}, animate grid-template-rows: 0fr → 1fr inside overflow: hidden instead of height: auto, set duration to 0 under prefers-reduced-motion`,
     }
   },
+  loop: 'manual',
   en: {
     oneLiner: 'Clicking a heading reveals its panel, usually one at a time, and the headings never move.',
     whenToUse: [
