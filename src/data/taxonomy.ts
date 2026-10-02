@@ -46,7 +46,7 @@ export const STAGES: { id: StageId; label: string; hint: string }[] = [
   { id: 'light', label: '浅色', hint: '浅色墙面' },
   { id: 'dark', label: '深色', hint: '深色墙面' },
   { id: 'accent', label: '彩色', hint: '高饱和背景' },
-  { id: 'photo', label: '图片', hint: '照片背景（毛玻璃类必备）' },
+  { id: 'photo', label: '照片感', hint: '照片感背景（毛玻璃、发光类必备）' },
 ]
 
 const CATEGORY_BY_ID = new Map(CATEGORIES.map((c) => [c.id, c]))
