@@ -137,6 +137,12 @@ src/
 gh api -X POST repos/publieople/design-museum/pages -f build_type=workflow
 ```
 
+## 部署后的自愈
+
+站点是拿 hash 文件名做分包懒加载的，于是有一个经典的坑：**部署刚完成时，浏览器缓存里可能还是上一份 `index.html`，而它引用的那些 chunk 已经被新构建整批换掉**——动态 import 会 404，页面直接白屏。部署后十几分钟内回访的用户都会撞上，这个项目在 CI 上真实发生过。
+
+`src/lib/lazyWithRetry.ts` 处理了它：任何 chunk 加载失败就 `location.reload()` 一次，用 `sessionStorage` 标记防止刷新死循环，加载成功就把标记清掉（所以下一次部署还能再自愈）。有 4 条单测覆盖这个行为。
+
 ## 已知限制
 
 - **sitemap 只有入口页**：hash 路由下 30 条词条共享同一个 URL，爬虫拿不到独立地址。要真正被搜到需要改成 BrowserRouter + 预渲染。

@@ -1,5 +1,6 @@
-import { lazy, type ComponentType, type LazyExoticComponent } from 'react'
+import { type ComponentType, type LazyExoticComponent } from 'react'
 import type { DemoProps } from '../data/types'
+import { lazyWithRetry } from '../lib/lazyWithRetry'
 
 /**
  * 非 eager：30 个 demo 各自一个 chunk，首页只下载真正挂出来的那几个。
@@ -30,7 +31,7 @@ export function demoFor(slug: string): LazyExoticComponent<ComponentType<DemoPro
   const loader = demoLoader(slug)
   if (!loader) return undefined
 
-  const Component = lazy(async () => {
+  const Component = lazyWithRetry(async () => {
     const mod = await loader()
     return { default: mod.default }
   })

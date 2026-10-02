@@ -1,23 +1,29 @@
-import { lazy, Suspense, useEffect } from 'react'
+import { Suspense, useEffect } from 'react'
 import { Layout } from './components/Layout'
 import { ToastProvider } from './components/Toast'
-import { PrefsProvider, usePrefs } from './lib/prefs'
 import { translate } from './i18n'
+import { lazyWithRetry } from './lib/lazyWithRetry'
+import { PrefsProvider, usePrefs } from './lib/prefs'
 import { Link, useRoute } from './lib/router'
 import type { StringKey } from './i18n'
 
-// 路由级分包：首页不该把速查表、冒烟页连同 30 个 demo 一起下载
-const HomePage = lazy(() => import('./pages/HomePage').then((m) => ({ default: m.HomePage })))
-const BrowsePage = lazy(() => import('./pages/BrowsePage').then((m) => ({ default: m.BrowsePage })))
-const EntryDetailPage = lazy(() =>
+// 路由级分包：首页不该把速查表、冒烟页连同 30 个 demo 一起下载。
+// 走 lazyWithRetry：部署后旧 HTML 引用的 chunk 会 404，这时刷新一次能自愈。
+const HomePage = lazyWithRetry(() => import('./pages/HomePage').then((m) => ({ default: m.HomePage })))
+const BrowsePage = lazyWithRetry(() =>
+  import('./pages/BrowsePage').then((m) => ({ default: m.BrowsePage })),
+)
+const EntryDetailPage = lazyWithRetry(() =>
   import('./pages/EntryDetailPage').then((m) => ({ default: m.EntryDetailPage })),
 )
-const FeelPage = lazy(() => import('./pages/FeelPage').then((m) => ({ default: m.FeelPage })))
-const CheatSheetPage = lazy(() =>
+const FeelPage = lazyWithRetry(() => import('./pages/FeelPage').then((m) => ({ default: m.FeelPage })))
+const CheatSheetPage = lazyWithRetry(() =>
   import('./pages/CheatSheetPage').then((m) => ({ default: m.CheatSheetPage })),
 )
-const AboutPage = lazy(() => import('./pages/AboutPage').then((m) => ({ default: m.AboutPage })))
-const DebugAllPage = lazy(() =>
+const AboutPage = lazyWithRetry(() =>
+  import('./pages/AboutPage').then((m) => ({ default: m.AboutPage })),
+)
+const DebugAllPage = lazyWithRetry(() =>
   import('./pages/DebugAllPage').then((m) => ({ default: m.DebugAllPage })),
 )
 
