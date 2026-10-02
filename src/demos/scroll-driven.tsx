@@ -2,8 +2,19 @@ import { useEffect, useRef, useState } from 'react'
 import type { DemoProps } from '../data/types'
 import { numberValue } from '../lib/controls'
 import { usePrefersReducedMotion } from '../lib/motion'
+import { pick } from '../i18n/pick'
 
 const PARAGRAPHS = Array.from({ length: 16 }, (_, index) => index + 1)
+
+const T = {
+  blurb: {
+    zh: '滚动位置就是动画进度：卡片滚进来时转正并淡入，顶部进度条与滚动条同步。',
+    en: 'Scroll position is the animation progress: cards rotate straight and fade in as they enter, and the bar on top tracks the scrollbar.',
+  },
+  aria: { zh: '可滚动的滚动驱动动画演示', en: 'Scrollable scroll driven animation demo' },
+  hint: { zh: '↓ 在这个框里滚动', en: '↓ Scroll inside this box' },
+  fallback: { zh: 'JS 兜底', en: 'JS fallback' },
+} as const
 
 function nativeSupport(): boolean {
   return (
@@ -17,7 +28,8 @@ const KEYFRAMES =
   '@keyframes dm-motion-sda-progress { from { transform: scaleX(0); } to { transform: scaleX(1); } }' +
   '@keyframes dm-motion-sda-card { from { opacity: 0.25; } to { opacity: 1; } }'
 
-export default function ScrollDrivenDemo({ values, replayKey }: DemoProps) {
+export default function ScrollDrivenDemo({ values, replayKey, locale = 'zh' }: DemoProps) {
+  const zh = locale !== 'en'
   const rotate = numberValue(values, 'rotate', 30)
   const cover = numberValue(values, 'range', 60)
   const duration = numberValue(values, 'duration', 600)
@@ -59,6 +71,21 @@ export default function ScrollDrivenDemo({ values, replayKey }: DemoProps) {
 
   const clamp = (value: number) => Math.max(0, Math.min(1, value))
 
+  const footer = native
+    ? zh
+      ? `animation-timeline: scroll() / view() · 区间 cover ${cover}%`
+      : `animation-timeline: scroll() / view() · range cover ${cover}%`
+    : (reduced
+        ? zh
+          ? '已减少动效 · '
+          : 'Reduced motion · '
+        : zh
+          ? '此浏览器不支持 animation-timeline · '
+          : 'This browser does not support animation-timeline · ') +
+      (zh ? '进度 ' : 'Progress ') +
+      Math.round(clamp(progress) * 100) +
+      '%'
+
   return (
     <div className="w-full max-w-xs">
       <style>{KEYFRAMES}</style>
@@ -69,11 +96,11 @@ export default function ScrollDrivenDemo({ values, replayKey }: DemoProps) {
           className="rounded border px-1.5 py-0.5 font-mono text-[9px]"
           style={{ borderColor: 'color-mix(in srgb, var(--stage-ink) 22%, transparent)' }}
         >
-          {native ? 'animation-timeline' : 'JS 兜底'}
+          {native ? 'animation-timeline' : pick(T.fallback, locale)}
         </span>
       </div>
       <p className="mt-0.5 text-[11px] opacity-70">
-        滚动位置就是动画进度：卡片滚进来时转正并淡入，顶部进度条与滚动条同步。
+        {pick(T.blurb, locale)}
       </p>
 
       <div
@@ -103,9 +130,9 @@ export default function ScrollDrivenDemo({ values, replayKey }: DemoProps) {
           className="h-56 overflow-y-auto overscroll-contain p-3"
           style={{ background: 'color-mix(in srgb, var(--stage-ink) 5%, transparent)' }}
           tabIndex={0}
-          aria-label="可滚动的滚动驱动动画演示"
+          aria-label={pick(T.aria, locale)}
         >
-          <p className="mb-3 font-mono text-[10px] opacity-60">↓ 在这个框里滚动</p>
+          <p className="mb-3 font-mono text-[10px] opacity-60">{pick(T.hint, locale)}</p>
           <div className="flex flex-col gap-2.5">
             {PARAGRAPHS.map((index, position) => (
               <div
@@ -130,7 +157,9 @@ export default function ScrollDrivenDemo({ values, replayKey }: DemoProps) {
                   }}
                 >
                   <span className="font-mono text-[10px] opacity-50">0{position + 1}</span>
-                  <span className="ml-2 text-[11px]">第 {index} 张卡片，滚到它就转正。</span>
+                  <span className="ml-2 text-[11px]">
+                    {zh ? `第 ${index} 张卡片，滚到它就转正。` : `Card ${index}, straightens up as you scroll to it.`}
+                  </span>
                 </div>
               </div>
             ))}
@@ -139,13 +168,12 @@ export default function ScrollDrivenDemo({ values, replayKey }: DemoProps) {
       </div>
 
       <p className="mt-2 font-mono text-[10px] opacity-60">
-        {native
-          ? 'animation-timeline: scroll() / view() · 区间 cover ' + cover + '%'
-          : (reduced ? '已减少动效 · ' : '此浏览器不支持 animation-timeline · ') +
-            '进度 ' + Math.round(clamp(progress) * 100) + '%'}
+        {footer}
       </p>
       <p className="mt-1 font-mono text-[10px] opacity-50">
-        最大旋转 {rotate}deg · 降级时长 {duration}ms
+        {zh
+          ? `最大旋转 ${rotate}deg · 降级时长 ${duration}ms`
+          : `Max rotation ${rotate}deg · Fallback duration ${duration}ms`}
       </p>
     </div>
   )

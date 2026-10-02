@@ -30,10 +30,12 @@ export const PREF_DEFAULTS: Prefs = {
   locale: 'zh',
   stage: 'auto',
   slow: false,
-  loop: false,
+  // 默认循环：这是一座展品会动的博物馆，缩略图停在那里不动太可惜
+  loop: true,
 }
 
-export const PREFS_STORAGE_KEY = 'design-museum:prefs'
+/** 改默认值时顺手升版，否则老访客会一直用着上一次存下来的旧默认值 */
+export const PREFS_STORAGE_KEY = 'design-museum:prefs:v2'
 
 function isThemeMode(value: unknown): value is ThemeMode {
   return value === 'light' || value === 'dark' || value === 'system'

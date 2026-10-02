@@ -32,9 +32,10 @@ export function DemoStage({
   const { loop, slow, setPref } = usePrefs()
   const style = STAGE_STYLES[stage]
 
-  // 循环重播：靠递增 replayKey 让 demo 重新挂载，demo 侧不需要任何改动
+  // 循环重播：靠递增 replayKey 让 demo 重新挂载，demo 侧不需要任何改动。
+  // 缩略图也一起循环——展品不动就不像在展出。
   useEffect(() => {
-    if (compact || !loop) return
+    if (!loop) return
     if (
       typeof window !== 'undefined' &&
       window.matchMedia?.('(prefers-reduced-motion: reduce)').matches
@@ -62,11 +63,13 @@ export function DemoStage({
       className={`relative overflow-hidden rounded-lg border border-line ${className}`}
       style={stageStyle}
     >
+      {/* flex 而不是 grid：grid 的 justify-items:center 会让 w-full 的子元素按 max-content 收缩，
+          卡片里的 demo 于是塌成一条窄带。高度用 aspect-ratio 跟着卡片宽度自适应。 */}
       <div
         className={
           compact
-            ? 'grid h-52 place-items-center overflow-hidden p-4'
-            : 'grid min-h-64 place-items-center p-8'
+            ? 'flex aspect-[4/3] min-h-48 items-center justify-center overflow-hidden p-4'
+            : 'flex min-h-64 items-center justify-center p-8'
         }
       >
         {children}

@@ -9,7 +9,7 @@ interface Notice {
   tone: 'ok' | 'error'
 }
 
-export default function ToastDemo({ values, stage, replayKey }: DemoProps) {
+export default function ToastDemo({ values, stage, replayKey, locale = 'zh' }: DemoProps) {
   const duration = numberValue(values, 'duration', 3000)
   const position = stringValue(values, 'position', 'bottom')
   const distance = numberValue(values, 'distance', 12)
@@ -18,6 +18,7 @@ export default function ToastDemo({ values, stage, replayKey }: DemoProps) {
   const nextId = useRef(1)
   const timers = useRef<number[]>([])
   const dark = stage === 'dark' || stage === 'accent'
+  const zh = locale !== 'en'
 
   useEffect(
     () => () => {
@@ -35,7 +36,14 @@ export default function ToastDemo({ values, stage, replayKey }: DemoProps) {
   const push = (tone: 'ok' | 'error') => {
     const id = nextId.current
     nextId.current += 1
-    const text = tone === 'ok' ? '已保存到词条库' : '保存失败，请重试'
+    const text =
+      tone === 'ok'
+        ? zh
+          ? '已保存到词条库'
+          : 'Saved to the library'
+        : zh
+          ? '保存失败，请重试'
+          : 'Save failed, try again'
     setNotices((prev) => [...prev.slice(-2), { id, text, tone }])
     const timer = window.setTimeout(() => {
       setNotices((prev) => prev.filter((notice) => notice.id !== id))
@@ -66,7 +74,7 @@ export default function ToastDemo({ values, stage, replayKey }: DemoProps) {
           className="cursor-pointer rounded-full px-4 py-2 text-xs font-semibold"
           style={{ color: '#ffffff', background: 'linear-gradient(135deg, #2f6bff, #7b2ff7)' }}
         >
-          保存
+          {zh ? '保存' : 'Save'}
         </button>
         <button
           type="button"
@@ -77,7 +85,7 @@ export default function ToastDemo({ values, stage, replayKey }: DemoProps) {
             border: '1px solid color-mix(in srgb, var(--stage-ink) 30%, transparent)',
           }}
         >
-          制造失败
+          {zh ? '制造失败' : 'Force failure'}
         </button>
       </div>
 

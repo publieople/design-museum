@@ -6,13 +6,14 @@ import { usePrefersReducedMotion } from '../lib/motion'
 interface Item {
   id: string
   label: string
+  labelEn: string
   likes: number
 }
 
 const ITEMS: Item[] = [
-  { id: 'a', label: '把交互稿标注成 token', likes: 12 },
-  { id: 'b', label: '给 demo 补上 reduced-motion', likes: 7 },
-  { id: 'c', label: '把踩坑写进 pitfalls', likes: 23 },
+  { id: 'a', label: '把交互稿标注成 token', labelEn: 'Tag the mockup with tokens', likes: 12 },
+  { id: 'b', label: '给 demo 补上 reduced-motion', labelEn: 'Add reduced-motion to the demo', likes: 7 },
+  { id: 'c', label: '把踩坑写进 pitfalls', labelEn: 'Write the pitfalls down', likes: 23 },
 ]
 
 type Status = 'idle' | 'pending' | 'error'
@@ -20,12 +21,13 @@ type Status = 'idle' | 'pending' | 'error'
 const initialLikes = (): Record<string, number> =>
   Object.fromEntries(ITEMS.map((item) => [item.id, item.likes] as const))
 
-export default function OptimisticUiDemo({ values, stage, replayKey }: DemoProps) {
+export default function OptimisticUiDemo({ values, stage, replayKey, locale = 'zh' }: DemoProps) {
   const latency = numberValue(values, 'latency', 1200)
   const failureRate = numberValue(values, 'failureRate', 30)
   const optimistic = boolValue(values, 'optimistic', true)
   const reduced = usePrefersReducedMotion()
   const dark = stage === 'dark' || stage === 'accent'
+  const zh = locale !== 'en'
 
   const [likes, setLikes] = useState<Record<string, number>>(initialLikes)
   const [liked, setLiked] = useState<Record<string, boolean>>({})
@@ -84,7 +86,9 @@ export default function OptimisticUiDemo({ values, stage, replayKey }: DemoProps
       }}
     >
       <p className="font-mono text-[10px] opacity-60">
-        乐观更新 {optimistic ? '开' : '关'} · 延迟 {latency}ms · 失败率 {failureRate}%
+        {zh
+          ? `乐观更新 ${optimistic ? '开' : '关'} · 延迟 ${latency}ms · 失败率 ${failureRate}%`
+          : `Optimistic ${optimistic ? 'on' : 'off'} · latency ${latency}ms · failure rate ${failureRate}%`}
       </p>
       <ul className="mt-2 flex flex-col gap-2">
         {ITEMS.map((item) => {
@@ -98,13 +102,13 @@ export default function OptimisticUiDemo({ values, stage, replayKey }: DemoProps
                 border: '1px solid color-mix(in srgb, var(--stage-ink) 20%, transparent)',
               }}
             >
-              <span className="flex-1 text-[11px] leading-snug">{item.label}</span>
+              <span className="flex-1 text-[11px] leading-snug">{zh ? item.label : item.labelEn}</span>
               {state === 'pending' ? (
-                <span className="font-mono text-[9px] opacity-50">同步中</span>
+                <span className="font-mono text-[9px] opacity-50">{zh ? '同步中' : 'Syncing'}</span>
               ) : null}
               {state === 'error' ? (
                 <span className="font-mono text-[9px]" style={{ color: '#e0533f' }}>
-                  失败，已撤销
+                  {zh ? '失败，已撤销' : 'Failed, reverted'}
                 </span>
               ) : null}
               <button
@@ -120,13 +124,15 @@ export default function OptimisticUiDemo({ values, stage, replayKey }: DemoProps
                   transition: 'transform 180ms ease-out, background 180ms ease-out',
                 }}
               >
-                {isLiked ? '已赞' : '点赞'} {likes[item.id]}
+                {zh ? (isLiked ? '已赞' : '点赞') : isLiked ? 'Liked' : 'Like'} {likes[item.id]}
               </button>
             </li>
           )
         })}
       </ul>
-      <p className="mt-2 text-center font-mono text-[9px] opacity-45">点几次看看失败时怎么回滚</p>
+      <p className="mt-2 text-center font-mono text-[9px] opacity-45">
+        {zh ? '点几次看看失败时怎么回滚' : 'Tap a few times to see the rollback'}
+      </p>
     </div>
   )
 }

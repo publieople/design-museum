@@ -1,16 +1,29 @@
 import { useState } from 'react'
 import type { DemoProps } from '../data/types'
+import { pick } from '../i18n/pick'
 import { boolValue, numberValue, stringValue } from '../lib/controls'
 import { usePrefersReducedMotion } from '../lib/motion'
 
 const ITEMS = [
-  { q: '怎么改参数？', a: '拖上面的滑块，面板和动画时长立刻跟着变。' },
-  { q: '能同时开两个吗？', a: '把「展开模式」切到多开，就能一项一项都展开。' },
-  { q: '什么时候该用？', a: '一屏放不下、又不想跳页的说明文字，用折叠最省地方。' },
-  { q: '内容太多怎么办？', a: '超过五六项就分组，或者干脆换成一页一个的 tabs。' },
+  {
+    q: { zh: '怎么改参数？', en: 'How do I change the params?' },
+    a: { zh: '拖上面的滑块，面板和动画时长立刻跟着变。', en: 'Drag the sliders above; the panel and duration update live.' },
+  },
+  {
+    q: { zh: '能同时开两个吗？', en: 'Can two open at once?' },
+    a: { zh: '把「展开模式」切到多开，就能一项一项都展开。', en: 'Switch Expand mode to multiple and every item can stay open.' },
+  },
+  {
+    q: { zh: '什么时候该用？', en: 'When should I use this?' },
+    a: { zh: '一屏放不下、又不想跳页的说明文字，用折叠最省地方。', en: 'For supporting text that will not fit on one screen without a page jump.' },
+  },
+  {
+    q: { zh: '内容太多怎么办？', en: 'What if there is too much?' },
+    a: { zh: '超过五六项就分组，或者干脆换成一页一个的 tabs。', en: 'Group past five or six items, or move to one page per tab.' },
+  },
 ]
 
-export default function AccordionDemo({ values, replayKey }: DemoProps) {
+export default function AccordionDemo({ values, replayKey, locale = 'zh' }: DemoProps) {
   const mode = stringValue(values, 'mode', 'single')
   const duration = numberValue(values, 'duration', 260)
   const easing = stringValue(values, 'easing', 'cubic-bezier(0.22, 1, 0.36, 1)')
@@ -30,10 +43,12 @@ export default function AccordionDemo({ values, replayKey }: DemoProps) {
   return (
     <div key={replayKey} className="flex w-full max-w-xs flex-col gap-2">
       {ITEMS.map((item, index) => {
+        const q = pick(item.q, locale)
+        const a = pick(item.a, locale)
         const isOpen = open.includes(index)
         return (
           <div
-            key={item.q}
+            key={q}
             className="overflow-hidden rounded-lg border"
             style={{ borderColor: 'color-mix(in srgb, var(--stage-ink) 22%, transparent)' }}
           >
@@ -43,7 +58,7 @@ export default function AccordionDemo({ values, replayKey }: DemoProps) {
               aria-expanded={isOpen}
               className="flex w-full items-center justify-between gap-2 px-3 py-2 text-left"
             >
-              <span className="text-xs font-medium">{item.q}</span>
+              <span className="text-xs font-medium">{q}</span>
               <svg
                 width="12"
                 height="12"
@@ -81,7 +96,7 @@ export default function AccordionDemo({ values, replayKey }: DemoProps) {
                     transition: motion ? `opacity ${motion}, transform ${motion}` : undefined,
                   }}
                 >
-                  {item.a}
+                  {a}
                 </p>
               </div>
             </div>

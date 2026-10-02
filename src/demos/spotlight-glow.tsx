@@ -3,7 +3,8 @@ import type { DemoProps } from '../data/types'
 import { boolValue, numberValue } from '../lib/controls'
 import { usePrefersReducedMotion } from '../lib/motion'
 
-export default function SpotlightGlowDemo({ values, replayKey }: DemoProps) {
+export default function SpotlightGlowDemo({ values, replayKey, locale = 'zh' }: DemoProps) {
+  const zh = locale !== 'en'
   const radius = numberValue(values, 'radius', 220)
   const intensity = numberValue(values, 'intensity', 22) / 100
   const hue = numberValue(values, 'hue', 40)
@@ -76,9 +77,9 @@ export default function SpotlightGlowDemo({ values, replayKey }: DemoProps) {
         </div>
 
         <div className="relative p-4">
-          <p className="font-display text-sm font-semibold text-white">聚光卡片</p>
+          <p className="font-display text-sm font-semibold text-white">{zh ? '聚光卡片' : 'Spotlight card'}</p>
           <p className="mt-1 max-w-[13rem] text-[11px] leading-relaxed text-white/70">
-            把指针移到卡片上，光斑会跟过来；移出去它会回到中心。
+            {zh ? '把指针移到卡片上，光斑会跟过来；移出去它会回到中心。' : 'Move the pointer onto the card and the glow follows; move it away and the glow returns to the center.'}
           </p>
           <span
             className="mt-3 inline-block rounded-full px-3 py-1 font-mono text-[10px] text-white"
@@ -92,7 +93,7 @@ export default function SpotlightGlowDemo({ values, replayKey }: DemoProps) {
         className="mt-2 text-center font-mono text-[10px] opacity-60"
         style={{ color: 'var(--stage-ink)' }}
       >
-        关掉「跟随指针」看静态回退
+        {zh ? '关掉「跟随指针」看静态回退' : 'Turn off Follow pointer to see the static fallback'}
       </p>
     </div>
   )

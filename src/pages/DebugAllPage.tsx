@@ -2,11 +2,38 @@ import { ENTRIES } from '../data'
 import { useT } from '../i18n'
 import { defaultValues } from '../lib/controls'
 import { usePrefs } from '../lib/prefs'
+import { useReplayKey } from '../lib/replay'
 import { DEMO_SLUGS, hasDemo } from '../demos/registry'
+import type { Entry } from '../data/types'
 import { DemoRunner } from '../components/DemoRunner'
 import { DemoStage } from '../components/DemoStage'
 import { ErrorBoundary } from '../components/ErrorBoundary'
 import { resolveStage } from '../components/stageStyles'
+
+/** 每行自带重播状态，循环重播在这页才有意义 */
+function DebugRow({ entry, stage }: { entry: Entry; stage: ReturnType<typeof resolveStage> }) {
+  const t = useT()
+  const [replayKey, replay] = useReplayKey()
+  return (
+    <li className="flex flex-col gap-2">
+      <div className="flex items-baseline gap-3">
+        <span className="font-mono text-[11px] text-accent">{entry.code}</span>
+        <span className="font-display font-semibold">{entry.nameZh}</span>
+        <span className="font-mono text-[11px] text-muted">{entry.slug}</span>
+      </div>
+      <ErrorBoundary label={entry.slug} message={t('error.renderFailed')}>
+        <DemoStage stage={stage} onStageChange={() => {}} onReplay={replay}>
+          <DemoRunner
+            slug={entry.slug}
+            values={defaultValues(entry)}
+            stage={stage}
+            replayKey={replayKey}
+          />
+        </DemoStage>
+      </ErrorBoundary>
+    </li>
+  )
+}
 
 /**
  * 开发期冒烟页：把全馆 demo 一次性挂起来，谁崩了一眼就能看到。
@@ -45,29 +72,9 @@ export function DebugAllPage() {
       </header>
 
       <ul className="flex flex-col gap-6">
-        {ENTRIES.map((entry) => {
-          if (!hasDemo(entry.slug)) return null
-          const stage = resolveStage(entry, stagePref)
-          return (
-            <li key={entry.slug} className="flex flex-col gap-2">
-              <div className="flex items-baseline gap-3">
-                <span className="font-mono text-[11px] text-accent">{entry.code}</span>
-                <span className="font-display font-semibold">{entry.nameZh}</span>
-                <span className="font-mono text-[11px] text-muted">{entry.slug}</span>
-              </div>
-              <ErrorBoundary label={entry.slug} message={t('error.renderFailed')}>
-                <DemoStage stage={stage} onStageChange={() => {}} onReplay={() => {}}>
-                  <DemoRunner
-                    slug={entry.slug}
-                    values={defaultValues(entry)}
-                    stage={stage}
-                    replayKey={0}
-                  />
-                </DemoStage>
-              </ErrorBoundary>
-            </li>
-          )
-        })}
+        {ENTRIES.filter((entry) => hasDemo(entry.slug)).map((entry) => (
+          <DebugRow key={entry.slug} entry={entry} stage={resolveStage(entry, stagePref)} />
+        ))}
       </ul>
     </div>
   )

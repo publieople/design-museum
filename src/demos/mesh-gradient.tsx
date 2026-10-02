@@ -18,7 +18,8 @@ function meshImage(spread: number) {
   return [...layers, '#101018'].join(', ')
 }
 
-export default function MeshGradientDemo({ values, replayKey }: DemoProps) {
+export default function MeshGradientDemo({ values, replayKey, locale = 'zh' }: DemoProps) {
+  const zh = locale !== 'en'
   const spread = numberValue(values, 'spread', 55)
   const softness = numberValue(values, 'softness', 0)
   const hue = numberValue(values, 'hue', 0)
@@ -47,15 +48,15 @@ export default function MeshGradientDemo({ values, replayKey }: DemoProps) {
           }}
         />
         <div className="absolute inset-x-0 bottom-0 p-4">
-          <p className="font-display text-sm font-semibold text-white drop-shadow">渐变网格</p>
-          <p className="text-[11px] text-white/75">五层 radial-gradient 叠出来的色场</p>
+          <p className="font-display text-sm font-semibold text-white drop-shadow">{zh ? '渐变网格' : 'Mesh gradient'}</p>
+          <p className="text-[11px] text-white/75">{zh ? '五层 radial-gradient 叠出来的色场' : 'A color field stacked from five radial-gradients'}</p>
         </div>
       </div>
       <p
         className="mt-2 text-center font-mono text-[10px] opacity-60"
         style={{ color: 'var(--stage-ink)' }}
       >
-        CSS 没有 mesh-gradient 属性，只能一层层叠
+        {zh ? 'CSS 没有 mesh-gradient 属性，只能一层层叠' : 'CSS has no mesh-gradient property; you stack the layers'}
       </p>
     </div>
   )

@@ -23,7 +23,8 @@ function ringStyle(
   } as CSSProperties
 }
 
-export default function GradientBorderDemo({ values, replayKey }: DemoProps) {
+export default function GradientBorderDemo({ values, replayKey, locale = 'zh' }: DemoProps) {
+  const zh = locale !== 'en'
   const width = numberValue(values, 'width', 2)
   const angle = numberValue(values, 'angle', 135)
   const hue = numberValue(values, 'hue', 265)
@@ -44,9 +45,9 @@ export default function GradientBorderDemo({ values, replayKey }: DemoProps) {
         }
       `}</style>
       <div className="p-4" style={ringStyle(width, angle, hue, radius, animated)}>
-        <p className="font-display text-sm font-semibold">渐变描边卡片</p>
+        <p className="font-display text-sm font-semibold">{zh ? '渐变描边卡片' : 'Gradient border card'}</p>
         <p className="mt-1 text-[11px] leading-relaxed opacity-70">
-          描边是 border-box 那层渐变背景，内部被 padding-box 的实底盖住，所以只剩一圈线。
+          {zh ? '描边是 border-box 那层渐变背景，内部被 padding-box 的实底盖住，所以只剩一圈线。' : 'The border is the border-box gradient layer; the padding-box fill covers the middle, leaving only the ring.'}
         </p>
       </div>
       <div className="mt-3 flex items-center gap-2">
@@ -54,9 +55,9 @@ export default function GradientBorderDemo({ values, replayKey }: DemoProps) {
           className="rounded-full px-3 py-1 font-mono text-[10px]"
           style={ringStyle(width, angle, hue, 999, animated)}
         >
-          了解更多
+          {zh ? '了解更多' : 'Learn more'}
         </span>
-        <span className="font-mono text-[10px] opacity-60">同一个渐变，小元素也能用</span>
+        <span className="font-mono text-[10px] opacity-60">{zh ? '同一个渐变，小元素也能用' : 'The same gradient works on small elements too'}</span>
       </div>
     </div>
   )

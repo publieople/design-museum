@@ -10,7 +10,7 @@
 
 - **30 条词条**，分五个展厅：动效与节奏、交互反馈、布局与结构、视觉质感、排版与文字。每条**中英双语**。
 - **每条词条**：一句话是什么、什么时候用、最容易混的两个概念差在哪、真实踩坑、推荐取值、无障碍降级写法、参考链接，以及——
-- **一个活的演示**：参数滑块实时生效，舞台背景可切浅色/深色/彩色/照片感（毛玻璃、发光这类效果离开背景就不成立），可重播、可**循环重播**、可**慢放**。
+- **一个活的演示**：参数滑块实时生效，舞台背景可切浅色/深色/彩色/照片感（毛玻璃、发光这类效果离开背景就不成立），可重播、可**循环重播**、可**慢放**。词条库里的缩略图也会自己一遍遍重播，并且会等比放大到填满卡片。
 - **一键复制的提示词**：中文需求句（带当前参数）和英文关键词（AI 最容易认的术语），随滑块实时更新；外加一个**分享链接**，把你调好的那组参数一起带走。
 - **感觉导航**：不知道叫什么，就回答「用在哪 / 什么感觉 / 想达到什么」，从候选里挑。
 - **速查表**：勾选这次要用的几个效果，导出一整段需求清单；**会带上你在词条页调过的参数**，不是永远用默认值。
@@ -36,7 +36,7 @@ pnpm dev          # http://localhost:5173
 
 ```bash
 pnpm typecheck    # tsc -b，零错误是提交门槛
-pnpm test         # vitest：内容校验 + 检索 + 参数 URL + 偏好 + i18n + 提示词 + 渲染冒烟（120 项）
+pnpm test         # vitest：内容校验 + 检索 + 参数 URL + 偏好 + i18n + 提示词 + 渲染冒烟（150 项）
 pnpm validate     # 只跑内容校验
 pnpm build        # 产物在 dist/
 pnpm preview      # 预览产物
@@ -60,6 +60,10 @@ Vite 8 + React 19 + TypeScript + Tailwind CSS v4。零后端，纯静态产物�
 - **不引检索库**：几十条数据在内存里，`src/lib/search.ts` 用「归一化 + 分字段加权 + 逐词兜底」打分。
 - **不引状态库**：偏好只有五项，`src/lib/prefs.tsx` 一个 context 就够。
 - **字体本地打包**：`@fontsource-variable/*`，不请求外部字体 CDN。
+
+### 版式
+
+列表类页面（词条库 / 感觉导航 / 速查表）外壳放到 `max-w-[90rem]`，大屏下卡片约 450px；正文类页面（首页 / 词条详情 / 怎么用）保持 `max-w-5xl` 的易读行宽。缩略图舞台用 `aspect-[4/3]` 跟着卡片宽度自适应，里面的 demo 由 `DemoRunner` 量出自然尺寸后等比缩放到填满舞台（0.7–1.7 倍）——30 个 demo 各自按自己的尺寸设计，不缩放的话在宽卡片里只占一小块。
 
 ### 性能
 
@@ -85,7 +89,9 @@ src/
 │   ├── prefs.tsx             # 主题 / 语言 / 展品背景 / 慢放 / 循环，落 localStorage
 │   ├── localize.ts           # 把 Entry + 英文覆盖层解析成单语视图
 │   ├── entryState.ts         # 参数 ↔ URL、调过的参数记忆
-│   ├── search.ts  prompt.ts  copy.ts  controls.ts  motion.ts  viewport.ts  timeScale.ts
+│   ├── search.ts  prompt.ts  copy.ts  controls.ts  motion.ts  viewport.ts
+│   ├── timeScale.ts          # 慢放：给子树里的 Web Animations 设 playbackRate
+│   └── replay.ts             # 循环重播用的计数器
 ├── components/               # DemoStage / DemoRunner / ControlPanel / PromptCard / SettingsMenu ...
 ├── pages/
 └── styles/global.css         # 设计 token、主题变量、切换过渡
@@ -106,7 +112,7 @@ src/
    - `confusions` 至少一条，写清它和最容易混的效果差在哪（AI 也最容易在这里做错）；
    - `refs` 至少一条 MDN 或 web.dev，别凭印象写属性；
    - `oneLiner` 一句话说清「它是什么」，不写「它能带来什么价值」。
-4. 写 `src/demos/<slug>.tsx`，默认导出组件，接收 `{ values, stage, replayKey, timeScale }`。控件一动画面就要变；会动的记得走 `usePrefersReducedMotion()`；配色用 `var(--stage-ink)` 而不是写死颜色。
+4. 写 `src/demos/<slug>.tsx`，默认导出组件，接收 `{ values, stage, replayKey, timeScale, locale }`。控件一动画面就要变；会动的记得走 `usePrefersReducedMotion()`；配色用 `var(--stage-ink)` 而不是写死颜色；**组件里的示例文案也要按 `locale` 切换**——测试会检查英文模式下渲染结果里没有任何中文字符。
 5. 跑 `pnpm test`。绿了就完事——缺 demo、字段空、编号不连续、`related` 有死链、`en` 块条数对不齐都会被拦下来。
 
 ## 部署
@@ -119,18 +125,16 @@ gh api -X POST repos/publieople/design-museum/pages -f build_type=workflow
 
 ## 已知限制
 
-- **demo 内部的文案仍是中文**（比如示例卡片上的「把需求写清楚」）。界面与词条正文都已双语，但 30 个 demo 组件里的示例文字还没接 `useLocale()`。英文界面下这是唯一还成片出现中文的地方。
 - **sitemap 只有入口页**：hash 路由下 30 条词条共享同一个 URL，爬虫拿不到独立地址。要真正被搜到需要改成 BrowserRouter + 预渲染。
 - `pnpm lint` 有若干 react-hooks 的 warning（0 error），未纳入 CI 门槛。
 
 ## 待办（按性价比排序）
 
-1. demo 内部文案接 i18n，补上英文界面最后一块中文。
-2. 反查：粘贴一段代码或别人的描述 → 说出它叫什么。
-3. 拼音搜索（maoboli → 毛玻璃）与错别字容错。
-4. 俗称总表页：把全站 `aliases` 汇总成可搜、可贡献的一页。
-5. 「别搞混」做成双向对比页（毛玻璃 ⇄ 玻璃拟态 ⇄ 半透明）。
-6. 视觉回归测试：30 个 demo 的截图对比。
+1. 反查：粘贴一段代码或别人的描述 → 说出它叫什么。
+2. 拼音搜索（maoboli → 毛玻璃）与错别字容错。
+3. 俗称总表页：把全站 `aliases` 汇总成可搜、可贡献的一页。
+4. 「别搞混」做成双向对比页（毛玻璃 ⇄ 玻璃拟态 ⇄ 半透明）。
+5. 视觉回归测试：30 个 demo 的截图对比。
 
 ## 致谢
 

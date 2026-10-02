@@ -82,7 +82,7 @@ export const STRINGS = {
 
   'search.placeholder': {
     zh: '试试「毛玻璃」「磨砂」「backdrop blur」…',
-    en: 'Try “毛玻璃”, “frosted glass”, “backdrop blur”…',
+    en: 'Try “frosted glass”, “jelly”, “backdrop blur”…',
   },
   'search.aria': { zh: '搜索效果', en: 'Search effects' },
   'search.clear': { zh: '清空搜索', en: 'Clear search' },

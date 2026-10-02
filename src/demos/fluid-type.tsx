@@ -1,9 +1,13 @@
 import type { DemoProps } from '../data/types'
 import { numberValue } from '../lib/controls'
 
-const NOTE = '宽度一变，字号就跟着滑，中间没有任何断点。'
+const NOTE = {
+  zh: '宽度一变，字号就跟着滑，中间没有任何断点。',
+  en: 'Change the width and the size slides right along with it, with no breakpoint in between.',
+}
 
-export default function FluidTypeDemo({ values, stage, replayKey }: DemoProps) {
+export default function FluidTypeDemo({ values, stage, replayKey, locale = 'zh' }: DemoProps) {
+  const zh = locale !== 'en'
   const minSize = numberValue(values, 'minSize', 16)
   const maxSize = numberValue(values, 'maxSize', 44)
   const growth = numberValue(values, 'growth', 3)
@@ -18,11 +22,11 @@ export default function FluidTypeDemo({ values, stage, replayKey }: DemoProps) {
         className="rounded-xl border p-3"
         style={{ width: boxWidth + '%', containerType: 'inline-size', borderColor: line, background: fill }}
       >
-        <p className="font-mono text-[10px] tracking-widest opacity-60">cqw 容器</p>
+        <p className="font-mono text-[10px] tracking-widest opacity-60">{zh ? 'cqw 容器' : 'cqw container'}</p>
         <h3 className="font-display font-semibold leading-[1.15]" style={{ fontSize: formula }}>
-          流体的字
+          {zh ? '流体的字' : 'Fluid type'}
         </h3>
-        <p className="mt-1 text-[11px] leading-relaxed opacity-70">{NOTE}</p>
+        <p className="mt-1 text-[11px] leading-relaxed opacity-70">{zh ? NOTE.zh : NOTE.en}</p>
       </div>
       <p className="font-mono text-[10px] opacity-60">{formula}</p>
     </div>

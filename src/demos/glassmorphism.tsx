@@ -8,7 +8,8 @@ const BLOBS = [
   { color: '#1f6feb', top: '62%', left: '58%', size: '60%' },
 ]
 
-export default function GlassmorphismDemo({ values }: DemoProps) {
+export default function GlassmorphismDemo({ values, locale = 'zh' }: DemoProps) {
+  const zh = locale !== 'en'
   const blur = numberValue(values, 'blur', 16)
   const border = numberValue(values, 'border', 30) / 100
   const shadow = numberValue(values, 'shadow', 30) / 100
@@ -49,9 +50,9 @@ export default function GlassmorphismDemo({ values }: DemoProps) {
             color: '#ffffff',
           }}
         >
-          <p className="font-display text-sm font-semibold">玻璃拟态卡片</p>
+          <p className="font-display text-sm font-semibold">{zh ? '玻璃拟态卡片' : 'Glassmorphism card'}</p>
           <p className="mt-1 text-[11px] leading-relaxed opacity-80">
-            背后是彩色色斑，面板把颜色透一点上来，再被模糊开。
+            {zh ? '背后是彩色色斑，面板把颜色透一点上来，再被模糊开。' : 'Color blobs sit behind; the panel lets some color through and blurs it.'}
           </p>
           <span
             className="mt-3 inline-block rounded-full px-3 py-1 font-mono text-[10px]"
@@ -65,7 +66,7 @@ export default function GlassmorphismDemo({ values }: DemoProps) {
         className="mt-2 text-center font-mono text-[10px] opacity-60"
         style={{ color: 'var(--stage-ink)' }}
       >
-        把「描边不透明度」拖到 0，玻璃感就塌了
+        {zh ? '把「描边不透明度」拖到 0，玻璃感就塌了' : 'Drag Border opacity to 0 and the glass collapses'}
       </p>
     </div>
   )

@@ -2,14 +2,26 @@ import { useEffect, useRef, useState } from 'react'
 import type { DemoProps } from '../data/types'
 import { numberValue } from '../lib/controls'
 import { usePrefersReducedMotion } from '../lib/motion'
+import { pick } from '../i18n/pick'
 
 const PARAGRAPHS = Array.from({ length: 12 }, (_, index) => index + 1)
+
+const T = {
+  blurb: {
+    zh: '内容先藏起来，滚进视口才淡入上移。往下滑试试。',
+    en: 'Content starts hidden and fades up once it scrolls into view. Scroll down to try it.',
+  },
+  aria: { zh: '可滚动的滚动揭示演示', en: 'Scrollable scroll reveal demo' },
+  hint: { zh: '↓ 在这个框里滚动', en: '↓ Scroll inside this box' },
+  reduced: { zh: '已减少动效：内容直接显示', en: 'Reduced motion: content shows immediately' },
+} as const
 
 function supported(): boolean {
   return typeof window !== 'undefined' && typeof window.IntersectionObserver === 'function'
 }
 
-export default function ScrollRevealDemo({ values, replayKey }: DemoProps) {
+export default function ScrollRevealDemo({ values, replayKey, locale = 'zh' }: DemoProps) {
+  const zh = locale !== 'en'
   const distance = numberValue(values, 'distance', 24)
   const duration = numberValue(values, 'duration', 550)
   const threshold = numberValue(values, 'threshold', 20)
@@ -67,11 +79,17 @@ export default function ScrollRevealDemo({ values, replayKey }: DemoProps) {
     position * delay +
     'ms'
 
+  const footer = reduced
+    ? pick(T.reduced, locale)
+    : zh
+      ? `已出现 ${seen}/${PARAGRAPHS.length} · 阈值 ${threshold}% · 位移 ${distance}px`
+      : `Revealed ${seen}/${PARAGRAPHS.length} · Threshold ${threshold}% · Travel ${distance}px`
+
   return (
     <div className="w-full max-w-xs">
       <p className="font-mono text-[10px] uppercase tracking-widest opacity-60">scroll reveal</p>
       <p className="mt-0.5 text-[11px] opacity-70">
-        内容先藏起来，滚进视口才淡入上移。往下滑试试。
+        {pick(T.blurb, locale)}
       </p>
 
       <div
@@ -82,9 +100,9 @@ export default function ScrollRevealDemo({ values, replayKey }: DemoProps) {
           border: '1px solid color-mix(in srgb, var(--stage-ink) 14%, transparent)',
         }}
         tabIndex={0}
-        aria-label="可滚动的滚动揭示演示"
+        aria-label={pick(T.aria, locale)}
       >
-        <p className="mb-3 font-mono text-[10px] opacity-60">↓ 在这个框里滚动</p>
+        <p className="mb-3 font-mono text-[10px] opacity-60">{pick(T.hint, locale)}</p>
         <ul className="flex flex-col gap-2">
           {PARAGRAPHS.map((index, position) => (
             <li key={index}>
@@ -101,7 +119,9 @@ export default function ScrollRevealDemo({ values, replayKey }: DemoProps) {
                 }}
               >
                 <span className="font-mono text-[10px] opacity-50">0{position + 1}</span>
-                <span className="ml-2">第 {index} 段内容，滚动到这里才会出现。</span>
+                <span className="ml-2">
+                  {zh ? `第 ${index} 段内容，滚动到这里才会出现。` : `Paragraph ${index}, revealed when it scrolls into view.`}
+                </span>
               </p>
             </li>
           ))}
@@ -109,9 +129,7 @@ export default function ScrollRevealDemo({ values, replayKey }: DemoProps) {
       </div>
 
       <p className="mt-2 font-mono text-[10px] opacity-60">
-        {reduced
-          ? '已减少动效：内容直接显示'
-          : '已出现 ' + seen + '/' + PARAGRAPHS.length + ' · 阈值 ' + threshold + '% · 位移 ' + distance + 'px'}
+        {footer}
       </p>
     </div>
   )

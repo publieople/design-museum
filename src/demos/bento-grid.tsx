@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import type { DemoProps } from '../data/types'
+import { pick } from '../i18n/pick'
 import { numberValue } from '../lib/controls'
 
 const SPANS = [
@@ -8,10 +9,18 @@ const SPANS = [
   { col: 2, row: 2 },
   { col: 1, row: 2 },
 ]
-const TILES = ['封面', '数据', '活动', '列表', '快捷', '图']
+const TILES = [
+  { zh: '封面', en: 'Cover' },
+  { zh: '数据', en: 'Data' },
+  { zh: '活动', en: 'Events' },
+  { zh: '列表', en: 'List' },
+  { zh: '快捷', en: 'Shortcuts' },
+  { zh: '图', en: 'Image' },
+]
 const INITIAL = [2, 0, 0, 1, 0, 0]
 
-export default function BentoGridDemo({ values }: DemoProps) {
+export default function BentoGridDemo({ values, locale = 'zh' }: DemoProps) {
+  const zh = locale !== 'en'
   const columns = Math.round(numberValue(values, 'columns', 4))
   const gap = numberValue(values, 'gap', 8)
   const rowHeight = numberValue(values, 'rowHeight', 46)
@@ -31,7 +40,8 @@ export default function BentoGridDemo({ values }: DemoProps) {
           gap,
         }}
       >
-        {TILES.map((label, index) => {
+        {TILES.map((item, index) => {
+          const label = pick(item, locale)
           const span = SPANS[spans[index] % SPANS.length]
           const col = Math.min(span.col, columns)
           return (
@@ -57,7 +67,9 @@ export default function BentoGridDemo({ values }: DemoProps) {
           )
         })}
       </div>
-      <p className="mt-2 text-center font-mono text-[10px] opacity-60">点方块切换跨格大小</p>
+      <p className="mt-2 text-center font-mono text-[10px] opacity-60">
+        {zh ? '点方块切换跨格大小' : 'Tap a tile to change its span'}
+      </p>
     </div>
   )
 }

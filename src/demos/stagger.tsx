@@ -2,18 +2,23 @@ import type { DemoProps } from '../data/types'
 import { numberValue, stringValue } from '../lib/controls'
 import { usePrefersReducedMotion } from '../lib/motion'
 
-const ITEMS = ['把需求写清楚', '先给效果起名', '参数调到满意', '再交给 AI 实现', '最后自己验一遍']
+const ITEMS = {
+  zh: ['把需求写清楚', '先给效果起名', '参数调到满意', '再交给 AI 实现', '最后自己验一遍'],
+  en: ['Write the brief', 'Name the effect', 'Tune the values', 'Hand it to the AI', 'Check it yourself'],
+} as const
 
-export default function StaggerDemo({ values, replayKey }: DemoProps) {
+export default function StaggerDemo({ values, replayKey, locale = 'zh' }: DemoProps) {
+  const zh = locale !== 'en'
   const duration = numberValue(values, 'duration', 420)
   const stagger = numberValue(values, 'stagger', 80)
   const distance = numberValue(values, 'distance', 16)
   const easing = stringValue(values, 'easing', 'cubic-bezier(0.22, 1, 0.36, 1)')
   const reduced = usePrefersReducedMotion()
+  const items = zh ? ITEMS.zh : ITEMS.en
 
   return (
     <ul key={replayKey} className="flex w-full max-w-xs flex-col gap-2">
-      {ITEMS.map((label, index) => (
+      {items.map((label, index) => (
         <li
           key={label}
           className="rounded-md border px-3 py-2 text-sm"

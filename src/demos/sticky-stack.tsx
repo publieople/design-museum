@@ -1,5 +1,6 @@
 import { useRef, useState } from 'react'
 import type { DemoProps } from '../data/types'
+import { pick } from '../i18n/pick'
 import { numberValue } from '../lib/controls'
 import { usePrefersReducedMotion } from '../lib/motion'
 
@@ -8,15 +9,16 @@ const CARD_GAP = 10
 const PAD = 12
 
 const CARDS = [
-  { title: '总览', note: '今天的用量' },
-  { title: '用量', note: '峰值在下午' },
-  { title: '设置', note: '只改了通知' },
-  { title: '团队', note: '新加了一位成员' },
-  { title: '账单', note: '下月改年付' },
-  { title: '归档', note: '还留着两版' },
+  { title: { zh: '总览', en: 'Overview' }, note: { zh: '今天的用量', en: 'Usage today' } },
+  { title: { zh: '用量', en: 'Usage' }, note: { zh: '峰值在下午', en: 'Peaks in the afternoon' } },
+  { title: { zh: '设置', en: 'Settings' }, note: { zh: '只改了通知', en: 'Only changed notifications' } },
+  { title: { zh: '团队', en: 'Team' }, note: { zh: '新加了一位成员', en: 'Added one member' } },
+  { title: { zh: '账单', en: 'Billing' }, note: { zh: '下月改年付', en: 'Moving to yearly next month' } },
+  { title: { zh: '归档', en: 'Archive' }, note: { zh: '还留着两版', en: 'Keeping two versions' } },
 ]
 
-export default function StickyStackDemo({ values, replayKey }: DemoProps) {
+export default function StickyStackDemo({ values, replayKey, locale = 'zh' }: DemoProps) {
+  const zh = locale !== 'en'
   const offset = numberValue(values, 'offset', 14)
   const count = Math.round(numberValue(values, 'count', 4))
   const shrink = numberValue(values, 'shrink', 5)
@@ -36,7 +38,7 @@ export default function StickyStackDemo({ values, replayKey }: DemoProps) {
         key={replayKey}
         onScroll={() => setScrollTop(boxRef.current?.scrollTop ?? 0)}
         tabIndex={0}
-        aria-label="粘性堆叠演示，可上下滚动"
+        aria-label={zh ? '粘性堆叠演示，可上下滚动' : 'Sticky stack demo, scroll up and down'}
         className="h-60 overflow-y-auto overscroll-contain rounded-xl"
         style={{
           padding: PAD,
@@ -44,13 +46,14 @@ export default function StickyStackDemo({ values, replayKey }: DemoProps) {
         }}
       >
         {cards.map((card, index) => {
+          const title = pick(card.title, locale)
           const top = PAD + index * (CARD_HEIGHT + CARD_GAP)
           const stickAt = top - index * offset
           const progress = Math.min(1, Math.max(0, (scrollTop - stickAt) / CARD_HEIGHT))
           const scale = 1 - progress * shrinkRate
           return (
             <article
-              key={card.title}
+              key={title}
               className="sticky flex flex-col justify-between rounded-xl border p-3"
               style={{
                 top: index * offset,
@@ -65,18 +68,18 @@ export default function StickyStackDemo({ values, replayKey }: DemoProps) {
               }}
             >
               <div className="flex items-center justify-between">
-                <span className="text-xs font-semibold">{card.title}</span>
+                <span className="text-xs font-semibold">{title}</span>
                 <span className="font-mono text-[10px] opacity-55">
-                  ${index + 1}/${cards.length}
+                  ${index + 1}/{cards.length}
                 </span>
               </div>
-              <p className="text-[11px] opacity-70">{card.note}</p>
+              <p className="text-[11px] opacity-70">{pick(card.note, locale)}</p>
             </article>
           )
         })}
       </div>
       <p className="mt-2 text-center font-mono text-[10px] opacity-60">
-        ↑↓ 在框里滚动，卡片会一张张叠上来
+        {zh ? '↑↓ 在框里滚动，卡片会一张张叠上来' : '↑↓ Scroll in the box; cards stack one by one'}
       </p>
     </div>
   )

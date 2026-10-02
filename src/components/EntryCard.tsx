@@ -4,6 +4,7 @@ import { defaultValues } from '../lib/controls'
 import { resolveEntry } from '../lib/localize'
 import { usePrefs } from '../lib/prefs'
 import { Link } from '../lib/router'
+import { useReplayKey } from '../lib/replay'
 import { useInView } from '../lib/viewport'
 import type { Entry } from '../data/types'
 import { DemoRunner } from './DemoRunner'
@@ -23,6 +24,7 @@ export function EntryCard({ entry, showDemo = true }: EntryCardProps) {
   const locale = useLocale()
   const { stage: stagePref } = usePrefs()
   const { ref, inView } = useInView<HTMLLIElement>({ rootMargin: '240px' })
+  const [replayKey, replay] = useReplayKey()
 
   const resolved = useMemo(() => resolveEntry(entry, locale), [entry, locale])
   const values = useMemo(() => defaultValues(entry), [entry])
@@ -41,9 +43,9 @@ export function EntryCard({ entry, showDemo = true }: EntryCardProps) {
             stage={stage}
             className="rounded-none border-x-0 border-t-0"
             onStageChange={() => {}}
-            onReplay={() => {}}
+            onReplay={replay}
           >
-            <DemoRunner slug={entry.slug} values={values} stage={stage} replayKey={0} />
+            <DemoRunner slug={entry.slug} values={values} stage={stage} replayKey={replayKey} fit />
           </DemoStage>
         </ErrorBoundary>
       ) : null}

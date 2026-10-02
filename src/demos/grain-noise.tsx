@@ -15,7 +15,8 @@ function noiseUrl(frequency: number) {
 
 const GRADIENT = 'linear-gradient(135deg, #0b1020 0%, #1b2340 35%, #3a2f55 68%, #6d4b6b 100%)'
 
-export default function GrainNoiseDemo({ values, replayKey }: DemoProps) {
+export default function GrainNoiseDemo({ values, replayKey, locale = 'zh' }: DemoProps) {
+  const zh = locale !== 'en'
   const grain = numberValue(values, 'grain', 1.5)
   const opacity = numberValue(values, 'opacity', 8) / 100
   const blend = stringValue(values, 'blend', 'overlay')
@@ -55,7 +56,7 @@ export default function GrainNoiseDemo({ values, replayKey }: DemoProps) {
           }}
         />
         <p className="absolute inset-x-0 bottom-0 p-4 font-display text-sm font-semibold text-white/90">
-          颗粒噪点压住渐变色带
+          {zh ? '颗粒噪点压住渐变色带' : 'Grain noise hides the gradient banding'}
         </p>
       </div>
       <div
@@ -63,7 +64,7 @@ export default function GrainNoiseDemo({ values, replayKey }: DemoProps) {
         style={{ background: GRADIENT }}
       >
         <span className="absolute inset-0 grid place-items-center font-mono text-[10px] text-white/70">
-          同样渐变，没有噪点
+          {zh ? '同样渐变，没有噪点' : 'The same gradient with no grain'}
         </span>
       </div>
     </div>

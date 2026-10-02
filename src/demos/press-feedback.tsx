@@ -3,7 +3,7 @@ import type { DemoProps } from '../data/types'
 import { boolValue, numberValue } from '../lib/controls'
 import { usePrefersReducedMotion } from '../lib/motion'
 
-export default function PressFeedbackDemo({ values, stage }: DemoProps) {
+export default function PressFeedbackDemo({ values, stage, locale = 'zh' }: DemoProps) {
   const scale = numberValue(values, 'scale', 0.96)
   const duration = numberValue(values, 'duration', 110)
   const spring = boolValue(values, 'spring', true)
@@ -11,6 +11,7 @@ export default function PressFeedbackDemo({ values, stage }: DemoProps) {
   const [pressed, setPressed] = useState(false)
   const [count, setCount] = useState(0)
   const dark = stage === 'dark' || stage === 'accent'
+  const zh = locale !== 'en'
 
   const easing = spring ? 'cubic-bezier(0.34, 1.56, 0.64, 1)' : 'ease-out'
   const activeScale = pressed && !reduced ? scale : 1
@@ -44,13 +45,15 @@ export default function PressFeedbackDemo({ values, stage }: DemoProps) {
           touchAction: 'manipulation',
         }}
       >
-        点我试试
+        {zh ? '点我试试' : 'Press me'}
       </button>
       <p className="font-mono text-[11px] opacity-65" style={{ color: 'var(--stage-ink)' }}>
-        已点击 {count} 次
+        {zh ? `已点击 ${count} 次` : `${count} clicks`}
       </p>
       <p className="text-center text-[11px] opacity-55" style={{ color: 'var(--stage-ink)' }}>
-        按住缩小到 {scale.toFixed(2)}，松开 {duration}ms 内回弹
+        {zh
+          ? `按住缩小到 ${scale.toFixed(2)}，松开 ${duration}ms 内回弹`
+          : `Squishes to ${scale.toFixed(2)} while held, springs back in ${duration}ms`}
       </p>
     </div>
   )

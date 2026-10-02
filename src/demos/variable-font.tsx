@@ -9,7 +9,8 @@ function quantize(value: number, steps: number): number {
   return Math.round(300 + Math.round((value - 300) / size) * size)
 }
 
-export default function VariableFontDemo({ values, stage, replayKey }: DemoProps) {
+export default function VariableFontDemo({ values, stage, replayKey, locale = 'zh' }: DemoProps) {
+  const zh = locale !== 'en'
   const wght = numberValue(values, 'wght', 450)
   const steps = numberValue(values, 'steps', 1)
   const family = stringValue(values, 'family', 'display')
@@ -23,7 +24,7 @@ export default function VariableFontDemo({ values, stage, replayKey }: DemoProps
   return (
     <div key={replayKey} data-stage={stage} className="flex w-full max-w-xs flex-col items-center gap-3">
       <p className={'text-4xl ' + fontClass} style={{ fontVariationSettings: settings, color: 'var(--stage-ink)' }}>
-        变粗变细
+        {zh ? '变粗变细' : 'Thin to bold'}
       </p>
       <p className="font-mono text-[10px] opacity-60">{'font-variation-settings: ' + settings}</p>
       {ruler ? (
@@ -37,7 +38,7 @@ export default function VariableFontDemo({ values, stage, replayKey }: DemoProps
                 className={'text-base ' + fontClass}
                 style={{ fontVariationSettings: '"wght" ' + value, opacity: value === nearest ? 1 : 0.45 }}
               >
-                可变字重
+                {zh ? '可变字重' : 'Variable weight'}
               </span>
             </div>
           ))}

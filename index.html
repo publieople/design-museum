@@ -27,7 +27,7 @@
       // 这段逻辑必须和 src/lib/prefs.tsx 的存储格式保持一致。
       ;(function () {
         try {
-          var raw = localStorage.getItem('design-museum:prefs')
+          var raw = localStorage.getItem('design-museum:prefs:v2')
           if (!raw) return
           var prefs = JSON.parse(raw)
           if (prefs && (prefs.theme === 'light' || prefs.theme === 'dark')) {

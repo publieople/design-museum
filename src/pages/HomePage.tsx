@@ -6,6 +6,7 @@ import { useT, useLocale } from '../i18n'
 import { defaultValues } from '../lib/controls'
 import { resolveEntry } from '../lib/localize'
 import { usePrefs } from '../lib/prefs'
+import { useReplayKey } from '../lib/replay'
 import { Link } from '../lib/router'
 import { searchEntries } from '../lib/search'
 import { DemoRunner } from '../components/DemoRunner'
@@ -19,6 +20,7 @@ function Specimen({ entry }: { entry: Entry }) {
   const t = useT()
   const locale = useLocale()
   const { stage: stagePref } = usePrefs()
+  const [replayKey, replay] = useReplayKey()
   const resolved = useMemo(() => resolveEntry(entry, locale), [entry, locale])
   const values = useMemo(() => defaultValues(entry), [entry])
   const stage = resolveStage(entry, stagePref)
@@ -28,8 +30,14 @@ function Specimen({ entry }: { entry: Entry }) {
       {hasDemo(entry.slug) ? (
         <Link to={`/entry/${entry.slug}`} className="no-underline" tabIndex={-1} aria-hidden="true">
           <ErrorBoundary label={entry.slug} message={t('error.renderFailed')}>
-            <DemoStage compact stage={stage} onStageChange={() => {}} onReplay={() => {}}>
-              <DemoRunner slug={entry.slug} values={values} stage={stage} replayKey={0} />
+            <DemoStage compact stage={stage} onStageChange={() => {}} onReplay={replay}>
+              <DemoRunner
+                slug={entry.slug}
+                values={values}
+                stage={stage}
+                replayKey={replayKey}
+                fit
+              />
             </DemoStage>
           </ErrorBoundary>
         </Link>

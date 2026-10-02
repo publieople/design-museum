@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from 'react'
 import type { DemoProps } from '../data/types'
 import { boolValue, numberValue } from '../lib/controls'
 import { usePrefersReducedMotion } from '../lib/motion'
+import { pick } from '../i18n/pick'
 
 const LAYERS = [
   {
@@ -24,7 +25,17 @@ const LAYERS = [
   },
 ]
 
-export default function ParallaxDemo({ values, replayKey }: DemoProps) {
+const T = {
+  blurb: {
+    zh: '三层图案以不同速度移动，滚动时就有了纵深。上面的方块是普通滚动，用来对照。',
+    en: 'Three layers move at different speeds, which gives the scroll depth. The box on top scrolls normally, for comparison.',
+  },
+  aria: { zh: '可滚动的视差演示', en: 'Scrollable parallax demo' },
+  plain: { zh: '这一层是普通滚动，不做视差', en: 'This layer scrolls normally, with no parallax' },
+} as const
+
+export default function ParallaxDemo({ values, replayKey, locale = 'zh' }: DemoProps) {
+  const zh = locale !== 'en'
   const speed = numberValue(values, 'speed', 0.45)
   const distance = numberValue(values, 'distance', 60)
   const reverse = boolValue(values, 'reverse', false)
@@ -54,11 +65,15 @@ export default function ParallaxDemo({ values, replayKey }: DemoProps) {
 
   const offset = (factor: number) => (reduced ? 0 : (distance - y * speed) * factor * sign)
 
+  const footer = zh
+    ? `滚动位移 ${y.toFixed(0)}px · 视差系数 ${speed} · 基准 ${distance}px${reverse ? ' · 反向' : ''}`
+    : `Scroll ${y.toFixed(0)}px · Parallax factor ${speed} · Base ${distance}px${reverse ? ' · Reversed' : ''}`
+
   return (
     <div className="w-full max-w-xs">
       <p className="font-mono text-[10px] uppercase tracking-widest opacity-60">parallax</p>
       <p className="mt-0.5 text-[11px] opacity-70">
-        三层图案以不同速度移动，滚动时就有了纵深。上面的方块是普通滚动，用来对照。
+        {pick(T.blurb, locale)}
       </p>
 
       <div
@@ -68,7 +83,7 @@ export default function ParallaxDemo({ values, replayKey }: DemoProps) {
         className="mt-3 h-60 overflow-y-auto overscroll-contain rounded-lg"
         style={{ background: 'color-mix(in srgb, var(--stage-ink) 7%, transparent)' }}
         tabIndex={0}
-        aria-label="可滚动的视差演示"
+        aria-label={pick(T.aria, locale)}
       >
         <div className="relative h-[26rem]">
           {LAYERS.map((layer) => (
@@ -100,7 +115,7 @@ export default function ParallaxDemo({ values, replayKey }: DemoProps) {
                 }}
               />
               <p className="absolute bottom-3 left-3 text-[11px] opacity-80">
-                这一层是普通滚动，不做视差
+                {pick(T.plain, locale)}
               </p>
             </div>
           </div>
@@ -108,7 +123,7 @@ export default function ParallaxDemo({ values, replayKey }: DemoProps) {
       </div>
 
       <p className="mt-2 text-center font-mono text-[10px] opacity-60">
-        滚动位移 {y.toFixed(0)}px · 视差系数 {speed} · 基准 {distance}px{reverse ? ' · 反向' : ''}
+        {footer}
       </p>
     </div>
   )

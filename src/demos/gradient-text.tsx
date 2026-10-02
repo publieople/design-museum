@@ -8,7 +8,8 @@ const PALETTES: Record<string, [string, string]> = {
   acid: ['#4d7c0f', '#db2777'],
 }
 
-export default function GradientTextDemo({ values, stage, replayKey }: DemoProps) {
+export default function GradientTextDemo({ values, stage, replayKey, locale = 'zh' }: DemoProps) {
+  const zh = locale !== 'en'
   const angle = numberValue(values, 'angle', 120)
   const palette = stringValue(values, 'palette', 'sunset')
   const start = numberValue(values, 'startStop', 0)
@@ -33,11 +34,13 @@ export default function GradientTextDemo({ values, stage, replayKey }: DemoProps
           animation: animate ? 'dm-type-hue 6s linear infinite' : undefined,
         }}
       >
-        渐变文字
+        {zh ? '渐变文字' : 'Gradient text'}
       </p>
       <p className="font-mono text-[10px] opacity-60">{readout}</p>
       <p className="text-center text-[11px] opacity-70">
-        {'background-clip: text 把整条渐变裁进字形里，文字换行也不会每行重来'}
+        {zh
+          ? 'background-clip: text 把整条渐变裁进字形里，文字换行也不会每行重来'
+          : 'background-clip: text clips the whole gradient into the glyphs, so a wrapped line does not restart it'}
       </p>
     </div>
   )

@@ -3,7 +3,7 @@ import type { DemoProps } from '../data/types'
 import { numberValue } from '../lib/controls'
 import { usePrefersReducedMotion } from '../lib/motion'
 
-export default function MagneticButtonDemo({ values, stage }: DemoProps) {
+export default function MagneticButtonDemo({ values, stage, locale = 'zh' }: DemoProps) {
   const strength = numberValue(values, 'strength', 0.3)
   const maxDistance = numberValue(values, 'maxDistance', 12)
   const radius = numberValue(values, 'radius', 1.6)
@@ -13,6 +13,7 @@ export default function MagneticButtonDemo({ values, stage }: DemoProps) {
   const [near, setNear] = useState(false)
   const buttonRef = useRef<HTMLButtonElement | null>(null)
   const dark = stage === 'dark' || stage === 'accent'
+  const zh = locale !== 'en'
 
   const handleMove = (event: PointerEvent<HTMLDivElement>) => {
     if (reduced) return
@@ -66,7 +67,7 @@ export default function MagneticButtonDemo({ values, stage }: DemoProps) {
             (near ? 'ease-out' : 'cubic-bezier(0.22, 1, 0.36, 1)'),
         }}
       >
-        磁吸按钮
+        {zh ? '磁吸按钮' : 'Magnetic button'}
       </button>
     </div>
   )

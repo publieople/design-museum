@@ -99,3 +99,28 @@ describe('demo 渲染冒烟', () => {
     }
   })
 })
+
+/**
+ * demo 内部的示例文案也属于界面的一部分：英文模式下不该再出现成片中文。
+ * 这条是硬门槛——漏一句就会被点名。
+ */
+describe('demo 文案国际化', () => {
+  it.each(ENTRIES.map((entry) => [entry.slug, entry] as const))(
+    '%s 在英文模式下不残留中文',
+    async (slug, entry) => {
+      const loader = demoLoader(slug)
+      expect(loader, `${slug} 缺少 demo`).toBeTruthy()
+      if (!loader) return
+
+      const mod = await loader()
+      const html = renderToString(
+        <mod.default values={defaultValues(entry)} stage="light" replayKey={0} locale="en" />,
+      )
+      const leftovers = html.match(/[\u4e00-\u9fff]+/g)
+      expect(
+        leftovers,
+        `${slug} 的演示在英文模式下仍有中文：${(leftovers ?? []).slice(0, 6).join(' / ')}`,
+      ).toBeNull()
+    },
+  )
+})

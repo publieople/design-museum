@@ -116,4 +116,9 @@ export interface DemoProps {
    * rAF 自驱的 demo（如弹簧）可以自己读这个值。
    */
   timeScale?: number
+  /**
+   * 当前界面语言。demo 内部的示例文案要跟着切换，
+   * 默认 'zh' 是为了让直接渲染 demo 的测试保持稳定。
+   */
+  locale?: 'zh' | 'en'
 }

@@ -2,12 +2,13 @@ import type { DemoProps } from '../data/types'
 import { numberValue } from '../lib/controls'
 import { usePrefersReducedMotion } from '../lib/motion'
 
-export default function SkeletonShimmerDemo({ values, stage, replayKey }: DemoProps) {
+export default function SkeletonShimmerDemo({ values, stage, replayKey, locale = 'zh' }: DemoProps) {
   const duration = numberValue(values, 'duration', 1400)
   const highlight = numberValue(values, 'highlight', 32)
   const rows = Math.round(numberValue(values, 'rows', 3))
   const reduced = usePrefersReducedMotion()
   const dark = stage === 'dark' || stage === 'accent'
+  const zh = locale !== 'en'
 
   const half = highlight / 2
   const band =
@@ -61,7 +62,9 @@ export default function SkeletonShimmerDemo({ values, stage, replayKey }: DemoPr
         </div>
       </div>
       <p className="mt-3 font-mono text-[10px] opacity-60" style={{ color: 'var(--stage-ink)' }}>
-        正在加载 {rows} 行内容 · 高光 {highlight}% · {duration}ms 扫一次
+        {zh
+          ? `正在加载 ${rows} 行内容 · 高光 ${highlight}% · ${duration}ms 扫一次`
+          : `Loading ${rows} rows · highlight ${highlight}% · ${duration}ms per sweep`}
       </p>
     </div>
   )

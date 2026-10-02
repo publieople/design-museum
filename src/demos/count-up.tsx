@@ -11,7 +11,8 @@ const EASINGS: Record<string, Ease> = {
   easeOutExpo: (t) => (t >= 1 ? 1 : 1 - Math.pow(2, -10 * t)),
 }
 
-export default function CountUpDemo({ values, stage, replayKey }: DemoProps) {
+export default function CountUpDemo({ values, stage, replayKey, locale = 'zh' }: DemoProps) {
+  const zh = locale !== 'en'
   const target = numberValue(values, 'target', 12800)
   const duration = numberValue(values, 'duration', 1200)
   const easing = stringValue(values, 'easing', 'easeOutExpo')
@@ -44,14 +45,18 @@ export default function CountUpDemo({ values, stage, replayKey }: DemoProps) {
 
   return (
     <div data-stage={stage} className="flex w-full max-w-xs flex-col items-center gap-2">
-      <p className="font-mono text-[10px] uppercase tracking-widest opacity-60">本月活跃用户</p>
+      <p className="font-mono text-[10px] uppercase tracking-widest opacity-60">{zh ? '本月活跃用户' : 'Monthly active users'}</p>
       <p
         className="font-display text-4xl font-semibold"
         style={{ fontVariantNumeric: 'tabular-nums', minWidth: '6ch', textAlign: 'center', color: 'var(--stage-ink)' }}
       >
         {text}
       </p>
-      <p className="text-[11px] opacity-70">{'0 → ' + finalText + '，' + duration + 'ms / ' + easing}</p>
+      <p className="text-[11px] opacity-70">
+        {zh
+          ? '0 → ' + finalText + '，' + duration + 'ms / ' + easing
+          : '0 → ' + finalText + ', ' + duration + 'ms / ' + easing}
+      </p>
     </div>
   )
 }

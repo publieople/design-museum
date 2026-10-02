@@ -3,7 +3,8 @@ import { numberValue } from '../lib/controls'
 
 const SWATCHES = ['#ffd166', '#ef476f', '#06d6a0', '#118ab2']
 
-export default function FrostedGlassDemo({ values, stage }: DemoProps) {
+export default function FrostedGlassDemo({ values, stage, locale = 'zh' }: DemoProps) {
+  const zh = locale !== 'en'
   const blur = numberValue(values, 'blur', 12)
   const saturate = numberValue(values, 'saturate', 180)
   const alpha = numberValue(values, 'alpha', 8) / 100
@@ -34,7 +35,7 @@ export default function FrostedGlassDemo({ values, stage }: DemoProps) {
           className="max-w-[15rem] text-xs font-medium leading-snug"
           style={{ color: 'rgba(255,255,255,0.85)' }}
         >
-          这些圆点和文字是「面板背后的内容」。模糊半径越大，它们越糊。
+          {zh ? '这些圆点和文字是「面板背后的内容」。模糊半径越大，它们越糊。' : 'These dots and this text sit behind the panel. Raise the blur radius and they get fuzzier.'}
         </p>
       </div>
 
@@ -49,9 +50,9 @@ export default function FrostedGlassDemo({ values, stage }: DemoProps) {
           color: lightText ? '#ffffff' : '#16161a',
         }}
       >
-        <p className="font-display text-sm font-semibold">毛玻璃面板</p>
+        <p className="font-display text-sm font-semibold">{zh ? '毛玻璃面板' : 'Frosted glass panel'}</p>
         <p className="mt-0.5 text-[11px] opacity-75">
-          面板自身的文字是清晰的，只有背后被糊了
+          {zh ? '面板自身的文字是清晰的，只有背后被糊了' : 'The panel text stays sharp; only what is behind it gets blurred'}
         </p>
       </div>
     </div>

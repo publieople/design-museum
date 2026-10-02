@@ -2,8 +2,21 @@ import { useEffect, useRef, useState } from 'react'
 import type { DemoProps } from '../data/types'
 import { numberValue } from '../lib/controls'
 import { usePrefersReducedMotion } from '../lib/motion'
+import { pick } from '../i18n/pick'
 
-export default function SpringDemo({ values, replayKey }: DemoProps) {
+const T = {
+  blurb: {
+    zh: '方块被弹簧拉向右侧终点。刚度决定冲多快，阻尼决定晃几下，质量决定惯性感。',
+    en: 'A spring pulls the box to the end of the track. Stiffness sets how fast it starts, damping how much it wobbles, mass how heavy it feels.',
+  },
+  overshoot: { zh: '超调', en: 'Overshoot' },
+  reduced: { zh: '已减少动效', en: 'Reduced motion' },
+  moving: { zh: '运动中', en: 'Moving' },
+  replay: { zh: '重播', en: 'Replay' },
+} as const
+
+export default function SpringDemo({ values, replayKey, locale = 'zh' }: DemoProps) {
+  const zh = locale !== 'en'
   const stiffness = numberValue(values, 'stiffness', 260)
   const damping = numberValue(values, 'damping', 18)
   const mass = numberValue(values, 'mass', 1)
@@ -71,11 +84,17 @@ export default function SpringDemo({ values, replayKey }: DemoProps) {
   const travel = Math.max(24, trackWidth - 40)
   const x = Math.max(0, shown) * travel
 
+  const status = reduced
+    ? pick(T.reduced, locale)
+    : run.ms
+      ? Math.round(run.ms) + (zh ? 'ms 停稳' : 'ms to settle')
+      : pick(T.moving, locale)
+
   return (
     <div className="w-full max-w-xs">
       <p className="font-mono text-[10px] uppercase tracking-widest opacity-60">spring physics</p>
       <p className="mt-0.5 text-[11px] opacity-70">
-        方块被弹簧拉向右侧终点。刚度决定冲多快，阻尼决定晃几下，质量决定惯性感。
+        {pick(T.blurb, locale)}
       </p>
 
       <div
@@ -100,8 +119,8 @@ export default function SpringDemo({ values, replayKey }: DemoProps) {
       </div>
 
       <div className="mt-2 flex items-center justify-between font-mono text-[10px] opacity-70">
-        <span>超调 {overshoot.toFixed(1)}%</span>
-        <span>{reduced ? '已减少动效' : run.ms ? Math.round(run.ms) + 'ms 停稳' : '运动中'}</span>
+        <span>{pick(T.overshoot, locale)} {overshoot.toFixed(1)}%</span>
+        <span>{status}</span>
       </div>
 
       <button
@@ -110,7 +129,7 @@ export default function SpringDemo({ values, replayKey }: DemoProps) {
         className="mt-3 cursor-pointer rounded border px-2 py-1 font-mono text-[10px] uppercase tracking-widest"
         style={{ borderColor: 'color-mix(in srgb, var(--stage-ink) 25%, transparent)' }}
       >
-        重播
+        {pick(T.replay, locale)}
       </button>
       <p className="mt-2 font-mono text-[10px] opacity-60">
         stiffness {stiffness} · damping {damping} · mass {mass}
