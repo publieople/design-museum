@@ -94,6 +94,44 @@ const entry: Entry = {
         ', forced-colors fallback, contrast at least 4.5:1',
     }
   },
+  en: {
+    oneLiner: 'The text acts as a mask, so what shows through is the gradient behind it instead of a single color.',
+    whenToUse: [
+      'A hero headline needs a bit of color without pulling in an image or an SVG',
+      'You want to highlight a brand name, a number, or a few keywords rather than a whole paragraph',
+      'A dark page calls for a neon or metallic headline',
+    ],
+    confusions: [
+      {
+        with: 'per-character coloring',
+        diff: 'Coloring each character with its own span builds the color piece by piece. background-clip: text lays one continuous gradient across the whole text box, and which slice a character lands on depends on the box width and where that character sits.',
+      },
+      {
+        with: 'text-shadow glow',
+        diff: 'text-shadow adds a glow around the glyph while the glyph itself stays one solid color. Gradient text clips the background into the glyph, so the color sits inside the letters.',
+      },
+    ],
+    pitfalls: [
+      'You have to write background-clip: text (with the -webkit- prefix) together with color: transparent, or the full background color shows behind the text.',
+      'color: transparent makes the text disappear entirely in Windows High Contrast (forced-colors) mode. Add @media (forced-colors: active) and fall back to a solid color.',
+      'Both ends of the gradient need enough contrast against the background: a light end over a light background washes out, and body-level text still needs 4.5:1.',
+      'The background paints across the element box, so once the text wraps the gradient runs across the whole box instead of restarting on each line.',
+      'A gradient over a full paragraph costs a lot of readability, so it is normally limited to one or two headline lines.',
+    ],
+    spec: [
+      { label: 'Gradient angle' },
+      { label: 'Color stops' },
+      { label: 'Contrast' },
+      { label: 'Fallback' },
+    ],
+    reducedMotion: 'The gradient itself is static. If you animate the background position or rotate the hue, prefers-reduced-motion should stop the animation and leave the static gradient.',
+    controls: [
+      { label: 'Gradient angle', hint: 'Turn the angle and every character lands on a different color in the gradient' },
+      { label: 'Palette' },
+      { label: 'First stop position', hint: 'Push the first color later and the gradient squeezes toward the other end' },
+      { label: 'Slow hue rotation' },
+    ],
+  },
 }
 
 export default entry

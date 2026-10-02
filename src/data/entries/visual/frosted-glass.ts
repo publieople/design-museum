@@ -82,6 +82,44 @@ const entry: Entry = {
       en: `frosted glass panel, backdrop-filter: blur(${blur}px) saturate(${saturate}%), -webkit-backdrop-filter fallback, background: rgba(255,255,255,${alpha.toFixed(2)}), border: 1px solid rgba(255,255,255,0.18), border-radius: ${radius}px, must sit over visible content behind`,
     }
   },
+  en: {
+    oneLiner: 'A panel blurs the content behind it, like looking through ground glass.',
+    whenToUse: [
+      'A nav bar or floating panel over scrolling content or a photo that should stay readable while showing what is underneath',
+      'A card on top of an image or a colorful background that should feel part of the scene instead of pasted on',
+      'You want it obvious that this block floats above the rest without a solid fill covering the background',
+    ],
+    confusions: [
+      {
+        with: 'translucency',
+        diff: 'Translucency only fades the panel and the content behind stays sharp. Frosted glass actually blurs what is behind it. Lowering opacity or using rgba gets you translucency, never frost.',
+      },
+      {
+        with: 'filter: blur()',
+        diff: 'filter: blur() blurs the element itself, text included. backdrop-filter: blur() blurs whatever sits behind the element while the panel content stays sharp.',
+      },
+    ],
+    pitfalls: [
+      'There has to be content behind it: backdrop-filter over a flat color shows no change at all',
+      'When an ancestor has overflow: hidden or transform, some browsers drop the effect or clip it oddly',
+      'Past a 20px blur radius everything smears together and text contrast drops; 8px to 16px is usually enough',
+      'Safari needs the -webkit-backdrop-filter prefix, and browsers without support still need a readable base color',
+    ],
+    spec: [
+      { label: 'Blur radius' },
+      { label: 'Saturation' },
+      { label: 'Panel background' },
+      { label: 'Border' },
+    ],
+    reducedMotion:
+      'Frosted glass is static, so it needs no fallback on its own. If you pair it with an entrance animation, prefers-reduced-motion should jump straight to the final state.',
+    controls: [
+      { label: 'Blur radius', hint: 'At 0px you can see that blur and transparency are not the same thing' },
+      { label: 'Saturation' },
+      { label: 'Panel background opacity' },
+      { label: 'Corner radius' },
+    ],
+  },
 }
 
 export default entry

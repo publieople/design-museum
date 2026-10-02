@@ -59,6 +59,36 @@ const entry: Entry = {
       en: 'optimistic UI like button, ' + (optimistic ? 'update state immediately on click and mark pending, no await' : 'mark pending and disable until the request resolves') + ', simulated latency ' + latency + 'ms, failure rate ' + failureRate + '%, rollback by id on error with an inline error message, handle race conditions (last write wins), useOptimistic, aria-live polite for the error',
     }
   },
+  en: {
+    oneLiner: 'The UI flips to the success state the moment you click, while the request runs and rolls back on failure.',
+    whenToUse: [
+      'High-frequency, low-risk, repeatable actions such as likes, saves, and follows',
+      'Sending a message or comment that should appear in the list right away instead of waiting for the server echo',
+      'Slow networks where showing the result up front takes the sting out of the wait',
+    ],
+    confusions: [
+      { with: 'Loading / disabled', diff: 'Loading says plainly that the form is submitting and locks the button; optimistic UI does the opposite, showing the result first and hiding the wait, and only on failure does it report and roll back.' },
+      { with: 'Local cache', diff: 'An optimistic update changes only the interface state for this one action and is gone on refresh; a cache is data that is really stored and is still there next time you open the page.' },
+    ],
+    pitfalls: [
+      'Irreversible actions such as payments, orders, and account deletion cannot be optimistic; they have to wait for the server to confirm',
+      'A failure must roll back and report it somehow, through a toast or an inline error; rolling back silently leaves people thinking it worked',
+      'Fast repeated clicks create races, so number the requests or declare last-write-wins, and never let an old response overwrite newer state',
+      'Roll back by looking the item up by id, not by array index, or a concurrent list update will change the wrong row',
+    ],
+    spec: [
+      { label: 'UI update delay' },
+      { label: 'Failure message dwell' },
+      { label: 'Request timeout' },
+      { label: 'Rollback transition' },
+    ],
+    reducedMotion: 'Under prefers-reduced-motion: reduce, drop the color and offset transitions on rollback so the state switches instantly, but keep the text or icon that says the action was undone.',
+    controls: [
+      { label: 'Simulated server latency' },
+      { label: 'Failure rate', hint: 'Raise it to see the rollback more easily' },
+      { label: 'Optimistic update' },
+    ],
+  },
 }
 
 export default entry

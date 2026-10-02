@@ -85,6 +85,38 @@ const entry: Entry = {
       en: 'hover lift micro-interaction, :hover { transform: translateY(-' + lift + 'px) scale(1.02); box-shadow: 0 10px 28px rgba(0,0,0,' + shadowAlpha + '); transition: transform ' + duration + 'ms ' + easing + ' }, transform-only, no top/margin, reset on pointer leave, touch devices keep a static readable state',
     }
   },
+  en: {
+    oneLiner: 'When the pointer moves onto a card, it rises slightly and the shadow deepens, hinting that it is clickable.',
+    whenToUse: [
+      'Clickable cards, product tiles, and list rows where the pointer position should get an answer',
+      'A row of side-by-side cards where the one under the pointer should stand out',
+      'Buttons or icons that already read clearly and just need a hint that they are alive',
+    ],
+    confusions: [
+      { with: 'Press feedback', diff: 'Hover lift is a state that lasts the whole time the pointer rests on the element, driven by :hover; press feedback answers the press and the release, driven by :active. They are often stacked, but they fire at completely different moments.' },
+      { with: 'Scroll parallax', diff: 'Hover lift is driven only by the pointer, so it moves as the cursor enters and leaves; parallax is driven by scroll, so it moves when you scroll the page even with the mouse still.' },
+    ],
+    pitfalls: [
+      'Shifting the element without deepening the shadow makes it float like a sticker with no weight; offset and shadow have to change together',
+      'Touch devices have no hover, and :hover can stick after a tap, so the resting state must be complete and readable on its own',
+      'A shift beyond 8px looks giddy and jumpy; 2-6px is usually the sweet spot',
+      'Animating top or margin triggers layout, so use transform: translateY(); do not animate width or height either',
+    ],
+    spec: [
+      { label: 'Lift distance' },
+      { label: 'Transition duration' },
+      { label: 'Easing' },
+      { label: 'Shadow' },
+      { label: 'Scale' },
+    ],
+    reducedMotion: 'Under prefers-reduced-motion: reduce, drop the offset and scale and signal hover with a deeper shadow or a background change instead; the transition duration can go to 0ms.',
+    controls: [
+      { label: 'Lift distance', hint: 'Set it to 0px and only the shadow changes, which shows what the offset is doing' },
+      { label: 'Transition duration' },
+      { label: 'Shadow strength', hint: 'At 0% the card looks glued to the wall' },
+      { label: 'Easing' },
+    ],
+  },
 }
 
 export default entry

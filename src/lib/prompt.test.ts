@@ -1,9 +1,11 @@
 import { describe, expect, it } from 'vitest'
 import { ENTRIES, findEntry } from '../data'
 import { defaultValues } from './controls'
+import { resolveEntry } from './localize'
 import { buildCheatSheet, buildPrompt, formatValues } from './prompt'
 
 const entry = findEntry('frosted-glass')!
+const resolved = resolveEntry(entry, 'zh')
 
 describe('提示词生成', () => {
   it('参数变化会进入中文需求句', () => {
@@ -17,7 +19,7 @@ describe('提示词生成', () => {
   })
 
   it('默认值能渲染成可读参数串', () => {
-    const params = formatValues(entry, defaultValues(entry))
+    const params = formatValues(resolved, defaultValues(entry))
     expect(params.join(' ')).toContain('模糊半径')
     expect(params.length).toBe(entry.controls.length)
   })
@@ -25,11 +27,11 @@ describe('提示词生成', () => {
 
 describe('速查表导出', () => {
   it('没选任何词条时返回空串', () => {
-    expect(buildCheatSheet([])).toBe('')
+    expect(buildCheatSheet([], 'zh')).toBe('')
   })
 
   it('选中条目后包含标题、术语与参数', () => {
-    const sheet = buildCheatSheet([{ entry, values: defaultValues(entry) }])
+    const sheet = buildCheatSheet([{ entry: resolved, values: defaultValues(entry) }], 'zh')
     expect(sheet).toContain('# 设计需求清单')
     expect(sheet).toContain('毛玻璃')
     expect(sheet).toContain('Frosted Glass')
@@ -37,10 +39,17 @@ describe('速查表导出', () => {
     expect(sheet).toContain('backdrop-filter')
   })
 
+  it('英文导出用英文标题与字段名', () => {
+    const sheet = buildCheatSheet([{ entry: resolved, values: defaultValues(entry) }], 'en')
+    expect(sheet).toContain('# Design brief')
+    expect(sheet).toContain('Technical requirement')
+  })
+
   it('按展厅分组，顺序稳定', () => {
-    const items = ENTRIES.slice(0, 3).map((item) => ({ entry: item, values: defaultValues(item) }))
-    const first = buildCheatSheet(items)
-    const second = buildCheatSheet(items)
-    expect(first).toBe(second)
+    const items = ENTRIES.slice(0, 3).map((item) => ({
+      entry: resolveEntry(item, 'zh'),
+      values: defaultValues(item),
+    }))
+    expect(buildCheatSheet(items, 'zh')).toBe(buildCheatSheet(items, 'zh'))
   })
 })

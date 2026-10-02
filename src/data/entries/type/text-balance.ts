@@ -90,6 +90,46 @@ const entry: Entry = {
       en: 'text-wrap: ' + mode + ', max-width: ' + width + 'ch, headline line balancing, avoid orphan/widow, only for short text (Chromium caps balance at 6 lines), graceful fallback, no manual br',
     }
   },
+  en: {
+    oneLiner: 'Line lengths in a multi-line heading are evened out, so the last line no longer holds one orphaned word.',
+    whenToUse: [
+      'A headline of a few words wraps in a narrow container and drops a single word onto the last line',
+      'Short text such as a card title, a pull quote, or button copy should have evenly sized lines',
+      'The same block should stay balanced at different widths without hard-coding the breaks with <br>',
+    ],
+    confusions: [
+      {
+        with: 'text-wrap: pretty',
+        diff: 'pretty mainly watches the end of a paragraph, keeping a lone word off the last line, at a small layout cost. balance evens out every line and is meant for short text only; Chromium gives up past six lines.',
+      },
+      {
+        with: 'word-break / overflow-wrap',
+        diff: 'Those decide where one long word breaks when it does not fit, which is about overflow. text-wrap: balance does not change the break rules; it just redistributes how many words go on each line.',
+      },
+      {
+        with: 'hard-coded <br>',
+        diff: 'A <br> pins the break to one spot and lands in the wrong place at another width. balance recalculates against the current width, so it reflows whenever the width changes.',
+      },
+    ],
+    pitfalls: [
+      'It only matters for short text: Chromium balances at most 6 lines and silently falls back to normal wrapping past that. On body paragraphs it does nothing while still costing layout time.',
+      'It behaves differently in Chinese and English. Chinese breaks between characters, so balance can only nudge the character count per line and looks far weaker than on an English headline; do not expect it to make Chinese copy symmetrical.',
+      'The container needs a real width limit. If the text never wraps, there is nothing to balance.',
+      'Safari before 17.5 ignores the declaration outright, so the base style has to read fine as normal wrapping. Never rely on balance alone.',
+    ],
+    spec: [
+      { label: 'Property' },
+      { label: 'Line count' },
+      { label: 'Container width' },
+      { label: 'Fallback' },
+    ],
+    reducedMotion: 'A pure typography property with no motion behind it, so there is nothing to reduce.',
+    controls: [
+      { label: 'Container width', hint: 'ch is the width of a "0"; around 16ch is a typical headline line' },
+      { label: 'Sample text' },
+      { label: 'Apply to lower sample' },
+    ],
+  },
 }
 
 export default entry

@@ -14,9 +14,33 @@
     <meta property="og:title" content="前端设计博物馆" />
     <meta
       property="og:description"
-      content="想要一个效果但说不出来？先在这里找到它的名字，再让 AI 实现。"
+      content="想要一个效果但说不出来？先在这里找到它的名字，再让 AI 实现。30 件可交互标本，中英术语对照，参数可调。"
     />
     <meta property="og:type" content="website" />
+    <meta property="og:image" content="https://publieople.github.io/design-museum/og.png" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <link rel="canonical" href="https://publieople.github.io/design-museum/" />
+    <script>
+      // 在 React 挂载之前先把主题与语言落到 <html>，否则会先闪一下系统主题。
+      // 这段逻辑必须和 src/lib/prefs.tsx 的存储格式保持一致。
+      ;(function () {
+        try {
+          var raw = localStorage.getItem('design-museum:prefs')
+          if (!raw) return
+          var prefs = JSON.parse(raw)
+          if (prefs && (prefs.theme === 'light' || prefs.theme === 'dark')) {
+            document.documentElement.setAttribute('data-theme', prefs.theme)
+          }
+          if (prefs && (prefs.locale === 'zh' || prefs.locale === 'en')) {
+            document.documentElement.lang = prefs.locale === 'en' ? 'en' : 'zh-CN'
+          }
+        } catch (error) {
+          /* 隐私模式或坏数据：用默认值 */
+        }
+      })()
+    </script>
   </head>
   <body>
     <div id="root"></div>

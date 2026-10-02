@@ -61,6 +61,44 @@ const entry: Entry = {
       en: 'fluid type scale, font-size: ' + formula + ', container-type: inline-size, cqw container query units, no media query breakpoints, unitless line-height, responsive typography',
     }
   },
+  en: {
+    oneLiner: 'Font size scales continuously with the container width, so it never jumps a step at a breakpoint.',
+    whenToUse: [
+      'A headline has to span a wide range between small and large screens, and media queries would step it up in visible jumps',
+      'You want headings, spacing, and radii to share one ratio and grow and shrink together with the screen',
+      'You need a floor and a ceiling on the size so it neither overflows a phone line nor looks absurd on an ultrawide display',
+    ],
+    confusions: [
+      {
+        with: 'media query breakpoints',
+        diff: 'A breakpoint swaps in a whole new set of values: the size is flat in between and jumps at the threshold. Fluid type writes the middle value as a calc() with vw or cqw, so the size moves continuously as the width changes.',
+      },
+      {
+        with: 'fixed rem sizes',
+        diff: 'rem tracks the root font size only and has no relation to the screen width. Keep using rem, but to make text flow with the screen you have to mix rem and vw or cqw into the same clamp().',
+      },
+    ],
+    pitfalls: [
+      'A pure vw size ignores the browser default font size: when a user raises the base text size, the vw part stays put, while WCAG asks text to scale to 200%. Mix rem into the middle value: clamp(1rem, 1rem + 2vw, 2.5rem).',
+      'vw is viewport width, not the parent width. A fluid headline dropped into a narrow card computes too large; switch that case to container query units (cqw) and give the parent container-type: inline-size.',
+      'If the min in clamp() ends up larger than the max, nothing warns you: clamp() returns the min and the page looks completely unchanged.',
+      'Scaling font-size without touching line-height leaves big headings crammed or spread apart. Use a unitless line-height, or clamp it alongside the size.',
+    ],
+    spec: [
+      { label: 'Font size formula' },
+      { label: 'Minimum body size' },
+      { label: 'Type scale ratio' },
+      { label: 'Line height' },
+    ],
+    reducedMotion:
+      'Fluid type is static typography and has nothing to do with prefers-reduced-motion. If someone makes the size scale with scroll, users who asked for reduced motion should land on the base size.',
+    controls: [
+      { label: 'Minimum size', hint: 'Never goes below this even in a narrow container' },
+      { label: 'Maximum size', hint: 'The size stops growing once it reaches this' },
+      { label: 'Growth rate', hint: 'Font size added per 1cqw; at 0 it is a fixed size' },
+      { label: 'Container width', hint: 'Drag to watch the size change continuously instead of jumping at some width' },
+    ],
+  },
 }
 
 export default entry

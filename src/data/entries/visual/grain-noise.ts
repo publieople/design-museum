@@ -109,6 +109,53 @@ const entry: Entry = {
       en: `film grain noise overlay, SVG feTurbulence fractalNoise baseFrequency="${frequency}" numOctaves="3" stitchTiles="stitch", data URI background-image repeated 160px tile, opacity: ${opacity}%, mix-blend-mode: ${blend}, pointer-events: none${flicker ? ', steps(6) transform jitter keyframes' : ''}, dithering to hide gradient banding`,
     }
   },
+  en: {
+    oneLiner: 'A layer of random pixels over the surface that adds texture and hides banding in gradients.',
+    whenToUse: [
+      'A large gradient or dark background shows banding in rings; the noise breaks it up',
+      'Cards, illustrations, and thumbnails want a little film or paper grain so they stop looking too clean',
+      'Images from different sources do not match in texture; one grain layer pulls them into the same world',
+      'A dark interface wants a bit of texture, and grain is lighter than adding another shadow',
+    ],
+    confusions: [
+      {
+        with: 'translucent black overlay',
+        diff: 'A black overlay darkens everything and pushes brightness down. Noise makes each pixel randomly lighter or darker while the average brightness stays the same, so the image does not go dark, it just gains grain.',
+      },
+      {
+        with: 'repeating texture image',
+        diff: 'Tiling a PNG shows the repeated unit and its seams, especially when zoomed. feTurbulence generates procedural noise, and with stitchTiles="stitch" the repeat is nearly invisible, while the grain size follows the parameters.',
+      },
+      {
+        with: 'dithering',
+        diff: 'Dithering is what the renderer does on its own to suppress banding, and its grain aligns with pixel boundaries. Grain noise is a material layer you add by hand, with control over scale, strength, and blend mode.',
+      },
+    ],
+    pitfalls: [
+      'A baseFrequency below 0.3 turns into large clouds, not grain; the fine sand look sits between 0.5 and 0.9',
+      'The noise layer must have pointer-events: none, or the whole area stops responding to clicks',
+      'Above 15% opacity the image turns dirty and text contrast drops with it; 3% to 10% usually lands right',
+      'On dark backgrounds overlay blend is nearly invisible; switch to normal or raise the strength',
+      'feTurbulence computes in real time, so a large SVG slows the first frame; tile a small 120px to 200px patch instead',
+      'For grain jitter use steps() rather than a linear easing, which reads as drifting',
+    ],
+    spec: [
+      { label: 'baseFrequency' },
+      { label: 'numOctaves' },
+      { label: 'Grain size' },
+      { label: 'Opacity' },
+      { label: 'Blend mode' },
+      { label: 'Tile size' },
+    ],
+    reducedMotion:
+      'Grain is a static material and needs no fallback. If you animate frame-by-frame displacement to mimic film, prefers-reduced-motion: reduce should stop the jitter and leave the still grain layer.',
+    controls: [
+      { label: 'Grain size', hint: 'Converted to baseFrequency = 1 / diameter; 1px to 2px looks most like film, past 4px it looks like sandpaper' },
+      { label: 'Noise opacity', hint: 'Drag it to 0 to compare how much it is doing against banding' },
+      { label: 'Blend mode' },
+      { label: 'Grain jitter' },
+    ],
+  },
 }
 
 export default entry

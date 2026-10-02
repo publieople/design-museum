@@ -61,6 +61,37 @@ const entry: Entry = {
       en: 'skeleton screen with shimmer, placeholder blocks at currentColor 8-12%, overlay linear-gradient highlight band ' + highlight + '% wide, @keyframes shimmer { from { transform: translateX(-100%) } to { transform: translateX(100%) } }, ' + duration + 'ms linear infinite, ' + rows + ' text rows + avatar circle, animate transform only (never width/background-position), static under prefers-reduced-motion',
     }
   },
+  en: {
+    oneLiner: 'A grey placeholder block with a light band sweeping across it, showing that the content is still loading.',
+    whenToUse: [
+      'List or card data has not arrived yet, so placeholder blocks hold the layout in place',
+      'An image placeholder that keeps the page from jumping when the content lands',
+      'When you want to preview what will appear here more clearly than a spinner does',
+    ],
+    confusions: [
+      { with: 'Spinner', diff: 'A spinner says nothing about the shape of the content, only that something is busy; a skeleton lays out placeholder blocks in the final layout, so nothing jumps when the content swaps in.' },
+      { with: 'Progress bar', diff: 'A progress bar shows a measurable amount, such as 30 percent; a skeleton stands for a wait of unknown length and can only suggest that work continues by sweeping again and again.' },
+    ],
+    pitfalls: [
+      'Animating the shimmer with background-position or width repaints constantly; an overlay moving with transform: translateX is cheaper',
+      'If the skeleton sits for more than 5-8 seconds with no content, people assume it broke, so provide a timeout message or a fallback',
+      'When the skeleton radius, spacing, or row count differs from the real content, the page jumps the moment it arrives',
+      'A very wide or high-contrast highlight band is noisy; use 20%-40% of the container width and share one animation across all skeletons so they stay in sync',
+    ],
+    spec: [
+      { label: 'Sweep duration' },
+      { label: 'Highlight width' },
+      { label: 'Skeleton base' },
+      { label: 'Highlight' },
+      { label: 'Placeholder radius' },
+    ],
+    reducedMotion: 'Under prefers-reduced-motion: reduce, remove the sweep and leave a static placeholder; if some motion is wanted, switch to a non-moving opacity pulse with a longer cycle.',
+    controls: [
+      { label: 'Sweep duration' },
+      { label: 'Highlight width' },
+      { label: 'Text placeholder rows' },
+    ],
+  },
 }
 
 export default entry

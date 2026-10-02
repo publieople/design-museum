@@ -63,6 +63,38 @@ const entry: Entry = {
       en: 'magnetic button, pointermove + getBoundingClientRect, offset = (pointer - center) * ' + strength.toFixed(2) + ', clamp to ' + maxDistance + 'px, activation radius ' + radius.toFixed(1) + 'x button size, return with transition ' + duration + 'ms cubic-bezier(0.22, 1, 0.36, 1), transform: translate3d, throttle with requestAnimationFrame, disable under prefers-reduced-motion',
     }
   },
+  en: {
+    oneLiner: 'The button drifts a little toward the pointer as it approaches, then springs back to its resting spot.',
+    whenToUse: [
+      'A hero call to action that should catch the eye without a big animation',
+      'A showcase or portfolio page with only a few buttons, where one primary action can have some personality',
+      'When you want to suggest the button is waiting for you and give the pointer a relationship with it',
+    ],
+    confusions: [
+      { with: 'Hover lift', diff: 'Lift moves in one fixed direction, always straight up; magnetic pull offsets in two dimensions toward the pointer, so a cursor at the lower left moves the button down and to the left.' },
+      { with: 'Pointer parallax', diff: 'Parallax moves a whole container a long way with the pointer, usually tens of pixels; magnetic pull moves just the button a few pixels to about a dozen inside a small range around it.' },
+    ],
+    pitfalls: [
+      'A trigger radius much larger than the button, over twice its size, sends it drifting across the screen; 1-1.5x the button width and height is enough',
+      'Without a cap on the offset the button dodges the pointer and cannot be clicked; keep it to 6-16px',
+      'Calling setState on every pointermove drops frames; throttle with requestAnimationFrame or write CSS custom properties and element.style directly',
+      'Touch devices have no pointer hover, so ship a plain resting state; compute the center with getBoundingClientRect and remember to account for page scroll',
+    ],
+    spec: [
+      { label: 'Trigger radius' },
+      { label: 'Max offset' },
+      { label: 'Follow strength' },
+      { label: 'Return duration' },
+      { label: 'Return easing' },
+    ],
+    reducedMotion: 'Under prefers-reduced-motion: reduce, turn pointer following off entirely so the button stays put, and signal hover with a background or border change.',
+    controls: [
+      { label: 'Follow strength', hint: 'At 0 the button does not move at all' },
+      { label: 'Max offset' },
+      { label: 'Trigger radius', hint: 'Multiple of the button width and height' },
+      { label: 'Return duration' },
+    ],
+  },
 }
 
 export default entry

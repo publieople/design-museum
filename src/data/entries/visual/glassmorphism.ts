@@ -111,6 +111,47 @@ const entry: Entry = {
       en: `glassmorphism card, backdrop-filter: blur(${blur}px) saturate(160%), -webkit-backdrop-filter, background: linear-gradient(160deg, rgba(255,255,255,0.16), rgba(255,255,255,0.06)), border: 1px solid rgba(255,255,255,${border}), box-shadow: 0 8px 32px rgba(0,0,0,${shadow}) and inset 0 1px 0 rgba(255,255,255,0.5), border-radius: ${radius}px, translucent frosted panel over colorful gradient, fallback background for unsupported browsers`,
     }
   },
+  en: {
+    oneLiner: 'A translucent panel with a bright edge and soft shadow, floating over a colorful background.',
+    whenToUse: [
+      'Login pages, pricing cards, and stat cards that should feel light and polished without solid fills across the page',
+      'A panel over a colorful gradient or a photo where a little of the color underneath should come through',
+      'Overlays and sidebars that need to sit above the main content without cutting the link to the background',
+    ],
+    confusions: [
+      {
+        with: 'frosted glass',
+        diff: 'Frosted glass does one thing: blurs the backdrop (backdrop-filter: blur). Glassmorphism is a whole look: blur plus a translucent white diagonal gradient, a 1px bright border, an inset top highlight, and an outer shadow, almost always over something colorful. A single blur is not glassmorphism.',
+      },
+      {
+        with: 'translucent card',
+        diff: 'A translucent card only sets its background to rgba and keeps flat edges. Glassmorphism draws its boundary with that bright border, and the highlight and shadow together lift the panel off the background.',
+      },
+    ],
+    pitfalls: [
+      'It has to sit on a colorful gradient or a photo; backdrop-filter over a flat color barely shows',
+      'The bright border and the inset highlight are what make it read as glass; drop them and you are left with a translucent rectangle',
+      'Text contrast shifts with the background underneath: on dark backgrounds use white text with a little text-shadow, and do not count on a light surface to hold black text',
+      'Every backdrop-filter recomposites the background, so a dozen glass panels on one screen will visibly drop frames; keep them out of long list rows',
+      'Safari needs -webkit-backdrop-filter, and browsers without support need a fallback color opaque enough to stay readable',
+    ],
+    spec: [
+      { label: 'Blur radius' },
+      { label: 'Panel background' },
+      { label: 'Border' },
+      { label: 'Shadow' },
+      { label: 'Inner highlight' },
+      { label: 'Corner radius' },
+    ],
+    reducedMotion:
+      'Glassmorphism is a static look and needs no fallback by itself. If you add an entrance or hover movement, prefers-reduced-motion: reduce should land on the final state and keep only the static glass layers.',
+    controls: [
+      { label: 'Blur radius', hint: 'At 0px you can see that seeing through and blurring are two different things' },
+      { label: 'Border opacity', hint: 'At 0 the glass collapses into a plain translucent block' },
+      { label: 'Shadow strength', hint: 'At 0 the panel sits back on the background; the float comes entirely from this' },
+      { label: 'Corner radius', hint: 'A small radius reads as a glass sheet; past 24px it turns into a pill' },
+    ],
+  },
 }
 
 export default entry

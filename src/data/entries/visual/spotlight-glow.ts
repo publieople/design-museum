@@ -108,6 +108,52 @@ const entry: Entry = {
       en: `spotlight card glow, ${radius * 2}px circle, radial-gradient(circle, hsla(${hue}, 95%, 70%, ${intensity}), transparent 70%), mix-blend-mode: screen, pointer-events: none, overflow: hidden${follow ? ', follow cursor with pointermove, write transform: translate3d directly to the element (no React state), 120ms ease-out transition on transform, recenter on pointerleave' : ', centered static glow'}, static fallback for touch devices`,
     }
   },
+  en: {
+    oneLiner: 'A soft pool of light that follows the pointer across a card, like a flashlight held to it.',
+    whenToUse: [
+      'A dark card that should make the user notice the cursor is resting here, with more sense of space than a full color change',
+      'Pricing and feature cards where the one being looked at should stand out',
+      'A hero section where a beam tracks the pointer to give a static page some atmosphere',
+      'A button hover highlight that should stay subtle, using a radial light instead of a solid fill',
+    ],
+    confusions: [
+      {
+        with: 'box-shadow',
+        diff: 'box-shadow is an even glow outside the element outline, following the box shape and never moving. A spotlight glow is a pool with a center coordinate, and its position follows the pointer.',
+      },
+      {
+        with: 'hover background change',
+        diff: 'A hover background swap replaces the whole surface with a hard edge. A spotlight has falloff: brightest at the center, fading outward.',
+      },
+      {
+        with: 'cursor trail',
+        diff: 'A trail decorates the cursor itself and follows the pointer across the whole screen. A spotlight is clipped inside the element (overflow: hidden or a mask), a layer of light laid on the surface.',
+      },
+    ],
+    pitfalls: [
+      'Do not setState inside pointermove; several re-renders per frame will stutter. Write the coordinates straight into style.transform or a CSS variable',
+      'The glow has to be clipped inside the card with overflow: hidden, or it reads as a circle floating beside it',
+      'Touch screens have no hover, so ship a static glow centered or low by default, or mobile gets a dead black card',
+      'Too bright a light eats the content; a peak opacity of 0.10 to 0.25 is enough, with mix-blend-mode: screen or soft-light',
+      'A percentage-sized glow on a wide card stretches into an ellipse; use a fixed px diameter',
+      'Reading getBoundingClientRect on every pointermove forces layout; cache the rect or update it only on resize',
+    ],
+    spec: [
+      { label: 'Glow diameter' },
+      { label: 'Peak opacity' },
+      { label: 'Position transition' },
+      { label: 'Blend mode' },
+      { label: 'Fade on leave' },
+    ],
+    reducedMotion:
+      'The glow writes transform directly, so there is no easing to begin with. Under prefers-reduced-motion: reduce, drop the transition on transform so the glow jumps straight to the pointer with no trailing smear.',
+    controls: [
+      { label: 'Glow radius', hint: 'The diameter is twice this; below 150px it looks like a laser pointer, larger reads as ambient light' },
+      { label: 'Peak opacity', hint: 'At 0 the glow disappears, which shows the difference between a highlight and whiting out' },
+      { label: 'Glow hue', hint: '40deg is a warm lamp, 220deg is a blue screen reflection' },
+      { label: 'Follow pointer' },
+    ],
+  },
 }
 
 export default entry

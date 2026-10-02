@@ -1,34 +1,56 @@
-import { useEffect } from 'react'
+import { lazy, Suspense, useEffect } from 'react'
 import { Layout } from './components/Layout'
 import { ToastProvider } from './components/Toast'
+import { PrefsProvider, usePrefs } from './lib/prefs'
+import { translate } from './i18n'
 import { Link, useRoute } from './lib/router'
-import { AboutPage } from './pages/AboutPage'
-import { BrowsePage } from './pages/BrowsePage'
-import { CheatSheetPage } from './pages/CheatSheetPage'
-import { DebugAllPage } from './pages/DebugAllPage'
-import { EntryDetailPage } from './pages/EntryDetailPage'
-import { FeelPage } from './pages/FeelPage'
-import { HomePage } from './pages/HomePage'
+import type { StringKey } from './i18n'
 
-const TITLES: Record<string, string> = {
-  browse: '词条库',
-  feel: '感觉导航',
-  cheatsheet: '速查表',
-  about: '怎么用',
-  entry: '展品',
-  debug: '冒烟测试',
+// 路由级分包：首页不该把速查表、冒烟页连同 30 个 demo 一起下载
+const HomePage = lazy(() => import('./pages/HomePage').then((m) => ({ default: m.HomePage })))
+const BrowsePage = lazy(() => import('./pages/BrowsePage').then((m) => ({ default: m.BrowsePage })))
+const EntryDetailPage = lazy(() =>
+  import('./pages/EntryDetailPage').then((m) => ({ default: m.EntryDetailPage })),
+)
+const FeelPage = lazy(() => import('./pages/FeelPage').then((m) => ({ default: m.FeelPage })))
+const CheatSheetPage = lazy(() =>
+  import('./pages/CheatSheetPage').then((m) => ({ default: m.CheatSheetPage })),
+)
+const AboutPage = lazy(() => import('./pages/AboutPage').then((m) => ({ default: m.AboutPage })))
+const DebugAllPage = lazy(() =>
+  import('./pages/DebugAllPage').then((m) => ({ default: m.DebugAllPage })),
+)
+
+const TITLES: Record<string, StringKey> = {
+  browse: 'titles.browse',
+  feel: 'titles.feel',
+  cheatsheet: 'titles.cheatsheet',
+  about: 'titles.about',
+  entry: 'titles.entry',
+  debug: 'titles.debug',
+}
+
+function RouteFallback() {
+  return (
+    <div className="flex min-h-[40vh] items-center justify-center" aria-busy="true">
+      <span
+        className="h-2 w-24 rounded-full bg-line"
+        style={{ animation: 'museum-pulse 1.4s ease-in-out infinite' }}
+      />
+    </div>
+  )
 }
 
 function NotFound() {
+  const { locale } = usePrefs()
   return (
     <div className="flex flex-col items-start gap-3">
-      <h1 className="font-display text-2xl font-semibold">这里没有展品</h1>
+      <h1 className="font-display text-2xl font-semibold">{translate(locale, 'notFound.title')}</h1>
       <p className="text-sm text-muted">
-        地址可能写错了。回
+        {translate(locale, 'notFound.desc')}
         <Link to="/" className="mx-1 text-accent no-underline">
-          首页
+          {translate(locale, 'notFound.home')}
         </Link>
-        重新开始。
       </p>
     </div>
   )
@@ -36,6 +58,7 @@ function NotFound() {
 
 function Routes() {
   const route = useRoute()
+  const { locale } = usePrefs()
   const [head, param] = route.segments
 
   useEffect(() => {
@@ -43,37 +66,51 @@ function Routes() {
   }, [route.path])
 
   useEffect(() => {
-    const base = '前端设计博物馆'
-    const name = head ? TITLES[head] : undefined
-    document.title = name ? `${name} · ${base}` : `${base} · 先给效果起个名字，再让 AI 实现它`
-  }, [head])
+    const base = translate(locale, 'site.name')
+    const titleKey = head ? TITLES[head] : undefined
+    document.title = titleKey
+      ? `${translate(locale, titleKey)} · ${base}`
+      : `${base} · ${translate(locale, 'site.tagline')}`
+  }, [head, locale])
 
+  let page
   switch (head) {
     case undefined:
-      return <HomePage />
+      page = <HomePage />
+      break
     case 'browse':
-      return <BrowsePage />
+      page = <BrowsePage />
+      break
     case 'entry':
-      return <EntryDetailPage key={param} slug={param} />
+      page = <EntryDetailPage key={param} slug={param} />
+      break
     case 'feel':
-      return <FeelPage />
+      page = <FeelPage />
+      break
     case 'cheatsheet':
-      return <CheatSheetPage />
+      page = <CheatSheetPage />
+      break
     case 'about':
-      return <AboutPage />
+      page = <AboutPage />
+      break
     case 'debug':
-      return <DebugAllPage />
+      page = <DebugAllPage />
+      break
     default:
-      return <NotFound />
+      page = <NotFound />
   }
+
+  return <Suspense fallback={<RouteFallback />}>{page}</Suspense>
 }
 
 export default function App() {
   return (
-    <ToastProvider>
-      <Layout>
-        <Routes />
-      </Layout>
-    </ToastProvider>
+    <PrefsProvider>
+      <ToastProvider>
+        <Layout>
+          <Routes />
+        </Layout>
+      </ToastProvider>
+    </PrefsProvider>
   )
 }

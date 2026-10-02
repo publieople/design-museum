@@ -77,6 +77,43 @@ const entry: Entry = {
       en: `parallax scrolling, multi-layer scroll depth, each layer translate3d(0, scrollY * ${speed} + ${distance}px, 0), background slower than foreground${reverse ? ', inverted direction' : ''}, driven by requestAnimationFrame inside a passive scroll listener, will-change: transform only while scrolling, respect prefers-reduced-motion`,
     }
   },
+  en: {
+    oneLiner: 'Foreground and background move at different speeds as you scroll, which gives the scene depth.',
+    whenToUse: [
+      'A hero image that should travel slower than the body text, to feel like moving inward',
+      'Multi-layer illustrations, brand pages, and campaign pages where layers stand in for real 3D',
+      'A card list where the background or image shifts slightly as it passes, adding texture',
+    ],
+    confusions: [
+      {
+        with: 'background-attachment: fixed',
+        diff: 'background-attachment: fixed pins the background to the viewport and gives you a single layer. Parallax moves each layer with its own transform speed, can stack three or four of them, and can be driven by JS.',
+      },
+      {
+        with: 'scroll-driven animation',
+        diff: 'Parallax only shifts position as a function of scroll. Scroll-driven animation can map progress onto any property (rotation, scale, color) and bound it with animation-range.',
+      },
+    ],
+    pitfalls: [
+      'Too much travel causes motion sickness; keep the speed difference between layers in the 20-50% range or the content stops being readable',
+      'Reading scrollY directly in a scroll listener stutters; throttle with requestAnimationFrame or use animation-timeline: scroll()',
+      'Turn it off on mobile and under prefers-reduced-motion; the iOS scroll bounce makes the parallax jump',
+      'Add will-change: transform only while scrolling; leaving it on permanently keeps a compositor layer alive',
+    ],
+    spec: [
+      { label: 'Foreground/background speed ratio' },
+      { label: 'Max travel per layer' },
+      { label: 'Number of layers' },
+      { label: 'Drive method' },
+    ],
+    reducedMotion:
+      'Under prefers-reduced-motion: reduce, set every layer speed to 0, leaving all layers in place and the page fully readable.',
+    controls: [
+      { label: 'Parallax strength', hint: 'The extra offset per layer for every 100px scrolled; 0 is ordinary scrolling' },
+      { label: 'Base offset' },
+      { label: 'Reverse direction' },
+    ],
+  },
 }
 
 export default entry

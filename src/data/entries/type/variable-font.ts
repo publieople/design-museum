@@ -88,6 +88,43 @@ const entry: Entry = {
         'respect prefers-reduced-motion',
     }
   },
+  en: {
+    oneLiner: 'A single font file carries a continuous weight axis, so it can stop at any weight.',
+    whenToUse: [
+      'A headline needs to travel smoothly between thin and bold instead of only having 400 and 700',
+      'One family should cover both body text and an extra-bold headline while you load fewer files',
+      'The weight shifts slowly with interaction or scroll for emphasis that does not lean on color or movement',
+    ],
+    confusions: [
+      {
+        with: 'static multi-weight families',
+        diff: 'Each static weight is its own file. With only 400 and 700 loaded, font-weight: 550 rounds to one of them, while a variable font truly interpolates any value inside the axis range.',
+      },
+      {
+        with: 'font-weight vs font-variation-settings',
+        diff: 'Both can set weight. font-weight is the standard property, inherits normally, and still applies to fallbacks without variable support. font-variation-settings is the low-level switch for axes that have no dedicated property, such as wdth and slnt; writing wght there overrides font-weight, and MDN recommends using font-weight for wght.',
+      },
+    ],
+    pitfalls: [
+      'An axis the font does not carry does nothing when you set it. Check which axes the font exposes and their ranges first; values outside the range are clamped to the edge.',
+      'font-variation-settings takes string values and the axis name must be quoted: font-variation-settings: "wght" 550, "wdth" 90. Drop the quotes and the whole declaration is invalid.',
+      'Changing an axis value triggers text re-layout rather than a GPU compositing step, so a long infinite loop drops frames, and it has to respect prefers-reduced-motion.',
+      'Before the web font downloads, the system font renders first: the axis does nothing and the text jumps. Use font-display: swap and pick a fallback whose weight is close.',
+    ],
+    spec: [
+      { label: 'Weight range' },
+      { label: 'Common axes' },
+      { label: 'Interpolation duration' },
+      { label: 'Easing' },
+    ],
+    reducedMotion: 'A variable font is a static capability. If you animate the weight as a pulse, prefers-reduced-motion should rest on the final weight with no interpolation.',
+    controls: [
+      { label: 'Weight axis (wght)', hint: 'Drag continuously and watch the glyphs actually thicken and thin instead of snapping to a few stops' },
+      { label: 'Number of steps', hint: 'Above 1 the weight rounds to the nearest step, like loading a handful of static weights' },
+      { label: 'Typeface' },
+      { label: 'Show 300-700 weight ruler' },
+    ],
+  },
 }
 
 export default entry

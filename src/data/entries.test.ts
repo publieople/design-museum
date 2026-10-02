@@ -2,7 +2,7 @@ import { describe, expect, it } from 'vitest'
 import { ENTRIES } from './index'
 import { CATEGORIES } from './taxonomy'
 import { defaultValues } from '../lib/controls'
-import { DEMO_SLUGS, demoFor } from '../demos/registry'
+import { DEMO_SLUGS, hasDemo } from '../demos/registry'
 import type { Control, Entry } from './types'
 
 const CATEGORY_IDS = new Set(CATEGORIES.map((category) => category.id))
@@ -39,7 +39,7 @@ describe('每条词条自身合法（铺量阶段随时可跑）', () => {
     expect(entry.slug).toBe(slug)
     expect(slug, 'slug 必须是 kebab-case').toMatch(/^[a-z0-9]+(-[a-z0-9]+)*$/)
     expect(entry.code, 'code 形如 V-01').toMatch(/^[A-Z]-\d{2}$/)
-    expect(CATEGORY_IDS.has(entry.category), `${slug} 的分类 ${entry.category} 不存在`).toBe(true)
+    expect(CATEGORY_IDS.has(entry.category), `${slug} 的展厅 ${entry.category} 不存在`).toBe(true)
 
     expectFilled(entry.nameZh, `${slug} nameZh`)
     expectFilled(entry.nameEn, `${slug} nameEn`)
@@ -78,7 +78,7 @@ describe('每条词条自身合法（铺量阶段随时可跑）', () => {
     expect(new Set(codes).size).toBe(codes.length)
   })
 
-  it('code 的类别字母与 category 一致', () => {
+  it('code 的展厅字母与 category 一致', () => {
     for (const entry of ENTRIES) {
       const expected = CATEGORIES.find((category) => category.id === entry.category)?.letter
       expect(entry.code.startsWith(`${expected}-`), `${entry.slug} 的编号应以 ${expected}- 开头`).toBe(true)
@@ -87,10 +87,48 @@ describe('每条词条自身合法（铺量阶段随时可跑）', () => {
 
   it('每条词条都有对应的 demo，且没有孤儿 demo', () => {
     for (const entry of ENTRIES) {
-      expect(demoFor(entry.slug), `${entry.slug} 缺少 src/demos/${entry.slug}.tsx`).toBeTruthy()
+      expect(hasDemo(entry.slug), `${entry.slug} 缺少 src/demos/${entry.slug}.tsx`).toBe(true)
     }
     const entrySlugs = new Set(ENTRIES.map((entry) => entry.slug))
     const orphans = DEMO_SLUGS.filter((slug) => !entrySlugs.has(slug))
     expect(orphans, `有 demo 但没有词条：${orphans.join(', ')}`).toEqual([])
+  })
+})
+
+describe('英文覆盖层', () => {
+  const translated = ENTRIES.filter((entry) => entry.en)
+
+  it('如果提供了 en，字段要填全、条数对齐、不能有空串', () => {
+    for (const entry of translated) {
+      const en = entry.en!
+      if (en.oneLiner !== undefined) expectFilled(en.oneLiner, `${entry.slug} en.oneLiner`)
+      if (en.reducedMotion !== undefined) {
+        expectFilled(en.reducedMotion, `${entry.slug} en.reducedMotion`)
+      }
+      if (en.whenToUse !== undefined) {
+        expect(en.whenToUse.length, `${entry.slug} en.whenToUse 条数应与中文一致`).toBe(
+          entry.whenToUse.length,
+        )
+        en.whenToUse.forEach((item, index) => expectFilled(item, `${entry.slug} en.whenToUse[${index}]`))
+      }
+      if (en.pitfalls !== undefined) {
+        expect(en.pitfalls.length, `${entry.slug} en.pitfalls 条数应与中文一致`).toBe(
+          entry.pitfalls.length,
+        )
+      }
+      if (en.confusions !== undefined) {
+        expect(en.confusions.length, `${entry.slug} en.confusions 条数应与中文一致`).toBe(
+          entry.confusions.length,
+        )
+      }
+      if (en.spec !== undefined) {
+        expect(en.spec.length, `${entry.slug} en.spec 条数应与中文一致`).toBe(entry.spec.length)
+      }
+      if (en.controls !== undefined) {
+        expect(en.controls.length, `${entry.slug} en.controls 条数应与中文一致`).toBe(
+          entry.controls.length,
+        )
+      }
+    }
   })
 })

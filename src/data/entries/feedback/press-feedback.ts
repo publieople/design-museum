@@ -71,6 +71,36 @@ const entry: Entry = {
       en: 'button press feedback, :active { transform: scale(' + scale.toFixed(2) + '); transition: transform ' + duration + 'ms }, release back to scale(1) with ' + easing + ', ' + (spring ? 'slight overshoot spring' : 'no bounce') + ', transform-only, keep :focus-visible ring, touch-action: manipulation',
     }
   },
+  en: {
+    oneLiner: 'The moment a finger presses down the button shrinks and darkens, then snaps back on release to confirm the tap.',
+    whenToUse: [
+      'Buttons and icon buttons that need instant confirmation so nobody wonders whether the tap landed',
+      'Submit buttons where the press response can briefly lock the action and discourage double taps',
+      'Small tap targets on mobile, where visual feedback has to stand in for a physical click',
+    ],
+    confusions: [
+      { with: 'Hover lift', diff: 'Hover is a state that stays as long as the pointer is over the element and uses :hover; press feedback exists only while the button is held down and ends on release, using :active. Hold the button down and both are true at once.' },
+      { with: 'Loading state', diff: 'Press feedback is an immediate response within tens of milliseconds and fires before the request is even sent; loading lasts until the request comes back. The right order is press first, then loading, not both at once.' },
+    ],
+    pitfalls: [
+      ':active applies only while the button is held down; keyboard activation with Space or Enter fires click and never :active, so do not treat the press state as keyboard feedback',
+      'On iOS Safari :active only fires reliably on interactive elements, so add a touch listener or cursor: pointer to be safe',
+      'Shrinking with width or height triggers layout; use transform: scale()',
+      'A rebound that overshoots too far past 1.0 looks cheap; settling near 1.0 is enough',
+    ],
+    spec: [
+      { label: 'Pressed scale' },
+      { label: 'Press duration' },
+      { label: 'Release duration' },
+      { label: 'Easing' },
+    ],
+    reducedMotion: 'Under prefers-reduced-motion: reduce, drop the scale transition and change only the background or brightness instantly on press, with no bounce.',
+    controls: [
+      { label: 'Pressed scale', hint: 'At 1.00 the press feel disappears' },
+      { label: 'Press / release duration' },
+      { label: 'Bounce on release' },
+    ],
+  },
 }
 
 export default entry

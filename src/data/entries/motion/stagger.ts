@@ -82,6 +82,44 @@ const entry: Entry = {
       en: `staggered entrance, animation-delay: index * ${stagger}ms, each item fades in with opacity 0 → 1 and translateY(${distance}px) → 0, duration ${duration}ms, easing ${easing}, play once on first view, animate transform/opacity only, respect prefers-reduced-motion`,
     }
   },
+  en: {
+    oneLiner: 'A group of elements enters one after another on a fixed interval, not all at once.',
+    whenToUse: [
+      'A list, card grid, or nav first appears and you want the eye to move through it in order',
+      'You want a group to read as choreographed rather than snapping in all at once',
+      'On first page load, one shared entrance sequence sets the rhythm',
+    ],
+    confusions: [
+      {
+        with: 'a delayed animation',
+        diff: 'Delaying one element only makes it show up later. Stagger is the fixed interval between consecutive items, so the order is countable.',
+      },
+      {
+        with: 'a carousel that plays one item at a time',
+        diff: 'A carousel keeps looping. A stagger usually runs once on first appearance and never repeats.',
+      },
+    ],
+    pitfalls: [
+      'Past roughly 120ms per item, a long list leaves the last one waiting for seconds and the page feels stuck',
+      'On a long list, stagger only the first 8-10 items and show the rest immediately, or the total time runs away',
+      'Animate transform and opacity, not left/top/margin, or every frame triggers layout',
+      'Entrance motion is decorative, so under prefers-reduced-motion render the final state immediately',
+    ],
+    spec: [
+      { label: 'Per-item duration' },
+      { label: 'Item interval' },
+      { label: 'Travel distance' },
+      { label: 'Easing' },
+    ],
+    reducedMotion:
+      'Under prefers-reduced-motion: reduce, skip the translate and the fade and render the whole group in its final state.',
+    controls: [
+      { label: 'Per-item duration' },
+      { label: 'Item interval', hint: 'At 0ms everything arrives at once, which makes the difference obvious' },
+      { label: 'Travel distance' },
+      { label: 'Easing' },
+    ],
+  },
 }
 
 export default entry

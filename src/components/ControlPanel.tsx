@@ -1,4 +1,5 @@
 import type { Control, ControlValues } from '../data/types'
+import { useT } from '../i18n'
 import { formatControl } from '../lib/prompt'
 
 interface ControlPanelProps {
@@ -9,18 +10,19 @@ interface ControlPanelProps {
 }
 
 export function ControlPanel({ controls, values, onChange, onReset }: ControlPanelProps) {
+  const t = useT()
   if (controls.length === 0) return null
 
   return (
-    <section aria-label="参数" className="rounded-lg border border-line bg-raised p-4">
+    <section aria-label={t('control.title')} className="rounded-lg border border-line bg-raised p-4">
       <div className="mb-3 flex items-baseline justify-between">
-        <h2 className="label-mono">参数工作台</h2>
+        <h2 className="label-mono">{t('control.title')}</h2>
         <button
           type="button"
           onClick={onReset}
           className="cursor-pointer font-mono text-[11px] text-muted underline decoration-dotted hover:text-accent"
         >
-          恢复默认
+          {t('control.reset')}
         </button>
       </div>
 
@@ -43,12 +45,10 @@ export function ControlPanel({ controls, values, onChange, onReset }: ControlPan
                   step={control.step}
                   value={value}
                   onChange={(event) => onChange(control.id, Number(event.target.value))}
-                  className="h-1.5 w-full cursor-pointer appearance-none rounded-full bg-line accent-[var(--accent)]"
+                  className="h-1.5 w-full cursor-pointer appearance-none rounded-full bg-line"
                   style={{ accentColor: 'var(--accent)' }}
                 />
-                {control.hint ? (
-                  <span className="text-xs text-muted">{control.hint}</span>
-                ) : null}
+                {control.hint ? <span className="text-xs text-muted">{control.hint}</span> : null}
               </label>
             )
           }

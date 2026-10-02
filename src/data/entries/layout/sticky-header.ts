@@ -59,6 +59,43 @@ const entry: Entry = {
       en: `sticky header, position: sticky; top: 0, add backdrop-filter: blur(${blur}px) and border-bottom after ${threshold}px scroll, ${hide ? 'hide on scroll down / reveal on scroll up via transform: translateY(-100%) with 250ms ease-out, compare current vs previous scrollY' : 'always visible'}, animate transform only, throttle scroll handler with requestAnimationFrame`,
     }
   },
+  en: {
+    oneLiner: 'A page header that stays pinned on scroll and often hides on the way down.',
+    whenToUse: [
+      'Long pages where navigation and the primary action should stay reachable',
+      'Keeping the cart, search, or the current section visible at all times',
+      'Very long content where the bar yields reading space by hiding on scroll down',
+    ],
+    confusions: [
+      {
+        with: 'position: fixed',
+        diff: 'A fixed element is taken out of flow, so you have to pad the content below it. sticky stays in flow, sticks only after it crosses the top offset, and leaves as soon as its containing block scrolls past.',
+      },
+      {
+        with: 'floating action button',
+        diff: 'A floating button stays in one spot no matter what the scroll is doing. A sticky header travels with the document first and only stops at the threshold.',
+      },
+    ],
+    pitfalls: [
+      'Any ancestor with overflow: hidden or auto breaks it: the header sticks inside that container instead of the viewport',
+      'A sticky element needs a top (or bottom) value; without one it never sticks',
+      'Set a real hide threshold; hiding after a pixel or two makes the page feel like it is twitching',
+      'Hide with transform: translateY(-100%), not display: none, or there is nothing to animate',
+    ],
+    spec: [
+      { label: 'Stick threshold' },
+      { label: 'Reveal / hide duration' },
+      { label: 'Background after sticking' },
+      { label: 'Scroll direction test' },
+    ],
+    reducedMotion:
+      'The hide and reveal translation should switch instantly under prefers-reduced-motion, or the header can simply stay visible all the time.',
+    controls: [
+      { label: 'Stick threshold' },
+      { label: 'Hide on scroll down' },
+      { label: 'Background blur after sticking' },
+    ],
+  },
 }
 
 export default entry

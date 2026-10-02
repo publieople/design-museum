@@ -88,6 +88,56 @@ const entry: Entry = {
       en: `sticky stacking cards, position: sticky with top: index * ${offset}px, ${count} cards, increasing z-index 1 2 3, previous card scales down to ${100 - shrink}% via transform: scale() with transform-origin: top center, border-radius: ${radius}px, inside an overflow-y: auto scroll container, no overflow: hidden on ancestors, disable the scale under prefers-reduced-motion`,
     }
   },
+  en: {
+    oneLiner: 'Cards scroll up one by one and stack on top of each other as the earlier ones shrink behind.',
+    whenToUse: [
+      'Tutorials, steps, and checkout flows: one card per idea, each read before the next arrives',
+      'Long pages that should feel like a physical stack of cards rather than a flat list',
+      'Cards that enter one after another while the previous one stays put as context',
+    ],
+    confusions: [
+      {
+        with: 'sticky header',
+        diff: 'A sticky header is a single bar pinned to the top. Stacked cards share one sticky position, and each card that scrolls up covers the one before it.',
+      },
+      {
+        with: 'carousel',
+        diff: 'A carousel advances on a timer or on left/right input. Stacked cards move only when the page scrolls; stop scrolling and nothing changes.',
+      },
+      {
+        with: 'parallax',
+        diff: 'Parallax layers move at different speeds and never come to rest. Stacked cards really do stick at a fixed offset and cover each other.',
+      },
+    ],
+    pitfalls: [
+      'Give each card its own top (card i gets i times the peek height); all zeros collapses the stack into one seamless block',
+      'Later cards need a higher z-index, or a new card ends up behind the one it should cover',
+      'The scroll container itself can be overflow: auto, but a single overflow: hidden ancestor kills the sticky positioning',
+      'When a stacked card scales down with transform: scale(), set transform-origin to top center or the bottom edge reveals the next card',
+      'The stack needs far more height than the viewport; short content leaves nothing to scroll and the effect never plays',
+    ],
+    spec: [
+      { label: 'Peek height per card' },
+      { label: 'Scale of stacked cards' },
+      { label: 'Card radius' },
+      { label: 'Card gap' },
+      { label: 'z-index' },
+    ],
+    reducedMotion:
+      'The stack is driven by scroll position, not by time, so it can stay. The shrink is decorative: under prefers-reduced-motion: reduce drop the scale and keep only the sticky stacking.',
+    controls: [
+      {
+        label: 'Peek height',
+        hint: 'The sliver each card leaves of the one before it; at 0 they sit exactly on top of each other',
+      },
+      { label: 'Card count' },
+      {
+        label: 'Stacked scale',
+        hint: 'How much the card underneath shrinks; at 0 it does not shrink at all',
+      },
+      { label: 'Radius' },
+    ],
+  },
 }
 
 export default entry

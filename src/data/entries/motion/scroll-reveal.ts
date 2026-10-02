@@ -80,6 +80,44 @@ const entry: Entry = {
       en: `reveal on scroll, IntersectionObserver with threshold ${threshold}, add class when isIntersecting, transition: opacity ${duration}ms cubic-bezier(0.22, 1, 0.36, 1), transform translateY(${distance}px) to 0, stagger ${delay}ms, unobserve after first intersection, opacity + transform only, respect prefers-reduced-motion`,
     }
   },
+  en: {
+    oneLiner: 'Content fades in and slides up only once it scrolls into view; off-screen items stay hidden.',
+    whenToUse: [
+      'Sections of a long landing page, where arriving all at once reads as one blur',
+      'Marketing pages and case-study lists where the reading rhythm should be picked up section by section',
+      'List items below the first screen, which appear only when scrolled to, keeping the first paint lighter',
+    ],
+    confusions: [
+      {
+        with: 'scroll-driven animation',
+        diff: 'A reveal fires once as the element enters the viewport, runs its own animation, then leaves the observer. A scroll-driven animation maps every frame of progress to the scroll position, so scrolling back plays it in reverse.',
+      },
+      {
+        with: 'lazy loading',
+        diff: 'Lazy loading saves network and image decoding, and the element already occupies its space. Scroll reveal animates opacity and transform on content that is already in the page, just hidden at first.',
+      },
+    ],
+    pitfalls: [
+      'unobserve or disconnect after the first trigger, or scrolling up and down replays the fade',
+      'A threshold of 1 never fires for a tall element in a short viewport, so it stays invisible forever',
+      'Reading scrollTop inside a scroll handler forces repeated layout; use IntersectionObserver, or throttle with requestAnimationFrame',
+      'If you start elements at opacity: 0, keep the content in the DOM so a blocked script or a crawler does not get an empty page',
+    ],
+    spec: [
+      { label: 'Travel distance' },
+      { label: 'Fade duration' },
+      { label: 'Easing' },
+      { label: 'Trigger threshold' },
+    ],
+    reducedMotion:
+      'Under prefers-reduced-motion: reduce, do not observe and do not translate - render the content in its final state (this demo takes that path).',
+    controls: [
+      { label: 'Rise distance' },
+      { label: 'Fade duration' },
+      { label: 'Trigger threshold', hint: 'How much of the element must be visible; at 90 it will rarely fire' },
+      { label: 'Item interval' },
+    ],
+  },
 }
 
 export default entry

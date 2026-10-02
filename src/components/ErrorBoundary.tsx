@@ -3,6 +3,8 @@ import { Component, type ReactNode } from 'react'
 interface Props {
   children: ReactNode
   label?: string
+  /** 由调用方传入当前语言的提示语（类组件里用不了 hook） */
+  message?: string
 }
 
 interface State {
@@ -22,7 +24,7 @@ export class ErrorBoundary extends Component<Props, State> {
       return (
         <div className="rounded border border-accent/40 bg-raised p-4 text-sm">
           <p className="font-mono text-xs text-accent">
-            {this.props.label ?? 'demo'} 渲染失败
+            {this.props.label ?? 'demo'} {this.props.message ?? ''}
           </p>
           <p className="mt-2 break-all text-muted">{this.state.error.message}</p>
         </div>

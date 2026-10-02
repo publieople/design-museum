@@ -107,6 +107,52 @@ const entry: Entry = {
       en: `mesh gradient background, 5 layered radial-gradient() color blobs, transparent color stops at ${spread}% using rgba(r,g,b,0), base color #101018, filter: blur(${softness}px) hue-rotate(${hue}deg), transform: scale(1.3) to hide blur edges${drift ? ', 18s ease-in-out infinite drift animation' : ', static composition'}, no native mesh-gradient property in CSS`,
     }
   },
+  en: {
+    oneLiner: 'Several radial gradients stacked so color flows in any direction, with no single gradient axis.',
+    whenToUse: [
+      'A landing page hero that wants depth of color without loading a large image',
+      'Spreading a brand color softly across a whole area as the base of a card or modal',
+      'A default cover or avatar background when there is no real image, so the placeholder still holds something',
+      'You want the palette to follow the theme color; one hue rotation swaps the whole thing',
+    ],
+    confusions: [
+      {
+        with: 'linear-gradient / conic-gradient',
+        diff: 'linear-gradient has one axis and conic-gradient one center, so color runs along a line or around an angle. A mesh gradient stacks several radial-gradient layers, each with its own center, and the colors mix in two dimensions. There is no mesh-gradient property in CSS; it is always built by layering.',
+      },
+      {
+        with: 'grid background (grid lines)',
+        diff: 'A grid background is a repeating set of evenly spaced lines, a regular pattern. A mesh gradient is a color field with no lines, blending continuously between colors. The mesh in the name refers to the control points, not to drawn squares.',
+      },
+      {
+        with: 'frosted glass',
+        diff: 'Frosted glass blurs content that already exists behind it; a mesh gradient paints its own field of color. They often appear together (mesh background, glass panel), but one is the background and the other is the panel.',
+      },
+    ],
+    pitfalls: [
+      'Writing transparent on the transparent end of a radial-gradient mixes it with black in some browsers and leaves a gray edge; use rgba(r,g,b,0) of the same color instead',
+      'A color stop placed at 100% leaves a hard edge; end it early around 50% to 70% and the blobs blend naturally',
+      'Beyond 7 or 8 stacked background layers repainting slows down, and adding filter: blur makes it worse; 4 to 6 layers is enough',
+      'When you blur the whole layer, scale it up past 1.2, or soft transparent edges show at the element boundary',
+      'Pure CSS gradients band on wide-gamut displays; a 3% to 8% grain noise layer covers it',
+      'Hue rotation means filter: hue-rotate, which applies to the whole layer, so keep text out of that layer',
+    ],
+    spec: [
+      { label: 'Blob layers' },
+      { label: 'Color stop placement' },
+      { label: 'Layer blur' },
+      { label: 'Scale up' },
+      { label: 'Base color' },
+    ],
+    reducedMotion:
+      'A static mesh gradient needs no fallback. If the blobs slowly scale and drift, prefers-reduced-motion: reduce should pause the animation and hold one composition.',
+    controls: [
+      { label: 'Blob spread', hint: 'Where the color stops fade out early; the smaller it is, the tighter the blobs and the more empty space' },
+      { label: 'Diffuse blur', hint: 'At 0 you can see the shape of each radial gradient; the larger it gets, the more it looks like a cloud' },
+      { label: 'Hue rotation', hint: 'Recolors everything without touching any layer color' },
+      { label: 'Slow blob drift' },
+    ],
+  },
 }
 
 export default entry

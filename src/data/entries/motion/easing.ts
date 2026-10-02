@@ -91,6 +91,45 @@ const entry: Entry = {
       en: `animation-timing-function: ${easing}, transition-timing-function, cubic-bezier() easing curve, duration ${duration}ms, delay ${delay}ms, travel ${distance}%, animate transform only (no left/top), keep one shared easing across buttons and cards, respect prefers-reduced-motion`,
     }
   },
+  en: {
+    oneLiner: 'How an animation spends its time: fast off the line or soft on arrival, all in one curve.',
+    whenToUse: [
+      'You want motion that accelerates rather than translating at a constant rate',
+      'Entrances should land cleanly (fast in, slow stop) and exits should leave decisively (slow start, fast out)',
+      'A row of buttons or cards should all move with the same feel',
+    ],
+    confusions: [
+      {
+        with: 'duration',
+        diff: 'Duration only says how long the trip takes; easing decides how that time is divided. Two animations of equal duration can cover several times different distance in the first 100ms once you swap the curve.',
+      },
+      {
+        with: 'the transition property itself',
+        diff: 'transition only declares which property moves and for how long; easing is its timing-function argument. Writing ease into a transition is not a design choice - ease is just the default curve.',
+      },
+    ],
+    pitfalls: [
+      'Leaving every transition on the default ease makes the whole UI creep and feel sluggish',
+      'cubic-bezier control points outside 0-1 overshoot the range; use too much and it looks like a broken spring',
+      'Never put ease-in on click feedback - a slow start reads as lag on an action the user just took',
+      'Easing reshapes the timeline, not the physical path; move and scale with transform, because no curve fixes layout jank',
+    ],
+    spec: [
+      { label: 'Entrance (fast in, slow stop)' },
+      { label: 'Exit' },
+      { label: 'Standard / ease-in-out' },
+      { label: 'Duration range' },
+      { label: 'Overshoot amount' },
+    ],
+    reducedMotion:
+      'Easing only divides time, so under prefers-reduced-motion: reduce pull the duration down to near zero (or fade opacity instead): keep the state change, drop the sense of speed.',
+    controls: [
+      { label: 'Animation duration', hint: 'Stretch it past 1s before the four curves become easy to tell apart' },
+      { label: 'Travel distance' },
+      { label: 'Pause between rounds' },
+      { label: 'Curves to compare' },
+    ],
+  },
 }
 
 export default entry

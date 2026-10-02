@@ -120,6 +120,52 @@ const entry: Entry = {
       en: `gradient border, border: ${width}px solid transparent, background: linear-gradient(...) padding-box, linear-gradient(${angle}deg, hsl(${hue}, 90%, 62%), hsl(${second}, 92%, 55%)) border-box, background-clip: padding-box / border-box, border-radius: ${radius}px, @property registered angle, 6s linear infinite rotation, avoid border-image since it ignores border-radius`,
     }
   },
+  en: {
+    oneLiner: 'The border is not one color but a gradient running once around the element outline.',
+    whenToUse: [
+      'A card or button that should be outlined in a brand color, with more depth than a flat border',
+      'Marking the selected item, where a bright ring is more restrained than filling the whole block',
+      'Defining an element edge on a dark background, where one bright line can replace a shadow',
+      'A border that should recolor with the theme, by changing a couple of hsl values',
+    ],
+    confusions: [
+      {
+        with: 'border-image',
+        diff: 'border-image is the obvious first try, but it ignores border-radius, so rounded corners get cut square, and border-style cannot be none. Rounding needs two background layers with padding-box and border-box, or a ::before plus a mask.',
+      },
+      {
+        with: 'outer glow (box-shadow)',
+        diff: 'An outer glow falls outside the element with a soft, undefined edge. A gradient border is a solid line along the boundary, with color changing as it travels.',
+      },
+      {
+        with: 'gradient background',
+        diff: 'A gradient background fills the whole surface; a gradient border paints only that ring. The same gradient value does two different jobs depending on which one you use.',
+      },
+    ],
+    pitfalls: [
+      'border has to be transparent and have a width, or the gradient has nowhere to paint',
+      'background-clip: border-box alone fills the whole surface; you need two layers, a solid padding-box layer and a border-box gradient',
+      'On a long element a 45deg gradient ends at a different color on each side because the angle follows the box dimensions; for matching ends use 90deg or a conic-gradient',
+      'The mask-composite approach needs -webkit-mask-composite: xor on Safari, or it becomes one solid block',
+      'A border past 2px in a bright color overpowers the content; 1px to 2px is the safe range',
+      'border-image and border-radius together throw no error, the rounding just silently stops working, which is hard to track down',
+    ],
+    spec: [
+      { label: 'Border width' },
+      { label: 'Gradient angle' },
+      { label: 'Corner radius' },
+      { label: 'Color stops' },
+      { label: 'Rotation period' },
+    ],
+    reducedMotion:
+      'A gradient border is static decoration and needs no fallback. If you animate the angle with @property to make it flow, prefers-reduced-motion: reduce should stop the animation and hold the gradient at its starting angle.',
+    controls: [
+      { label: 'Border width', hint: '1px is a thin bright line; past 3px it starts fighting the content' },
+      { label: 'Gradient angle', hint: 'Change the angle on a long element and the two ends clearly differ' },
+      { label: 'Start hue', hint: 'The next two stops shift by +90deg and +180deg' },
+      { label: 'Corner radius', hint: 'Push it past 20px, then try the border-image approach to watch the rounding fail' },
+    ],
+  },
 }
 
 export default entry

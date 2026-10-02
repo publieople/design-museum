@@ -63,6 +63,45 @@ const entry: Entry = {
       en: `bento grid layout, CSS grid, grid-template-columns: repeat(${columns}, minmax(0, 1fr)), grid-auto-rows: ${rowHeight}px, gap: ${gap}px, tiles with grid-column: span / grid-row: span mixing 1x1 2x1 2x2 sizes, border-radius: ${radius}px, all edges aligned to the same column lines, collapse to 2 columns on mobile`,
     }
   },
+  en: {
+    oneLiner: 'Tiles of different sizes lock into one block with aligned edges, so the hierarchy reads at a glance.',
+    whenToUse: [
+      'Homepages and dashboards where a few features differ in weight and the layout should say so',
+      'Fitting a hero image, several metrics, and a few shortcuts into one screen',
+      'Product pages that use one collage instead of a long list of equal cards',
+    ],
+    confusions: [
+      {
+        with: 'masonry',
+        diff: 'Masonry columns are independent, heights are free, and no row lines are shared. A bento grid has fixed row and column tracks; each tile only spans a few of them and every edge lines up.',
+      },
+      {
+        with: 'an equal-split grid',
+        diff: 'An equal grid gives every cell the same size and no hierarchy. Bento pulls the visual weight apart with spans like 2x2 and 2x1.',
+      },
+    ],
+    pitfalls: [
+      'Spans have to match the column count: a span of 3 in a 4-column grid leaves an awkward empty edge, and changing the count means recomputing every span',
+      'If every tile is the same size it is just a grid; the point of bento is the mix of sizes',
+      'Auto-placement does not backfill holes by default (grid-auto-flow: row). dense fills them but scrambles the visual order.',
+      'With a fixed row height, text overflows as soon as it grows; add rows instead of clipping the text',
+    ],
+    spec: [
+      { label: 'Columns' },
+      { label: 'Row height' },
+      { label: 'Tile gap' },
+      { label: 'Spans' },
+      { label: 'Radius' },
+    ],
+    reducedMotion:
+      'Bento is static layout and plays no animation by itself. If tiles animate in or react on hover, keep only the opacity change under prefers-reduced-motion: reduce.',
+    controls: [
+      { label: 'Columns' },
+      { label: 'Tile gap' },
+      { label: 'Row height' },
+      { label: 'Radius' },
+    ],
+  },
 }
 
 export default entry

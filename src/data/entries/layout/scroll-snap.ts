@@ -85,6 +85,46 @@ const entry: Entry = {
       en: `horizontal snap slider, scroll container with scroll-snap-type: ${snap}, items with scroll-snap-align: ${align}, scroll-padding: ${padding}px${stop ? ', scroll-snap-stop: always to prevent skipping multiple slides' : ''}, overflow-x: auto container with fixed height, native momentum scrolling and keyboard support, scroll-behavior: auto under prefers-reduced-motion`,
     }
   },
+  en: {
+    oneLiner: 'Scrolling comes to rest on a card instead of stopping halfway between two of them.',
+    whenToUse: [
+      'Horizontal carousels and image galleries where each swipe shows one item',
+      'Full-page landing pages built as one section per screen',
+      'Mobile steppers, date pickers, and card pickers where whatever you land on is the selection',
+    ],
+    confusions: [
+      {
+        with: 'carousel',
+        diff: 'A carousel cuts slides on a JS timer and often limits you to arrow buttons. scroll-snap uses a native scroll container, so inertia, drag, trackpads, and the keyboard all come from the browser; the CSS only says where scrolling may stop.',
+      },
+      {
+        with: 'scroll-behavior: smooth',
+        diff: 'smooth controls how a jump travels to its target; snap controls where the scroll finally rests. Neither one replaces the other.',
+      },
+    ],
+    pitfalls: [
+      'scroll-snap-type goes on the scroll container and scroll-snap-align on the children; swap them and nothing happens',
+      'The container needs a definite size and overflow. When the content is shorter than the container there is nothing to scroll and nothing to snap.',
+      'mandatory on a vertical area taller than the viewport traps the user and they cannot reach the bottom; use proximity for long content',
+      'When an item is larger than the container, align: start hides the tail of that item for good',
+      'Padding around the snap position comes from scroll-padding on the container; margins on the children do not count',
+    ],
+    spec: [
+      { label: 'Container' },
+      { label: 'Items' },
+      { label: 'Padding' },
+      { label: 'Skip prevention' },
+      { label: 'Item width' },
+    ],
+    reducedMotion:
+      'Snapping is not an animation and does not need to be turned off. But when you scroll to a slide with scroll-behavior: smooth, switch it back to auto under prefers-reduced-motion: reduce so the jump is instant.',
+    controls: [
+      { label: 'Snap strength' },
+      { label: 'Snap padding' },
+      { label: 'Alignment' },
+      { label: 'Prevent skipping multiple items' },
+    ],
+  },
 }
 
 export default entry

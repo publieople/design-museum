@@ -93,6 +93,45 @@ const entry: Entry = {
         'reserve width to avoid layout shift, respect prefers-reduced-motion (render final value)',
     }
   },
+  en: {
+    oneLiner: 'A number races from 0 up to its target value and then holds still.',
+    whenToUse: [
+      'A dashboard metric appears for the first time and the number should feel like it climbed there',
+      'The hero uses one or two big numbers as the lead and needs a short entrance',
+      'The count should start once the number scrolls into view, not finish before the page has settled',
+    ],
+    confusions: [
+      {
+        with: 'mechanical odometer',
+        diff: 'An odometer rolls or flips each digit with physical travel between positions. A count-up only changes the value; the glyphs themselves do not move.',
+      },
+      {
+        with: '@property number animation',
+        diff: '@property can register an integer custom property that counter() renders, all in CSS, but the browser owns the interpolation and both formatting and easing are hard to control. When format, easing, and replay all matter, a hand-written requestAnimationFrame loop is more reliable.',
+      },
+    ],
+    pitfalls: [
+      'A change in digit count shifts the layout (9 to 10, 99 to 100). Reserve width for the container and use font-variant-numeric: tabular-nums so every digit is the same width.',
+      'Cancel the requestAnimationFrame loop on unmount, or it keeps calling setState after the component is gone.',
+      'The rAF callback receives a high-resolution timestamp; subtract the start time from it. Do not mix in Date.now(), and do not add a fixed value per frame with setInterval, which falls behind as frames are dropped.',
+      'Server rendering and the first client render have to output the same value (usually 0) or hydration mismatches. Start the run after mount.',
+      'Under prefers-reduced-motion, show the final value outright instead of rolling through the numbers.',
+    ],
+    spec: [
+      { label: 'Duration' },
+      { label: 'Easing' },
+      { label: 'Number typesetting' },
+      { label: 'Trigger' },
+      { label: 'Final value hold' },
+    ],
+    reducedMotion: 'Under prefers-reduced-motion: reduce, skip the frame loop and render the target value in one go.',
+    controls: [
+      { label: 'Target value', hint: 'The larger the number, the more a digit-count change shifts the layout' },
+      { label: 'Duration', hint: 'How long the whole run takes' },
+      { label: 'Easing' },
+      { label: 'Thousands separator' },
+    ],
+  },
 }
 
 export default entry

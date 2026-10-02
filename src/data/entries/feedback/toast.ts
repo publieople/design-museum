@@ -72,6 +72,37 @@ const entry: Entry = {
       en: 'toast / snackbar component, slides in from ' + place + ', translateY(' + distance + 'px) with 220ms ease-out, auto-dismiss after ' + duration + 'ms, role="status" aria-live="polite", stack up to 3 toasts, animate transform + opacity only, non-blocking, no entry/exit animation under prefers-reduced-motion',
     }
   },
+  en: {
+    oneLiner: 'A short message slides in from the screen edge and dismisses itself after a few seconds, without blocking.',
+    whenToUse: [
+      'An action succeeded or failed and needs a one-line confirmation, with no decision for the user to make',
+      'Paired with undo, for example "Deleted - Undo"',
+      'A background task finished while the user may be looking somewhere else',
+    ],
+    confusions: [
+      { with: 'Modal dialog', diff: 'A modal covers the page and blocks everything until it is handled; a toast is non-blocking and disappears on its own, so a serious error that must be seen cannot live only in a toast.' },
+      { with: 'Inline field validation', diff: 'A form error belongs next to the field that is wrong and stays visible until it is fixed; a toast sits in a corner and vanishes, so it is the wrong place for field-level errors.' },
+    ],
+    pitfalls: [
+      'An auto-dismissing message must not use aria-live="assertive", which interrupts the screen reader; use role="status" or aria-live="polite"',
+      'Under 3 seconds is not enough to read and over 6 seconds gets in the way; 3-5 seconds is about right',
+      'Multiple toasts must stack and be capped, at most 3-4, or they cover the screen',
+      'Success and failure cannot be told apart by color alone; add an icon or text, and never make a toast the only source of information',
+    ],
+    spec: [
+      { label: 'Dwell time' },
+      { label: 'Enter duration' },
+      { label: 'Max at once' },
+      { label: 'Width' },
+      { label: 'Position' },
+    ],
+    reducedMotion: 'Under prefers-reduced-motion: reduce, drop the offset and fade on enter and exit so toasts appear and vanish instantly; the dwell time stays the same.',
+    controls: [
+      { label: 'Dwell time', hint: 'Drag it to the longest setting to watch a toast stay put' },
+      { label: 'Position' },
+      { label: 'Slide-in distance' },
+    ],
+  },
 }
 
 export default entry

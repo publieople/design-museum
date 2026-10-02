@@ -82,6 +82,45 @@ const entry: Entry = {
       en: `accordion disclosure pattern, ${mode === 'single' ? 'single-open, only one panel expanded at a time' : 'multi-open, several panels expanded at once'}, expand and collapse duration ${duration}ms with easing ${easing}, header is a real button with aria-expanded and a chevron that ${rotate ? 'rotates 180deg when open' : 'stays static'}, animate grid-template-rows: 0fr → 1fr inside overflow: hidden instead of height: auto, set duration to 0 under prefers-reduced-motion`,
     }
   },
+  en: {
+    oneLiner: 'Clicking a heading reveals its panel, usually one at a time, and the headings never move.',
+    whenToUse: [
+      'FAQs and help docs with a dozen questions on one screen',
+      'Advanced settings in a form, collapsed by default and opened only when needed',
+      'Mobile detail pages that tuck long descriptions away to save space',
+    ],
+    confusions: [
+      {
+        with: 'tabs',
+        diff: 'Tabs swap content horizontally and the panel you leave disappears. An accordion keeps every heading stacked vertically, and the open panel stays under its heading, pushing the rest down.',
+      },
+      {
+        with: 'popover',
+        diff: 'A popover floats above the page and covers other content. An accordion expands in the document flow and covers nothing.',
+      },
+    ],
+    pitfalls: [
+      'Do not transition height: auto; browsers cannot interpolate auto. Use grid-template-rows: 0fr to 1fr, or measure the content height and animate a pixel value.',
+      'Wrap the collapsing part in overflow: hidden, or the text stays visible while the panel is closed',
+      'The heading must be a real button (or details/summary) with aria-expanded, or keyboard and screen reader users cannot operate it',
+      'Once several panels can be open at the same time the page turns into a long list, and that is a case for tabs or pagination instead',
+    ],
+    spec: [
+      { label: 'Expand duration' },
+      { label: 'Easing' },
+      { label: 'Header height' },
+      { label: 'Expand animation' },
+      { label: 'Icon' },
+    ],
+    reducedMotion:
+      'Under prefers-reduced-motion: reduce set the expand duration to 0, show or hide the content instantly, and skip the icon rotation.',
+    controls: [
+      { label: 'Open mode' },
+      { label: 'Expand duration' },
+      { label: 'Easing' },
+      { label: 'Rotate chevron 180deg' },
+    ],
+  },
 }
 
 export default entry

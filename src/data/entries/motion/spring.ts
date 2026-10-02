@@ -89,6 +89,44 @@ const entry: Entry = {
       en: `spring animation, stiffness ${stiffness}, damping ${damping}, mass ${mass}, overshoot allowed but settle within ~300ms, animate transform: translateX only, driven by requestAnimationFrame or a spring library (Framer Motion / react-spring), no layout-thrashing properties, respect prefers-reduced-motion`,
     }
   },
+  en: {
+    oneLiner: 'An element driven at its target like it is on a spring, overshooting and settling back.',
+    whenToUse: [
+      'A drag release, a toggle, or a card sliding out should settle naturally instead of stopping dead',
+      'You want feedback with some character without slowing the interaction down',
+      'Popovers, bubbles, and elements that follow a finger need to feel pulled and then released',
+    ],
+    confusions: [
+      {
+        with: 'back-out easing',
+        diff: 'Back-out is one fixed cubic-bezier curve that overshoots and returns. A spring is a trajectory solved from stiffness, damping, and mass, so how far it overshoots and how many times are both tunable.',
+      },
+      {
+        with: 'keyframe animations',
+        diff: 'Keyframes bake the path in, so changing the speed means rewriting the frames. A spring solves its position every frame, keeps its state, and stays coherent when a drag interrupts it.',
+      },
+    ],
+    pitfalls: [
+      'Soft settings (low stiffness, low damping) wobble for seconds, and the user has to wait before tapping again',
+      'Springs recompute every frame, so never animate width/height or set React state per frame - drive transform from requestAnimationFrame or a spring library',
+      'Parameters do not transfer between libraries: Framer Motion stiffness/damping/mass and react-spring tension/friction use different units, so do not copy the numbers',
+      'Under prefers-reduced-motion jump straight to the end value and drop the bounce; do not make motion-sensitive users watch it bounce three times',
+    ],
+    spec: [
+      { label: 'Stiffness' },
+      { label: 'Damping' },
+      { label: 'Mass' },
+      { label: 'Overshoot' },
+      { label: 'Settle time' },
+    ],
+    reducedMotion:
+      'Under prefers-reduced-motion: reduce replace the spring with a 150ms linear step or an opacity fade, jumping straight to the final position with no bounce.',
+    controls: [
+      { label: 'Stiffness', hint: 'Higher stiffness reaches the target sooner' },
+      { label: 'Damping', hint: 'At 4 it bounces several times; at 60 it barely overshoots' },
+      { label: 'Mass' },
+    ],
+  },
 }
 
 export default entry

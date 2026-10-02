@@ -78,6 +78,43 @@ const entry: Entry = {
       en: `scroll-driven animations, animation-timeline: view(), animation-range: entry 0% cover ${cover}%, keyframes on rotateZ(${rotate}deg) and opacity, scroll progress bar via animation-timeline: scroll() with transform: scaleX(), no scroll event listeners, feature-detect with CSS.supports('animation-timeline: scroll()'), fallback to a ${duration}ms reveal with IntersectionObserver, respect prefers-reduced-motion`,
     }
   },
+  en: {
+    oneLiner: 'The scrollbar is the timeline: the scroll position decides exactly which frame is shown.',
+    whenToUse: [
+      'Reading progress bars and chapter indicators, which are naturally as much as you have scrolled',
+      'A card that rotates, scales, and shifts saturation as it scrolls into view',
+      'You want the animation locked to the scroll position and playable in both directions',
+    ],
+    confusions: [
+      {
+        with: 'scroll reveal',
+        diff: 'A reveal fires once as the element enters the viewport and is tied to nothing afterwards. A scroll-driven animation binds every frame to the scroll position, so the same offset always shows the same frame and scrolling back plays it in reverse.',
+      },
+      {
+        with: 'driving the animation from a scroll event',
+        diff: 'Scroll events fire off the compositor thread and drop frames when you scroll fast. animation-timeline runs on the compositor and keeps the main thread free, but needs a modern browser (Chrome 115+).',
+      },
+    ],
+    pitfalls: [
+      'Leave animation-range at its default and the animation can finish as soon as the element appears, which looks like it did nothing',
+      'Reading scrollTop and writing styles in the same scroll handler forces a synchronous loop every frame; let CSS do it or throttle with requestAnimationFrame',
+      'animation-timeline support in Safari and Firefox is still incomplete, so ship a static version that reads fine without it (this demo shows a fallback badge)',
+      'Build the progress bar with scaleX, not width, which forces a layout every frame',
+    ],
+    spec: [
+      { label: 'Timeline function' },
+      { label: 'Animation range' },
+      { label: 'Progress bar implementation' },
+      { label: 'Rotation amount' },
+    ],
+    reducedMotion:
+      'Under prefers-reduced-motion: reduce, swap the timeline for a normal fixed-duration animation, or park elements at the end of the progress; indicators like the progress bar stay but stop tracking scroll.',
+    controls: [
+      { label: 'Max rotation' },
+      { label: 'Animation range', hint: 'Stands for entry 0% cover 60% in animation-range; lower values finish the animation as soon as the element appears' },
+      { label: 'Fallback duration' },
+    ],
+  },
 }
 
 export default entry

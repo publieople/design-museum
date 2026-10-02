@@ -1,6 +1,8 @@
 import { useMemo } from 'react'
 import { ENTRIES } from '../data'
 import { CATEGORIES, FEELS, SCENES } from '../data/taxonomy'
+import { useT, useLocale } from '../i18n'
+import { pick } from '../i18n/pick'
 import { Link, useQueryUpdater, useRoute } from '../lib/router'
 import { searchEntries } from '../lib/search'
 import { EntryCard } from '../components/EntryCard'
@@ -8,6 +10,8 @@ import { FilterChips } from '../components/FilterChips'
 import { SearchBox } from '../components/SearchBox'
 
 export function BrowsePage() {
+  const t = useT()
+  const locale = useLocale()
   const route = useRoute()
   const updateQuery = useQueryUpdater()
 
@@ -37,9 +41,9 @@ export function BrowsePage() {
     <div className="flex flex-col gap-6">
       <header className="flex flex-col gap-4">
         <div className="flex items-baseline justify-between gap-4">
-          <h1 className="font-display text-2xl font-semibold tracking-tight">词条库</h1>
+          <h1 className="font-display text-2xl font-semibold tracking-tight">{t('browse.title')}</h1>
           <span className="font-mono text-xs text-muted">
-            {results.length} / {ENTRIES.length} 件
+            {t('browse.count', { a: results.length, b: ENTRIES.length })}
           </span>
         </div>
         <SearchBox value={q} onChange={(value) => updateQuery({ q: value || null })} />
@@ -47,24 +51,32 @@ export function BrowsePage() {
 
       <div className="flex flex-col gap-3 rounded-lg border border-line bg-raised p-4">
         <FilterChips
-          legend="展厅"
+          legend={t('browse.hall')}
           options={[
-            { value: '', label: '全部' },
-            ...CATEGORIES.map((c) => ({ value: c.id, label: c.nameZh, hint: c.nameEn })),
+            { value: '', label: t('browse.all') },
+            ...CATEGORIES.map((c) => ({
+              value: c.id,
+              label: locale === 'en' ? c.nameEn : c.nameZh,
+              hint: locale === 'en' ? c.nameZh : c.nameEn,
+            })),
           ]}
           selected={[cat]}
           onToggle={(value) => updateQuery({ cat: value || null })}
           single
         />
         <FilterChips
-          legend="用在哪"
-          options={SCENES.map((s) => ({ value: s.id, label: s.label }))}
+          legend={t('browse.scene')}
+          options={SCENES.map((s) => ({ value: s.id, label: pick(s.label, locale) }))}
           selected={scene ? [scene] : []}
           onToggle={toggle('scene')}
         />
         <FilterChips
-          legend="什么感觉"
-          options={FEELS.map((f) => ({ value: f.id, label: f.label, hint: f.hint }))}
+          legend={t('browse.feel')}
+          options={FEELS.map((f) => ({
+            value: f.id,
+            label: pick(f.label, locale),
+            hint: pick(f.hint, locale),
+          }))}
           selected={feel ? [feel] : []}
           onToggle={toggle('feel')}
         />
@@ -74,16 +86,16 @@ export function BrowsePage() {
             onClick={() => updateQuery({ q: null, cat: null, scene: null, feel: null })}
             className="cursor-pointer self-start font-mono text-[11px] text-muted underline decoration-dotted hover:text-accent"
           >
-            清空筛选
+            {t('browse.clear')}
           </button>
         ) : null}
       </div>
 
       {results.length === 0 ? (
         <div className="rounded-lg border border-dashed border-line p-8 text-center text-sm text-muted">
-          这一组筛选下没有展品。
+          {t('browse.empty')}
           <Link to="/feel" className="ml-1 text-accent no-underline">
-            试试按感觉找 →
+            {t('browse.tryFeel')}
           </Link>
         </div>
       ) : (

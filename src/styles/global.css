@@ -1,7 +1,14 @@
 @import 'tailwindcss';
 
-/* ── 设计 token：展厅墙是中性色，唯一的强调色是「导览朱红」 ───────────── */
+/* ─────────────────────────────────────────────────────────────
+   设计 token。展厅墙是中性色，唯一的强调色是「导览朱红」。
+   主题由 <html data-theme> 决定：
+     - 没有 data-theme            → 跟随系统
+     - data-theme="light"/"dark"  → 用户手动锁定
+   展品舞台的背景与这里完全无关，它由 DemoStage 内联控制。
+   ───────────────────────────────────────────────────────────── */
 :root {
+  color-scheme: light;
   --surface: #f7f6f3;
   --raised: #ffffff;
   --line: #e3e1db;
@@ -11,7 +18,8 @@
 }
 
 @media (prefers-color-scheme: dark) {
-  :root {
+  :root:not([data-theme='light']) {
+    color-scheme: dark;
     --surface: #0e0e10;
     --raised: #17171b;
     --line: #2a2a31;
@@ -19,6 +27,16 @@
     --muted: #9a9aa6;
     --accent: #ff5a45;
   }
+}
+
+:root[data-theme='dark'] {
+  color-scheme: dark;
+  --surface: #0e0e10;
+  --raised: #17171b;
+  --line: #2a2a31;
+  --ink: #ececef;
+  --muted: #9a9aa6;
+  --accent: #ff5a45;
 }
 
 @theme inline {
@@ -64,6 +82,30 @@
   }
 }
 
+/* ── 主题 / 语言切换的过渡 ─────────────────────────────────────
+   首选 View Transitions（真交叉淡入）；不支持的浏览器由
+   withThemeTransition 临时挂 .theme-animating 走下面的 transition。
+   只在切换的 300ms 内生效，不常开——常开会拖慢每一次 hover。 */
+@media (prefers-reduced-motion: no-preference) {
+  ::view-transition-old(root),
+  ::view-transition-new(root) {
+    animation-duration: 280ms;
+    animation-timing-function: cubic-bezier(0.22, 1, 0.36, 1);
+  }
+
+  html.theme-animating,
+  html.theme-animating *,
+  html.theme-animating *::before,
+  html.theme-animating *::after {
+    transition:
+      background-color 280ms cubic-bezier(0.22, 1, 0.36, 1),
+      color 280ms cubic-bezier(0.22, 1, 0.36, 1),
+      border-color 280ms cubic-bezier(0.22, 1, 0.36, 1),
+      fill 280ms cubic-bezier(0.22, 1, 0.36, 1),
+      stroke 280ms cubic-bezier(0.22, 1, 0.36, 1) !important;
+  }
+}
+
 /* demo 用到的公共关键帧：交错进场 */
 @keyframes museum-stagger {
   from {
@@ -73,6 +115,17 @@
   to {
     opacity: 1;
     transform: none;
+  }
+}
+
+/* demo 加载中的骨架位，避免懒加载时舞台跳动 */
+@keyframes museum-pulse {
+  0%,
+  100% {
+    opacity: 0.35;
+  }
+  50% {
+    opacity: 0.7;
   }
 }
 

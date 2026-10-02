@@ -1,4 +1,5 @@
 import type { Entry, StageId } from '../data/types'
+import type { StagePref } from '../lib/prefs'
 
 export interface StageStyle {
   background: string
@@ -54,4 +55,13 @@ export const STAGE_STYLES: Record<StageId, StageStyle> = {
  */
 export function preferredStageFor(entry: Entry): StageId {
   return entry.category === 'visual' ? 'photo' : 'light'
+}
+
+/**
+ * 把用户的「展品背景」偏好解成实际舞台：
+ * auto = 按展品类型挑；否则一律用用户选的背景，全馆统一。
+ */
+export function resolveStage(entry: Entry, pref: StagePref): StageId {
+  if (pref !== 'auto') return pref
+  return preferredStageFor(entry)
 }

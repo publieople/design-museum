@@ -47,6 +47,27 @@ export interface Reference {
   url: string
 }
 
+/** 双语文本。en 缺失时回退中文，所以英文内容可以一条条慢慢补。 */
+export interface Bi {
+  zh: string
+  en?: string
+}
+
+/**
+ * 词条的英文覆盖层：只放需要翻译的散文，术语与关键词本来就有英文。
+ * 逐字段可选，缺哪个回退哪个。
+ */
+export interface EntryTranslation {
+  oneLiner?: string
+  whenToUse?: string[]
+  confusions?: { with?: string; diff?: string }[]
+  pitfalls?: string[]
+  spec?: { label?: string }[]
+  reducedMotion?: string
+  /** 与 entry.controls 逐项对应，只翻标签与提示 */
+  controls?: { label?: string; hint?: string }[]
+}
+
 export interface Entry {
   /** kebab-case，全站唯一，也是 demo 组件的文件名 */
   slug: string
@@ -81,6 +102,8 @@ export interface Entry {
   controls: Control[]
   /** 随参数实时生成的可复制需求 */
   prompt: (values: ControlValues) => PromptPair
+  /** 英文覆盖层；缺字段回退中文 */
+  en?: EntryTranslation
 }
 
 export interface DemoProps {
@@ -88,4 +111,9 @@ export interface DemoProps {
   stage: StageId
   /** 递增即重播：demo 用它作为 key 或依赖来重置动画 */
   replayKey: number
+  /**
+   * 慢放倍率，1 为正常。默认由舞台用 Web Animations playbackRate 统一处理，
+   * rAF 自驱的 demo（如弹簧）可以自己读这个值。
+   */
+  timeScale?: number
 }

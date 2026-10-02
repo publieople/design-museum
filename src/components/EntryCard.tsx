@@ -1,12 +1,16 @@
 import { useMemo } from 'react'
+import { useT, useLocale } from '../i18n'
 import { defaultValues } from '../lib/controls'
+import { resolveEntry } from '../lib/localize'
+import { usePrefs } from '../lib/prefs'
 import { Link } from '../lib/router'
 import { useInView } from '../lib/viewport'
-import type { Entry, StageId } from '../data/types'
+import type { Entry } from '../data/types'
+import { DemoRunner } from './DemoRunner'
 import { DemoStage } from './DemoStage'
 import { ErrorBoundary } from './ErrorBoundary'
-import { demoFor } from '../demos/registry'
-import { preferredStageFor } from './stageStyles'
+import { hasDemo } from '../demos/registry'
+import { resolveStage } from './stageStyles'
 
 interface EntryCardProps {
   entry: Entry
@@ -15,18 +19,23 @@ interface EntryCardProps {
 }
 
 export function EntryCard({ entry, showDemo = true }: EntryCardProps) {
+  const t = useT()
+  const locale = useLocale()
+  const { stage: stagePref } = usePrefs()
   const { ref, inView } = useInView<HTMLLIElement>({ rootMargin: '240px' })
+
+  const resolved = useMemo(() => resolveEntry(entry, locale), [entry, locale])
   const values = useMemo(() => defaultValues(entry), [entry])
-  const Demo = demoFor(entry.slug)
-  const stage: StageId = preferredStageFor(entry)
+  const stage = resolveStage(entry, stagePref)
+  const showStage = showDemo && inView && hasDemo(entry.slug)
 
   return (
     <li
       ref={ref}
       className="flex flex-col overflow-hidden rounded-lg border border-line bg-raised transition-colors hover:border-accent/50"
     >
-      {showDemo && inView && Demo ? (
-        <ErrorBoundary label={entry.slug}>
+      {showStage ? (
+        <ErrorBoundary label={entry.slug} message={t('error.renderFailed')}>
           <DemoStage
             compact
             stage={stage}
@@ -34,30 +43,30 @@ export function EntryCard({ entry, showDemo = true }: EntryCardProps) {
             onStageChange={() => {}}
             onReplay={() => {}}
           >
-            <Demo values={values} stage={stage} replayKey={0} />
+            <DemoRunner slug={entry.slug} values={values} stage={stage} replayKey={0} />
           </DemoStage>
         </ErrorBoundary>
       ) : null}
 
       <div className="flex flex-1 flex-col gap-2 p-4">
         <div className="flex items-baseline justify-between gap-2">
-          <span className="font-mono text-[11px] tracking-wider text-accent">{entry.code}</span>
+          <span className="font-mono text-[11px] tracking-wider text-accent">{resolved.code}</span>
           <span className="font-mono text-[10px] uppercase tracking-wider text-muted">
-            {entry.nameEn}
+            {resolved.nameEn}
           </span>
         </div>
 
         <h3 className="font-display text-lg font-semibold leading-tight">
-          <Link to={`/entry/${entry.slug}`} className="no-underline">
-            {entry.nameZh}
+          <Link to={`/entry/${resolved.slug}`} className="no-underline">
+            {resolved.nameZh}
           </Link>
         </h3>
 
-        <p className="text-sm text-muted">{entry.oneLiner}</p>
+        <p className="text-sm text-muted">{resolved.oneLiner}</p>
 
-        {entry.aliases.length > 0 ? (
+        {resolved.aliases.length > 0 ? (
           <p className="mt-auto pt-2 font-mono text-[11px] text-muted">
-            又叫：{entry.aliases.slice(0, 3).join(' / ')}
+            {resolved.aliases.slice(0, 3).join(' / ')}
           </p>
         ) : null}
       </div>

@@ -81,6 +81,47 @@ const entry: Entry = {
       en: `masonry layout, CSS multi-column with column-count: ${columns}, column-gap: ${gap}px, items of varying height around ${base}px with break-inside: avoid, fill columns top-to-bottom, collapse to 2 columns on narrow screens, do not equalize item heights`,
     }
   },
+  en: {
+    oneLiner: 'Cards of uneven height drop into the shortest column, so no large gaps open at the bottom.',
+    whenToUse: [
+      'Image walls, portfolios, and product feeds where every item has a different height',
+      'Fitting more items on one screen without cropping every image to the same height',
+      'Feeds that waste less vertical space when filled column by column than row by row',
+    ],
+    confusions: [
+      {
+        with: 'a regular grid',
+        diff: 'In a grid, rows are shared by all columns, so items in one row start on the same line and leave a hole under the short ones. Masonry stacks each column on its own and shares no row lines between columns.',
+      },
+      {
+        with: 'a uniform card wall',
+        diff: 'That is a plain grid and looks perfectly even. Masonry is interesting exactly because the heights vary and each column fills at its own pace.',
+      },
+    ],
+    pitfalls: [
+      'CSS multi-column fills column by column: content fills the first column before moving to the second, so with infinite scroll every new item piles into the last column. Switch to JS and append each item to the currently shortest column.',
+      'Every item needs break-inside: avoid, or a card gets split across two columns',
+      'Do not fix item heights to line things up; that turns the layout back into a plain grid',
+      'Change the column count only at breakpoints, not continuously with the container width, or cards jump around while the window is resized',
+    ],
+    spec: [
+      { label: 'Columns' },
+      { label: 'Column gap' },
+      { label: 'Item bottom spacing' },
+      { label: 'Cross-column break control' },
+    ],
+    reducedMotion:
+      'Masonry is static layout and produces no motion of its own. If items animate in, show the final arrangement directly under prefers-reduced-motion: reduce.',
+    controls: [
+      { label: 'Columns' },
+      { label: 'Gap' },
+      {
+        label: 'Card base height',
+        hint: 'Larger values make the height differences and the staggered look stronger',
+      },
+      { label: 'Layout mode' },
+    ],
+  },
 }
 
 export default entry

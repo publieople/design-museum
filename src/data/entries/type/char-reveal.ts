@@ -101,6 +101,45 @@ const entry: Entry = {
         ', animate transform/opacity only, aria-hidden on visual text plus sr-only copy, respect prefers-reduced-motion',
     }
   },
+  en: {
+    oneLiner: 'The characters of a headline drop into place one after another, as if written out letter by letter.',
+    whenToUse: [
+      'A hero headline appears for the first time and you want the eye to read through it in order',
+      'Short text under twenty or thirty characters, such as a tagline, a slogan, or a product name',
+      'You want to stress half a sentence by bringing the first half in and following with the rest',
+    ],
+    confusions: [
+      {
+        with: 'typewriter effect',
+        diff: 'A typewriter types characters one at a time, usually with a caret and a monospace face, and the text keeps growing. Character reveal keeps every character on its final typeset position and animates each one from transparent and offset back to rest.',
+      },
+      {
+        with: 'staggered entrance',
+        diff: 'Stagger applies the same delay pattern to a set of independent elements such as list rows or cards. Character reveal first splits one sentence into individual characters and then applies that pattern to the character run, and it takes extra work for screen readers.',
+      },
+    ],
+    pitfalls: [
+      'Once split into per-character spans, a screen reader reads character by character. Mark the visual text aria-hidden="true" and give assistive tech a complete copy (sr-only or aria-label).',
+      'Splitting English by letter breaks words, ligatures, and kerning. Split English by word, or segment it by grapheme or word with Intl.Segmenter.',
+      'One DOM node per character means long text blows up to hundreds of nodes and a total delay of several seconds. Animate only the first 20 to 30 characters and show the rest immediately.',
+      'Stagger times character count is how long the last character waits: 40 characters at 50ms is already two seconds. Do not make readers sit through it.',
+      'Under prefers-reduced-motion, drop the delay and the offset and show the whole sentence at once.',
+    ],
+    spec: [
+      { label: 'Per-character duration' },
+      { label: 'Stagger' },
+      { label: 'Offset' },
+      { label: 'Easing' },
+      { label: 'Character cap' },
+    ],
+    reducedMotion: 'Under prefers-reduced-motion: reduce, drop the per-character delay and the offset and render the whole sentence once in its final state.',
+    controls: [
+      { label: 'Per-character duration', hint: 'Each character runs this long on its own' },
+      { label: 'Stagger', hint: 'At 0 the whole sentence appears at once' },
+      { label: 'Travel distance', hint: 'How many pixels each character floats up from below' },
+      { label: 'Easing' },
+    ],
+  },
 }
 
 export default entry
