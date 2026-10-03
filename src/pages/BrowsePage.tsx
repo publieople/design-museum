@@ -41,7 +41,7 @@ export function BrowsePage() {
     <div className="flex flex-col gap-6">
       <header className="flex flex-col gap-4">
         <div className="flex items-baseline justify-between gap-4">
-          <h1 className="font-display text-2xl font-semibold tracking-tight">{t('browse.title')}</h1>
+          <h1 className="text-title font-display font-semibold enter enter-1">{t('browse.title')}</h1>
           <span className="font-mono text-xs text-muted">
             {t('browse.count', { a: results.length, b: ENTRIES.length })}
           </span>

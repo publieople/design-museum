@@ -1,67 +1,13 @@
 import { useMemo, useState } from 'react'
 import { ENTRIES, featuredEntries } from '../data'
 import { CATEGORIES, categoryBlurb } from '../data/taxonomy'
-import type { Entry } from '../data/types'
 import { useT, useLocale } from '../i18n'
-import { defaultValues } from '../lib/controls'
 import { resolveEntry } from '../lib/localize'
-import { usePrefs } from '../lib/prefs'
-import { interactionHintKey, shouldAutoLoop } from '../lib/loop'
-import { useReplayKey } from '../lib/replay'
 import { Link } from '../lib/router'
 import { searchEntries } from '../lib/search'
-import { DemoRunner } from '../components/DemoRunner'
-import { DemoStage } from '../components/DemoStage'
-import { ErrorBoundary } from '../components/ErrorBoundary'
+import { EntryCard } from '../components/EntryCard'
 import { SearchBox } from '../components/SearchBox'
-import { resolveStage } from '../components/stageStyles'
-import { hasDemo } from '../demos/registry'
 
-function Specimen({ entry }: { entry: Entry }) {
-  const t = useT()
-  const locale = useLocale()
-  const { stage: stagePref } = usePrefs()
-  const [replayKey, replay] = useReplayKey()
-  const resolved = useMemo(() => resolveEntry(entry, locale), [entry, locale])
-  const values = useMemo(() => defaultValues(entry), [entry])
-  const stage = resolveStage(entry, stagePref)
-
-  return (
-    <li className="flex flex-col gap-3">
-      {hasDemo(entry.slug) ? (
-        <ErrorBoundary label={entry.slug} message={t('error.renderFailed')}>
-          <DemoStage
-            compact
-            stage={stage}
-            loopable={shouldAutoLoop(entry)}
-            hint={interactionHintKey(entry)}
-            onStageChange={() => {}}
-            onReplay={replay}
-          >
-            <Link to={`/entry/${entry.slug}`} className="block" tabIndex={-1} aria-hidden="true">
-              <DemoRunner
-                slug={entry.slug}
-                values={values}
-                stage={stage}
-                replayKey={replayKey}
-                fit
-              />
-            </Link>
-          </DemoStage>
-        </ErrorBoundary>
-      ) : null}
-      <div>
-        <span className="font-mono text-[11px] tracking-wider text-accent">{resolved.code}</span>
-        <h3 className="font-display text-base font-semibold leading-tight">
-          <Link to={`/entry/${entry.slug}`} className="no-underline">
-            {resolved.nameZh}
-          </Link>
-        </h3>
-        <p className="font-mono text-[11px] text-muted">{resolved.nameEn}</p>
-      </div>
-    </li>
-  )
-}
 
 export function HomePage() {
   const t = useT()
@@ -77,16 +23,18 @@ export function HomePage() {
     <div className="flex flex-col gap-12">
       <section className="flex flex-col gap-6 pt-4">
         <div className="max-w-2xl">
-          <p className="label-mono">{t('home.eyebrow', { n: ENTRIES.length })}</p>
-          <h1 className="mt-3 font-display text-3xl font-semibold leading-[1.15] tracking-tight sm:text-4xl">
+          <p className="label-mono enter enter-1">{t('home.eyebrow', { n: ENTRIES.length })}</p>
+          <h1 className="text-display mt-3 font-display font-semibold enter enter-2">
             {t('home.h1a')}
             <br />
             {t('home.h1b')}
           </h1>
-          <p className="mt-4 text-muted">{t('home.lede')}</p>
+          <p className="mt-4 max-w-xl text-muted enter enter-3">{t('home.lede')}</p>
         </div>
 
-        <SearchBox value={query} onChange={setQuery} />
+        <div className="enter enter-4">
+          <SearchBox value={query} onChange={setQuery} />
+        </div>
 
         {query ? (
           <div>
@@ -124,7 +72,7 @@ export function HomePage() {
           </div>
           <ul className="grid gap-6 sm:grid-cols-3">
             {specimens.map((entry) => (
-              <Specimen key={entry.slug} entry={entry} />
+              <EntryCard key={entry.slug} entry={entry} />
             ))}
           </ul>
         </section>
@@ -142,7 +90,7 @@ export function HomePage() {
                 <li key={category.id}>
                   <Link
                     to={`/browse?cat=${category.id}`}
-                    className="flex flex-wrap items-baseline gap-x-4 gap-y-1 py-4 no-underline transition-colors hover:text-accent"
+                    className="-mx-3 flex flex-wrap items-baseline gap-x-4 gap-y-1 rounded-lg px-3 py-4 no-underline transition-colors hover:bg-[color-mix(in_srgb,var(--ink)_3%,transparent)]"
                   >
                     <span className="w-6 font-mono text-xs text-accent">{category.letter}</span>
                     <span className="font-display text-lg font-semibold">
@@ -169,14 +117,14 @@ export function HomePage() {
         <section className="grid gap-4 sm:grid-cols-2">
           <Link
             to="/feel"
-            className="rounded-lg border border-line bg-raised p-5 no-underline transition-colors hover:border-accent/50"
+            className="rounded-xl border border-line bg-raised p-5 no-underline shadow-[var(--shadow-card)] transition-[transform,box-shadow,border-color] duration-300 ease-[cubic-bezier(0.22,1,0.36,1)] hover:-translate-y-1 hover:border-accent/45 hover:shadow-[var(--shadow-lift)] motion-reduce:transition-none motion-reduce:hover:translate-y-0"
           >
             <h2 className="font-display text-lg font-semibold">{t('home.feelTitle')}</h2>
             <p className="mt-1 text-sm text-muted">{t('home.feelDesc')}</p>
           </Link>
           <Link
             to="/cheatsheet"
-            className="rounded-lg border border-line bg-raised p-5 no-underline transition-colors hover:border-accent/50"
+            className="rounded-xl border border-line bg-raised p-5 no-underline shadow-[var(--shadow-card)] transition-[transform,box-shadow,border-color] duration-300 ease-[cubic-bezier(0.22,1,0.36,1)] hover:-translate-y-1 hover:border-accent/45 hover:shadow-[var(--shadow-lift)] motion-reduce:transition-none motion-reduce:hover:translate-y-0"
           >
             <h2 className="font-display text-lg font-semibold">{t('home.sheetTitle')}</h2>
             <p className="mt-1 text-sm text-muted">{t('home.sheetDesc')}</p>
@@ -185,10 +133,18 @@ export function HomePage() {
       ) : null}
 
       {!query ? (
-        <p className="text-xs text-muted">
-          {t('home.categoriesRef')}
-          {CATEGORIES.map((c) => `${c.nameZh}（${c.nameEn}）`).join('、')}。
-        </p>
+        <section className="border-t border-line pt-4">
+          <p className="label-mono mb-2">{t('home.categoriesRef')}</p>
+          <ul className="flex flex-wrap gap-x-4 gap-y-1 font-mono text-[11px] text-muted">
+            {CATEGORIES.map((c) => (
+              <li key={c.id}>
+                <span className="text-ink">{c.nameZh}</span>
+                <span className="mx-1 opacity-50">/</span>
+                {c.nameEn}
+              </li>
+            ))}
+          </ul>
+        </section>
       ) : null}
     </div>
   )

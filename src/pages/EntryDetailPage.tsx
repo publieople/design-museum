@@ -82,32 +82,36 @@ export function EntryDetailPage({ slug }: { slug?: string }) {
 
   return (
     <article className="flex flex-col gap-8">
-      <header className="flex flex-col gap-2">
-        <nav aria-label="breadcrumb" className="font-mono text-[11px] text-muted">
-          <Link to="/browse" className="no-underline hover:text-accent">
-            {t('entry.browse')}
-          </Link>
-          <span className="mx-1">/</span>
-          <Link to={`/browse?cat=${category.id}`} className="no-underline hover:text-accent">
-            {locale === 'en' ? category.nameEn : category.nameZh}
-          </Link>
-          <span className="mx-1">/</span>
-          <span className="text-accent">{resolved.code}</span>
-        </nav>
-
-        <div className="flex flex-wrap items-baseline gap-x-3 gap-y-1">
-          <h1 className="font-display text-3xl font-semibold tracking-tight">{resolved.nameZh}</h1>
-          <p className="font-mono text-sm text-muted">{resolved.nameEn}</p>
+      {/* 展签：外框 + 顶栏（所在展厅 / 编号章）+ 名称与一句话。 */}
+      <header className="enter enter-1 overflow-hidden rounded-xl border border-line bg-raised shadow-[var(--shadow-card)]">
+        <div className="flex flex-wrap items-center justify-between gap-x-4 gap-y-1 border-b border-line bg-[color-mix(in_srgb,var(--ink)_2.5%,transparent)] px-5 py-2.5">
+          <nav aria-label="breadcrumb" className="font-mono text-[11px] text-muted">
+            <Link to="/browse" className="no-underline hover:text-accent">
+              {t('entry.browse')}
+            </Link>
+            <span className="mx-1 opacity-50">/</span>
+            <Link to={`/browse?cat=${category.id}`} className="no-underline hover:text-accent">
+              {locale === 'en' ? category.nameEn : category.nameZh}
+            </Link>
+          </nav>
+          <span className="stamp">{resolved.code}</span>
         </div>
 
-        <p className="max-w-2xl text-muted">{resolved.oneLiner}</p>
+        <div className="px-5 py-5">
+          <div className="flex flex-wrap items-baseline gap-x-3 gap-y-1">
+            <h1 className="text-title font-display font-semibold">{resolved.nameZh}</h1>
+            <p className="font-mono text-sm text-muted">{resolved.nameEn}</p>
+          </div>
 
-        {resolved.aliases.length > 0 ? (
-          <p className="font-mono text-[11px] text-muted">
-            {t('entry.aliases')}
-            {resolved.aliases.join(' / ')}
-          </p>
-        ) : null}
+          <p className="mt-3 max-w-2xl text-muted">{resolved.oneLiner}</p>
+
+          {resolved.aliases.length > 0 ? (
+            <p className="mt-4 border-t border-dashed border-line pt-3 font-mono text-[11px] text-muted">
+              {t('entry.aliases')}
+              {resolved.aliases.join(' / ')}
+            </p>
+          ) : null}
+        </div>
       </header>
 
       <div className="grid gap-8 lg:grid-cols-[minmax(0,1fr)_minmax(0,22rem)]">

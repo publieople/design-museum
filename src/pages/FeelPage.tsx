@@ -33,7 +33,7 @@ export function FeelPage() {
   return (
     <div className="flex flex-col gap-8">
       <header className="flex flex-col gap-2">
-        <h1 className="font-display text-2xl font-semibold tracking-tight">{t('feel.title')}</h1>
+        <h1 className="text-title font-display font-semibold enter enter-1">{t('feel.title')}</h1>
         <p className="max-w-2xl text-muted">{t('feel.lede')}</p>
       </header>
 

@@ -122,7 +122,7 @@ export function SearchBox({ value, onChange, autoFocus = false, className = '' }
         onFocus={() => setOpen(true)}
         onBlur={() => window.setTimeout(() => setOpen(false), 120)}
         onKeyDown={onKeyDown}
-        className="w-full rounded-lg border border-line bg-raised py-3 pl-9 pr-20 text-sm outline-none placeholder:text-muted focus:border-accent"
+        className="w-full rounded-xl border border-line bg-raised py-3 pl-9 pr-20 text-sm shadow-[var(--shadow-card)] outline-none transition-[box-shadow,border-color] duration-300 placeholder:text-muted focus:border-accent focus:shadow-[0_0_0_3px_color-mix(in_srgb,var(--accent)_14%,transparent),var(--shadow-card)]"
       />
       {value ? (
         <button

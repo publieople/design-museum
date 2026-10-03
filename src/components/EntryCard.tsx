@@ -38,7 +38,7 @@ export function EntryCard({ entry, showDemo = true }: EntryCardProps) {
   return (
     <li
       ref={ref}
-      className="flex flex-col overflow-hidden rounded-lg border border-line bg-raised transition-colors hover:border-accent/50"
+      className="flex flex-col overflow-hidden rounded-xl border border-line bg-raised shadow-[var(--shadow-card)] transition-[transform,box-shadow,border-color] duration-300 ease-[cubic-bezier(0.22,1,0.36,1)] hover:-translate-y-1 hover:border-accent/45 hover:shadow-[var(--shadow-lift)] motion-reduce:transition-none motion-reduce:hover:translate-y-0"
     >
       {/* 舞台永远渲染：只有它在这儿占住 aspect-ratio 的高度，卡片高度才是恒定的。
           以前「进视口才渲染整个舞台」会让卡片在滚动中瞬间长高 400px，
@@ -62,8 +62,8 @@ export function EntryCard({ entry, showDemo = true }: EntryCardProps) {
       ) : null}
 
       <div className="flex flex-1 flex-col gap-2 p-4">
-        <div className="flex items-baseline justify-between gap-2">
-          <span className="font-mono text-[11px] tracking-wider text-accent">{resolved.code}</span>
+        <div className="flex items-center justify-between gap-2">
+          <span className="stamp">{resolved.code}</span>
           <span className="font-mono text-[10px] uppercase tracking-wider text-muted">
             {resolved.nameEn}
           </span>
