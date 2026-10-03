@@ -58,6 +58,8 @@ export function DemoStage({
     color: style.color,
     '--stage-ink': style.color,
     '--stage-muted': style.muted,
+    // demo 需要不透明底色时用它（见 StageStyle.base）
+    '--stage-bg': style.base,
   } as CSSProperties
 
   const toolbarButton = (active: boolean) =>

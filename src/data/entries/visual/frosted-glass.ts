@@ -68,7 +68,7 @@ const entry: Entry = {
       unit: 'px',
       hint: '拖到 0px 能直观看出「模糊」和「透明」不是一回事',
     },
-    { kind: 'range', id: 'saturate', label: '饱和度', min: 100, max: 250, step: 5, def: 180, unit: '%' },
+    { kind: 'range', id: 'saturate', label: '饱和度', min: 100, max: 250, step: 5, def: 115, unit: '%' },
     { kind: 'range', id: 'alpha', label: '面板底色不透明度', min: 0, max: 40, step: 1, def: 8, unit: '%' },
     { kind: 'range', id: 'radius', label: '圆角', min: 0, max: 28, step: 1, def: 14, unit: 'px' },
   ],

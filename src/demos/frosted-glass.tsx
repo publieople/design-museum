@@ -1,7 +1,9 @@
 import type { DemoProps } from '../data/types'
 import { numberValue } from '../lib/controls'
 
-const SWATCHES = ['#ffd166', '#ef476f', '#06d6a0', '#118ab2']
+// 米白 / 朱红 / 灰绿 / 浅石板：仍然能看出"面板背后有结构"，但不再是霓虹三原色；
+// 四个都要在深色顶部站得住
+const SWATCHES = ['#f4f2ec', '#c9382a', '#7f8f7a', '#8fa3a8']
 
 export default function FrostedGlassDemo({ values, stage, locale = 'zh' }: DemoProps) {
   const zh = locale !== 'en'
@@ -17,8 +19,11 @@ export default function FrostedGlassDemo({ values, stage, locale = 'zh' }: DemoP
       <div
         className="flex h-52 flex-col justify-between p-4"
         style={{
+          // 0deg 是"从下往上"：底部浅沙、顶部深棕。
+          // 面板压在底部（文字的深/浅是按舞台定的），那块必须是浅色才不会深底深字；
+          // 顶部放圆点和说明文字，深底才衬得出白色文字。
           background:
-            'linear-gradient(135deg, #2b1b4d 0%, #6d3b8f 40%, #d95f7a 70%, #f2b880 100%)',
+            'linear-gradient(0deg, #f2e4c8 0%, #d9a06a 34%, #a8562f 64%, #4a3b33 100%)',
         }}
       >
         <div className="flex gap-2">

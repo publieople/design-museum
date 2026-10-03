@@ -1,4 +1,5 @@
 import type { ControlValues, Entry } from '../../types'
+import { ringStops } from '../../palettes'
 
 const entry: Entry = {
   slug: 'gradient-border',
@@ -92,7 +93,7 @@ const entry: Entry = {
       min: 0,
       max: 360,
       step: 5,
-      def: 265,
+      def: 14,
       unit: 'deg',
       hint: '后两个色标自动 +90deg、+180deg',
     },
@@ -113,11 +114,10 @@ const entry: Entry = {
     const angle = Number(values.angle)
     const hue = Number(values.hue)
     const radius = Number(values.radius)
-    const second = (hue + 90) % 360
-    const third = (hue + 180) % 360
+    const stops = ringStops(hue).join(', ')
     return {
-      zh: `给卡片做渐变描边（gradient border）：不要用 border-image，它不支持圆角。写成 border: ${width}px solid transparent，再叠两层背景——padding-box 一层实底盖住内部，border-box 一层 linear-gradient(${angle}deg, hsl(${hue}, 90%, 62%), hsl(${second}, 92%, 55%), hsl(${third}, 88%, 60%))，配 border-radius: ${radius}px。再用 @property 注册一个角度变量，让描边 6s 线性无限慢慢转。`,
-      en: `gradient border, border: ${width}px solid transparent, background: linear-gradient(...) padding-box, linear-gradient(${angle}deg, hsl(${hue}, 90%, 62%), hsl(${second}, 92%, 55%)) border-box, background-clip: padding-box / border-box, border-radius: ${radius}px, @property registered angle, 6s linear infinite rotation, avoid border-image since it ignores border-radius`,
+      zh: `给卡片做渐变描边（gradient border）：不要用 border-image，它不支持圆角。写成 border: ${width}px solid transparent，再叠两层背景——padding-box 一层实底盖住内部，border-box 一层 linear-gradient(${angle}deg, ${stops})，配 border-radius: ${radius}px。再用 @property 注册一个角度变量，让描边 6s 线性无限慢慢转。`,
+      en: `gradient border, border: ${width}px solid transparent, background: linear-gradient(...) padding-box, linear-gradient(${angle}deg, ${stops}) border-box, background-clip: padding-box / border-box, border-radius: ${radius}px, @property registered angle, 6s linear infinite rotation, avoid border-image since it ignores border-radius`,
     }
   },
   loop: 'continuous',

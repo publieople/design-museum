@@ -81,7 +81,7 @@ const entry: Entry = {
       min: 0,
       max: 24,
       step: 1,
-      def: 8,
+      def: 10,
       unit: '%',
       hint: '拖到 0 能对比出它在压色带上的作用',
     },
@@ -105,8 +105,8 @@ const entry: Entry = {
     const flicker = Boolean(values.flicker)
     const frequency = (1 / grain).toFixed(2)
     return {
-      zh: `给这块深色渐变面板加一层颗粒噪点（grain noise）：把一张 160x160 的 SVG feTurbulence data URI 当 background-image 平铺，baseFrequency="${frequency}"（约 ${grain}px 颗粒）、type="fractalNoise"、numOctaves="3"、stitchTiles="stitch"；噪点层 opacity: ${opacity}%、mix-blend-mode: ${blend}、pointer-events: none。${flicker ? '再用 steps() 的 transform 位移做胶片跳动，' : ''}目的是压住渐变色带，不是把画面搞脏。`,
-      en: `film grain noise overlay, SVG feTurbulence fractalNoise baseFrequency="${frequency}" numOctaves="3" stitchTiles="stitch", data URI background-image repeated 160px tile, opacity: ${opacity}%, mix-blend-mode: ${blend}, pointer-events: none${flicker ? ', steps(6) transform jitter keyframes' : ''}, dithering to hide gradient banding`,
+      zh: `给这块深色渐变面板加一层颗粒噪点（grain noise）：把一张 160x160 的 SVG feTurbulence data URI 当 background-image 平铺，baseFrequency="${frequency}"（约 ${grain}px 颗粒）、type="fractalNoise"、numOctaves="3"、stitchTiles="stitch"；噪点层 opacity: ${opacity}%、mix-blend-mode: ${blend}、pointer-events: none；再补一个 <feColorMatrix type="saturate" values="0"/> 把噪声转成中性灰（feTurbulence 连 alpha 都是随机的，不转灰叠上去会发彩）。${flicker ? '再用 steps() 的 transform 位移做胶片跳动，' : ''}目的是压住渐变色带，不是把画面搞脏。`,
+      en: `film grain noise overlay, SVG feTurbulence fractalNoise baseFrequency="${frequency}" numOctaves="3" stitchTiles="stitch", data URI background-image repeated 160px tile, opacity: ${opacity}%, mix-blend-mode: ${blend}, pointer-events: none, feColorMatrix saturate 0 to keep the grain neutral${flicker ? ', steps(6) transform jitter keyframes' : ''}, dithering to hide gradient banding`,
     }
   },
   loop: 'continuous',

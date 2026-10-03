@@ -71,8 +71,10 @@ export default function ToastDemo({ values, stage, replayKey, locale = 'zh' }: D
         <button
           type="button"
           onClick={() => push('ok')}
-          className="cursor-pointer rounded-full px-4 py-2 text-xs font-semibold"
-          style={{ color: '#ffffff', background: 'linear-gradient(135deg, #2f6bff, #7b2ff7)' }}
+          className="cursor-pointer rounded-full px-4 py-2 text-xs font-semibold transition-opacity hover:opacity-90"
+          // 和磁吸按钮同一套：站点墨色填充 + 跟随舞台的文字色。
+          // 之前那支蓝紫渐变是上一轮从别处撤掉时漏下的一处。
+          style={{ color: dark ? '#101014' : '#ffffff', background: 'var(--stage-ink)' }}
         >
           {zh ? '保存' : 'Save'}
         </button>

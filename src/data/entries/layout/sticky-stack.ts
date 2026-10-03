@@ -60,11 +60,11 @@ const entry: Entry = {
       min: 0,
       max: 44,
       step: 2,
-      def: 14,
+      def: 18,
       unit: 'px',
       hint: '每张比上一张多留出来的那一条，调到 0 就完全重合',
     },
-    { kind: 'range', id: 'count', label: '卡片数量', min: 3, max: 6, step: 1, def: 4, unit: '张' },
+    { kind: 'range', id: 'count', label: '卡片数量', min: 3, max: 6, step: 1, def: 6, unit: '张' },
     {
       kind: 'range',
       id: 'shrink',

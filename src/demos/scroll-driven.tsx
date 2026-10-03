@@ -71,10 +71,12 @@ export default function ScrollDrivenDemo({ values, replayKey, locale = 'zh' }: D
 
   const clamp = (value: number) => Math.max(0, Math.min(1, value))
 
+  const percent = Math.round(clamp(progress) * 100)
+
   const footer = native
     ? zh
-      ? `animation-timeline: scroll() / view() · 区间 cover ${cover}%`
-      : `animation-timeline: scroll() / view() · range cover ${cover}%`
+      ? `animation-timeline: scroll() / view() · 区间 cover ${cover}% · 读数 ${percent}%（仅用于对答案，进度条本身不写 JS）`
+      : `animation-timeline: scroll() / view() · range cover ${cover}% · readout ${percent}% (for checking only; the bar itself needs no JS)`
     : (reduced
         ? zh
           ? '已减少动效 · '
@@ -83,7 +85,7 @@ export default function ScrollDrivenDemo({ values, replayKey, locale = 'zh' }: D
           ? '此浏览器不支持 animation-timeline · '
           : 'This browser does not support animation-timeline · ') +
       (zh ? '进度 ' : 'Progress ') +
-      Math.round(clamp(progress) * 100) +
+      percent +
       '%'
 
   return (
@@ -108,32 +110,43 @@ export default function ScrollDrivenDemo({ values, replayKey, locale = 'zh' }: D
         style={{ border: '1px solid color-mix(in srgb, var(--stage-ink) 14%, transparent)' }}
       >
         <div
-          className="relative h-1.5"
-          style={{ background: 'color-mix(in srgb, var(--stage-ink) 12%, transparent)' }}
-        >
-          <span
-            key={'bar-' + replayKey}
-            className="absolute inset-0 origin-left"
-            style={{
-              background: 'var(--stage-ink)',
-              transform: native ? 'scaleX(0)' : 'scaleX(' + clamp(progress).toFixed(3) + ')',
-              animation: native ? 'dm-motion-sda-progress linear both' : 'none',
-              animationTimeline: native ? 'scroll()' : 'auto',
-            }}
-          />
-        </div>
-
-        <div
           ref={boxRef}
           key={'box-' + replayKey}
+          data-scroller
           onScroll={onScroll}
-          className="h-56 overflow-y-auto overscroll-contain p-3"
+          className="h-56 overflow-y-auto overscroll-contain"
           style={{ background: 'color-mix(in srgb, var(--stage-ink) 5%, transparent)' }}
           tabIndex={0}
           aria-label={pick(T.aria, locale)}
         >
-          <p className="mb-3 font-mono text-[10px] opacity-60">{pick(T.hint, locale)}</p>
-          <div className="flex flex-col gap-2.5">
+          {/* 进度条必须待在滚动容器内部：animation-timeline: scroll() 取的是被动画
+              元素自己的最近滚动祖先。放在框外面时，往上第一个滚动容器是舞台根节点
+              （overflow-hidden，没有可滚动溢出），时间线不可用，配 fill-mode: both
+              就停在起始帧——整条 0 像素宽，怎么滚都看不见。 */}
+          <div
+            className="sticky top-0 z-10 h-2 w-full"
+            style={{
+              background:
+                'color-mix(in srgb, var(--stage-ink) 14%, var(--stage-bg, transparent))',
+            }}
+          >
+            <span
+              key={'bar-' + replayKey}
+              data-progress-bar
+              className="block h-full origin-left"
+              style={{
+                background: 'var(--stage-ink)',
+                transform: native ? 'scaleX(0)' : 'scaleX(' + clamp(progress).toFixed(3) + ')',
+                animation: native ? 'dm-motion-sda-progress linear both' : 'none',
+                animationTimeline: native ? 'scroll()' : 'auto',
+              }}
+            />
+          </div>
+
+          <p className="mb-3 px-3 pt-3 font-mono text-[10px] opacity-60">
+            {pick(T.hint, locale)}
+          </p>
+          <div className="flex flex-col gap-2.5 px-3 pb-3">
             {PARAGRAPHS.map((index, position) => (
               <div
                 key={index}

@@ -7,6 +7,12 @@ export interface StageStyle {
   muted: string
   /** 深色舞台需要给 demo 换一套前景色 */
   dark: boolean
+  /**
+   * 舞台背景的实底近似色（background 是多层渐变，没法直接拿来混色）。
+   * demo 要一块不透明的底（进度条轨道、渐变描边的卡片面）时用它：
+   * color-mix(in srgb, var(--stage-ink) 10%, var(--stage-bg, transparent))
+   */
+  base: string
 }
 
 /**
@@ -21,6 +27,7 @@ export const STAGE_STYLES: Record<StageId, StageStyle> = {
     color: '#16161a',
     muted: 'rgba(22,22,26,0.55)',
     dark: false,
+    base: '#eeebe4',
   },
   dark: {
     background: `repeating-linear-gradient(0deg, rgba(255,255,255,0.045) 0 1px, transparent 1px 28px),
@@ -29,12 +36,15 @@ export const STAGE_STYLES: Record<StageId, StageStyle> = {
     color: '#f2f2f5',
     muted: 'rgba(242,242,245,0.6)',
     dark: true,
+    base: '#0f0f13',
   },
   accent: {
     background: 'linear-gradient(135deg, #c9382a 0%, #7b2ff7 55%, #1f6feb 100%)',
     color: '#ffffff',
     muted: 'rgba(255,255,255,0.72)',
     dark: true,
+    // 彩色舞台渐变的中点色
+    base: '#7b2ff7',
   },
   photo: {
     background: `radial-gradient(120% 90% at 15% 18%, #ffd6a5 0%, transparent 55%),
@@ -45,6 +55,7 @@ export const STAGE_STYLES: Record<StageId, StageStyle> = {
     color: '#1b1b20',
     muted: 'rgba(27,27,32,0.6)',
     dark: false,
+    base: '#f0eaf4',
   },
 }
 

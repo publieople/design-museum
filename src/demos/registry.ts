@@ -6,7 +6,12 @@ import { lazyWithRetry } from '../lib/lazyWithRetry'
  * 非 eager：30 个 demo 各自一个 chunk，首页只下载真正挂出来的那几个。
  * eager 版本会把全部 demo 打进主包（实测单包 433KB）。
  */
-const modules = import.meta.glob<{ default: ComponentType<DemoProps> }>('./*.tsx')
+// 负数模式排除放在同目录的测试文件：它们也是 .tsx，但不能被当成 demo——
+// 否则 entries.test 的"没有孤儿 demo"会当场抓住，构建也会把测试打进包里。
+const modules = import.meta.glob<{ default: ComponentType<DemoProps> }>([
+  './*.tsx',
+  '!./*.test.tsx',
+])
 
 const LAZY_CACHE = new Map<string, LazyExoticComponent<ComponentType<DemoProps>>>()
 

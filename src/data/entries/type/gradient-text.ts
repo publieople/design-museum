@@ -1,4 +1,5 @@
 import type { ControlValues, Entry } from '../../types'
+import { TEXT_PALETTE_FALLBACK, TEXT_PALETTES } from '../../palettes'
 
 const entry: Entry = {
   slug: 'gradient-text',
@@ -53,10 +54,11 @@ const entry: Entry = {
       id: 'palette',
       label: '配色',
       def: 'sunset',
+      // value 是 URL / 本地存储里的对外标识，只换配色不改 value
       options: [
-        { value: 'sunset', label: '暖霞（红紫）' },
-        { value: 'ocean', label: '冷光（青蓝）' },
-        { value: 'acid', label: '酸性（绿粉）' },
+        { value: 'sunset', label: '朱红→赭金' },
+        { value: 'ocean', label: '墨→朱红' },
+        { value: 'acid', label: '松绿→陶土' },
       ],
     },
     { kind: 'range', id: 'startStop', label: '首色位置', min: 0, max: 100, step: 5, def: 0, unit: '%', hint: '把第一种颜色往后推，渐变会挤向另一头' },
@@ -67,12 +69,7 @@ const entry: Entry = {
     const palette = String(values.palette)
     const start = Number(values.startStop)
     const hue = Boolean(values.hue)
-    const pairs: Record<string, string> = {
-      sunset: '#e5484d → #7c3aed',
-      ocean: '#0ea5e9 → #6366f1',
-      acid: '#4d7c0f → #db2777',
-    }
-    const pair = pairs[palette] ?? pairs.sunset
+    const pair = (TEXT_PALETTES[palette] ?? TEXT_PALETTES[TEXT_PALETTE_FALLBACK]).join(' → ')
     return {
       zh:
         '做一个渐变文字（gradient text）标题：background-image 用 linear-gradient(' +

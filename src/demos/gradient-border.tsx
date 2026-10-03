@@ -1,5 +1,6 @@
 import type { CSSProperties } from 'react'
 import type { DemoProps } from '../data/types'
+import { ringStops } from '../data/palettes'
 import { numberValue } from '../lib/controls'
 import { usePrefersReducedMotion } from '../lib/motion'
 
@@ -10,14 +11,14 @@ function ringStyle(
   radius: number,
   animated: boolean,
 ): CSSProperties {
-  const first = `hsl(${hue}, 90%, 62%)`
-  const second = `hsl(${(hue + 90) % 360}, 92%, 55%)`
-  const third = `hsl(${(hue + 180) % 360}, 88%, 60%)`
+  // 色标公式和词条 prompt 共用一份，免得"看到的"和"复制出去的"对不上
+  const [first, second, third] = ringStops(hue)
   return {
     border: `${width}px solid transparent`,
     borderRadius: radius,
     background: `linear-gradient(var(--dm-gb-surface), var(--dm-gb-surface)) padding-box, linear-gradient(calc(${angle}deg + var(--dm-gb-flow)), ${first}, ${second}, ${third}) border-box`,
-    '--dm-gb-surface': 'color-mix(in srgb, var(--stage-ink) 12%, transparent)',
+    // 半透明的底会把整张卡压成灰扑扑的一层（"暗"的另一半原因），用舞台实底色混出真卡面
+    '--dm-gb-surface': 'color-mix(in srgb, var(--stage-ink) 10%, var(--stage-bg, transparent))',
     '--dm-gb-flow': '0deg',
     animation: animated ? 'dm-visual-gb-flow 6s linear infinite' : undefined,
   } as CSSProperties

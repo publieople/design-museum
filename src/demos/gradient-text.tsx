@@ -1,12 +1,7 @@
 import type { DemoProps } from '../data/types'
+import { TEXT_PALETTE_FALLBACK, TEXT_PALETTES } from '../data/palettes'
 import { boolValue, numberValue, stringValue } from '../lib/controls'
 import { usePrefersReducedMotion } from '../lib/motion'
-
-const PALETTES: Record<string, [string, string]> = {
-  sunset: ['#e5484d', '#7c3aed'],
-  ocean: ['#0ea5e9', '#6366f1'],
-  acid: ['#4d7c0f', '#db2777'],
-}
 
 export default function GradientTextDemo({ values, stage, replayKey, locale = 'zh' }: DemoProps) {
   const zh = locale !== 'en'
@@ -15,7 +10,8 @@ export default function GradientTextDemo({ values, stage, replayKey, locale = 'z
   const start = numberValue(values, 'startStop', 0)
   const hue = boolValue(values, 'hue', false)
   const reduced = usePrefersReducedMotion()
-  const [from, to] = PALETTES[palette] ?? PALETTES.sunset
+  // 存储/老链接里可能是陌生 id，退回默认那套
+  const [from, to] = TEXT_PALETTES[palette] ?? TEXT_PALETTES[TEXT_PALETTE_FALLBACK]
   const gradient = 'linear-gradient(' + angle + 'deg, ' + from + ' ' + start + '%, ' + to + ' 100%)'
   const animate = hue && !reduced
   const readout = 'linear-gradient(' + angle + 'deg, ' + from + ' ' + start + '%, ' + to + ' 100%)'
