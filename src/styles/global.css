@@ -18,8 +18,14 @@
   /* 浅色下用投影表达"浮起来"；暗色下投影看不见，改用描边 + 1px 高光（见下面两处覆盖） */
   --shadow-card: 0 1px 2px rgba(22, 22, 26, 0.04), 0 10px 24px -16px rgba(22, 22, 26, 0.2);
   --shadow-lift: 0 3px 7px rgba(22, 22, 26, 0.08), 0 26px 50px -22px rgba(22, 22, 26, 0.4);
-  /* 展墙网点：只负责让人觉出这是纸/墙，不能抢字 */
+  /* 展墙景观：一层极淡的渐变 + 两团光，给"墙"一点纵深。
+     纯色背景在深色下会像一块死黑，在浅色下会像一张没铺完的白纸。 */
+  --wash-top: #fdfcf9;
+  --wash-bottom: #e9e5da;
+  --wash-a: rgba(201, 56, 42, 0.075);
+  --wash-b: rgba(206, 158, 74, 0.1);
   --wall-dot: rgba(22, 22, 26, 0.55);
+  /* 展墙网点：只负责让人觉出这是纸/墙，不能抢字 */
   --wall-dot-size: 22px;
 }
 
@@ -35,7 +41,12 @@
     --accent: #ff5a45;
     --shadow-card: 0 1px 2px rgba(0, 0, 0, 0.5), inset 0 1px 0 rgba(255, 255, 255, 0.045);
     --shadow-lift: 0 3px 10px rgba(0, 0, 0, 0.55), inset 0 1px 0 rgba(255, 255, 255, 0.075);
-    --wall-dot: rgba(255, 255, 255, 0.5);
+    /* 暗色不铺死黑：顶上略亮、底下略沉，再加一团朱红余温与一团冷光 */
+    --wash-top: #16161e;
+    --wash-bottom: #08080b;
+    --wash-a: rgba(255, 90, 69, 0.13);
+    --wash-b: rgba(96, 122, 200, 0.11);
+    --wall-dot: rgba(255, 255, 255, 0.62);
   }
 }
 
@@ -49,7 +60,12 @@
   --accent: #ff5a45;
   --shadow-card: 0 1px 2px rgba(0, 0, 0, 0.5), inset 0 1px 0 rgba(255, 255, 255, 0.045);
   --shadow-lift: 0 3px 10px rgba(0, 0, 0, 0.55), inset 0 1px 0 rgba(255, 255, 255, 0.075);
-  --wall-dot: rgba(255, 255, 255, 0.5);
+  /* 暗色不铺死黑：顶上略亮、底下略沉，再加一团朱红余温与一团冷光 */
+  --wash-top: #16161e;
+  --wash-bottom: #08080b;
+  --wash-a: rgba(255, 90, 69, 0.13);
+  --wash-b: rgba(96, 122, 200, 0.11);
+  --wall-dot: rgba(255, 255, 255, 0.62);
 }
 
 @theme inline {
@@ -97,6 +113,20 @@
     text-autospace: normal;
     -webkit-font-smoothing: antialiased;
     text-rendering: optimizeLegibility;
+  }
+
+  /* 展墙景观：一层竖向渐变（顶亮底沉）+ 两团极淡的光。
+     和网点分两个图层：景观在下，网点在上，各自都好单独调。 */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    z-index: 0;
+    pointer-events: none;
+    background-image:
+      radial-gradient(88% 52% at 10% -8%, var(--wash-a) 0%, transparent 60%),
+      radial-gradient(72% 46% at 94% 2%, var(--wash-b) 0%, transparent 58%),
+      linear-gradient(180deg, var(--wash-top) 0%, var(--surface) 46%, var(--wash-bottom) 100%);
   }
 
   /* 展墙的网点：一层极淡的点阵，铺在内容下面。
@@ -235,6 +265,11 @@
   .enter {
     animation: none;
   }
+
+  /* 该收还是要收，只是不做那 240ms 的滑出 */
+  .site-header {
+    transition: none;
+  }
 }
 
 /* ── 粘性头部 ────────────────────────────────────────────────
@@ -243,11 +278,20 @@
    滚下去之后再用 CSS 滚动驱动动画补上投影与发丝线——不支持时间线的
    浏览器就一直是那条静态的线，不会出现「滚下去却透明」的失控状态。
    这条动画本身也是本站课程里的东西：滚动驱动动画，一行 JS 都没有。 */
+.site-header[data-hidden='true'] {
+  transform: translateY(-102%);
+}
+
 .site-header {
   position: sticky;
   top: 0;
   z-index: 40;
-  background-color: color-mix(in srgb, var(--surface) 86%, transparent);
+  background-color: color-mix(in srgb, var(--wash-top) 84%, transparent);
+  /* 往下滚收起来、往上滚回来（可见 useHeaderHidden）。
+     过渡写在 translate 上——Tailwind 的 -translate-y 动的是 translate 属性，
+     不是 transform，写错的话位置变化会是瞬移。 */
+  transition: transform 240ms cubic-bezier(0.22, 1, 0.36, 1);
+  will-change: transform;
   /* 模糊交给 Tailwind 的 backdrop-blur-md / backdrop-saturate-150 类：
      手写「标准属性 + -webkit- 前缀」这一对会被 Lightning CSS 当成重复声明
      去重，最后只剩前缀那一份，标准属性在产物里就消失了。 */

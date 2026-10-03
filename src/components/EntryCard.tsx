@@ -38,7 +38,7 @@ export function EntryCard({ entry, showDemo = true }: EntryCardProps) {
   return (
     <li
       ref={ref}
-      className="flex flex-col overflow-hidden rounded-xl border border-line bg-raised shadow-[var(--shadow-card)] transition-[transform,box-shadow,border-color] duration-300 ease-[cubic-bezier(0.22,1,0.36,1)] hover:-translate-y-1.5 hover:border-accent/45 hover:shadow-[var(--shadow-lift)] motion-reduce:transition-none motion-reduce:hover:translate-y-0"
+      className="flex flex-col overflow-hidden rounded-xl border border-line bg-raised shadow-[var(--shadow-card)] transition-[translate,box-shadow,border-color] duration-300 ease-[cubic-bezier(0.22,1,0.36,1)] hover:-translate-y-1.5 hover:border-accent/45 hover:shadow-[var(--shadow-lift)] motion-reduce:transition-none motion-reduce:hover:translate-y-0"
     >
       {/* 舞台永远渲染：只有它在这儿占住 aspect-ratio 的高度，卡片高度才是恒定的。
           以前「进视口才渲染整个舞台」会让卡片在滚动中瞬间长高 400px，

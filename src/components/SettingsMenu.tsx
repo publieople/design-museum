@@ -38,7 +38,7 @@ function Chip({
   )
 }
 
-export function SettingsMenu() {
+export function SettingsMenu({ onOpenChange }: { onOpenChange?: (open: boolean) => void }) {
   const t = useT()
   const locale = useLocale()
   const { theme, locale: currentLocale, stage, slow, loop, setPref, setPrefAnimated, resetPrefs } =
@@ -48,11 +48,15 @@ export function SettingsMenu() {
 
   useEffect(() => {
     if (!open) return
+    const close = () => {
+      setOpen(false)
+      onOpenChange?.(false)
+    }
     const onPointerDown = (event: MouseEvent) => {
-      if (rootRef.current && !rootRef.current.contains(event.target as Node)) setOpen(false)
+      if (rootRef.current && !rootRef.current.contains(event.target as Node)) close()
     }
     const onKeyDown = (event: KeyboardEvent) => {
-      if (event.key === 'Escape') setOpen(false)
+      if (event.key === 'Escape') close()
     }
     document.addEventListener('mousedown', onPointerDown)
     document.addEventListener('keydown', onKeyDown)
@@ -60,7 +64,8 @@ export function SettingsMenu() {
       document.removeEventListener('mousedown', onPointerDown)
       document.removeEventListener('keydown', onKeyDown)
     }
-  }, [open])
+    // onOpenChange 由 Layout 传的 setState 提供，本身是稳定引用
+  }, [open, onOpenChange])
 
   const stageOptions: { id: StagePref; label: string; hint?: string }[] = [
     { id: 'auto', label: t('settings.stage.auto') },
@@ -76,7 +81,12 @@ export function SettingsMenu() {
       <button
         type="button"
         aria-expanded={open}
-        onClick={() => setOpen((prev) => !prev)}
+        onClick={() =>
+          setOpen((prev) => {
+            onOpenChange?.(!prev)
+            return !prev
+          })
+        }
         className="flex cursor-pointer items-center gap-1.5 rounded-full border border-line px-2 py-1 text-sm text-muted transition-colors hover:text-ink sm:px-2.5"
       >
         <span aria-hidden="true" className="font-mono text-xs">

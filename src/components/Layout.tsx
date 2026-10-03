@@ -1,5 +1,6 @@
-import { type ReactNode } from 'react'
+import { useState, type ReactNode } from 'react'
 import { useT } from '../i18n'
+import { useHeaderHidden } from '../lib/headerScroll'
 import { Link, useRoute } from '../lib/router'
 import { SettingsMenu } from './SettingsMenu'
 
@@ -11,6 +12,10 @@ export function Layout({ children }: { children: ReactNode }) {
   const route = useRoute()
   const wide = WIDE_ROUTES.has(route.segments[0] ?? '')
   const shell = wide ? 'max-w-[90rem]' : 'max-w-5xl'
+  // 往下滚把头部收起来，往上滚或键盘走进来就放回去；
+  // 设置面板展开时钉住不收起，否则面板会跟着头部一起滑走。
+  const [headerHidden, setHeaderHidden] = useHeaderHidden()
+  const [menuOpen, setMenuOpen] = useState(false)
 
   const nav = [
     { to: '/browse', label: t('nav.browse') },
@@ -23,7 +28,13 @@ export function Layout({ children }: { children: ReactNode }) {
   // 所以外壳拆成三层：header 通栏、里面各自居中限宽。样式在 global.css 的 .site-header。
   return (
     <div className="flex min-h-screen flex-col">
-      <header className="site-header backdrop-blur-md backdrop-saturate-150">
+      <header
+        className="site-header backdrop-blur-md backdrop-saturate-150"
+        data-hidden={headerHidden && !menuOpen ? 'true' : undefined}
+        // 键盘 Tab 走进头部（或打开设置面板）时，先把头部放回来，
+        // 否则焦点会落在一个已经滑出屏幕的元素上。
+        onFocusCapture={() => setHeaderHidden(false)}
+      >
         <div
           className={`mx-auto flex w-full flex-wrap items-center justify-between gap-x-3 gap-y-1.5 px-4 py-2.5 sm:gap-x-4 sm:px-6 sm:py-3.5 ${shell}`}
         >
@@ -57,7 +68,7 @@ export function Layout({ children }: { children: ReactNode }) {
                 )
               })}
             </nav>
-            <SettingsMenu />
+            <SettingsMenu onOpenChange={setMenuOpen} />
           </div>
         </div>
       </header>
