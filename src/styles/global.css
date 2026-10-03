@@ -248,8 +248,9 @@
   top: 0;
   z-index: 40;
   background-color: color-mix(in srgb, var(--surface) 86%, transparent);
-  backdrop-filter: blur(12px) saturate(140%);
-  -webkit-backdrop-filter: blur(12px) saturate(140%);
+  /* 模糊交给 Tailwind 的 backdrop-blur-md / backdrop-saturate-150 类：
+     手写「标准属性 + -webkit- 前缀」这一对会被 Lightning CSS 当成重复声明
+     去重，最后只剩前缀那一份，标准属性在产物里就消失了。 */
   border-bottom: 1px solid var(--line);
 }
 

@@ -23,7 +23,7 @@ export function Layout({ children }: { children: ReactNode }) {
   // 所以外壳拆成三层：header 通栏、里面各自居中限宽。样式在 global.css 的 .site-header。
   return (
     <div className="flex min-h-screen flex-col">
-      <header className="site-header">
+      <header className="site-header backdrop-blur-md backdrop-saturate-150">
         <div
           className={`mx-auto flex w-full flex-wrap items-center justify-between gap-x-3 gap-y-1.5 px-4 py-2.5 sm:gap-x-4 sm:px-6 sm:py-3.5 ${shell}`}
         >
