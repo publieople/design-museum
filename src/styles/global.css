@@ -17,7 +17,7 @@
   --accent: #c9382a;
   /* 浅色下用投影表达"浮起来"；暗色下投影看不见，改用描边 + 1px 高光（见下面两处覆盖） */
   --shadow-card: 0 1px 2px rgba(22, 22, 26, 0.04), 0 10px 24px -16px rgba(22, 22, 26, 0.2);
-  --shadow-lift: 0 2px 5px rgba(22, 22, 26, 0.06), 0 20px 40px -20px rgba(22, 22, 26, 0.3);
+  --shadow-lift: 0 3px 7px rgba(22, 22, 26, 0.08), 0 26px 50px -22px rgba(22, 22, 26, 0.4);
   /* 展墙网点：只负责让人觉出这是纸/墙，不能抢字 */
   --wall-dot: rgba(22, 22, 26, 0.55);
   --wall-dot-size: 22px;
@@ -79,6 +79,8 @@
   html {
     scroll-behavior: smooth;
     -webkit-text-size-adjust: 100%;
+    /* 头部是粘性的，日后加页内锚点跳转时别让标题钻到它下面 */
+    scroll-padding-top: 5.5rem;
   }
 
   body {
@@ -232,5 +234,42 @@
 @media (prefers-reduced-motion: reduce) {
   .enter {
     animation: none;
+  }
+}
+
+/* ── 粘性头部 ────────────────────────────────────────────────
+   半透明 + 背景模糊（这站本来就在教毛玻璃，自己用一次很自然），
+   内容从下面穿过去。顶部未滚动时刻意和纸面同色、只有一条分隔线，
+   滚下去之后再用 CSS 滚动驱动动画补上投影与发丝线——不支持时间线的
+   浏览器就一直是那条静态的线，不会出现「滚下去却透明」的失控状态。
+   这条动画本身也是本站课程里的东西：滚动驱动动画，一行 JS 都没有。 */
+.site-header {
+  position: sticky;
+  top: 0;
+  z-index: 40;
+  background-color: color-mix(in srgb, var(--surface) 86%, transparent);
+  backdrop-filter: blur(12px) saturate(140%);
+  -webkit-backdrop-filter: blur(12px) saturate(140%);
+  border-bottom: 1px solid var(--line);
+}
+
+@supports (animation-timeline: scroll()) {
+  @media (prefers-reduced-motion: no-preference) {
+    @keyframes museum-header-edge {
+      from {
+        border-bottom-color: transparent;
+        box-shadow: 0 0 0 0 rgba(22, 22, 26, 0);
+      }
+      to {
+        border-bottom-color: var(--line);
+        box-shadow: 0 10px 24px -18px rgba(22, 22, 26, 0.55);
+      }
+    }
+
+    .site-header {
+      animation: museum-header-edge linear both;
+      animation-timeline: scroll();
+      animation-range: 0 72px;
+    }
   }
 }

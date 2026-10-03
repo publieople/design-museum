@@ -77,12 +77,14 @@ export function SettingsMenu() {
         type="button"
         aria-expanded={open}
         onClick={() => setOpen((prev) => !prev)}
-        className="flex cursor-pointer items-center gap-1.5 rounded-full border border-line px-2.5 py-1 text-sm text-muted transition-colors hover:text-ink"
+        className="flex cursor-pointer items-center gap-1.5 rounded-full border border-line px-2 py-1 text-sm text-muted transition-colors hover:text-ink sm:px-2.5"
       >
         <span aria-hidden="true" className="font-mono text-xs">
           ⌘
         </span>
-        {t('settings.open')}
+        {/* 窄屏只留图标：粘性头部多占一行就得一直吃掉正文高度。
+            文字用 sr-only 留在无障碍树里，按钮的可读名称不受影响。 */}
+        <span className="sr-only sm:not-sr-only">{t('settings.open')}</span>
       </button>
 
       {open ? (

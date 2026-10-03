@@ -115,7 +115,8 @@ export function EntryDetailPage({ slug }: { slug?: string }) {
       </header>
 
       <div className="grid gap-8 lg:grid-cols-[minmax(0,1fr)_minmax(0,22rem)]">
-        <div className="flex flex-col gap-4 lg:sticky lg:top-4 lg:self-start">
+        {/* 粘性列要停在粘性头部下面，不然一滚就被盖住 */}
+        <div className="flex flex-col gap-4 lg:sticky lg:top-[5.5rem] lg:self-start">
           {hasDemo(entry.slug) ? (
             <ErrorBoundary label={entry.slug} message={t('error.renderFailed')}>
               <DemoStage

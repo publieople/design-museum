@@ -120,7 +120,7 @@ export function CheatSheetPage() {
           })}
         </div>
 
-        <div className="flex flex-col gap-3 lg:sticky lg:top-4 lg:self-start">
+        <div className="flex flex-col gap-3 lg:sticky lg:top-[5.5rem] lg:self-start">
           <div className="flex items-center justify-between gap-3">
             <span className="label-mono">{t('sheet.preview')}</span>
             {sheet ? (

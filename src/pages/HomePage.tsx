@@ -117,14 +117,14 @@ export function HomePage() {
         <section className="grid gap-4 sm:grid-cols-2">
           <Link
             to="/feel"
-            className="rounded-xl border border-line bg-raised p-5 no-underline shadow-[var(--shadow-card)] transition-[transform,box-shadow,border-color] duration-300 ease-[cubic-bezier(0.22,1,0.36,1)] hover:-translate-y-1 hover:border-accent/45 hover:shadow-[var(--shadow-lift)] motion-reduce:transition-none motion-reduce:hover:translate-y-0"
+            className="rounded-xl border border-line bg-raised p-5 no-underline shadow-[var(--shadow-card)] transition-[transform,box-shadow,border-color] duration-300 ease-[cubic-bezier(0.22,1,0.36,1)] hover:-translate-y-1.5 hover:border-accent/45 hover:shadow-[var(--shadow-lift)] motion-reduce:transition-none motion-reduce:hover:translate-y-0"
           >
             <h2 className="font-display text-lg font-semibold">{t('home.feelTitle')}</h2>
             <p className="mt-1 text-sm text-muted">{t('home.feelDesc')}</p>
           </Link>
           <Link
             to="/cheatsheet"
-            className="rounded-xl border border-line bg-raised p-5 no-underline shadow-[var(--shadow-card)] transition-[transform,box-shadow,border-color] duration-300 ease-[cubic-bezier(0.22,1,0.36,1)] hover:-translate-y-1 hover:border-accent/45 hover:shadow-[var(--shadow-lift)] motion-reduce:transition-none motion-reduce:hover:translate-y-0"
+            className="rounded-xl border border-line bg-raised p-5 no-underline shadow-[var(--shadow-card)] transition-[transform,box-shadow,border-color] duration-300 ease-[cubic-bezier(0.22,1,0.36,1)] hover:-translate-y-1.5 hover:border-accent/45 hover:shadow-[var(--shadow-lift)] motion-reduce:transition-none motion-reduce:hover:translate-y-0"
           >
             <h2 className="font-display text-lg font-semibold">{t('home.sheetTitle')}</h2>
             <p className="mt-1 text-sm text-muted">{t('home.sheetDesc')}</p>
