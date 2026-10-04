@@ -29,10 +29,8 @@ export function FilterChips({ legend, options, selected, onToggle, single = fals
               if (single && active) return
               onToggle(option.value)
             }}
-            className={`cursor-pointer rounded-full border px-3 py-1 text-xs transition-colors ${
-              active
-                ? 'border-accent bg-accent/10 text-accent'
-                : 'border-line text-muted hover:border-ink/40 hover:text-ink'
+            className={`surface-pill cursor-pointer rounded-full border px-3 py-1 text-xs ${
+              active ? 'border-accent bg-accent/10 text-accent' : 'border-line text-muted'
             }`}
           >
             {option.label}

@@ -5,6 +5,7 @@ import {
   type MouseEvent,
   type ReactNode,
 } from 'react'
+import { withRouteTransition } from './viewTransition'
 
 export interface Route {
   /** 不含 query 的路径，如 "/entry/frosted-glass" */
@@ -55,7 +56,20 @@ export function navigate(to: string, options: { replace?: boolean } = {}) {
     window.dispatchEvent(new HashChangeEvent('hashchange'))
     return
   }
+  // 只有路径真的变了才播转场：同一个页面里改 query（筛选项、参数）不播
+  if (isPathChange(getHash(), target)) {
+    withRouteTransition(() => {
+      window.location.hash = target
+    })
+    return
+  }
   window.location.hash = target
+}
+
+/** 两次地址的「路径」是否不同（query 不算） */
+export function isPathChange(fromHash: string, toPath: string): boolean {
+  const to = toPath.startsWith('#') ? toPath : `#${toPath}`
+  return parseHash(fromHash).path !== parseHash(to).path
 }
 
 /** 在保留当前路径的前提下改写 query（筛选项、舞台背景等） */

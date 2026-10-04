@@ -98,7 +98,7 @@ export function CheatSheetPage() {
                     const resolved = resolveEntry(entry, locale)
                     return (
                       <li key={entry.slug}>
-                        <label className="flex cursor-pointer items-baseline gap-2 text-sm">
+                        <label className="surface-row -mx-2 flex cursor-pointer items-center gap-2 rounded-lg px-2 py-1 text-sm">
                           <input
                             type="checkbox"
                             checked={selected.includes(entry.slug)}

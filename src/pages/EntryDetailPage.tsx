@@ -251,7 +251,7 @@ export function EntryDetailPage({ slug }: { slug?: string }) {
                   <li key={item.slug}>
                     <Link
                       to={`/entry/${item.slug}`}
-                      className="rounded-full border border-line px-3 py-1 text-xs no-underline transition-colors hover:border-accent hover:text-accent"
+                      className="surface-pill rounded-full border border-line px-3 py-1 text-xs no-underline"
                     >
                       {item.nameZh}
                     </Link>

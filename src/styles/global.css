@@ -272,6 +272,97 @@
   }
 }
 
+/* ── 交互表面的三层手感 ──────────────────────────────────────
+   同一个「可以点」的意思，在不同尺寸的表面上给一致但不相同的回应：
+   卡片抬起来、可点行铺一层底、小药丸只换颜色。
+   只动 translate / box-shadow / 颜色，不碰布局属性。 */
+.surface-card {
+  box-shadow: var(--shadow-card);
+  transition:
+    translate 300ms cubic-bezier(0.22, 1, 0.36, 1),
+    box-shadow 300ms cubic-bezier(0.22, 1, 0.36, 1),
+    border-color 300ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.surface-card:hover {
+  translate: 0 -6px;
+  border-color: color-mix(in srgb, var(--accent) 45%, transparent);
+  box-shadow: var(--shadow-lift);
+}
+
+.surface-row {
+  transition:
+    background-color 240ms ease,
+    color 240ms ease;
+}
+
+.surface-row:hover {
+  background-color: color-mix(in srgb, var(--ink) 3.5%, transparent);
+}
+
+.surface-pill {
+  transition:
+    border-color 200ms ease,
+    background-color 200ms ease,
+    color 200ms ease;
+}
+
+.surface-pill:hover {
+  border-color: color-mix(in srgb, var(--accent) 50%, transparent);
+  background-color: color-mix(in srgb, var(--accent) 7%, transparent);
+  color: var(--accent);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .surface-card {
+    transition: none;
+  }
+
+  .surface-card:hover {
+    translate: none;
+  }
+}
+
+/* ── 路由转场 ────────────────────────────────────────────────
+   只有路径真的变了才播（切主题、改参数不播）。主题切换是纯交叉淡入
+   （见文件上面那段），路由切换再多一点点位移，让人感到「翻页」。
+   平时不给 main 起 view-transition-name，免得主题切换也带上位移。 */
+@keyframes museum-page-in {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@keyframes museum-page-out {
+  from {
+    opacity: 1;
+    transform: none;
+  }
+  to {
+    opacity: 0;
+    transform: translateY(-6px);
+  }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  html[data-route-transition] main {
+    view-transition-name: museum-page;
+  }
+
+  ::view-transition-old(museum-page) {
+    animation: museum-page-out 200ms cubic-bezier(0.4, 0, 1, 1) both;
+  }
+
+  ::view-transition-new(museum-page) {
+    animation: museum-page-in 340ms cubic-bezier(0.22, 1, 0.36, 1) both;
+  }
+}
+
 /* ── 粘性头部 ────────────────────────────────────────────────
    半透明 + 背景模糊（这站本来就在教毛玻璃，自己用一次很自然），
    内容从下面穿过去。顶部未滚动时刻意和纸面同色、只有一条分隔线，

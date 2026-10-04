@@ -90,7 +90,7 @@ export function HomePage() {
                 <li key={category.id}>
                   <Link
                     to={`/browse?cat=${category.id}`}
-                    className="-mx-3 flex flex-wrap items-baseline gap-x-4 gap-y-1 rounded-lg px-3 py-4 no-underline transition-colors hover:bg-[color-mix(in_srgb,var(--ink)_3%,transparent)]"
+                    className="surface-row -mx-3 flex flex-wrap items-baseline gap-x-4 gap-y-1 rounded-lg px-3 py-4 no-underline"
                   >
                     <span className="w-6 font-mono text-xs text-accent">{category.letter}</span>
                     <span className="font-display text-lg font-semibold">
@@ -117,14 +117,14 @@ export function HomePage() {
         <section className="grid gap-4 sm:grid-cols-2">
           <Link
             to="/feel"
-            className="rounded-xl border border-line bg-raised p-5 no-underline shadow-[var(--shadow-card)] transition-[translate,box-shadow,border-color] duration-300 ease-[cubic-bezier(0.22,1,0.36,1)] hover:-translate-y-1.5 hover:border-accent/45 hover:shadow-[var(--shadow-lift)] motion-reduce:transition-none motion-reduce:hover:translate-y-0"
+            className="surface-card rounded-xl border border-line bg-raised p-5 no-underline"
           >
             <h2 className="font-display text-lg font-semibold">{t('home.feelTitle')}</h2>
             <p className="mt-1 text-sm text-muted">{t('home.feelDesc')}</p>
           </Link>
           <Link
             to="/cheatsheet"
-            className="rounded-xl border border-line bg-raised p-5 no-underline shadow-[var(--shadow-card)] transition-[translate,box-shadow,border-color] duration-300 ease-[cubic-bezier(0.22,1,0.36,1)] hover:-translate-y-1.5 hover:border-accent/45 hover:shadow-[var(--shadow-lift)] motion-reduce:transition-none motion-reduce:hover:translate-y-0"
+            className="surface-card rounded-xl border border-line bg-raised p-5 no-underline"
           >
             <h2 className="font-display text-lg font-semibold">{t('home.sheetTitle')}</h2>
             <p className="mt-1 text-sm text-muted">{t('home.sheetDesc')}</p>

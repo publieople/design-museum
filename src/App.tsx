@@ -68,7 +68,10 @@ function Routes() {
   const [head, param] = route.segments
 
   useEffect(() => {
-    window.scrollTo({ top: 0, behavior: 'auto' })
+    // 必须显式 'instant'：html 上有 scroll-behavior: smooth，
+    // behavior: 'auto' 会被解析成「跟随 CSS」，于是变成平滑滚动——
+    // 转场拍到的是滚到一半的画面，转完还要接着滚。
+    window.scrollTo({ top: 0, behavior: 'instant' })
   }, [route.path])
 
   useEffect(() => {
