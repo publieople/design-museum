@@ -221,3 +221,5 @@ gh api -X PATCH repos/publieople/design-museum \
 词条内容参考 MDN Web Docs、web.dev 与 W3C 相关规范；本地写作时也参考了 `ui-ux-pro-max` 技能中的动效与 UX 规则数据。
 
 第三方依赖与字体的声明见 [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md)。
+
+<!-- protection check -->
