@@ -36,7 +36,7 @@ pnpm dev          # http://localhost:5173
 
 ```bash
 pnpm typecheck    # tsc -b，零错误是提交门槛
-pnpm test         # vitest：内容校验 + 检索 + 参数 URL + 偏好 + i18n + 提示词 + 渲染冒烟（150 项）
+pnpm test         # vitest：内容校验 + 检索 + 参数 URL + 偏好 + i18n + 提示词 + 页面与 demo 渲染冒烟（177 项）
 pnpm validate     # 只跑内容校验
 pnpm build        # 产物在 dist/
 pnpm preview      # 预览产物
@@ -143,10 +143,70 @@ gh api -X POST repos/publieople/design-museum/pages -f build_type=workflow
 
 `src/lib/lazyWithRetry.ts` 处理了它：任何 chunk 加载失败就 `location.reload()` 一次，用 `sessionStorage` 标记防止刷新死循环，加载成功就把标记清掉（所以下一次部署还能再自愈）。有 4 条单测覆盖这个行为。
 
+## 协作
+
+- [CONTRIBUTING.md](CONTRIBUTING.md) —— 环境、提交门槛、分支与 PR 流程、提交信息格式、**能改哪里**、评审清单
+- [AGENTS.md](AGENTS.md) —— 给 AI 编码代理的硬规矩（用 Cursor / Claude Code / DSH 之类写代码时，把它一起交给代理）
+- [CODE_OF_CONDUCT.md](CODE_OF_CONDUCT.md) —— 行为准则
+- [`.github/`](.github/) —— PR 模板与 Issue 表单（报告问题 / 申请新词条）
+
+规则不靠自觉，靠 CI 和分支保护：
+
+| 位置 | 规则 |
+|---|---|
+| PR | `CI / verify` 必须绿：install → typecheck → lint → test → build |
+| main | 受保护：不能直推、不能 force push、必须 PR + 1 人 approve、保持线性历史 |
+| 合并 | Squash merge，**PR 标题即提交信息**，合并后自动删除源分支 |
+
+维护者本地重放这些设置（`gh` 已登录）：
+
+```fish
+# 分支保护
+gh api -X PUT repos/publieople/design-museum/branches/main/protection --input - <<'JSON'
+{
+  "required_status_checks": { "strict": true, "contexts": ["verify"] },
+  "enforce_admins": false,
+  "required_pull_request_reviews": {
+    "dismiss_stale_reviews": true,
+    "require_code_owner_reviews": false,
+    "required_approving_review_count": 1
+  },
+  "restrictions": null,
+  "required_linear_history": true,
+  "allow_force_pushes": false,
+  "allow_deletions": false
+}
+JSON
+
+# 合并方式：只留 squash / rebase，合并后删分支
+gh api -X PATCH repos/publieople/design-museum \
+  -F allow_merge_commit=false -F allow_squash_merge=true -F allow_rebase_merge=true \
+  -F delete_branch_on_merge=true \
+  -F squash_merge_commit_title=PR_TITLE -F squash_merge_commit_message=PR_BODY
+```
+
+两个注意点：
+
+- `enforce_admins` 现在是 `false`：维护者在只有自己一个人时还能直接合并。等有两人以上写权限，改成 `true`。
+- 外部贡献者从 fork 提 PR 时，第一次需要维护者在 Actions 页面点一次 **Approve and run workflows**，否则 CI 不会跑、必过检查永远不上报。
+
+## 许可
+
+**代码 MIT，内容 CC BY 4.0**；第三方组件与字体的完整清单见 [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md)。
+
+| 许可 | 覆盖范围 |
+|---|---|
+| [MIT](LICENSE) | `src/**`（除下行的数据与文案）、`index.html`、构建与配置文件、`.github/**` |
+| [CC BY 4.0](LICENSE-CONTENT) | `src/data/entries/**`、`src/data/taxonomy.ts`、`src/i18n/strings.ts`、各 `.md` 文档、`public/og.png` |
+
+转载或改编内容时请注明「前端设计博物馆」并保留许可声明。
+
+两个字体（JetBrains Mono、Space Grotesk）是 SIL OFL 1.1，许可全文在 `public/licenses/` 下，**会跟着构建进产物**（`dist/licenses/`），站点「怎么用」页也给了入口——OFL 要求许可与字体一起分发。
+
 ## 已知限制
 
 - **sitemap 只有入口页**：hash 路由下 30 条词条共享同一个 URL，爬虫拿不到独立地址。要真正被搜到需要改成 BrowserRouter + 预渲染。
-- `pnpm lint` 有若干 react-hooks 的 warning（0 error），未纳入 CI 门槛。
+- `pnpm lint` 目前有 19 条 react-hooks 相关的 warning（0 error）。CI 会跑 lint，只拦 error，warning 不阻塞合并。
 
 ## 待办（按性价比排序）
 
@@ -159,3 +219,5 @@ gh api -X POST repos/publieople/design-museum/pages -f build_type=workflow
 ## 致谢
 
 词条内容参考 MDN Web Docs、web.dev 与 W3C 相关规范；本地写作时也参考了 `ui-ux-pro-max` 技能中的动效与 UX 规则数据。
+
+第三方依赖与字体的声明见 [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md)。

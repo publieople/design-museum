@@ -13,6 +13,10 @@ export const STRINGS = {
     zh: '先给效果起个名字，再让 AI 实现它。词条内容参考 MDN 与 web.dev，欢迎补充。',
     en: 'Name the effect first, then let AI build it. Entries reference MDN and web.dev — corrections welcome.',
   },
+  'site.license': {
+    zh: '代码 MIT · 内容 CC BY 4.0',
+    en: 'Code MIT · content CC BY 4.0',
+  },
 
   'nav.browse': { zh: '词条库', en: 'Browse' },
   'nav.feel': { zh: '感觉导航', en: 'Find by feel' },

@@ -51,6 +51,15 @@ describe('页面渲染冒烟', () => {
     expect(render(<DebugAllPage />)).toContain('冒烟测试')
   })
 
+  it('英文界面下「怎么用」页不残留中文', () => {
+    const html = render(<AboutPage />, { locale: 'en' })
+    const leftovers = html.match(/[\u4e00-\u9fff]+/g)
+    expect(
+      leftovers,
+      `怎么用页在英文模式下仍有中文：${(leftovers ?? []).slice(0, 6).join(' / ')}`,
+    ).toBeNull()
+  })
+
   it('每条词条的详情页都能渲染，并带上复制给 AI 的出口', () => {
     for (const entry of ENTRIES) {
       const html = render(<EntryDetailPage slug={entry.slug} />)

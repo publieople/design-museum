@@ -1,0 +1,45 @@
+name: 报告问题
+description: 站点哪里不对，或者哪个演示坏了
+title: "[bug] "
+labels: ["bug"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        提之前先打开 `#/debug/all` —— 那里会把全馆 demo 一次挂起来，谁崩了一眼就能看到。
+
+  - type: input
+    id: where
+    attributes:
+      label: 出问题的位置
+      description: 词条 slug、页面名或完整链接
+      placeholder: 例：#/entry/frosted-glass
+    validations:
+      required: true
+
+  - type: textarea
+    id: what
+    attributes:
+      label: 实际看到什么 / 期望看到什么
+    validations:
+      required: true
+
+  - type: textarea
+    id: repro
+    attributes:
+      label: 复现步骤
+      placeholder: |
+        1. 打开 …
+        2. 拖动 …
+        3. 看到 …
+    validations:
+      required: false
+
+  - type: input
+    id: env
+    attributes:
+      label: 环境
+      description: 浏览器与版本 / 浅色或深色 / 界面语言 / 鼠标还是触屏
+      placeholder: 例：Chrome 141 · 深色 · 中文 · 触屏
+    validations:
+      required: false
