@@ -1,0 +1,3 @@
+# 默认评审人。仅用于自动请求评审；
+# 分支保护里没有开启 require_code_owner_reviews，所以这里不会把作者自己卡住。
+* @publieople

@@ -118,6 +118,62 @@ export function AboutPage() {
             : '搜一个你现在正缺的效果。'}
         </p>
       </section>
+
+      <section className="flex flex-col gap-3 border-t border-line pt-5">
+        <h2 className="label-mono">{locale === 'en' ? 'License and credits' : '许可与致谢'}</h2>
+        <ul className="flex flex-col gap-2 text-sm text-muted">
+          <li>
+            {locale === 'en'
+              ? 'Code is MIT, the written content is CC BY 4.0. '
+              : '代码按 MIT 授权，文字内容按 CC BY 4.0 授权。'}
+            <a
+              href="https://github.com/publieople/design-museum/blob/main/LICENSE"
+              className="text-accent no-underline"
+            >
+              LICENSE
+            </a>
+            {' / '}
+            <a
+              href="https://github.com/publieople/design-museum/blob/main/LICENSE-CONTENT"
+              className="text-accent no-underline"
+            >
+              LICENSE-CONTENT
+            </a>
+          </li>
+          <li>
+            {locale === 'en'
+              ? 'Fonts are bundled locally, no external CDN: JetBrains Mono and Space Grotesk, both under the SIL Open Font License 1.1. '
+              : '字体本地打包、不请求外部 CDN：JetBrains Mono 与 Space Grotesk，均为 SIL Open Font License 1.1。'}
+            <a
+              href={`${import.meta.env.BASE_URL}licenses/OFL-1.1-JetBrainsMono.txt`}
+              className="text-accent no-underline"
+            >
+              JetBrains Mono
+            </a>
+            {' / '}
+            <a
+              href={`${import.meta.env.BASE_URL}licenses/OFL-1.1-SpaceGrotesk.txt`}
+              className="text-accent no-underline"
+            >
+              Space Grotesk
+            </a>
+          </li>
+          <li>
+            {locale === 'en'
+              ? 'Entries are our own summaries that link out to MDN, web.dev and the W3C specs — those pages stay with their owners.'
+              : '词条正文是原创归纳，只链接到 MDN、web.dev 与 W3C 规范，那些页面的版权归各自所有者。'}
+          </li>
+          <li>
+            {locale === 'en' ? 'Full list of third-party components: ' : '第三方组件与素材清单：'}
+            <a
+              href="https://github.com/publieople/design-museum/blob/main/THIRD_PARTY_NOTICES.md"
+              className="text-accent no-underline"
+            >
+              THIRD_PARTY_NOTICES.md
+            </a>
+          </li>
+        </ul>
+      </section>
     </article>
   )
 }

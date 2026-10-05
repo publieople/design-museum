@@ -1,0 +1,74 @@
+name: 申请一个新词条
+description: 想加一个前端效果 —— 前提是它有公认的名字
+title: "[词条] "
+labels: ["词条申请"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        这个站的价值全在「有名字」。**自造的名字不要提**——AI 认不出自造词，读者也搜不到。
+        先确认它有没有公认的中英术语；如果它只是某个效果的变体，提「修改现有词条」更合适。
+
+  - type: input
+    id: name_zh
+    attributes:
+      label: 中文叫法
+      placeholder: 例：毛玻璃
+    validations:
+      required: true
+
+  - type: input
+    id: name_en
+    attributes:
+      label: 英文术语
+      placeholder: 例：Frosted Glass / backdrop blur
+    validations:
+      required: true
+
+  - type: textarea
+    id: aliases
+    attributes:
+      label: 口语俗称
+      description: 大家嘴上会怎么叫它（搜索靠这个命中），一行一个
+      placeholder: 磨砂 / 果冻 / 玻璃
+    validations:
+      required: true
+
+  - type: input
+    id: confusion
+    attributes:
+      label: 最容易和什么混
+      description: 和哪个效果差在哪 —— AI 也最容易在这里做错
+    validations:
+      required: true
+
+  - type: input
+    id: refs
+    attributes:
+      label: 参考链接
+      description: 至少一条 MDN / web.dev / W3C 的页面
+      placeholder: https://developer.mozilla.org/...
+    validations:
+      required: true
+
+  - type: dropdown
+    id: hall
+    attributes:
+      label: 它属于哪个展厅
+      options:
+        - 动效与节奏
+        - 交互反馈
+        - 布局与结构
+        - 视觉质感
+        - 排版与文字
+        - 不确定
+    validations:
+      required: true
+
+  - type: textarea
+    id: when
+    attributes:
+      label: 你什么时候想要它
+      description: 描述一个真实场景就够了，不需要写成分
+    validations:
+      required: false

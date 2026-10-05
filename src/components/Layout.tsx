@@ -79,14 +79,19 @@ export function Layout({ children }: { children: ReactNode }) {
         className={`mx-auto flex w-full flex-col gap-2 border-t border-line px-4 py-6 text-xs text-muted sm:flex-row sm:items-center sm:justify-between sm:px-6 ${shell}`}
       >
         <p>{t('site.footer')}</p>
-        <a
-          href="https://github.com/publieople/design-museum"
-          className="font-mono no-underline hover:text-accent"
-          target="_blank"
-          rel="noreferrer"
-        >
-          github.com/publieople/design-museum
-        </a>
+        <div className="flex flex-wrap items-center gap-x-4 gap-y-1">
+          <Link to="/about" className="font-mono no-underline hover:text-accent">
+            {t('site.license')}
+          </Link>
+          <a
+            href="https://github.com/publieople/design-museum"
+            className="font-mono no-underline hover:text-accent"
+            target="_blank"
+            rel="noreferrer"
+          >
+            github.com/publieople/design-museum
+          </a>
+        </div>
       </footer>
     </div>
   )

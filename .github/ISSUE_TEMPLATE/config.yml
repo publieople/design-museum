@@ -1,0 +1,8 @@
+blank_issues_enabled: true
+contact_links:
+  - name: 贡献指南
+    url: https://github.com/publieople/design-museum/blob/main/CONTRIBUTING.md
+    about: 环境、提交门槛、能改哪里、评审清单
+  - name: 线上站点
+    url: https://publieople.github.io/design-museum/
+    about: 先确认你想要的词条是不是已经在馆里了
