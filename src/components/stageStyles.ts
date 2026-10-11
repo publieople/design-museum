@@ -1,4 +1,4 @@
-import type { Entry, StageId } from '../data/types'
+import type { EntryMeta, StageId } from '../data/types'
 import type { StagePref } from '../lib/prefs'
 
 export interface StageStyle {
@@ -64,7 +64,7 @@ export const STAGE_STYLES: Record<StageId, StageStyle> = {
  * 其余一律用浅色墙——深色舞台在深色界面里会和卡片糊成一片，读不出「展品框」。
  * 想看别的背景，详情页随时能切。
  */
-export function preferredStageFor(entry: Entry): StageId {
+export function preferredStageFor(entry: Pick<EntryMeta, 'category'>): StageId {
   return entry.category === 'visual' ? 'photo' : 'light'
 }
 
@@ -72,7 +72,7 @@ export function preferredStageFor(entry: Entry): StageId {
  * 把用户的「展品背景」偏好解成实际舞台：
  * auto = 按展品类型挑；否则一律用用户选的背景，全馆统一。
  */
-export function resolveStage(entry: Entry, pref: StagePref): StageId {
+export function resolveStage(entry: Pick<EntryMeta, 'category'>, pref: StagePref): StageId {
   if (pref !== 'auto') return pref
   return preferredStageFor(entry)
 }

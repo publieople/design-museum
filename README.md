@@ -36,7 +36,8 @@ pnpm dev          # http://localhost:5173
 
 ```bash
 pnpm typecheck    # tsc -b，零错误是提交门槛
-pnpm test         # vitest：内容校验 + 检索 + 参数 URL + 偏好 + i18n + 提示词 + 页面与 demo 渲染冒烟（177 项）
+pnpm test         # vitest：内容校验 + 检索 + 参数 URL + 偏好 + i18n + 提示词 + 首屏 meta 同步 + 页面与 demo 渲染冒烟（181 项）
+pnpm gen:meta     # 改过词条后重新生成首屏用的 meta（src/data/entryMeta.ts）
 pnpm validate     # 只跑内容校验
 pnpm build        # 产物在 dist/
 pnpm preview      # 预览产物
@@ -88,7 +89,12 @@ src/
 ├── data/
 │   ├── types.ts              # Entry / Control / DemoProps / EntryTranslation
 │   ├── taxonomy.ts           # 展厅、场景、感觉、目的（双语标签）
-│   ├── index.ts              # import.meta.glob 聚合词条
+│   ├── index.ts              # import.meta.glob 聚合完整词条（只被详情页等懒加载路由引用）
+│   ├── metaOf.ts             # 从完整词条里挑出首屏要用的字段（唯一的挑选规则）
+│   ├── entryMeta.ts          # pnpm gen:meta 的生成物：首屏用的 30 条 meta
+│   ├── meta.ts               # 首屏入口：ENTRY_META + featuredMeta()
+│   ├── order.ts              # 首页「每厅各一件」的交错排序，完整词条与 meta 共用
+│   ├── meta.test.ts          # 生成物是否过期（CI 拦这个）
 │   ├── entries/<展厅>/<slug>.ts
 │   ├── entries.test.ts       # 每条词条自身合法 + 与 demo 一一对应 + 英文覆盖层
 │   └── content.test.ts       # 全馆收齐（30 条 / 每厅 6 条 / 无死链）
@@ -127,7 +133,7 @@ src/
    - `oneLiner` 一句话说清「它是什么」，不写「它能带来什么价值」；
    - `loop` 要按 demo 的**实际行为**选，别按名字猜——选的依据见上面那张表。
 4. 写 `src/demos/<slug>.tsx`，默认导出组件，接收 `{ values, stage, replayKey, timeScale, locale }`。控件一动画面就要变；会动的记得走 `usePrefersReducedMotion()`；配色用 `var(--stage-ink)` 而不是写死颜色；需要一块不透明的底（进度条轨道、卡片面）时用 `color-mix(in srgb, var(--stage-ink) 10%, var(--stage-bg, transparent))`，`--stage-bg` 是当前舞台的实底近似色；**组件里的示例文案也要按 `locale` 切换**——测试会检查英文模式下渲染结果里没有任何中文字符。
-5. 跑 `pnpm test`。绿了就完事——缺 demo、字段空、编号不连续、`related` 有死链、`en` 块条数对不齐都会被拦下来。
+5. 跑 `pnpm gen:meta`，再跑 `pnpm test`。绿了就完事——缺 demo、字段空、编号不连续、`related` 有死链、`en` 块条数对不齐、首屏 meta 没重新生成都会被拦下来。
 
 ## 部署
 

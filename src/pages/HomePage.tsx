@@ -1,8 +1,8 @@
 import { useMemo, useState } from 'react'
-import { ENTRIES, featuredEntries } from '../data'
+import { ENTRY_META, featuredMeta } from '../data/meta'
 import { CATEGORIES, categoryBlurb } from '../data/taxonomy'
 import { useT, useLocale } from '../i18n'
-import { resolveEntry } from '../lib/localize'
+import { resolveMeta } from '../lib/localize'
 import { Link } from '../lib/router'
 import { searchEntries } from '../lib/search'
 import { EntryCard } from '../components/EntryCard'
@@ -14,16 +14,16 @@ export function HomePage() {
   const locale = useLocale()
   const [query, setQuery] = useState('')
   const hits = useMemo(
-    () => (query ? searchEntries(ENTRIES, query).slice(0, 12) : []),
+    () => (query ? searchEntries(ENTRY_META, query).slice(0, 12) : []),
     [query],
   )
-  const specimens = featuredEntries().slice(0, 3)
+  const specimens = featuredMeta().slice(0, 3)
 
   return (
     <div className="flex flex-col gap-12">
       <section className="flex flex-col gap-6 pt-4">
         <div className="max-w-2xl">
-          <p className="label-mono enter enter-1">{t('home.eyebrow', { n: ENTRIES.length })}</p>
+          <p className="label-mono enter enter-1">{t('home.eyebrow', { n: ENTRY_META.length })}</p>
           <h1 className="text-display mt-3 font-display font-semibold enter enter-2">
             {t('home.h1a')}
             <br />
@@ -43,7 +43,7 @@ export function HomePage() {
             </p>
             <ul className="grid gap-3 sm:grid-cols-2">
               {hits.map(({ entry }) => {
-                const resolved = resolveEntry(entry, locale)
+                const resolved = resolveMeta(entry, locale)
                 return (
                   <li key={entry.slug} className="rounded-lg border border-line bg-raised p-3">
                     <Link to={`/entry/${entry.slug}`} className="no-underline">
@@ -67,7 +67,7 @@ export function HomePage() {
           <div className="mb-4 flex items-baseline justify-between gap-4 border-b border-line pb-2">
             <h2 className="label-mono">{t('home.nowShowing')}</h2>
             <Link to="/browse" className="font-mono text-xs text-muted no-underline hover:text-accent">
-              {t('home.seeAll', { n: ENTRIES.length })}
+              {t('home.seeAll', { n: ENTRY_META.length })}
             </Link>
           </div>
           <ul className="grid gap-6 sm:grid-cols-3">
@@ -85,7 +85,7 @@ export function HomePage() {
           </div>
           <ul className="flex flex-col divide-y divide-line border-y border-line">
             {CATEGORIES.map((category) => {
-              const count = ENTRIES.filter((entry) => entry.category === category.id).length
+              const count = ENTRY_META.filter((entry) => entry.category === category.id).length
               return (
                 <li key={category.id}>
                   <Link

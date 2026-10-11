@@ -1,9 +1,9 @@
 import { describe, expect, it } from 'vitest'
-import { ENTRIES } from '../data'
+import { ENTRY_META } from '../data/meta'
 import { normalizeText, searchEntries, tokenize } from './search'
 
 function firstSlug(query: string): string | undefined {
-  return searchEntries(ENTRIES, query)[0]?.entry.slug
+  return searchEntries(ENTRY_META, query)[0]?.entry.slug
 }
 
 describe('归一化与分词', () => {
@@ -20,11 +20,11 @@ describe('归一化与分词', () => {
 
 describe('搜索', () => {
   it('空查询返回全部', () => {
-    expect(searchEntries(ENTRIES, '')).toHaveLength(ENTRIES.length)
+    expect(searchEntries(ENTRY_META, '')).toHaveLength(ENTRY_META.length)
   })
 
   it('没有命中就返回空', () => {
-    expect(searchEntries(ENTRIES, 'zzzqqqxxx')).toEqual([])
+    expect(searchEntries(ENTRY_META, 'zzzqqqxxx')).toEqual([])
   })
 
   it('中文正式名命中', () => {
@@ -42,7 +42,7 @@ describe('搜索', () => {
   })
 
   it('只说「玻璃」时毛玻璃排在玻璃拟态前面', () => {
-    const hits = searchEntries(ENTRIES, '玻璃').map((hit) => hit.entry.slug)
+    const hits = searchEntries(ENTRY_META, '玻璃').map((hit) => hit.entry.slug)
     expect(hits[0]).toBe('frosted-glass')
   })
 })
