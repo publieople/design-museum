@@ -18,7 +18,9 @@ pnpm typecheck && pnpm lint && pnpm test && pnpm build
 
 ## 硬规矩
 
-- **不新增运行时依赖**。刻意不引路由库（`src/lib/router.tsx` 是四十来行的 hash 路由）、不引检索库、不引状态库、不引 UI 组件库
+- **不新增运行时依赖**。刻意不引路由库（`src/lib/router.tsx` + `src/lib/routes.ts` 是手写的真实路径路由）、不引检索库、不引状态库、不引 UI 组件库
+- 路由与静态 HTML 是一体的：新增页面必须同时改 `src/pages/routeModules.ts` 与 `src/lib/routes.ts` 的 `STATIC_PAGES`，否则预渲染会漏页（`src/lib/pageFor.tsx` 是 App 与预渲染共用的唯一路由表）
+- 站内链接用 `<Link>`、拼地址用 `hrefFor` / `absoluteUrl` / `entryPath`，**不要再手写 `#/…`**；`pnpm build` 会跑 `scripts/prerender.mjs`，别手改 `dist/`
 - UI 文案只放 `src/i18n/strings.ts`，`zh`/`en` 都不能空；组件里不写死字符串
 - `src/demos/*.tsx` 里的示例文案按 `locale` 切换；测试会检查英文模式下渲染结果不含中文字符
 - 会动的效果走 `usePrefersReducedMotion()`

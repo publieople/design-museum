@@ -1,3 +1,4 @@
+import { ROUTE_EVENT } from './routes'
 import type { ThemeMode } from './prefs'
 
 /** lib.dom 已把 startViewTransition 标成必需，但旧浏览器上并不存在，所以按可选处理 */
@@ -50,8 +51,8 @@ export function withThemeTransition(apply: () => void) {
 /**
  * 路由切换的转场：只有路径真的变了才调它。
  *
- * View Transitions 的难点是「什么时候算新画面已经画好」：hash 变化是异步事件，
- * React 也是异步提交的。所以回调返回一个「等 hashchange 再等一帧」的 Promise，
+ * View Transitions 的难点是「什么时候算新画面已经画好」：地址变化本身不通知任何人，
+ * React 的提交时机也不确定。所以回调返回一个「等路由广播再让出一个宏任务」的 Promise，
  * 让浏览器在新页面真的进 DOM 之后再抓新快照，否则会拍到两张一样的旧图。
  * 200ms 兜底，避免目标等于当前地址时把整页卡住。
  */
@@ -79,11 +80,11 @@ export function withRouteTransition(apply: () => void) {
           settled = true
           // 用定时器而不是 requestAnimationFrame：窗口被别的窗口挡住时
           // rAF 会被节流甚至完全不触发，Promise 不 resolve 的话浏览器会一直
-          // 挂着旧快照，页面看起来就"卡住了"。React 在 hashchange 里是同步提交的，
-          // 让出一个宏任务足够它把新页面画进 DOM。
+          // 挂着旧快照，页面看起来就"卡住了"。路由广播是在 pushState 之后同步发的，
+          // 让出一个宏任务足够 React 把新页面画进 DOM。
           window.setTimeout(resolve, 24)
         }
-        window.addEventListener('hashchange', done, { once: true })
+        window.addEventListener(ROUTE_EVENT, done, { once: true })
         window.setTimeout(done, 200)
         apply()
       })
