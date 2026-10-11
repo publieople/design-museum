@@ -66,6 +66,9 @@ function Routes() {
   const route = useRoute()
   const { locale } = usePrefs()
   const [head, param] = route.segments
+  // 调试台一次挂 30 个 demo，只在开发构建里存在。
+  // 生产环境它算未知路由：页面给 NotFound，标题也不许自称"冒烟测试"。
+  const devOnly = head === 'debug' && !import.meta.env.DEV
 
   useEffect(() => {
     // 必须显式 'instant'：html 上有 scroll-behavior: smooth，
@@ -76,11 +79,11 @@ function Routes() {
 
   useEffect(() => {
     const base = translate(locale, 'site.name')
-    const titleKey = head ? TITLES[head] : undefined
+    const titleKey = head && !devOnly ? TITLES[head] : undefined
     document.title = titleKey
       ? `${translate(locale, titleKey)} · ${base}`
       : `${base} · ${translate(locale, 'site.tagline')}`
-  }, [head, locale])
+  }, [head, devOnly, locale])
 
   let page
   switch (head) {
@@ -103,7 +106,7 @@ function Routes() {
       page = <AboutPage />
       break
     case 'debug':
-      page = <DebugAllPage />
+      page = devOnly ? <NotFound /> : <DebugAllPage />
       break
     default:
       page = <NotFound />

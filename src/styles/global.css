@@ -97,6 +97,10 @@
     -webkit-text-size-adjust: 100%;
     /* 头部是粘性的，日后加页内锚点跳转时别让标题钻到它下面 */
     scroll-padding-top: 5.5rem;
+    /* 骨架长成真实高度时竖直滚动条才出现，视口要窄 15px，
+       所有 mx-auto 的居中容器就横移一次（线上首页 CLS 0.42 全来自这一下）。
+       预留滚动条槽位，滚动条来去都不再改变布局宽度。 */
+    scrollbar-gutter: stable;
   }
 
   body {
