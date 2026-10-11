@@ -129,3 +129,21 @@ export interface DemoProps {
    */
   locale?: 'zh' | 'en'
 }
+
+/**
+ * 首屏（首页 / 词条库 / 感觉导航 / 搜索框）真正会读到的字段。
+ *
+ * spec、refs、related、reducedMotion、controls、prompt 和整个英文覆盖层只在详情页用，
+ * 它们留在完整词条里，跟着详情页那条懒加载 chunk 走，不进首屏。
+ *
+ * src/data/entryMeta.ts 由 `npm run gen:meta` 生成，src/data/meta.test.ts 守着它别过期。
+ */
+export type EntryMeta = Omit<
+  Entry,
+  'spec' | 'reducedMotion' | 'refs' | 'related' | 'controls' | 'prompt' | 'en'
+> & {
+  /** 控件默认值的快照：卡片上的缩略 demo 要它，但不值得把 controls 定义整包带进首屏 */
+  defaults: ControlValues
+  /** 英文覆盖层里唯一在首屏用到的字段（卡片上的一句话） */
+  en?: Pick<EntryTranslation, 'oneLiner'>
+}

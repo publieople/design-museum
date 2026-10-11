@@ -12,7 +12,9 @@
 pnpm typecheck && pnpm lint && pnpm test && pnpm build
 ```
 
-四项必须全绿才算改完。测试是唯一门槛，覆盖：30 条词条的内容校验、检索、参数 URL、偏好、i18n、提示词生成、页面渲染冒烟。改视觉也要人眼验收（截图），测试看不出好不好看。
+四项必须全绿才算改完。测试是唯一门槛，覆盖：30 条词条的内容校验、检索、参数 URL、偏好、i18n、提示词生成、首屏 meta 与词条的同步、页面渲染冒烟。改视觉也要人眼验收（截图），测试看不出好不好看。
+
+改了词条内容或 `src/data/metaOf.ts` 之后要补一条 `pnpm gen:meta`：首屏读的是生成物 `src/data/entryMeta.ts`，`src/data/meta.test.ts` 会拦下过期的生成物。
 
 ## 硬规矩
 
@@ -24,6 +26,8 @@ pnpm typecheck && pnpm lint && pnpm test && pnpm build
 - 不提交 `dist/`（已在 `.gitignore`）
 - 不引入外部字体 CDN、外链图片、埋点脚本
 - 改 `src/lib/**`、`src/components/**`、构建配置前先说明原因——这些文件影响全站
+- 首屏（首页 / 词条库 / 感觉导航 / 搜索）只准用 `src/data/meta.ts` 里的 `ENTRY_META`；`src/data/index.ts` 的完整词条（spec / refs / related / reducedMotion / controls / prompt / en）只准被详情页、速查表这类懒加载路由 import
+- 别手改 `src/data/entryMeta.ts`，它是 `pnpm gen:meta` 生成的
 
 ## 新增词条
 

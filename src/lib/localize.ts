@@ -3,6 +3,7 @@ import type {
   Control,
   ControlValues,
   Entry,
+  EntryMeta,
   PromptPair,
   Reference,
   Scene,
@@ -86,5 +87,33 @@ export function resolveEntry(entry: Entry, locale: Locale): ResolvedEntry {
       }
     }),
     prompt: entry.prompt,
+  }
+}
+
+/** 首屏 meta 的解析版本：只含列表与搜索用到的字段 */
+export interface ResolvedMeta {
+  slug: string
+  code: string
+  nameZh: string
+  nameEn: string
+  aliases: string[]
+  category: CategoryId
+  oneLiner: string
+}
+
+/**
+ * 首屏只加载 meta（见 data/meta.ts），列表和搜索用不到详情页那些字段，
+ * 所以只解析一句话，不去拼整包英文覆盖层。
+ */
+export function resolveMeta(meta: EntryMeta, locale: Locale): ResolvedMeta {
+  const en = locale === 'en' ? meta.en : undefined
+  return {
+    slug: meta.slug,
+    code: meta.code,
+    nameZh: meta.nameZh,
+    nameEn: meta.nameEn,
+    aliases: meta.aliases,
+    category: meta.category,
+    oneLiner: en?.oneLiner ?? meta.oneLiner,
   }
 }

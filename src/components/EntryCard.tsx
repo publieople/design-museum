@@ -1,13 +1,12 @@
 import { useMemo } from 'react'
 import { useT, useLocale } from '../i18n'
-import { defaultValues } from '../lib/controls'
-import { aliasesFor, resolveEntry } from '../lib/localize'
+import { aliasesFor, resolveMeta } from '../lib/localize'
 import { interactionHintKey, shouldAutoLoop } from '../lib/loop'
 import { usePrefs } from '../lib/prefs'
 import { Link } from '../lib/router'
 import { useReplayKey } from '../lib/replay'
 import { useInView } from '../lib/viewport'
-import type { Entry } from '../data/types'
+import type { EntryMeta } from '../data/types'
 import { DemoRunner } from './DemoRunner'
 import { DemoStage } from './DemoStage'
 import { ErrorBoundary } from './ErrorBoundary'
@@ -15,7 +14,7 @@ import { hasDemo } from '../demos/registry'
 import { resolveStage } from './stageStyles'
 
 interface EntryCardProps {
-  entry: Entry
+  entry: EntryMeta
   /** 卡片缩略演示：默认开启；不在视口里时只挂骨架不挂 demo */
   showDemo?: boolean
 }
@@ -27,8 +26,9 @@ export function EntryCard({ entry, showDemo = true }: EntryCardProps) {
   const { ref, inView } = useInView<HTMLLIElement>({ rootMargin: '240px' })
   const [replayKey, replay] = useReplayKey()
 
-  const resolved = useMemo(() => resolveEntry(entry, locale), [entry, locale])
-  const values = useMemo(() => defaultValues(entry), [entry])
+  const resolved = useMemo(() => resolveMeta(entry, locale), [entry, locale])
+  // meta 里带着控件默认值的快照，卡片不必为了算默认值把 controls 定义带进首屏
+  const values = useMemo(() => entry.defaults, [entry])
   const aliases = useMemo(() => aliasesFor(resolved.aliases, locale), [resolved.aliases, locale])
   const stage = resolveStage(entry, stagePref)
 

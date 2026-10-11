@@ -1,5 +1,5 @@
 import { useMemo, useState } from 'react'
-import { ENTRIES } from '../data'
+import { ENTRY_META } from '../data/meta'
 import { FEELS, INTENTS, SCENES } from '../data/taxonomy'
 import { useT, useLocale } from '../i18n'
 import { pick } from '../i18n/pick'
@@ -19,7 +19,7 @@ export function FeelPage() {
 
   const results = useMemo(
     () =>
-      ENTRIES.filter(
+      ENTRY_META.filter(
         (entry) =>
           (scenes.length === 0 || entry.scenes.some((item) => scenes.includes(item))) &&
           (feels.length === 0 || entry.feel.some((item) => feels.includes(item))) &&

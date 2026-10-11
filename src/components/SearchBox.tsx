@@ -1,5 +1,5 @@
 import { useEffect, useId, useMemo, useRef, useState, type KeyboardEvent } from 'react'
-import { ENTRIES } from '../data'
+import { ENTRY_META } from '../data/meta'
 import { useT } from '../i18n'
 import { navigate } from '../lib/router'
 import { searchEntries } from '../lib/search'
@@ -27,7 +27,7 @@ export function SearchBox({ value, onChange, autoFocus = false, className = '' }
   const listId = useId()
 
   const hits = useMemo(
-    () => (value.trim() ? searchEntries(ENTRIES, value).slice(0, MAX_SUGGESTIONS) : []),
+    () => (value.trim() ? searchEntries(ENTRY_META, value).slice(0, MAX_SUGGESTIONS) : []),
     [value],
   )
 

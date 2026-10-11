@@ -1,8 +1,8 @@
 import { codeOrder } from '../data/taxonomy'
-import type { Entry } from '../data/types'
+import type { EntryMeta } from '../data/types'
 
 export interface SearchHit {
-  entry: Entry
+  entry: EntryMeta
   score: number
 }
 
@@ -16,7 +16,7 @@ interface Indexed {
   blob: string
 }
 
-const INDEX = new WeakMap<Entry, Indexed>()
+const INDEX = new WeakMap<EntryMeta, Indexed>()
 
 /** 归一化：去空白与标点、小写。中英混排查询都走这一层 */
 export function normalizeText(input: string): string {
@@ -46,7 +46,7 @@ function gramSet(input: string): Set<string> {
   return out
 }
 
-function indexEntry(entry: Entry): Indexed {
+function indexEntry(entry: EntryMeta): Indexed {
   const cached = INDEX.get(entry)
   if (cached) return cached
 
@@ -75,7 +75,7 @@ function indexEntry(entry: Entry): Indexed {
  * 加权检索：先整体短语匹配（命中名称/别名权重最高），再退到逐词匹配。
  * 数据量只有几十条，正则 + 内存打分足够，不引入检索库。
  */
-export function searchEntries(entries: Entry[], rawQuery: string): SearchHit[] {
+export function searchEntries(entries: EntryMeta[], rawQuery: string): SearchHit[] {
   const compact = normalizeText(rawQuery)
   if (!compact) return entries.map((entry) => ({ entry, score: 0 }))
 

@@ -1,5 +1,5 @@
 import { useMemo } from 'react'
-import { ENTRIES } from '../data'
+import { ENTRY_META } from '../data/meta'
 import { CATEGORIES, FEELS, SCENES } from '../data/taxonomy'
 import { useT, useLocale } from '../i18n'
 import { pick } from '../i18n/pick'
@@ -21,7 +21,7 @@ export function BrowsePage() {
   const feel = route.query.get('feel') ?? ''
 
   const results = useMemo(() => {
-    const base = q ? searchEntries(ENTRIES, q).map((hit) => hit.entry) : ENTRIES
+    const base = q ? searchEntries(ENTRY_META, q).map((hit) => hit.entry) : ENTRY_META
     return base.filter((entry) => {
       if (cat && entry.category !== cat) return false
       if (scene && !entry.scenes.includes(scene as never)) return false
@@ -43,7 +43,7 @@ export function BrowsePage() {
         <div className="flex items-baseline justify-between gap-4">
           <h1 className="text-title font-display font-semibold enter enter-1">{t('browse.title')}</h1>
           <span className="font-mono text-xs text-muted">
-            {t('browse.count', { a: results.length, b: ENTRIES.length })}
+            {t('browse.count', { a: results.length, b: ENTRY_META.length })}
           </span>
         </div>
         <SearchBox value={q} onChange={(value) => updateQuery({ q: value || null })} />
