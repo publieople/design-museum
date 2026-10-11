@@ -76,7 +76,7 @@ Vite 8 + React 19 + TypeScript + Tailwind CSS v4。零后端，纯静态产物�
 
 `pnpm build` 的最后一步 `scripts/prerender.mjs` 用 React 的 `renderToStaticMarkup` 把 35 个地址渲染成 `dist/<地址>/index.html`，同时生成 `dist/sitemap.xml` 与 `dist/404.html`；每页的 `<title>`、`description`、`canonical`、`og:*` 和 JSON-LD 都按页写（词条页是 `TechArticle`）。浏览器侧照常 `createRoot` 重新渲染，不做水合——localStorage 里的主题与语言可能和预渲染的默认值不一样。旧的 `#/entry/frosted-glass` 这类链接会在挂载前被 `history.replaceState` 归一化成新地址，历史分享链接不会失效。
 
-代价是首屏 HTML 从 2.5KB 变成约 16KB：首页首屏总字节 197KB → 203KB（+2.9%），换来的是爬虫不执行 JS 也能读到 35 个页面的正文。
+代价是首屏 HTML 从 2.5KB 变成约 16KB（未压缩）：首页首屏总字节 197KB → 201KB（+2.2%），换来的是爬虫不执行 JS 也能读到 35 个页面的正文。
 
 ### 循环重播不是无差别的
 
@@ -96,7 +96,7 @@ Vite 8 + React 19 + TypeScript + Tailwind CSS v4。零后端，纯静态产物�
 
 ### 性能
 
-页面与 demo 都是按需加载：`src/demos/registry.ts` 用非 eager 的 `import.meta.glob`，30 个 demo 各自成一个 chunk（每个 1–4KB），首页只下载真正挂出来的那几个；`src/App.tsx` 里各页面也是 `lazy`。构建产物 46 个 chunk。改之前是单包 433KB（gzip 138KB），现在首屏约 356KB（gzip 119KB），且换页不再重新下载所有 demo。
+页面与 demo 都是按需加载：`src/demos/registry.ts` 用非 eager 的 `import.meta.glob`，30 个 demo 各自成一个 chunk（每个 1–4KB），首页只下载真正挂出来的那几个；`src/App.tsx` 里各页面也是 `lazy`。构建产物 50 个 JS chunk（另有 1 个 CSS 与 8 个字体文件）。改之前是单包 433KB（gzip 138KB），现在首屏约 356KB（gzip 119KB），且换页不再重新下载所有 demo。
 
 ## 目录结构
 
