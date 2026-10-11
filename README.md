@@ -36,14 +36,15 @@ pnpm dev          # http://localhost:5173
 
 ```bash
 pnpm typecheck    # tsc -b，零错误是提交门槛
-pnpm test         # vitest：内容校验 + 检索 + 参数 URL + 偏好 + i18n + 提示词 + 首屏 meta 同步 + 页面与 demo 渲染冒烟（181 项）
+pnpm test         # vitest：内容校验 + 检索 + 参数 URL + 偏好 + i18n + 提示词 + 首屏 meta 同步 + 页面与 demo 渲染冒烟（192 项）
 pnpm gen:meta     # 改过词条后重新生成首屏用的 meta（src/data/entryMeta.ts）
 pnpm validate     # 只跑内容校验
-pnpm build        # 产物在 dist/
+pnpm build        # tsc -b + vite build + 预渲染静态页（产物在 dist/）
+pnpm prerender    # 只补跑预渲染，需要已有 dist/（改完内容想单独重跑时用）
 pnpm preview      # 预览产物
 ```
 
-打开 `#/debug/all` 会把全馆 demo 一次挂起来，谁崩了一眼就能看到。
+开发模式（`pnpm dev`）下打开 `/debug/all` 会把全馆 demo 一次挂起来，谁崩了一眼就能看到；生产构建里这个地址渲染 404。
 
 ## 键盘
 
@@ -57,10 +58,25 @@ Vite 8 + React 19 + TypeScript + Tailwind CSS v4。零后端，纯静态产物�
 
 刻意的取舍：
 
-- **不引路由库**：只有 6 个路由且是静态托管，`src/lib/router.tsx` 是四十来行的 hash 路由，顺带省掉 Pages 的 404 重写。
+- **不引路由库**：路由表是静态的，`src/lib/router.tsx` + `src/lib/routes.ts` 自己写；构建期再跑 `scripts/prerender.mjs` 把每个地址渲染成静态 HTML，所以也省掉 Pages 的 404 重写。
 - **不引检索库**：几十条数据在内存里，`src/lib/search.ts` 用「归一化 + 分字段加权 + 逐词兜底」打分。
 - **不引状态库**：偏好只有五项，`src/lib/prefs.tsx` 一个 context 就够。
 - **字体本地打包**：`@fontsource-variable/*`，不请求外部字体 CDN。
+
+### 路由、预渲染与可索引 URL
+
+地址是真实路径，全部带尾斜杠（避免 GitHub Pages 的 301）：
+
+| 地址 | 页面 |
+|---|---|
+| `/` | 首页 |
+| `/browse/`、`/feel/`、`/cheatsheet/`、`/about/` | 词条库、感觉导航、速查表、怎么用 |
+| `/entry/<slug>/` | 30 条词条，每条一个独立地址（例：<https://publieople.github.io/design-museum/entry/frosted-glass/>） |
+| `/debug/all` | 只在开发模式可达，生产构建渲染 404 |
+
+`pnpm build` 的最后一步 `scripts/prerender.mjs` 用 React 的 `renderToStaticMarkup` 把 35 个地址渲染成 `dist/<地址>/index.html`，同时生成 `dist/sitemap.xml` 与 `dist/404.html`；每页的 `<title>`、`description`、`canonical`、`og:*` 和 JSON-LD 都按页写（词条页是 `TechArticle`）。浏览器侧照常 `createRoot` 重新渲染，不做水合——localStorage 里的主题与语言可能和预渲染的默认值不一样。旧的 `#/entry/frosted-glass` 这类链接会在挂载前被 `history.replaceState` 归一化成新地址，历史分享链接不会失效。
+
+代价是首屏 HTML 从 2.5KB 变成约 16KB：首页首屏总字节 197KB → 203KB（+2.9%），换来的是爬虫不执行 JS 也能读到 35 个页面的正文。
 
 ### 循环重播不是无差别的
 
@@ -107,13 +123,20 @@ src/
 │   ├── prefs.tsx             # 主题 / 语言 / 展品背景 / 慢放 / 循环，落 localStorage
 │   ├── localize.ts           # 把 Entry + 英文覆盖层解析成单语视图
 │   ├── entryState.ts         # 参数 ↔ URL、调过的参数记忆
+│   ├── routes.ts             # 地址工具：withBase / hrefFor / absoluteUrl / STATIC_PAGES
+│   ├── router.tsx            # 手写路由：pushState + popstate，Link / navigate / useRoute
+│   ├── pageFor.tsx           # 由路径段挑页面，App 与预渲染共用这一份路由表
 │   ├── search.ts  prompt.ts  copy.ts  controls.ts  motion.ts  viewport.ts
 │   ├── timeScale.ts          # 慢放：给子树里的 Web Animations 设 playbackRate
 │   ├── loop.ts               # 循环策略：哪些演示该被自动重播
 │   └── replay.ts             # 循环重播用的计数器
-├── components/               # DemoStage / DemoRunner / ControlPanel / PromptCard / SettingsMenu ...
-├── pages/
+├── components/               # DemoStage / DemoRunner / ControlPanel / PromptCard / SettingsMenu / NotFound ...
+├── pages/                    # 页面组件 + routeModules.ts（各页的动态 import 表）
+├── prerenderApp.tsx          # 预渲染入口：静态 import 页面 + renderToStaticMarkup
 └── styles/global.css         # 设计 token、主题变量、切换过渡
+
+scripts/
+└── prerender.mjs             # 构建期渲染 35 个地址 + sitemap.xml + 404.html
 ```
 
 ## 双语是怎么做的
@@ -211,8 +234,9 @@ gh api -X PATCH repos/publieople/design-museum \
 
 ## 已知限制
 
-- **sitemap 只有入口页**：hash 路由下 30 条词条共享同一个 URL，爬虫拿不到独立地址。要真正被搜到需要改成 BrowserRouter + 预渲染。
-- `pnpm lint` 目前有 19 条 react-hooks 相关的 warning（0 error）。CI 会跑 lint，只拦 error，warning 不阻塞合并。
+- 预渲染给的是文案与结构，**动起来的效果仍然需要 JS**：爬虫读到的是正文，不是演示。
+- 构建产物里还有一个约 1.7KB 的 `DebugAllPage-*.js` 死 chunk（动态 import 被静态分析收进图谱，不产生网络请求）。
+- `pnpm lint` 目前有 21 条 warning、0 error：主要是 `react-hooks/set-state-in-effect`、`react(only-export-components)`（`src/lib/prefs.tsx`、`src/lib/router.tsx`、`src/components/Toast.tsx` 这类「一个文件里既有组件又有 hook/工具」的写法）与 1 条 `DemoRunner.tsx` 的 `static-components`。CI 会跑 lint，只拦 error，warning 不阻塞合并。
 
 ## 待办（按性价比排序）
 

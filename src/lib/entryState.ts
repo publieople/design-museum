@@ -1,4 +1,5 @@
 import { defaultOf, defaultValues } from './controls'
+import { absoluteUrl } from './routes'
 import type { Control, ControlValues, Entry, StageId } from '../data/types'
 
 const STAGE_IDS: StageId[] = ['light', 'dark', 'accent', 'photo']
@@ -51,11 +52,10 @@ export function buildEntryQuery(
   return params.toString()
 }
 
+/** 分享链接：干净的真实路径（带参数），不再是 #/... 的 hash 地址 */
 export function entryLink(entry: Entry, values: ControlValues, stage: StageId | null): string {
   const query = buildEntryQuery(entry, values, stage)
-  const path = `/entry/${entry.slug}${query ? `?${query}` : ''}`
-  if (typeof window === 'undefined') return path
-  return `${window.location.origin}${window.location.pathname}#${path}`
+  return absoluteUrl(`/entry/${entry.slug}${query ? `?${query}` : ''}`)
 }
 
 interface TunedStore {

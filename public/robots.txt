@@ -1,5 +1,6 @@
 User-agent: *
 Allow: /
 
-# 站点是 hash 路由，所有词条共用同一个 URL，所以 sitemap 只能列出入口页。
+# 每个页面都有自己的静态 HTML（构建时预渲染），词条也各有一条 URL。
+# sitemap.xml 由 npm run build 生成，列的是全部页面。
 Sitemap: https://publieople.github.io/design-museum/sitemap.xml

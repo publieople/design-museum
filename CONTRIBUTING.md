@@ -26,7 +26,7 @@ pnpm dev          # http://localhost:5173
 pnpm typecheck    # tsc -b，零错误
 pnpm lint         # oxlint，零 error（warning 暂时允许）
 pnpm test         # vitest 全绿
-pnpm build        # 产物进 dist/
+pnpm build        # 产物进 dist/（最后一步跑 scripts/prerender.mjs：35 个静态页 + sitemap）
 ```
 
 `pnpm validate` 只跑内容校验，改词条时可以先跑它快速回归。
@@ -117,6 +117,7 @@ scope 可选，如 `fix(router): …`。一条提交只做一件事；正文写"
 - [ ] 中英各看一遍：中文下无英文残留，英文下无中文字符
 - [ ] 视觉改动有截图，深浅两种主题都看过
 - [ ] 没有新增依赖（有的话理由是否成立）
+- [ ] 新增或改动了页面：`src/pages/routeModules.ts` 与 `src/lib/routes.ts` 的 `STATIC_PAGES` 已同步，`pnpm build` 的预渲染输出里有对应静态 HTML（爬虫视角：`curl <地址>` 能读到正文）
 - [ ] 没有引入外部请求（字体、图片、分析脚本）
 
 ## 9. 许可与版权
