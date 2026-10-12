@@ -47,6 +47,8 @@ const entry: Entry = {
   scenes: ['card', 'list', 'button'],
   feel: ['soft', 'crisp'],
   intent: ['affordance', 'attention'],
+  tags: ['css-only', 'composited', 'pointer-dependent', 'stable'],
+  demo: { shape: 'stage' },
   controls: [
     {
       kind: 'range',

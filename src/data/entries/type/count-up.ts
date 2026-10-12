@@ -47,6 +47,8 @@ const entry: Entry = {
   scenes: ['page', 'card', 'list'],
   feel: ['crisp', 'playful'],
   intent: ['attention', 'waiting'],
+  tags: ['js', 'browser-api', 'font-feature', 'main-thread', 'stable'],
+  demo: { shape: 'stage' },
   controls: [
     { kind: 'range', id: 'target', label: '目标值', min: 100, max: 100000, step: 100, def: 12800, unit: '人', hint: '数字越大，位数变化带来的布局抖动越明显' },
     { kind: 'range', id: 'duration', label: '时长', min: 300, max: 3000, step: 100, def: 1200, unit: 'ms', hint: '整段滚完要多久' },

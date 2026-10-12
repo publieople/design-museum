@@ -62,6 +62,15 @@ export const ENTRY_META: EntryMeta[] = [
       "hierarchy",
       "attention"
     ],
+    "tags": [
+      "css-only",
+      "composited",
+      "motion-heavy",
+      "stable"
+    ],
+    "demo": {
+      "shape": "stage"
+    },
     "loop": "replay",
     "en": {
       "oneLiner": "A group of elements enters one after another on a fixed interval, not all at once."
@@ -131,6 +140,15 @@ export const ENTRY_META: EntryMeta[] = [
       "affordance",
       "hierarchy"
     ],
+    "tags": [
+      "css-only",
+      "modern-css",
+      "composited",
+      "check-support"
+    ],
+    "demo": {
+      "shape": "stage"
+    },
     "loop": "continuous",
     "en": {
       "oneLiner": "How an animation spends its time: fast off the line or soft on arrival, all in one curve."
@@ -201,6 +219,17 @@ export const ENTRY_META: EntryMeta[] = [
       "affordance",
       "attention"
     ],
+    "tags": [
+      "js",
+      "modern-css",
+      "composited",
+      "main-thread",
+      "motion-heavy",
+      "stable"
+    ],
+    "demo": {
+      "shape": "stage"
+    },
     "loop": "replay",
     "en": {
       "oneLiner": "An element driven at its target like it is on a spring, overshooting and settling back."
@@ -270,6 +299,18 @@ export const ENTRY_META: EntryMeta[] = [
       "attention",
       "hierarchy"
     ],
+    "tags": [
+      "js",
+      "browser-api",
+      "scroll-linked",
+      "composited",
+      "motion-heavy",
+      "stable"
+    ],
+    "demo": {
+      "shape": "scroll",
+      "thumb": "still"
+    },
     "loop": "manual",
     "en": {
       "oneLiner": "Content fades in and slides up only once it scrolls into view; off-screen items stay hidden."
@@ -339,6 +380,18 @@ export const ENTRY_META: EntryMeta[] = [
       "attention",
       "hierarchy"
     ],
+    "tags": [
+      "js",
+      "modern-css",
+      "scroll-linked",
+      "paint-heavy",
+      "motion-heavy",
+      "stable"
+    ],
+    "demo": {
+      "shape": "scroll",
+      "thumb": "still"
+    },
     "loop": "manual",
     "en": {
       "oneLiner": "Foreground and background move at different speeds as you scroll, which gives the scene depth."
@@ -407,6 +460,17 @@ export const ENTRY_META: EntryMeta[] = [
       "attention",
       "affordance"
     ],
+    "tags": [
+      "modern-css",
+      "scroll-linked",
+      "composited",
+      "motion-heavy",
+      "check-support"
+    ],
+    "demo": {
+      "shape": "scroll",
+      "thumb": "still"
+    },
     "loop": "manual",
     "en": {
       "oneLiner": "The scrollbar is the timeline: the scroll position decides exactly which frame is shown."
@@ -474,6 +538,15 @@ export const ENTRY_META: EntryMeta[] = [
       "affordance",
       "attention"
     ],
+    "tags": [
+      "css-only",
+      "composited",
+      "pointer-dependent",
+      "stable"
+    ],
+    "demo": {
+      "shape": "stage"
+    },
     "loop": "manual",
     "en": {
       "oneLiner": "When the pointer moves onto a card, it rises slightly and the shadow deepens, hinting that it is clickable."
@@ -542,6 +615,15 @@ export const ENTRY_META: EntryMeta[] = [
       "affordance",
       "attention"
     ],
+    "tags": [
+      "css-only",
+      "composited",
+      "keyboard-operable",
+      "stable"
+    ],
+    "demo": {
+      "shape": "stage"
+    },
     "loop": "manual",
     "en": {
       "oneLiner": "The moment a finger presses down the button shrinks and darkens, then snaps back on release to confirm the tap."
@@ -609,6 +691,17 @@ export const ENTRY_META: EntryMeta[] = [
       "attention",
       "affordance"
     ],
+    "tags": [
+      "js",
+      "browser-api",
+      "main-thread",
+      "pointer-dependent",
+      "stable"
+    ],
+    "demo": {
+      "shape": "interactive",
+      "thumb": "still"
+    },
     "loop": "manual",
     "en": {
       "oneLiner": "The button drifts a little toward the pointer as it approaches, then springs back to its resting spot."
@@ -676,6 +769,16 @@ export const ENTRY_META: EntryMeta[] = [
     "intent": [
       "waiting"
     ],
+    "tags": [
+      "css-only",
+      "gradient",
+      "paint-heavy",
+      "motion-heavy",
+      "stable"
+    ],
+    "demo": {
+      "shape": "stage"
+    },
     "loop": "continuous",
     "en": {
       "oneLiner": "A grey placeholder block with a light band sweeping across it, showing that the content is still loading."
@@ -743,6 +846,15 @@ export const ENTRY_META: EntryMeta[] = [
       "affordance",
       "waiting"
     ],
+    "tags": [
+      "js",
+      "stateful",
+      "keyboard-operable",
+      "stable"
+    ],
+    "demo": {
+      "shape": "stage"
+    },
     "loop": "manual",
     "en": {
       "oneLiner": "The UI flips to the success state the moment you click, while the request runs and rolls back on failure."
@@ -810,6 +922,15 @@ export const ENTRY_META: EntryMeta[] = [
       "waiting",
       "affordance"
     ],
+    "tags": [
+      "js",
+      "stateful",
+      "composited",
+      "stable"
+    ],
+    "demo": {
+      "shape": "stage"
+    },
     "loop": "manual",
     "en": {
       "oneLiner": "A short message slides in from the screen edge and dismisses itself after a few seconds, without blocking."
@@ -875,6 +996,16 @@ export const ENTRY_META: EntryMeta[] = [
     "intent": [
       "affordance"
     ],
+    "tags": [
+      "js",
+      "scroll-linked",
+      "composited",
+      "stable"
+    ],
+    "demo": {
+      "shape": "scroll",
+      "thumb": "still"
+    },
     "loop": "manual",
     "en": {
       "oneLiner": "A page header that stays pinned on scroll and often hides on the way down."
@@ -947,6 +1078,17 @@ export const ENTRY_META: EntryMeta[] = [
       "hierarchy",
       "attention"
     ],
+    "tags": [
+      "css-only",
+      "scroll-linked",
+      "composited",
+      "motion-heavy",
+      "stable"
+    ],
+    "demo": {
+      "shape": "scroll",
+      "thumb": "still"
+    },
     "loop": "manual",
     "en": {
       "oneLiner": "Cards scroll up one by one and stack on top of each other as the earlier ones shrink behind."
@@ -1015,6 +1157,13 @@ export const ENTRY_META: EntryMeta[] = [
       "hierarchy",
       "attention"
     ],
+    "tags": [
+      "css-only",
+      "stable"
+    ],
+    "demo": {
+      "shape": "stage"
+    },
     "loop": "manual",
     "en": {
       "oneLiner": "Cards of uneven height drop into the shortest column, so no large gaps open at the bottom."
@@ -1082,6 +1231,13 @@ export const ENTRY_META: EntryMeta[] = [
       "hierarchy",
       "attention"
     ],
+    "tags": [
+      "css-only",
+      "stable"
+    ],
+    "demo": {
+      "shape": "stage"
+    },
     "loop": "manual",
     "en": {
       "oneLiner": "Tiles of different sizes lock into one block with aligned edges, so the hierarchy reads at a glance."
@@ -1151,6 +1307,15 @@ export const ENTRY_META: EntryMeta[] = [
       "affordance",
       "hierarchy"
     ],
+    "tags": [
+      "css-only",
+      "scroll-linked",
+      "stable"
+    ],
+    "demo": {
+      "shape": "scroll",
+      "thumb": "still"
+    },
     "loop": "manual",
     "en": {
       "oneLiner": "Scrolling comes to rest on a card instead of stopping halfway between two of them."
@@ -1219,6 +1384,16 @@ export const ENTRY_META: EntryMeta[] = [
       "affordance",
       "hierarchy"
     ],
+    "tags": [
+      "css-only",
+      "stateful",
+      "layout-triggering",
+      "keyboard-operable",
+      "stable"
+    ],
+    "demo": {
+      "shape": "stage"
+    },
     "loop": "manual",
     "en": {
       "oneLiner": "Clicking a heading reveals its panel, usually one at a time, and the headings never move."
@@ -1286,6 +1461,16 @@ export const ENTRY_META: EntryMeta[] = [
     "intent": [
       "hierarchy"
     ],
+    "tags": [
+      "css-only",
+      "modern-css",
+      "filter-blend",
+      "paint-heavy",
+      "stable"
+    ],
+    "demo": {
+      "shape": "stage"
+    },
     "loop": "continuous",
     "en": {
       "oneLiner": "A panel blurs the content behind it, like looking through ground glass."
@@ -1355,6 +1540,16 @@ export const ENTRY_META: EntryMeta[] = [
       "hierarchy",
       "attention"
     ],
+    "tags": [
+      "css-only",
+      "modern-css",
+      "filter-blend",
+      "paint-heavy",
+      "stable"
+    ],
+    "demo": {
+      "shape": "stage"
+    },
     "loop": "continuous",
     "en": {
       "oneLiner": "A translucent panel with a bright edge and soft shadow, floating over a colorful background."
@@ -1430,6 +1625,16 @@ export const ENTRY_META: EntryMeta[] = [
       "attention",
       "hierarchy"
     ],
+    "tags": [
+      "css-only",
+      "gradient",
+      "filter-blend",
+      "paint-heavy",
+      "stable"
+    ],
+    "demo": {
+      "shape": "stage"
+    },
     "loop": "continuous",
     "en": {
       "oneLiner": "Several radial gradients stacked so color flows in any direction, with no single gradient axis."
@@ -1505,6 +1710,15 @@ export const ENTRY_META: EntryMeta[] = [
     "intent": [
       "hierarchy"
     ],
+    "tags": [
+      "css-only",
+      "filter-blend",
+      "paint-heavy",
+      "stable"
+    ],
+    "demo": {
+      "shape": "stage"
+    },
     "loop": "continuous",
     "en": {
       "oneLiner": "A layer of random pixels over the surface that adds texture and hides banding in gradients."
@@ -1581,6 +1795,18 @@ export const ENTRY_META: EntryMeta[] = [
       "attention",
       "affordance"
     ],
+    "tags": [
+      "js",
+      "browser-api",
+      "gradient",
+      "filter-blend",
+      "main-thread",
+      "pointer-dependent"
+    ],
+    "demo": {
+      "shape": "interactive",
+      "thumb": "still"
+    },
     "loop": "manual",
     "en": {
       "oneLiner": "A soft pool of light that follows the pointer across a card, like a flashlight held to it."
@@ -1657,6 +1883,15 @@ export const ENTRY_META: EntryMeta[] = [
       "attention",
       "hierarchy"
     ],
+    "tags": [
+      "css-only",
+      "gradient",
+      "modern-css",
+      "check-support"
+    ],
+    "demo": {
+      "shape": "stage"
+    },
     "loop": "continuous",
     "en": {
       "oneLiner": "The border is not one color but a gradient running once around the element outline."
@@ -1725,6 +1960,15 @@ export const ENTRY_META: EntryMeta[] = [
     "intent": [
       "hierarchy"
     ],
+    "tags": [
+      "css-only",
+      "modern-css",
+      "layout-triggering",
+      "check-support"
+    ],
+    "demo": {
+      "shape": "stage"
+    },
     "loop": "continuous",
     "en": {
       "oneLiner": "Font size scales continuously with the container width, so it never jumps a step at a breakpoint."
@@ -1797,6 +2041,15 @@ export const ENTRY_META: EntryMeta[] = [
     "intent": [
       "hierarchy"
     ],
+    "tags": [
+      "css-only",
+      "modern-css",
+      "layout-triggering",
+      "check-support"
+    ],
+    "demo": {
+      "shape": "stage"
+    },
     "loop": "continuous",
     "en": {
       "oneLiner": "Line lengths in a multi-line heading are evened out, so the last line no longer holds one orphaned word."
@@ -1866,6 +2119,15 @@ export const ENTRY_META: EntryMeta[] = [
       "attention",
       "hierarchy"
     ],
+    "tags": [
+      "css-only",
+      "gradient",
+      "paint-heavy",
+      "stable"
+    ],
+    "demo": {
+      "shape": "stage"
+    },
     "loop": "continuous",
     "en": {
       "oneLiner": "The text acts as a mask, so what shows through is the gradient behind it instead of a single color."
@@ -1935,6 +2197,15 @@ export const ENTRY_META: EntryMeta[] = [
       "attention",
       "hierarchy"
     ],
+    "tags": [
+      "js",
+      "composited",
+      "motion-heavy",
+      "stable"
+    ],
+    "demo": {
+      "shape": "stage"
+    },
     "loop": "replay",
     "en": {
       "oneLiner": "The characters of a headline drop into place one after another, as if written out letter by letter."
@@ -2004,6 +2275,14 @@ export const ENTRY_META: EntryMeta[] = [
       "hierarchy",
       "attention"
     ],
+    "tags": [
+      "css-only",
+      "font-feature",
+      "stable"
+    ],
+    "demo": {
+      "shape": "stage"
+    },
     "loop": "continuous",
     "en": {
       "oneLiner": "A single font file carries a continuous weight axis, so it can stop at any weight."
@@ -2073,6 +2352,16 @@ export const ENTRY_META: EntryMeta[] = [
       "attention",
       "waiting"
     ],
+    "tags": [
+      "js",
+      "browser-api",
+      "font-feature",
+      "main-thread",
+      "stable"
+    ],
+    "demo": {
+      "shape": "stage"
+    },
     "loop": "replay",
     "en": {
       "oneLiner": "A number races from 0 up to its target value and then holds still."

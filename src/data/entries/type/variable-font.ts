@@ -45,6 +45,8 @@ const entry: Entry = {
   scenes: ['text', 'page'],
   feel: ['crisp', 'calm'],
   intent: ['hierarchy', 'attention'],
+  tags: ['css-only', 'font-feature', 'stable'],
+  demo: { shape: 'stage' },
   controls: [
     { kind: 'range', id: 'wght', label: '字重轴 wght', min: 300, max: 700, step: 1, def: 450, hint: '连续拖，看字真的跟着变粗变细，而不是只有几档' },
     { kind: 'range', id: 'steps', label: '档位数', min: 1, max: 9, step: 1, def: 1, unit: '档', hint: '大于 1 时把字重取整到最近的档，就像只加载了几个静态字重' },

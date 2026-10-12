@@ -2,7 +2,7 @@
 
 前端设计博物馆是一个纯静态、零后端的站点。这份文档是开工依据：怎么写、能改哪里、什么算完成。
 
-第一次参与，建议按顺序读：本文件 → [README](README.md)（项目结构与「新增一条词条」5 步）→ [AGENTS.md](AGENTS.md)（用 AI 代理写代码的话，把它一起交给代理）。
+第一次参与，建议按顺序读：本文件 → [README](README.md)（项目结构与「新增一条词条」5 步）→ [docs/ENTRY-SPEC.md](docs/ENTRY-SPEC.md)（条目规范：什么算一条、字段表、标签词表、演示形态、增删改查）→ [AGENTS.md](AGENTS.md)（用 AI 代理写代码的话，把它一起交给代理）。
 
 ## 1. 环境
 
@@ -94,6 +94,10 @@ scope 可选，如 `fix(router): …`。一条提交只做一件事；正文写"
 - `refs` 至少一条 MDN / web.dev / W3C 的链接，**别凭印象写属性名**，去链接里核对
 - `oneLiner` 写"它是什么"，不写"它能带来什么价值"
 - `loop` 按演示的**实际行为**选（`replay` / `continuous` / `manual`），别按名字猜
+- `tags` 只准用 `src/data/taxonomy.ts` 的闭集 id，每条 2–6 个且至少 1 个 tech；想加新标签先看规范第 3 节（口语俗称进 `aliases`，不要自造标签）
+- `demo.shape` 按容器需求选（`stage` / `interactive` / `scroll` / `sequence` / `page`），非 `stage` 要给 `thumb: 'still'`；滚动类必须在舞台里自带滚动容器
+- `controls` 只用 range / select / toggle：`prompt`、速查表与 catalog 都从它自动派生
+- 条目满足规范第 1 节的四条判据，并在 PR 里回答三问：和哪条最像、差异是哪一行属性、为什么那条装不下它
 
 ## 7. 文案与无障碍
 
@@ -109,6 +113,9 @@ scope 可选，如 `fix(router): …`。一条提交只做一件事；正文写"
 
 - [ ] 四项命令作者本地跑过，CI 全绿
 - [ ] 改过词条内容或 `metaOf.ts` 的话，`pnpm gen:meta` 已跑，生成物与词条一致
+- [ ] 条目符合 [docs/ENTRY-SPEC.md](docs/ENTRY-SPEC.md)：四条判据过关，`confusions` 与本条最像的条目互相指认
+- [ ] `tags` 用词表内的 id，2–6 个、至少 1 个 tech；没有自造标签，没有孤儿标签
+- [ ] `demo.shape` 与容器需求一致，非 `stage` 形态给了 `thumb: 'still'`，滚动类不依赖整页滚动
 - [ ] 词条有公认名字，不是自造概念
 - [ ] `refs` 能点开，属性与取值和文档对得上
 - [ ] `confusions` 真能区分两个易混效果，不是同义反复

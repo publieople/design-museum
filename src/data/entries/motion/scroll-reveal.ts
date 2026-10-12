@@ -54,6 +54,8 @@ const entry: Entry = {
   scenes: ['scroll', 'page', 'list'],
   feel: ['calm', 'soft'],
   intent: ['attention', 'hierarchy'],
+  tags: ['js', 'browser-api', 'scroll-linked', 'composited', 'motion-heavy', 'stable'],
+  demo: { shape: 'scroll', thumb: 'still' },
   controls: [
     { kind: 'range', id: 'distance', label: '上移距离', min: 0, max: 64, step: 2, def: 24, unit: 'px' },
     { kind: 'range', id: 'duration', label: '淡入时长', min: 150, max: 1200, step: 50, def: 550, unit: 'ms' },

@@ -47,6 +47,8 @@ const entry: Entry = {
   scenes: ['button', 'form', 'page'],
   feel: ['calm', 'soft'],
   intent: ['waiting', 'affordance'],
+  tags: ['js', 'stateful', 'composited', 'stable'],
+  demo: { shape: 'stage' },
   controls: [
     { kind: 'range', id: 'duration', label: '停留时长', min: 1500, max: 6000, step: 250, def: 3000, unit: 'ms', hint: '拖到最长，能看到它一直不消失' },
     {

@@ -45,6 +45,8 @@ const entry: Entry = {
   scenes: ['list', 'button', 'form'],
   feel: ['crisp', 'calm'],
   intent: ['affordance', 'waiting'],
+  tags: ['js', 'stateful', 'keyboard-operable', 'stable'],
+  demo: { shape: 'stage' },
   controls: [
     { kind: 'range', id: 'latency', label: '模拟服务器延迟', min: 300, max: 3000, step: 100, def: 1200, unit: 'ms' },
     { kind: 'range', id: 'failureRate', label: '失败概率', min: 0, max: 100, step: 5, def: 30, unit: '%', hint: '调高一点更容易看到回滚' },

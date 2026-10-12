@@ -37,7 +37,7 @@ function coerce(control: Control, raw: string, fallback: number | string | boole
 }
 
 export function buildEntryQuery(
-  entry: Entry,
+  entry: Pick<Entry, 'controls'>,
   values: ControlValues,
   stage: StageId | null,
 ): string {
@@ -53,7 +53,12 @@ export function buildEntryQuery(
 }
 
 /** 分享链接：干净的真实路径（带参数），不再是 #/... 的 hash 地址 */
-export function entryLink(entry: Entry, values: ControlValues, stage: StageId | null): string {
+/** 只用到 slug 与控件定义，所以收窄参数：详情页传 ResolvedEntry 也成立 */
+export function entryLink(
+  entry: Pick<Entry, 'slug' | 'controls'>,
+  values: ControlValues,
+  stage: StageId | null,
+): string {
   const query = buildEntryQuery(entry, values, stage)
   return absoluteUrl(`/entry/${entry.slug}${query ? `?${query}` : ''}`)
 }

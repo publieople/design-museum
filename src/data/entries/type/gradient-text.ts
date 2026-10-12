@@ -47,6 +47,8 @@ const entry: Entry = {
   scenes: ['text', 'page', 'card'],
   feel: ['playful', 'crisp'],
   intent: ['attention', 'hierarchy'],
+  tags: ['css-only', 'gradient', 'paint-heavy', 'stable'],
+  demo: { shape: 'stage' },
   controls: [
     { kind: 'range', id: 'angle', label: '渐变角度', min: 0, max: 360, step: 5, def: 120, unit: 'deg', hint: '角度一转，每个字落在渐变里的颜色全变' },
     {

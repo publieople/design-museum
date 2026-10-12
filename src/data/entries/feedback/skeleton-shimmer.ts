@@ -47,6 +47,8 @@ const entry: Entry = {
   scenes: ['list', 'card', 'page'],
   feel: ['calm', 'soft'],
   intent: ['waiting'],
+  tags: ['css-only', 'gradient', 'paint-heavy', 'motion-heavy', 'stable'],
+  demo: { shape: 'stage' },
   controls: [
     { kind: 'range', id: 'duration', label: '扫过一次的时长', min: 800, max: 2600, step: 100, def: 1400, unit: 'ms' },
     { kind: 'range', id: 'highlight', label: '高光带宽', min: 10, max: 60, step: 5, def: 32, unit: '%' },

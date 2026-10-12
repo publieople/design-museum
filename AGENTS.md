@@ -12,9 +12,11 @@
 pnpm typecheck && pnpm lint && pnpm test && pnpm build
 ```
 
-四项必须全绿才算改完。测试是唯一门槛，覆盖：30 条词条的内容校验、检索、参数 URL、偏好、i18n、提示词生成、首屏 meta 与词条的同步、页面渲染冒烟。改视觉也要人眼验收（截图），测试看不出好不好看。
+四项必须全绿才算改完。测试是唯一门槛，覆盖：全部词条的内容校验、条目规范、检索、参数 URL、偏好、i18n、提示词生成、首屏 meta 与词条的同步、页面渲染冒烟。改视觉也要人眼验收（截图），测试看不出好不好看。
 
 改了词条内容或 `src/data/metaOf.ts` 之后要补一条 `pnpm gen:meta`：首屏读的是生成物 `src/data/entryMeta.ts`，`src/data/meta.test.ts` 会拦下过期的生成物。
+
+词条的规范（什么算一条、字段表、标签词表、演示形态、增删改查、预算）以 [docs/ENTRY-SPEC.md](docs/ENTRY-SPEC.md) 为唯一真源；里面能自动测的规矩都落在 `src/data/entrySpec.test.ts`。
 
 ## 硬规矩
 
@@ -30,6 +32,11 @@ pnpm typecheck && pnpm lint && pnpm test && pnpm build
 - 改 `src/lib/**`、`src/components/**`、构建配置前先说明原因——这些文件影响全站
 - 首屏（首页 / 词条库 / 感觉导航 / 搜索）只准用 `src/data/meta.ts` 里的 `ENTRY_META`；`src/data/index.ts` 的完整词条（spec / refs / related / reducedMotion / controls / prompt / en）只准被详情页、速查表这类懒加载路由 import
 - 别手改 `src/data/entryMeta.ts`，它是 `pnpm gen:meta` 生成的
+- 加字段要按 ENTRY-SPEC 的「字段联动清单」同时改：`types.ts` → `metaOf.ts` → `entries.test.ts` → 跑 `gen:meta` → catalog 与规范文档
+- `slug` 是文件与 URL 的不可变主键（改名 = 删 + 增 + 墓碑，见规范第 5 节）
+- 标签只准用 `src/data/taxonomy.ts` 里 `TAGS` 的闭集 id，每条 2–6 个、至少 1 个 tech；词表总数 ≤ 40，每个标签至少被 2 条词条用到（自由标签一律不收，口语进 `aliases`）
+- 每条词条必须声明 `demo.shape`；非 `stage` 形态要给 `thumb: 'still'`；滚动类 demo 必须在舞台里自带滚动容器，不许依赖整页滚动
+- `controls` 只允许 range / select / toggle 三种：`prompt`、速查表与 catalog 都从它自动派生
 
 ## 新增词条
 

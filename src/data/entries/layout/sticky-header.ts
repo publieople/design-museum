@@ -45,6 +45,8 @@ const entry: Entry = {
   scenes: ['nav', 'page', 'scroll'],
   feel: ['calm', 'crisp'],
   intent: ['affordance'],
+  tags: ['js', 'scroll-linked', 'composited', 'stable'],
+  demo: { shape: 'scroll', thumb: 'still' },
   controls: [
     { kind: 'range', id: 'threshold', label: '吸顶阈值', min: 0, max: 200, step: 10, def: 60, unit: 'px' },
     { kind: 'toggle', id: 'hide', label: '下滑时隐藏', def: true },
