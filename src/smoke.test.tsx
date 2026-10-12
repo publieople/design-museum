@@ -1,6 +1,7 @@
 import { renderToString } from 'react-dom/server'
 import { describe, expect, it } from 'vitest'
 import { ENTRIES, findEntry } from './data'
+import { ENTRY_META } from './data/meta'
 import { defaultValues } from './lib/controls'
 import { demoLoader, hasDemo } from './demos/registry'
 import { STAGES } from './data/taxonomy'
@@ -73,6 +74,25 @@ describe('页面渲染冒烟', () => {
     const html = render(<EntryDetailPage slug="frosted-glass" />, { locale: 'en' })
     expect(html).toContain('Copy for your AI')
     expect(html).toContain('Not to be confused with')
+  })
+
+  it('词条库里非固定舞台的缩略图是定格的，角标提示点开', () => {
+    const html = render(<BrowsePage />)
+    const expected = ENTRY_META.filter((entry) => entry.demo.shape !== 'stage').length
+    // 记 select-none 而不是 pointer-events-none：角标本身也带 pointer-events-none
+    const still = html.match(/select-none/g) ?? []
+    expect(still.length, `应有 ${expected} 张定格缩略图（滚动 / 指针类）`).toBe(expected)
+    expect(html).toContain('点开自己动手')
+    expect(render(<BrowsePage />, { locale: 'en' })).toContain('Open to try it')
+  })
+
+  it('非固定舞台的详情页舞台更高，并给出「自己动手」提示', () => {
+    const scroll = render(<EntryDetailPage slug="scroll-snap" />)
+    expect(scroll).toContain('自己动手试试')
+    expect(scroll).toContain('min-h-80')
+    // 固定舞台不带定格类，也不改高度
+    const stage = render(<EntryDetailPage slug="frosted-glass" />)
+    expect(stage).not.toContain('min-h-80')
   })
 
   it('找不到的词条给出友好提示', () => {

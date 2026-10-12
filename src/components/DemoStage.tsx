@@ -1,8 +1,9 @@
 import { useEffect, type CSSProperties, type ReactNode } from 'react'
 import { STAGES, stageHint, stageLabel } from '../data/taxonomy'
-import type { StageId } from '../data/types'
+import type { DemoShape, StageId } from '../data/types'
 import { useT } from '../i18n'
 import { usePrefs } from '../lib/prefs'
+import { stageContentClass } from '../lib/loop'
 import { useLocale } from '../i18n'
 import { STAGE_STYLES } from './stageStyles'
 
@@ -15,8 +16,12 @@ interface DemoStageProps {
   compact?: boolean
   /** 这个演示该不该被循环定时器重挂载；由词条的 loop 策略决定 */
   loopable?: boolean
-  /** 缩略图角标：卡片里看不出效果时，告诉观众要自己动手 */
-  hint?: 'stage.needsScroll' | null
+  /** 演示形态：决定内容区高度与缩略图策略（见 docs/ENTRY-SPEC.md 第 4 节） */
+  shape?: DemoShape
+  /** 缩略图定格：非固定舞台的卡片不接指针事件，只给一帧静态画面 */
+  still?: boolean
+  /** 舞台角标：卡片里或详情页里看不出效果时，告诉观众要自己动手 */
+  hint?: 'stage.needsScroll' | 'stage.tapToTry' | null
   className?: string
 }
 
@@ -29,6 +34,8 @@ export function DemoStage({
   onReplay,
   children,
   compact = false,
+  shape = 'stage',
+  still = false,
   loopable = true,
   hint = null,
   className = '',
@@ -73,18 +80,16 @@ export function DemoStage({
       style={stageStyle}
     >
       {/* flex 而不是 grid：grid 的 justify-items:center 会让 w-full 的子元素按 max-content 收缩，
-          卡片里的 demo 于是塌成一条窄带。高度用 aspect-ratio 跟着卡片宽度自适应。 */}
+          卡片里的 demo 于是塌成一条窄带。高度用 aspect-ratio 跟着卡片宽度自适应，
+          非固定舞台（滚动 / 指针 / 整页对比）在详情页要高一些。 */}
       <div
-        className={
-          compact
-            ? 'flex aspect-[4/3] min-h-48 items-center justify-center overflow-hidden p-4'
-            : 'flex min-h-64 items-center justify-center p-8'
-        }
+        className={`${stageContentClass(shape, compact)}${still ? ' pointer-events-none select-none' : ''}`}
+        aria-hidden={still || undefined}
       >
         {children}
       </div>
 
-      {compact && hint ? (
+      {hint ? (
         <span
           className="pointer-events-none absolute bottom-2 left-2 rounded-full px-2 py-0.5 font-mono text-[10px] tracking-wide text-white/90 backdrop-blur-md"
           style={{ background: 'rgba(0,0,0,0.45)' }}
