@@ -14,7 +14,7 @@ interface DemoRunnerProps {
   timeScale?: number
   /**
    * 缩略图模式：把 demo 等比缩放到填满舞台。
-   * 30 个 demo 各自按自己的尺寸设计（多数 max-w-xs），不缩放的话
+   * 每个 demo 各自按自己的尺寸设计（多数 max-w-xs），不缩放的话
    * 在宽卡片里只占一小块，两边全是空的。
    */
   fit?: boolean

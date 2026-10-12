@@ -9,7 +9,7 @@ import { useRoute } from './lib/router'
 import { TITLE_KEYS } from './lib/routes'
 import { ROUTE_MODULES, type PageComponents } from './pages/routeModules'
 
-// 路由级分包：首页不该把速查表、冒烟页连同 30 个 demo 一起下载。
+// 路由级分包：首页不该把速查表、冒烟页连同全部 demo 一起下载。
 // 加载器表只有一份（src/pages/routeModules.ts），预渲染脚本用的是同一份。
 // 走 lazyWithRetry：部署后旧 HTML 引用的 chunk 会 404，这时刷新一次能自愈。
 const PAGES = {
@@ -37,7 +37,7 @@ function Routes() {
   const route = useRoute()
   const { locale } = usePrefs()
   const [head, param] = route.segments
-  // 调试台一次挂 30 个 demo，只在开发构建里存在。
+  // 调试台一次挂满全部 demo，只在开发构建里存在。
   // 生产环境它算未知路由：页面给 NotFound，标题也不许自称"冒烟测试"。
   const devOnly = head === 'debug' && !import.meta.env.DEV
 

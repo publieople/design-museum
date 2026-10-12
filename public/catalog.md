@@ -1,6 +1,6 @@
 # 前端设计博物馆 · 词条目录 v1
 
-> 30 条前端效果词条，中英双语名字 + 口语别名 + 易混项 + 踩坑 + 推荐取值 + 控件默认值 + 可直接提给 AI 的中英需求句。
+> 40 条前端效果词条，中英双语名字 + 口语别名 + 易混项 + 踩坑 + 推荐取值 + 控件默认值 + 可直接提给 AI 的中英需求句。
 > 站点：https://publieople.github.io/design-museum/ · 机器可读版：https://publieople.github.io/design-museum/catalog.json
 
 ## 怎么用它
@@ -168,6 +168,56 @@
 - 相关：scroll-reveal, parallax, sticky-header
 - 参考：[Chrome for Developers · 滚动驱动动画](https://developer.chrome.com/docs/css-ui/scroll-driven-animations) · [MDN · animation-timeline](https://developer.mozilla.org/docs/Web/CSS/animation-timeline)
 
+<a id="view-transitions"></a>
+
+### M-07 视图过渡 · View Transitions
+
+- 地址：https://publieople.github.io/design-museum/entry/view-transitions/
+- 展厅：motion · 标签：browser-api, js, composited, motion-heavy, check-support · 形态：page
+- 一句话：页面切换时，浏览器把新旧两屏接起来，补出中间那一下过渡。
+- 别名：页面转场、跨页面过渡、共享元素过渡、view transition、view-transition、page transition
+- 关键词：View Transition API, document.startViewTransition, view-transition-name, ::view-transition-old, ::view-transition-new, shared element transition, cross-document view transition
+- 什么时候用：列表点进详情：被点的那张卡片原地放大成详情页的头图 / 同一个应用里换标签页或换主题，希望两屏连起来而不是硬切 / 导航栏在多个页面里都一样，想让人看出它是同一个元素
+- 别搞混 · CSS transition：CSS transition 只能让同一个元素自己变；视图过渡是浏览器给整屏拍新旧两张快照再做动画，所以能把旧界面里的某个元素平滑接到新界面的对应元素上。
+- 别搞混 · 入场动画：入场动画是新页面自己在播，旧界面已经消失；视图过渡的动画发生在两屏之间，旧屏要一起参与，所以改 DOM 的那一步必须放进 startViewTransition 的回调里。
+- 坑：同一时刻 view-transition-name 必须唯一：列表里给每张卡片都写死一个名字会直接报错，要在点击时只给被点的那张临时加上
+- 坑：改 DOM 的代码必须在 document.startViewTransition(() => …) 的回调里执行，写在回调外面拍到的还是旧界面
+- 坑：过渡期间会有一层伪元素盖在页面上，指针事件被短暂挡住，别在过渡里做点击判断
+- 坑：不支持这个 API 的浏览器要有兜底：直接切换即可，不要留一屏空白等过渡
+- 坑：跨文档（多页应用）要写 @view-transition { navigation: auto }，而且必须同源
+- 推荐取值：时长=200–400ms；缓动=cubic-bezier(0.22, 1, 0.36, 1)；共享元素命名=view-transition-name: card-3（同一时刻唯一）；降级=不支持时瞬间切换，不留空白
+- 控件默认值：duration(过渡时长)=300ms；easing(缓动)=cubic-bezier(0.22, 1, 0.36, 1)；shared(共享元素过渡)=true
+- 无障碍降级：prefers-reduced-motion 下不要调用 startViewTransition（或把 ::view-transition-group 的 animation-duration 设成 0），页面瞬间切换，功能完全一样。
+- 提给 AI（中文）：做一个视图过渡（view transition）：点击列表卡片时用 document.startViewTransition 包住 DOM 更新，给被点的那张卡片加 view-transition-name，让它在详情页放大成头图，过渡 300ms、缓动 cubic-bezier(0.22, 1, 0.36, 1)。同一时刻 view-transition-name 只能有一个；不支持这个 API 的浏览器直接切换，不要留空白。
+- Ask for it (English keywords): view transition, document.startViewTransition wrapping the DOM update, view-transition-name on the shared element so it morphs into the detail header, ::view-transition-old / ::view-transition-new pseudo elements, 300ms cubic-bezier(0.22, 1, 0.36, 1), instant fallback when unsupported
+- 相关：stagger, sticky-header
+- 参考：[MDN · View Transition API](https://developer.mozilla.org/docs/Web/API/View_Transitions_API) · [Chrome Developers · View Transitions](https://developer.chrome.com/docs/web-platform/view-transitions)
+
+<a id="cursor-follower"></a>
+
+### M-08 光标跟随 · Cursor Follower
+
+- 地址：https://publieople.github.io/design-museum/entry/cursor-follower/
+- 展厅：motion · 标签：js, browser-api, composited, main-thread, pointer-dependent · 形态：interactive
+- 一句话：一个圆点慢半拍地跟在指针后面，把系统鼠标指针换掉。
+- 别名：跟随鼠标、指针跟随、鼠标尾巴、custom cursor、cursor follower、mouse follower、pointer follower
+- 关键词：cursor follower, custom cursor, pointermove, transform: translate3d, requestAnimationFrame, mix-blend-mode: difference, pointer-events: none, cursor: none
+- 什么时候用：作品集、品牌页这类要「有手感」的页面，想让指针变成设计的一部分 / 需要一个大一点的指针指示当前可交互区域（比如画布、画廊） / 配合聚光、磁吸这类指针驱动的效果，做统一的指针语言
+- 别搞混 · 磁吸按钮：磁吸按钮是按钮朝指针靠过来，指针本身不动；光标跟随是替代指针的位置，元素永远慢半拍追着指针跑。
+- 别搞混 · 光标拖尾：拖尾会在后面留一串残影（几十个点或一条流线）；跟随只有一到两个点，重点是「滞后感」而不是「痕迹」。
+- 坑：把系统光标藏了，就必须保证键盘用户还能看清焦点：:focus-visible 的样式不能省
+- 坑：pointermove 里每帧 setState 会掉帧，用 requestAnimationFrame 或直接改元素的 transform
+- 坑：跟随元素要 pointer-events: none，否则它会挡住底下的点击
+- 坑：触屏没有指针，要在触屏或粗指针设备上直接关掉跟随
+- 坑：指针移出窗口时要归位或淡出，别让圆点卡在角落不动
+- 推荐取值：跟随延迟=60–150ms（越小越跟手，越大越飘）；圆点直径=12–32px；混合模式=mix-blend-mode: difference（深浅背景都看得见）；跟随元素=pointer-events: none; position: fixed；触屏与降级=粗指针设备直接关掉，保留系统光标
+- 控件默认值：lag(跟随延迟)=90ms；size(圆点直径)=20px；blend(混合模式)=difference；hideNative(隐藏系统光标)=true
+- 无障碍降级：prefers-reduced-motion 下不要藏系统光标、也不要做跟随（跟随本身就是持续运动），直接保留默认指针。
+- 提给 AI（中文）：做一个光标跟随（cursor follower）：用一个 20px 的圆点代替鼠标指针，在容器上设 cursor: none 把系统光标藏掉，圆点用 requestAnimationFrame 平滑追向 pointermove 的位置，延迟约 90ms，mix-blend-mode: difference，pointer-events: none；指针移出容器就淡出。触屏和 prefers-reduced-motion 下关掉跟随，保留系统光标，并保证键盘焦点可见。
+- Ask for it (English keywords): custom cursor follower, 20px dot, cursor: none on the container, pointermove + requestAnimationFrame smooth follow with 90ms lag, transform: translate3d, mix-blend-mode: difference, pointer-events: none, fade out on pointer leave, disabled on touch and under prefers-reduced-motion, keep focus-visible styles
+- 相关：magnetic-button, spotlight-glow
+- 参考：[MDN · pointermove 事件](https://developer.mozilla.org/docs/Web/API/Element/pointermove_event) · [MDN · mix-blend-mode](https://developer.mozilla.org/docs/Web/CSS/mix-blend-mode)
+
 <a id="hover-lift"></a>
 
 ### F-01 悬停抬升 · Hover Lift
@@ -311,6 +361,58 @@
 - Ask for it (English keywords): toast / snackbar component, slides in from 底部居中, translateY(12px) with 220ms ease-out, auto-dismiss after 3000ms, role="status" aria-live="polite", stack up to 3 toasts, animate transform + opacity only, non-blocking, no entry/exit animation under prefers-reduced-motion
 - 相关：optimistic-ui, skeleton-shimmer, sticky-header
 - 参考：[MDN · ARIA live regions](https://developer.mozilla.org/docs/Web/Accessibility/ARIA/ARIA_Live_Regions) · [MDN · role="status"](https://developer.mozilla.org/docs/Web/Accessibility/ARIA/Roles/status_role) · [MDN · transition](https://developer.mozilla.org/docs/Web/CSS/transition)
+
+<a id="ripple"></a>
+
+### F-07 涟漪反馈 · Ripple
+
+- 地址：https://publieople.github.io/design-museum/entry/ripple/
+- 展厅：feedback · 标签：js, gradient, composited, keyboard-operable, stable · 形态：stage
+- 一句话：点下去的地方荡开一圈水波，告诉用户这一下收到了。
+- 别名：水波纹、点击涟漪、波纹扩散、ripple effect、material ripple、touch ripple
+- 关键词：ripple effect, Material ripple, pointerdown, radial-gradient, transform: scale(), overflow: hidden, animation-play-state, ::after
+- 什么时候用：按钮、列表项、开关这类要明确「点到了」的控件 / 触屏上没有 hover，需要让人看出这一下点在哪、有没有生效 / 整套界面想要统一的点击反馈语言（Material 风格的基础件）
+- 别搞混 · 按压反馈：按压反馈让整个控件缩放或变暗，是「整体」的状态；涟漪从落点扩散，能看出点在哪一下，两者经常叠在一起用。
+- 别搞混 · 进度条：涟漪只是「按下收到了」，不表示进度；别让它一直扩下去或循环，否则用户会以为在加载。
+- 坑：波纹用 transform: scale() + opacity 扩散，别去改 width/height，否则每一帧都要重排
+- 坑：每个波纹节点动画结束就要移除，手指长按会连着生成，不管就会堆出上百个节点
+- 坑：要按落点扩散就得用 pointerdown 的坐标减去元素盒子的位置，写死从中心扩散会丢掉「点在哪」的信息
+- 坑：控件要 overflow: hidden 才裁得出边界，否则波纹会溢出到外面
+- 坑：键盘 Enter/Space 触发时没有坐标，退化成从中心扩散，别让它什么都不发生
+- 坑：prefers-reduced-motion 下改成一个短促的底色变化，功能不变
+- 推荐取值：扩散时长=300–600ms；起始透明度=0.25–0.4；直径=不小于元素对角线，从落点算起；缓动=ease-out；裁剪=overflow: hidden
+- 控件默认值：duration(扩散时长)=450ms；opacity(起始透明度)=30%；fromPoint(从落点扩散)=true
+- 无障碍降级：prefers-reduced-motion 下不放涟漪，改成 80–150ms 的底色或描边变化，按下反馈依然存在。
+- 提给 AI（中文）：做点击涟漪反馈（ripple）：在按钮 pointerdown 时按落点坐标生成一个圆形波纹，直径覆盖整块按钮，用 transform: scale(0) → scale(1) 扩散、不透明度 30% 渐隐到 0，时长 450ms、ease-out，按钮 overflow: hidden 裁出边界，动画结束后把波纹节点移除。键盘 Enter/Space 触发时从中心扩散；prefers-reduced-motion 下改成短促的底色变化。
+- Ask for it (English keywords): material ripple feedback, circle spawned at the pointerdown coordinates, scaled from 0 to 1 with opacity fading from 30% to 0 over 450ms ease-out, button has overflow: hidden, remove the ripple node on animationend, centered ripple for Enter/Space, short background-color change under prefers-reduced-motion
+- 相关：press-feedback, spotlight-glow
+- 参考：[MDN · scale()](https://developer.mozilla.org/docs/Web/CSS/transform-function/scale) · [MDN · pointerdown 事件](https://developer.mozilla.org/docs/Web/API/Element/pointerdown_event)
+
+<a id="command-palette"></a>
+
+### F-08 命令面板 · Command Palette
+
+- 地址：https://publieople.github.io/design-museum/entry/command-palette/
+- 展厅：feedback · 标签：js, stateful, layout-triggering, keyboard-operable, stable · 形态：interactive
+- 一句话：按一个快捷键弹出一个搜索框，敲几个字就能跳到任何功能。
+- 别名：命令面板、快捷搜索框、⌘K 面板、command palette、command menu、quick switcher、spotlight search
+- 关键词：command palette, command menu, role="listbox", aria-activedescendant, meta+k, fuzzy filter, focus trap, z-index overlay
+- 什么时候用：功能多到侧栏或顶部导航塞不下的后台、编辑器、工具型产品 / 想让熟练用户完全不离开键盘就能跳转（⌘K / Ctrl+K） / 需要把「命令」和「跳转」放在同一个入口里检索
+- 别搞混 · 搜索框：搜索框在页面里占位置、搜的是内容；命令面板是浮层、搜的是动作与位置，选中就直接执行或跳转，还会把快捷键写在行尾。
+- 别搞混 · 下拉选择：下拉选择是「从有限选项里挑一个」；命令面板的结果是动态过滤出来的，而且键盘导航（上下键选中、回车确认、Esc 关闭）是它的核心而不是附加功能。
+- 坑：键盘导航不能省：上下键移动、回车确认、Esc 关闭，否则命令面板就只是个搜索框
+- 坑：打开时立刻把焦点放进输入框，关闭后要把焦点还给触发它的按钮，不然键盘用户会迷路
+- 坑：结果列表要限制条数（8–12 条）并高亮当前项，用 aria-activedescendant 或 aria-selected 标出来
+- 坑：⌘K / Ctrl+K 要自己监听 keydown（preventDefault，别让浏览器抢走），忘记绑定就会出现「快捷键没反应」
+- 坑：浮层要用 z-index 与位置锚定拿住层级，别让页面里的 sticky 元素盖在上面
+- 坑：prefers-reduced-motion 下关掉进出场缩放，只做透明度切换
+- 推荐取值：快捷键=⌘K（macOS）/ Ctrl+K（Windows、Linux），同时支持 /；结果条数=8–12 条，超出就滚动而不是全塞；过滤=按输入实时过滤，空格分词做模糊匹配；键盘=↑↓ 移动、Enter 确认、Esc 关闭、Tab 不离开面板；进出场=120–200ms，缩放到 0.96 → 1 加透明度
+- 控件默认值：results(最多显示条数)=6；withShortcut(显示快捷键)=true；fuzzy(模糊过滤)=true
+- 无障碍降级：prefers-reduced-motion 下不要做缩放与位移，只保留 100ms 以内的透明度切换。
+- 提给 AI（中文）：做一个命令面板（command palette）：按 ⌘K / Ctrl+K（同时支持 /）打开浮层搜索框，输入时做模糊过滤，最多显示 6 条，上下键移动高亮、回车确认并执行、Esc 关闭，打开时焦点进输入框、关闭后还给触发按钮；当前项用 aria-selected 或 aria-activedescendant 标出，进出场 150ms 缩放加淡入；prefers-reduced-motion 下只做透明度切换。
+- Ask for it (English keywords): command palette overlay, meta+k / ctrl+k plus / shortcut, live fuzzy filter over commands, top 6 results, arrow keys move the highlight, Enter runs the command, Escape closes, focus moves into the input on open and back to the trigger on close, aria-selected / aria-activedescendant on the active row, 150ms scale and fade in and out, opacity only under prefers-reduced-motion
+- 相关：accordion, toast
+- 参考：[MDN · role="listbox"](https://developer.mozilla.org/docs/Web/Accessibility/ARIA/Roles/listbox_role) · [MDN · aria-activedescendant](https://developer.mozilla.org/docs/Web/Accessibility/ARIA/Attributes/aria-activedescendant)
 
 <a id="sticky-header"></a>
 
@@ -458,6 +560,58 @@
 - Ask for it (English keywords): accordion disclosure pattern, single-open, only one panel expanded at a time, expand and collapse duration 260ms with easing cubic-bezier(0.22, 1, 0.36, 1), header is a real button with aria-expanded and a chevron that rotates 180deg when open, animate grid-template-rows: 0fr → 1fr inside overflow: hidden instead of height: auto, set duration to 0 under prefers-reduced-motion
 - 相关：scroll-reveal, stagger, easing
 - 参考：[MDN · details 元素](https://developer.mozilla.org/docs/Web/HTML/Reference/Elements/details) · [MDN · aria-expanded](https://developer.mozilla.org/docs/Web/Accessibility/ARIA/Attributes/aria-expanded)
+
+<a id="virtual-scrolling"></a>
+
+### L-07 虚拟滚动 · Virtual Scrolling
+
+- 地址：https://publieople.github.io/design-museum/entry/virtual-scrolling/
+- 展厅：layout · 标签：js, browser-api, composited, layout-triggering, main-thread, stable · 形态：scroll
+- 一句话：列表只渲染看得见的那几行，一万条也能滚得顺。
+- 别名：虚拟列表、长列表优化、窗口化渲染、virtual list、windowing、virtualized list
+- 关键词：virtual scrolling, windowing, virtual list, overscan, item height, scrollTop, transform: translateY, aria-setsize
+- 什么时候用：几百到几万行的列表、日志、表格，全渲染会让页面卡死 / 聊天记录、时间线这类只往两头长的数据 / 可视区高度固定的面板里展示很长的候选列表
+- 别搞混 · 无限滚动：无限滚动管「什么时候再取一批数据」，虚拟滚动管「一屏只渲染几行」；一个解决数据量，一个解决 DOM 量，经常一起用。
+- 别搞混 · 分页：分页把数据切成页、用户翻页；虚拟滚动数据一次拿全，只是把可视区外的行不渲染，滚动条仍然是连续的一整条。
+- 坑：行高固定才好算区间；高度不定就得逐行测量并缓存，成本随之上升
+- 坑：滚动容器要有撑满总高度的占位（spacer 或 padding），否则滚动条与位置全不对
+- 坑：scroll 事件里直接 setState 会掉帧，用 requestAnimationFrame 节流，或者只在可视区间变化时才更新
+- 坑：可视区外多渲染几行做缓冲（overscan），否则快速滚动会看到空白
+- 坑：复用 DOM 时要清掉上一行的动画与展开状态，别让第 500 行的状态串到第 12 行
+- 坑：读屏软件看不到没渲染的行：用 aria-setsize / aria-posinset 报出总数与位置，或提供「跳到第 N 条」
+- 推荐取值：行高=固定 40–64px 最省事；缓冲行数=前后各 3–6 行；滚动处理=requestAnimationFrame 节流，或只监听可视区间变化；占位高度=总行数 × 行高；无障碍=aria-setsize / aria-posinset 报出总数与序号
+- 控件默认值：itemHeight(行高)=44px；total(总条数)=10000；overscan(缓冲行数)=4
+- 无障碍降级：虚拟滚动本身不播动画；只有「滚到第 N 条」这类平滑滚动在 prefers-reduced-motion 下要改成瞬间定位。
+- 提给 AI（中文）：做一个虚拟滚动列表（virtual scrolling）：总条数 10000，每行固定 44px，容器内放一个 10000 × 44px 的占位撑出滚动条，只渲染可视区行数加上前后各 4 行，用 transform: translateY 把渲染块定位到对应位置。scroll 里用 requestAnimationFrame 节流，只在可视区间变化时才更新；行用 aria-setsize / aria-posinset 报出总数与序号。
+- Ask for it (English keywords): virtual scrolling list, 10000 rows of 44px fixed height, spacer of total x itemHeight to keep the scrollbar honest, render only the visible window plus 4 overscan rows, position the window with transform: translateY, throttle scroll with requestAnimationFrame and only re-render when the window changes, aria-setsize / aria-posinset on rows
+- 相关：marquee, masonry
+- 参考：[MDN · Element.scrollTop](https://developer.mozilla.org/docs/Web/API/Element/scrollTop) · [web.dev · Virtualize long lists](https://web.dev/articles/virtualize-long-lists-react-window)
+
+<a id="marquee"></a>
+
+### L-08 跑马灯 · Marquee
+
+- 地址：https://publieople.github.io/design-museum/entry/marquee/
+- 展厅：layout · 标签：js, gradient, composited, motion-heavy, stable · 形态：stage
+- 一句话：一排内容不停地横向滑过，首尾相接，看不出接缝。
+- 别名：无缝滚动、横向滚动条、循环滚动、marquee、infinite marquee、ticker、scrolling text
+- 关键词：marquee, infinite marquee, ticker, @keyframes translateX, transform: translate3d, animation-play-state, mask-image, aria-hidden duplicate
+- 什么时候用：客户 logo 墙、合作方列表这类「多到放不下但每条都很短」的内容 / 公告、注意事项这类要一直提醒但不值得占一整屏的信息 / 标签流、作品缩略图做背景装饰，让画面一直在动
+- 别搞混 · 自动轮播：轮播是分页的：一屏一屏地翻，还有指示点；跑马灯是匀速连续滚动，没有「第几屏」的概念。
+- 别搞混 · 滚动捕捉：滚动捕捉是用户自己滑、停下时吸附到某一项；跑马灯是自己走、用户只读，停下来只是因为悬停。
+- 坑：无缝要复制一份内容并整体平移 50%（或正好一整份的宽度），否则会看到「唰」地跳回起点
+- 坑：用 transform: translate3d 做位移，别用 margin-left / left，后者每帧都要重排
+- 坑：悬停或聚焦时暂停是惯例，最好再给一个暂停按钮，否则读屏和慢读的用户永远读不完
+- 坑：复制出来的那一份要 aria-hidden，不然读屏软件会把内容念两遍
+- 坑：离屏时动画还在烧电：用 IntersectionObserver 或 animation-play-state 停掉
+- 坑：内容比容器短时不要循环，会出现空档；长度不够就复制到足够长
+- 推荐取值：速度=20–60px/s（约等于阅读速度的一半）；无缝=复制一份内容，整体平移 50%；暂停=悬停暂停 + 明确的暂停按钮；两端=加渐隐遮罩（mask-image）避免硬切；降级=prefers-reduced-motion 下不自动滚动
+- 控件默认值：speed(滚动速度)=40px/s；pauseOnHover(悬停暂停)=true；edgeMask(两端渐隐)=true
+- 无障碍降级：prefers-reduced-motion 下不要自动滚动：把内容静态换行展示，或改成用户可以自己横向滑动的区域。
+- 提给 AI（中文）：做一个无缝跑马灯（marquee）：内容复制一份首尾相接，用 transform: translate3d 横向匀速平移 50% 循环，速度约 40px/s、linear 匀速；指针悬停或键盘聚焦时暂停，两端加渐隐遮罩（mask-image）避免硬切，复制的那一份设 aria-hidden 免得读屏念两遍；内容比容器短时要先复制到足够长。prefers-reduced-motion 下停住，改成静态换行展示。
+- Ask for it (English keywords): seamless horizontal marquee, content duplicated and translated 50% in a linear infinite loop with transform: translate3d, about 40px/s, pauses on hover and keyboard focus, faded edges via mask-image, duplicate marked aria-hidden, duplicated until the track is longer than the container, animation stops under prefers-reduced-motion
+- 相关：scroll-snap, parallax
+- 参考：[MDN · animation-play-state](https://developer.mozilla.org/docs/Web/CSS/animation-play-state) · [MDN · mask-image](https://developer.mozilla.org/docs/Web/CSS/mask-image)
 
 <a id="frosted-glass"></a>
 
@@ -616,6 +770,58 @@
 - 相关：glassmorphism, mesh-gradient, spotlight-glow
 - 参考：[MDN · border-image](https://developer.mozilla.org/docs/Web/CSS/border-image) · [MDN · background-clip](https://developer.mozilla.org/docs/Web/CSS/background-clip) · [MDN · @property](https://developer.mozilla.org/docs/Web/CSS/@property)
 
+<a id="aurora-gradient"></a>
+
+### V-07 极光渐变 · Aurora Gradient
+
+- 地址：https://publieople.github.io/design-museum/entry/aurora-gradient/
+- 展厅：visual · 标签：css-only, gradient, filter-blend, paint-heavy, motion-heavy, stable · 形态：stage
+- 一句话：几团彩色光斑在底色上慢慢游动，像极光一样铺满整屏。
+- 别名：极光背景、流动渐变、光晕背景、aurora background、aurora gradient、animated gradient background
+- 关键词：aurora gradient, animated gradient, radial-gradient, filter: blur(), mix-blend-mode: screen, transform: translate3d, hue-rotate(), saturate()
+- 什么时候用：落地页、产品首屏的大背景，要氛围但不要具体图形 / 深色界面想要一块会呼吸的底色 / 发布页、活动页需要持续流动感，又不想用视频或图片
+- 别搞混 · 网格渐变：网格渐变是多个径向渐变叠出来的静态柔光；极光是这些光团在位移（translate + blur + 饱和度），重点在「慢慢游动」。
+- 别搞混 · 聚光卡片：聚光跟着指针走，是人给的反馈；极光自己漂，有没有人都一样。
+- 坑：大面积模糊很贵：光斑要放在独立图层里用 transform 位移，别每帧改 background-position
+- 坑：光斑 3–5 团就够，堆多了只会糊成一片，看不出「极光」
+- 坑：动画要慢（一轮 20–40s），快了像故障闪烁
+- 坑：深色底效果好；浅色底上要压低饱和度，否则显脏
+- 坑：文字压在上面要留对比度兜底（暗罩或压到暗部），别让正文落在最亮的光上
+- 坑：prefers-reduced-motion 下停住动画，静态渐变仍然好看
+- 推荐取值：光斑数量=3–5 团；模糊半径=60–100px；一轮时长=20–40s；混合模式=mix-blend-mode: screen（深色底）；对比度=正文 ≥ 4.5:1，必要时加暗罩
+- 控件默认值：blobs(光斑数量)=4；blur(模糊半径)=80px；duration(一轮时长)=30s；palette(配色)=aurora
+- 无障碍降级：prefers-reduced-motion 下把光斑的位移动画停掉，保留静态渐变，氛围还在但不再动。
+- 提给 AI（中文）：做一个极光渐变背景（aurora gradient）：深色底上放 4 团大的 radial-gradient 光斑（配色 aurora），每团 filter: blur(80px)、mix-blend-mode: screen，用 transform: translate3d 让它们以各自不同的速度慢慢漂移，一轮约 30s、linear 循环。光斑放独立图层，不要每帧改 background-position；正文压在上面时留暗罩保证对比度。prefers-reduced-motion 下停住动画，只留静态渐变。
+- Ask for it (English keywords): aurora gradient background, 4 large radial-gradient blobs (aurora palette) on a dark base, each with filter: blur(80px) and mix-blend-mode: screen, drifting at slightly different speeds with transform: translate3d in a 30s linear loop, kept on their own layers instead of animating background-position, dark scrim behind body text for contrast, animation paused under prefers-reduced-motion
+- 相关：mesh-gradient, spotlight-glow
+- 参考：[MDN · radial-gradient()](https://developer.mozilla.org/docs/Web/CSS/gradient/radial-gradient) · [MDN · filter: blur()](https://developer.mozilla.org/docs/Web/CSS/filter-function/blur)
+
+<a id="mask-fade"></a>
+
+### V-08 边缘渐隐 · Mask Fade
+
+- 地址：https://publieople.github.io/design-museum/entry/mask-fade/
+- 展厅：visual · 标签：css-only, modern-css, gradient, paint-heavy, stable · 形态：stage
+- 一句话：内容在边缘渐渐淡掉，暗示这一头还能继续滑。
+- 别名：渐隐遮罩、边缘淡出、两端渐隐、mask fade、fade mask、gradient mask、edge fade
+- 关键词：mask-image, -webkit-mask-image, linear-gradient mask, mask-composite, edge fade, fade mask, scroll hint, CSS masking
+- 什么时候用：横向卡片列表、标签流的边缘，提示后面还有内容 / 固定高度的滚动区，顶部或底部用渐隐代替一条生硬的分割线 / 跑马灯、logo 墙的两端，让循环看不出接缝
+- 别搞混 · overflow: hidden：overflow 是硬切，内容到边就断；mask 是淡出，边缘逐渐透明。想暗示「还能滑」用 mask，想干脆截断用 overflow。
+- 别搞混 · 渐变色盖层：盖一层同色渐变只是「看起来像」，一旦底色不是纯色（图片、渐变、深色模式）就露馅；mask 直接改内容的可见性，跟底色无关。
+- 坑：渐隐长度要够（约容器宽度的 8–15%），太短看起来像脏边
+- 坑：旧版 Safari 需要 -webkit-mask-image 前缀，写两份最稳
+- 坑：mask 会让被遮住的区域真的看不见，但那部分仍然可点击、可聚焦——不要用 mask 当「隐藏」
+- 坑：mask 与 backdrop-filter 同时用在同一个元素上，某些 Chrome 版本会渲染异常（毛玻璃会被切断）
+- 坑：纵向滚动区做上下渐隐时，滚到顶部/底部要淡出对应的那侧，否则永远是「下面还有」的错觉
+- 坑：两端用同一条线性渐变对称处理，别只做一边
+- 推荐取值：渐隐长度=容器宽/高的 8–15%，或 16–32px；写法=mask-image: linear-gradient(90deg, transparent, #000 12%, #000 88%, transparent)；兼容=同时写 -webkit-mask-image；注意=别和 backdrop-filter 用在同一元素
+- 控件默认值：fade(渐隐长度)=12%；axis(方向)=x；hardEdge(对照：硬切（不用 mask）)=false
+- 无障碍降级：边缘渐隐本身是静态的，不需要降级；只有配合滚动的动态提示在 prefers-reduced-motion 下才改成静态可见。
+- 提给 AI（中文）：给这个横向可滚动区域加边缘渐隐：linear-gradient(90deg, transparent, #000 12%, #000 88%, transparent)，同时写 -webkit-mask-image 兼容旧版 Safari，让内容在两端渐渐淡掉、暗示还能继续滑。渐隐长度占容器 12%，两端对称；注意 mask 会让被遮住的部分真的看不见（但仍然可以点击），也不要和 backdrop-filter 用在同一元素上。
+- Ask for it (English keywords): fade the edges of this scrollable area with mask-image: linear-gradient(90deg, transparent, #000 12%, #000 88%, transparent) (plus -webkit-mask-image), so 12% of each end fades out and hints that there is more to scroll, applied symmetrically on both ends, not combined with backdrop-filter on the same element
+- 相关：marquee, scroll-snap
+- 参考：[MDN · mask-image](https://developer.mozilla.org/docs/Web/CSS/mask-image) · [MDN · CSS masking](https://developer.mozilla.org/docs/Web/CSS/CSS_masking)
+
 <a id="fluid-type"></a>
 
 ### T-01 流体排版 · Fluid Type
@@ -763,3 +969,54 @@
 - Ask for it (English keywords): count up animation, animate number from 0 to 12800 in 1200ms with easeOutExpo easing, requestAnimationFrame with timestamp-based progress, font-variant-numeric: tabular-nums, thousands separator, reserve width to avoid layout shift, respect prefers-reduced-motion (render final value)
 - 相关：stagger, scroll-reveal, skeleton-shimmer
 - 参考：[MDN · requestAnimationFrame](https://developer.mozilla.org/docs/Web/API/Window/requestAnimationFrame) · [MDN · font-variant-numeric](https://developer.mozilla.org/docs/Web/CSS/font-variant-numeric)
+
+<a id="text-stroke"></a>
+
+### T-07 描边文字 · Text Stroke
+
+- 地址：https://publieople.github.io/design-museum/entry/text-stroke/
+- 展厅：type · 标签：css-only, modern-css, stable · 形态：stage
+- 一句话：文字只留一圈轮廓、里面是空的，大标题一下就硬起来了。
+- 别名：空心字、描边字、轮廓文字、text stroke、outlined text、hollow text、text outline
+- 关键词：-webkit-text-stroke, text-stroke, paint-order, outlined text, hollow text, color: transparent, @supports, stroke-width
+- 什么时候用：首屏大标题、封面字，想要比实心字更轻的体量 / 深色或图片背景上，需要文字有明确的轮廓边界 / 做「描边 + 实心」两层排版，一虚一实叠出层次
+- 别搞混 · 文字阴影：text-shadow 画在字形外面，字本身的分量不变；text-stroke 是沿字形轮廓描一圈，笔画会被描边吃掉一半，字看起来更细。
+- 别搞混 · 渐变文字：渐变文字填充的是字形内部；描边字内部是空的。想要「渐变填充 + 描边」就把两者叠加。
+- 坑：-webkit-text-stroke 是非标准属性（三大引擎都支持），它从轮廓中线向两侧画：小字号加粗描边会把细笔画糊掉，所以只给大字号用
+- 坑：描边宽度用 px 固定，别用 em 跟着字号放大，否则大标题上的笔画全被吃掉
+- 坑：只描边不填充时必须保证对比度：空心字放在浅色底上几乎看不见
+- 坑：加 paint-order: stroke fill 能让描边先画、填充后画，避免描边压住字面
+- 坑：描边色和填充色相同时，效果等于把字加粗，容易显得脏
+- 坑：不要为了描边去用 SVG path 假字：读屏和文本选择都会坏掉
+- 推荐取值：描边宽度=1–3px（大字号）；建议字号=≥ 32px；绘制顺序=paint-order: stroke fill；空心写法=color: transparent + -webkit-text-stroke；对比度=正文级别的文字 ≥ 4.5:1
+- 控件默认值：width(描边宽度)=2px；size(字号)=56px；fill(实心填充)=false
+- 无障碍降级：描边文字是静态的，不需要降级；如果给它加了进出场描边动画，prefers-reduced-motion 下直接显示最终态。
+- 提给 AI（中文）：做一个描边标题：字号 56px，用 -webkit-text-stroke: 2px 描边，填充设为 transparent，做成空心字，并加 paint-order: stroke fill 让描边先画。描边宽度用 px 固定别用 em；只描边不填充时保证对比度，小字号不要用这个效果。
+- Ask for it (English keywords): outlined heading, font-size 56px, -webkit-text-stroke: 2px, color: transparent for a hollow face, paint-order: stroke fill, px stroke width instead of em, contrast kept when hollow, avoided at small sizes
+- 相关：gradient-text, fluid-type
+- 参考：[MDN · -webkit-text-stroke](https://developer.mozilla.org/docs/Web/CSS/-webkit-text-stroke) · [MDN · paint-order](https://developer.mozilla.org/docs/Web/CSS/paint-order)
+
+<a id="tabular-numbers"></a>
+
+### T-08 等宽数字 · Tabular Numbers
+
+- 地址：https://publieople.github.io/design-museum/entry/tabular-numbers/
+- 展厅：type · 标签：css-only, font-feature, stable · 形态：stage
+- 一句话：让每个数字占一样宽，数值变化时整行不会左右抖。
+- 别名：等宽数字、数字不跳、表格数字、tabular figures、tabular-nums、monospaced digits、lining figures
+- 关键词：font-variant-numeric, tabular-nums, font-feature-settings tnum, lining-nums, tabular figures, text-align: right, min-width, OpenType feature
+- 什么时候用：倒计时、计时器、播放进度这类数字一直在变的组件 / 实时统计、价格、余额，数字跳动时会牵动整行宽度 / 表格里要让小数点或个位对齐成一条竖线
+- 别搞混 · 数字滚动：数字滚动管的是数值怎么从 A 变到 B；等宽数字管的是每个数字占多宽。两者经常一起用——滚动时行宽不变，看起来才稳。
+- 别搞混 · 默认比例数字：默认是比例数字（proportional）：1 比 8 窄，正文里更好看；一旦数字要纵向对齐或持续变化，就该切成等宽。
+- 坑：tabular-nums 需要字体支持这个 OpenType 特性，艺术字体可能没有，会悄悄退化成默认比例数字
+- 坑：只加等宽还不够：位数变化（9 → 10）时整块仍会变宽，要给 min-width 或预留宽度并右对齐
+- 坑：表格里要配合 text-align: right 且小数位数统一，否则照样对不齐
+- 坑：font-feature-settings: "tnum" 是等价的旧写法，优先用 font-variant-numeric，可读性更好
+- 坑：不要为了数字把整站换成等宽字体：只给需要的片段加这个特性
+- 推荐取值：现代写法=font-variant-numeric: tabular-nums；旧写法=font-feature-settings: "tnum"；对齐=配合 text-align: right；位宽变化=给 min-width 或等宽容器，别让行宽跟着跳；使用范围=只给需要对齐的数字片段，正文保持默认比例数字
+- 控件默认值：tabular(启用等宽数字)=true；compare(对照：默认比例数字)=true；interval(数字变化间隔)=700ms
+- 无障碍降级：等宽数字是静态特性，不需要降级；只有配合数字滚动时，prefers-reduced-motion 下直接显示终值。
+- 提给 AI（中文）：给这个会变数字的组件加 font-variant-numeric: tabular-nums（等宽数字，旧写法 font-feature-settings: "tnum"），每 700ms 更新一次数值时整行宽度不要变。位数会变化的话（9 → 10）再给 min-width 或固定宽度容器并右对齐，表格里的数字统一 text-align: right。
+- Ask for it (English keywords): counter with font-variant-numeric: tabular-nums (legacy font-feature-settings: "tnum"), updated every 700ms without the row width shifting, right-aligned inside a min-width column so 9 to 10 does not resize the block, numbers in tables aligned with text-align: right
+- 相关：count-up, variable-font
+- 参考：[MDN · font-variant-numeric](https://developer.mozilla.org/docs/Web/CSS/font-variant-numeric) · [MDN · font-feature-settings](https://developer.mozilla.org/docs/Web/CSS/font-feature-settings)

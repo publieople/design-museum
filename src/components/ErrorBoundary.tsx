@@ -11,7 +11,7 @@ interface State {
   error: Error | null
 }
 
-/** 一个 demo 崩掉不应该带走整页——尤其是 #/debug/all 要把 30 个 demo 同时挂起来 */
+/** 一个 demo 崩掉不应该带走整页——尤其是 #/debug/all 要把全部 demo 同时挂起来 */
 export class ErrorBoundary extends Component<Props, State> {
   state: State = { error: null }
 

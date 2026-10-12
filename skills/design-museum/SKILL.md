@@ -1,6 +1,6 @@
 ---
 name: design-museum
-description: 把「我想要那种……的效果」翻译成准确的前端效果名字与可直接提给 AI 的设计需求。当用户用口语、比喻或模糊描述说自己想要某个网页效果（鼠标移上去卡片浮起来、磨砂玻璃、数字往上滚、卡片跟着滚动堆叠、文字逐字出现、按钮被磁铁吸过去……），或者需要某个前端效果的英文术语、CSS 属性名、推荐取值、易混概念的区别（毛玻璃 vs 玻璃拟态、粘性 vs 固定、交错进场 vs 延迟动画）、无障碍降级写法（prefers-reduced-motion）时使用。数据来自前端设计博物馆的机器可读目录：30 条中英双语词条，每条含别名、易混项、踩坑、推荐取值、控件默认值与中英需求句。
+description: 把「我想要那种……的效果」翻译成准确的前端效果名字与可直接提给 AI 的设计需求。当用户用口语、比喻或模糊描述说自己想要某个网页效果（鼠标移上去卡片浮起来、磨砂玻璃、数字往上滚、卡片跟着滚动堆叠、文字逐字出现、按钮被磁铁吸过去……），或者需要某个前端效果的英文术语、CSS 属性名、推荐取值、易混概念的区别（毛玻璃 vs 玻璃拟态、粘性 vs 固定、交错进场 vs 延迟动画）、无障碍降级写法（prefers-reduced-motion）时使用。数据来自前端设计博物馆的目录：全站中英双语词条，每条含别名、关键词、标签、演示形态、控件默认值与中英需求句；易混项、踩坑、推荐取值与无障碍降级在随附的目录全文（catalog.md）与词条页里。
 allowed-tools: Bash, Read, WebFetch
 tags: [frontend, css, ui, motion, terminology, prompt-engineering]
 metadata:
@@ -23,13 +23,15 @@ metadata:
 ## 怎么查（按这个顺序）
 
 1. **取目录**。优先本机仓库里的 `public/catalog.json`（存在时直接读，不用联网）；
-   否则 `curl -sL https://publieople.github.io/design-museum/catalog.json`（约 68KB，紧凑 JSON）。
-   结构：`entries[]` 每条含 `slug / code / url / category / nameZh / nameEn / aliases / oneLiner / oneLinerEn / keywords / tags / demo.shape / controls / prompt / related / detail`；
-   另有 `facets`（标签的四个面）、`vocab`（展厅 / 场景 / 感觉 / 目的 / 演示形态的中英对照）。
+   否则 `curl -sL https://publieople.github.io/design-museum/catalog.json`（约 100KB，两空格缩进的多行 JSON，可以按行读、按需跳读）。
+   结构：`entries[]` 每条含 `slug / code / url / category / nameZh / nameEn / aliases / oneLiner / oneLinerEn / keywords / related / scenes / feel / intent / tags / loop / demo / controls / prompt`；
+   另有 `counts`（总数与每厅条数）、`facets`（标签的四个面）、`vocab`（展厅 / 场景 / 感觉 / 目的 / 演示形态的中英对照）。
+   注意：**JSON 里只有索引与需求句，没有长散文**——`detail.page` 与 `detail.markdown` 只是两个地址。
 2. **匹配**。顺序是 aliases（口语俗称）→ nameZh / nameEn → keywords（英文术语与 CSS 属性名）→ oneLiner。
    取命中最强的 1–3 条；用户描述含糊时把候选一起报出来让他挑，而不是硬选一条。
-3. **要细节就展开**。什么时候用、别搞混、踩坑、推荐取值、无障碍降级、参考链接在
-   `catalog.md#<slug>`（一份 Markdown，每条词条一个锚点）或词条页 `<site>/entry/<slug>/`（预渲染 HTML，不需要执行 JS）。
+3. **要细节必须再读一次 Markdown**。什么时候用（`whenToUse`）、别搞混（`confusions`）、踩坑（`pitfalls`）、
+   推荐取值（`spec`）、无障碍降级（`reducedMotion`）、参考链接（`refs`）都不在 JSON 里，在
+   `catalog.md#<slug>`（每条一个锚点，只读命中那一条那一段就够）或词条页 `<site>/entry/<slug>/`（预渲染 HTML，不执行 JS 也能读）。
 4. **交付**。用 `prompt.zh`（中文需求句）与 `prompt.en`（给模型的英文关键词），把 `controls` 的取值替换进句子；
    用户没指定参数就用 `controls[].def`（默认值）。`controls` 只有 range / select / toggle 三种，值就直接填进句子里的数字。
 
@@ -37,8 +39,9 @@ metadata:
 
 - 名字：中文俗称 + 英文术语，附词条地址。
 - 需求句：中文一条（可直接粘贴）、英文关键词一条（给模型定位标准实现）。
-- 提醒：踩坑（`pitfalls`）与相邻概念的区别（`confusions`）各一句，避免 AI 做歪。
-- 涉及动效时补一句无障碍降级写法（`reducedMotion`）。
+- 提醒：踩坑（`pitfalls`）与相邻概念的区别（`confusions`）各一句，避免 AI 做歪。这两项来自第 3 步的
+  `catalog.md#<slug>`——**没读 Markdown 就别编**，宁可把 `catalog.md` 的地址给用户让他自己看。
+- 涉及动效时补一句无障碍降级写法（`reducedMotion`，同样在 Markdown 里）。
 
 ## 别搞混（目录里每条都有 confusions，这里只举最常见的几个）
 

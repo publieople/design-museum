@@ -95,7 +95,7 @@ try {
     ...STATIC_PAGES.map((page) => ({
       target: page.path,
       title: page.titleKey ? `${translate('zh', page.titleKey)} · ${siteName}` : `${siteName} · ${translate('zh', 'site.tagline')}`,
-      description: translate('zh', page.descKey),
+      description: translate('zh', page.descKey, { n: ENTRIES.length }),
       ogType: 'website',
     })),
     ...ENTRIES.map((entry) => ({

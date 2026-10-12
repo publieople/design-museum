@@ -4,7 +4,7 @@ import type { StringKey } from '../i18n/strings'
  * URL 是这一站对外的接口。
  *
  * 以前所有页面都塞在 hash 后面（`/#/entry/frosted-glass`），浏览器地址栏一变，
- * 爬虫看到的仍然只有一个空壳——搜索引擎和 AI 爬虫都不会执行 JS，30 条词条
+ * 爬虫看到的仍然只有一个空壳——搜索引擎和 AI 爬虫都不会执行 JS，每条词条
  * 对它们等于不存在。现在每个页面都有一个真实的、以 / 结尾的路径，构建时
  * 还会把同样的内容预渲染成静态 HTML（scripts/prerender.mjs）。
  *
