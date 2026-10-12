@@ -32,6 +32,7 @@ metadata:
 3. **要细节必须再读一次 Markdown**。什么时候用（`whenToUse`）、别搞混（`confusions`）、踩坑（`pitfalls`）、
    推荐取值（`spec`）、无障碍降级（`reducedMotion`）、参考链接（`refs`）都不在 JSON 里，在
    `catalog.md#<slug>`（每条一个锚点，只读命中那一条那一段就够）或词条页 `<site>/entry/<slug>/`（预渲染 HTML，不执行 JS 也能读）。
+   Markdown 里这些段落以「什么时候用」「别搞混」「坑」「推荐取值」「控件默认值」「无障碍降级」「提给 AI（中文）」开头，直接搜这几行就是要点。
 4. **交付**。用 `prompt.zh`（中文需求句）与 `prompt.en`（给模型的英文关键词），把 `controls` 的取值替换进句子；
    用户没指定参数就用 `controls[].def`（默认值）。`controls` 只有 range / select / toggle 三种，值就直接填进句子里的数字。
 
