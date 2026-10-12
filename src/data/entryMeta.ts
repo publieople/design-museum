@@ -482,6 +482,171 @@ export const ENTRY_META: EntryMeta[] = [
     }
   },
   {
+    "slug": "view-transitions",
+    "code": "M-07",
+    "nameZh": "视图过渡",
+    "nameEn": "View Transitions",
+    "aliases": [
+      "页面转场",
+      "跨页面过渡",
+      "共享元素过渡",
+      "view transition",
+      "view-transition",
+      "page transition"
+    ],
+    "category": "motion",
+    "oneLiner": "页面切换时，浏览器把新旧两屏接起来，补出中间那一下过渡。",
+    "whenToUse": [
+      "列表点进详情：被点的那张卡片原地放大成详情页的头图",
+      "同一个应用里换标签页或换主题，希望两屏连起来而不是硬切",
+      "导航栏在多个页面里都一样，想让人看出它是同一个元素"
+    ],
+    "confusions": [
+      {
+        "with": "CSS transition",
+        "diff": "CSS transition 只能让同一个元素自己变；视图过渡是浏览器给整屏拍新旧两张快照再做动画，所以能把旧界面里的某个元素平滑接到新界面的对应元素上。"
+      },
+      {
+        "with": "入场动画",
+        "diff": "入场动画是新页面自己在播，旧界面已经消失；视图过渡的动画发生在两屏之间，旧屏要一起参与，所以改 DOM 的那一步必须放进 startViewTransition 的回调里。"
+      }
+    ],
+    "pitfalls": [
+      "同一时刻 view-transition-name 必须唯一：列表里给每张卡片都写死一个名字会直接报错，要在点击时只给被点的那张临时加上",
+      "改 DOM 的代码必须在 document.startViewTransition(() => …) 的回调里执行，写在回调外面拍到的还是旧界面",
+      "过渡期间会有一层伪元素盖在页面上，指针事件被短暂挡住，别在过渡里做点击判断",
+      "不支持这个 API 的浏览器要有兜底：直接切换即可，不要留一屏空白等过渡",
+      "跨文档（多页应用）要写 @view-transition { navigation: auto }，而且必须同源"
+    ],
+    "keywords": [
+      "View Transition API",
+      "document.startViewTransition",
+      "view-transition-name",
+      "::view-transition-old",
+      "::view-transition-new",
+      "shared element transition",
+      "cross-document view transition"
+    ],
+    "scenes": [
+      "page",
+      "card",
+      "nav"
+    ],
+    "feel": [
+      "crisp",
+      "calm"
+    ],
+    "intent": [
+      "hierarchy",
+      "attention"
+    ],
+    "tags": [
+      "browser-api",
+      "js",
+      "composited",
+      "motion-heavy",
+      "check-support"
+    ],
+    "demo": {
+      "shape": "page",
+      "minHeight": 320,
+      "thumb": "still"
+    },
+    "loop": "manual",
+    "en": {
+      "oneLiner": "When the view changes, the browser stitches the old and new screens together and animates the gap between them."
+    },
+    "defaults": {
+      "duration": 300,
+      "easing": "cubic-bezier(0.22, 1, 0.36, 1)",
+      "shared": true
+    }
+  },
+  {
+    "slug": "cursor-follower",
+    "code": "M-08",
+    "nameZh": "光标跟随",
+    "nameEn": "Cursor Follower",
+    "aliases": [
+      "跟随鼠标",
+      "指针跟随",
+      "鼠标尾巴",
+      "custom cursor",
+      "cursor follower",
+      "mouse follower",
+      "pointer follower"
+    ],
+    "category": "motion",
+    "oneLiner": "一个圆点慢半拍地跟在指针后面，把系统鼠标指针换掉。",
+    "whenToUse": [
+      "作品集、品牌页这类要「有手感」的页面，想让指针变成设计的一部分",
+      "需要一个大一点的指针指示当前可交互区域（比如画布、画廊）",
+      "配合聚光、磁吸这类指针驱动的效果，做统一的指针语言"
+    ],
+    "confusions": [
+      {
+        "with": "磁吸按钮",
+        "diff": "磁吸按钮是按钮朝指针靠过来，指针本身不动；光标跟随是替代指针的位置，元素永远慢半拍追着指针跑。"
+      },
+      {
+        "with": "光标拖尾",
+        "diff": "拖尾会在后面留一串残影（几十个点或一条流线）；跟随只有一到两个点，重点是「滞后感」而不是「痕迹」。"
+      }
+    ],
+    "pitfalls": [
+      "把系统光标藏了，就必须保证键盘用户还能看清焦点：:focus-visible 的样式不能省",
+      "pointermove 里每帧 setState 会掉帧，用 requestAnimationFrame 或直接改元素的 transform",
+      "跟随元素要 pointer-events: none，否则它会挡住底下的点击",
+      "触屏没有指针，要在触屏或粗指针设备上直接关掉跟随",
+      "指针移出窗口时要归位或淡出，别让圆点卡在角落不动"
+    ],
+    "keywords": [
+      "cursor follower",
+      "custom cursor",
+      "pointermove",
+      "transform: translate3d",
+      "requestAnimationFrame",
+      "mix-blend-mode: difference",
+      "pointer-events: none",
+      "cursor: none"
+    ],
+    "scenes": [
+      "page",
+      "button",
+      "card"
+    ],
+    "feel": [
+      "playful",
+      "crisp"
+    ],
+    "intent": [
+      "attention",
+      "affordance"
+    ],
+    "tags": [
+      "js",
+      "browser-api",
+      "composited",
+      "main-thread",
+      "pointer-dependent"
+    ],
+    "demo": {
+      "shape": "interactive",
+      "minHeight": 320,
+      "thumb": "still"
+    },
+    "loop": "manual",
+    "en": {
+      "oneLiner": "A dot trails the pointer with a slight delay, replacing the system cursor."
+    },
+    "defaults": {
+      "lag": 90,
+      "size": 20,
+      "blend": "difference",
+      "hideNative": true
+    }
+  },
+  {
     "slug": "hover-lift",
     "code": "F-01",
     "nameZh": "悬停抬升",
@@ -939,6 +1104,171 @@ export const ENTRY_META: EntryMeta[] = [
       "duration": 3000,
       "position": "bottom",
       "distance": 12
+    }
+  },
+  {
+    "slug": "ripple",
+    "code": "F-07",
+    "nameZh": "涟漪反馈",
+    "nameEn": "Ripple",
+    "aliases": [
+      "水波纹",
+      "点击涟漪",
+      "波纹扩散",
+      "ripple effect",
+      "material ripple",
+      "touch ripple"
+    ],
+    "category": "feedback",
+    "oneLiner": "点下去的地方荡开一圈水波，告诉用户这一下收到了。",
+    "whenToUse": [
+      "按钮、列表项、开关这类要明确「点到了」的控件",
+      "触屏上没有 hover，需要让人看出这一下点在哪、有没有生效",
+      "整套界面想要统一的点击反馈语言（Material 风格的基础件）"
+    ],
+    "confusions": [
+      {
+        "with": "按压反馈",
+        "diff": "按压反馈让整个控件缩放或变暗，是「整体」的状态；涟漪从落点扩散，能看出点在哪一下，两者经常叠在一起用。"
+      },
+      {
+        "with": "进度条",
+        "diff": "涟漪只是「按下收到了」，不表示进度；别让它一直扩下去或循环，否则用户会以为在加载。"
+      }
+    ],
+    "pitfalls": [
+      "波纹用 transform: scale() + opacity 扩散，别去改 width/height，否则每一帧都要重排",
+      "每个波纹节点动画结束就要移除，手指长按会连着生成，不管就会堆出上百个节点",
+      "要按落点扩散就得用 pointerdown 的坐标减去元素盒子的位置，写死从中心扩散会丢掉「点在哪」的信息",
+      "控件要 overflow: hidden 才裁得出边界，否则波纹会溢出到外面",
+      "键盘 Enter/Space 触发时没有坐标，退化成从中心扩散，别让它什么都不发生",
+      "prefers-reduced-motion 下改成一个短促的底色变化，功能不变"
+    ],
+    "keywords": [
+      "ripple effect",
+      "Material ripple",
+      "pointerdown",
+      "radial-gradient",
+      "transform: scale()",
+      "overflow: hidden",
+      "animation-play-state",
+      "::after"
+    ],
+    "scenes": [
+      "button",
+      "list",
+      "card"
+    ],
+    "feel": [
+      "crisp",
+      "playful"
+    ],
+    "intent": [
+      "affordance",
+      "attention"
+    ],
+    "tags": [
+      "js",
+      "gradient",
+      "composited",
+      "keyboard-operable",
+      "stable"
+    ],
+    "demo": {
+      "shape": "stage"
+    },
+    "loop": "replay",
+    "en": {
+      "oneLiner": "A ripple spreads from where you pressed, confirming that the tap registered."
+    },
+    "defaults": {
+      "duration": 450,
+      "opacity": 30,
+      "fromPoint": true
+    }
+  },
+  {
+    "slug": "command-palette",
+    "code": "F-08",
+    "nameZh": "命令面板",
+    "nameEn": "Command Palette",
+    "aliases": [
+      "命令面板",
+      "快捷搜索框",
+      "⌘K 面板",
+      "command palette",
+      "command menu",
+      "quick switcher",
+      "spotlight search"
+    ],
+    "category": "feedback",
+    "oneLiner": "按一个快捷键弹出一个搜索框，敲几个字就能跳到任何功能。",
+    "whenToUse": [
+      "功能多到侧栏或顶部导航塞不下的后台、编辑器、工具型产品",
+      "想让熟练用户完全不离开键盘就能跳转（⌘K / Ctrl+K）",
+      "需要把「命令」和「跳转」放在同一个入口里检索"
+    ],
+    "confusions": [
+      {
+        "with": "搜索框",
+        "diff": "搜索框在页面里占位置、搜的是内容；命令面板是浮层、搜的是动作与位置，选中就直接执行或跳转，还会把快捷键写在行尾。"
+      },
+      {
+        "with": "下拉选择",
+        "diff": "下拉选择是「从有限选项里挑一个」；命令面板的结果是动态过滤出来的，而且键盘导航（上下键选中、回车确认、Esc 关闭）是它的核心而不是附加功能。"
+      }
+    ],
+    "pitfalls": [
+      "键盘导航不能省：上下键移动、回车确认、Esc 关闭，否则命令面板就只是个搜索框",
+      "打开时立刻把焦点放进输入框，关闭后要把焦点还给触发它的按钮，不然键盘用户会迷路",
+      "结果列表要限制条数（8–12 条）并高亮当前项，用 aria-activedescendant 或 aria-selected 标出来",
+      "⌘K / Ctrl+K 要自己监听 keydown（preventDefault，别让浏览器抢走），忘记绑定就会出现「快捷键没反应」",
+      "浮层要用 z-index 与位置锚定拿住层级，别让页面里的 sticky 元素盖在上面",
+      "prefers-reduced-motion 下关掉进出场缩放，只做透明度切换"
+    ],
+    "keywords": [
+      "command palette",
+      "command menu",
+      "role=\"listbox\"",
+      "aria-activedescendant",
+      "meta+k",
+      "fuzzy filter",
+      "focus trap",
+      "z-index overlay"
+    ],
+    "scenes": [
+      "nav",
+      "page",
+      "form"
+    ],
+    "feel": [
+      "crisp",
+      "calm"
+    ],
+    "intent": [
+      "affordance",
+      "hierarchy"
+    ],
+    "tags": [
+      "js",
+      "stateful",
+      "layout-triggering",
+      "keyboard-operable",
+      "stable"
+    ],
+    "demo": {
+      "shape": "interactive",
+      "minHeight": 320,
+      "thumb": "still"
+    },
+    "loop": "manual",
+    "en": {
+      "oneLiner": "One shortcut opens a search box where a few keystrokes reach any command."
+    },
+    "defaults": {
+      "results": 6,
+      "withShortcut": true,
+      "fuzzy": true
     }
   },
   {
@@ -1403,6 +1733,172 @@ export const ENTRY_META: EntryMeta[] = [
       "duration": 260,
       "easing": "cubic-bezier(0.22, 1, 0.36, 1)",
       "rotate": true
+    }
+  },
+  {
+    "slug": "virtual-scrolling",
+    "code": "L-07",
+    "nameZh": "虚拟滚动",
+    "nameEn": "Virtual Scrolling",
+    "aliases": [
+      "虚拟列表",
+      "长列表优化",
+      "窗口化渲染",
+      "virtual list",
+      "windowing",
+      "virtualized list"
+    ],
+    "category": "layout",
+    "oneLiner": "列表只渲染看得见的那几行，一万条也能滚得顺。",
+    "whenToUse": [
+      "几百到几万行的列表、日志、表格，全渲染会让页面卡死",
+      "聊天记录、时间线这类只往两头长的数据",
+      "可视区高度固定的面板里展示很长的候选列表"
+    ],
+    "confusions": [
+      {
+        "with": "无限滚动",
+        "diff": "无限滚动管「什么时候再取一批数据」，虚拟滚动管「一屏只渲染几行」；一个解决数据量，一个解决 DOM 量，经常一起用。"
+      },
+      {
+        "with": "分页",
+        "diff": "分页把数据切成页、用户翻页；虚拟滚动数据一次拿全，只是把可视区外的行不渲染，滚动条仍然是连续的一整条。"
+      }
+    ],
+    "pitfalls": [
+      "行高固定才好算区间；高度不定就得逐行测量并缓存，成本随之上升",
+      "滚动容器要有撑满总高度的占位（spacer 或 padding），否则滚动条与位置全不对",
+      "scroll 事件里直接 setState 会掉帧，用 requestAnimationFrame 节流，或者只在可视区间变化时才更新",
+      "可视区外多渲染几行做缓冲（overscan），否则快速滚动会看到空白",
+      "复用 DOM 时要清掉上一行的动画与展开状态，别让第 500 行的状态串到第 12 行",
+      "读屏软件看不到没渲染的行：用 aria-setsize / aria-posinset 报出总数与位置，或提供「跳到第 N 条」"
+    ],
+    "keywords": [
+      "virtual scrolling",
+      "windowing",
+      "virtual list",
+      "overscan",
+      "item height",
+      "scrollTop",
+      "transform: translateY",
+      "aria-setsize"
+    ],
+    "scenes": [
+      "list",
+      "scroll",
+      "page"
+    ],
+    "feel": [
+      "crisp",
+      "calm"
+    ],
+    "intent": [
+      "affordance",
+      "hierarchy"
+    ],
+    "tags": [
+      "js",
+      "browser-api",
+      "composited",
+      "layout-triggering",
+      "main-thread",
+      "stable"
+    ],
+    "demo": {
+      "shape": "scroll",
+      "minHeight": 320,
+      "thumb": "still"
+    },
+    "loop": "manual",
+    "en": {
+      "oneLiner": "Only the rows you can see are rendered, so ten thousand items still scroll smoothly."
+    },
+    "defaults": {
+      "itemHeight": 44,
+      "total": 10000,
+      "overscan": 4
+    }
+  },
+  {
+    "slug": "marquee",
+    "code": "L-08",
+    "nameZh": "跑马灯",
+    "nameEn": "Marquee",
+    "aliases": [
+      "无缝滚动",
+      "横向滚动条",
+      "循环滚动",
+      "marquee",
+      "infinite marquee",
+      "ticker",
+      "scrolling text"
+    ],
+    "category": "layout",
+    "oneLiner": "一排内容不停地横向滑过，首尾相接，看不出接缝。",
+    "whenToUse": [
+      "客户 logo 墙、合作方列表这类「多到放不下但每条都很短」的内容",
+      "公告、注意事项这类要一直提醒但不值得占一整屏的信息",
+      "标签流、作品缩略图做背景装饰，让画面一直在动"
+    ],
+    "confusions": [
+      {
+        "with": "自动轮播",
+        "diff": "轮播是分页的：一屏一屏地翻，还有指示点；跑马灯是匀速连续滚动，没有「第几屏」的概念。"
+      },
+      {
+        "with": "滚动捕捉",
+        "diff": "滚动捕捉是用户自己滑、停下时吸附到某一项；跑马灯是自己走、用户只读，停下来只是因为悬停。"
+      }
+    ],
+    "pitfalls": [
+      "无缝要复制一份内容并整体平移 50%（或正好一整份的宽度），否则会看到「唰」地跳回起点",
+      "用 transform: translate3d 做位移，别用 margin-left / left，后者每帧都要重排",
+      "悬停或聚焦时暂停是惯例，最好再给一个暂停按钮，否则读屏和慢读的用户永远读不完",
+      "复制出来的那一份要 aria-hidden，不然读屏软件会把内容念两遍",
+      "离屏时动画还在烧电：用 IntersectionObserver 或 animation-play-state 停掉",
+      "内容比容器短时不要循环，会出现空档；长度不够就复制到足够长"
+    ],
+    "keywords": [
+      "marquee",
+      "infinite marquee",
+      "ticker",
+      "@keyframes translateX",
+      "transform: translate3d",
+      "animation-play-state",
+      "mask-image",
+      "aria-hidden duplicate"
+    ],
+    "scenes": [
+      "list",
+      "page",
+      "scroll"
+    ],
+    "feel": [
+      "calm",
+      "playful"
+    ],
+    "intent": [
+      "attention",
+      "hierarchy"
+    ],
+    "tags": [
+      "js",
+      "gradient",
+      "composited",
+      "motion-heavy",
+      "stable"
+    ],
+    "demo": {
+      "shape": "stage"
+    },
+    "loop": "continuous",
+    "en": {
+      "oneLiner": "A row of content slides sideways forever, joined end to end with no visible seam."
+    },
+    "defaults": {
+      "speed": 40,
+      "pauseOnHover": true,
+      "edgeMask": true
     }
   },
   {
@@ -1904,6 +2400,171 @@ export const ENTRY_META: EntryMeta[] = [
     }
   },
   {
+    "slug": "aurora-gradient",
+    "code": "V-07",
+    "nameZh": "极光渐变",
+    "nameEn": "Aurora Gradient",
+    "aliases": [
+      "极光背景",
+      "流动渐变",
+      "光晕背景",
+      "aurora background",
+      "aurora gradient",
+      "animated gradient background"
+    ],
+    "category": "visual",
+    "oneLiner": "几团彩色光斑在底色上慢慢游动，像极光一样铺满整屏。",
+    "whenToUse": [
+      "落地页、产品首屏的大背景，要氛围但不要具体图形",
+      "深色界面想要一块会呼吸的底色",
+      "发布页、活动页需要持续流动感，又不想用视频或图片"
+    ],
+    "confusions": [
+      {
+        "with": "网格渐变",
+        "diff": "网格渐变是多个径向渐变叠出来的静态柔光；极光是这些光团在位移（translate + blur + 饱和度），重点在「慢慢游动」。"
+      },
+      {
+        "with": "聚光卡片",
+        "diff": "聚光跟着指针走，是人给的反馈；极光自己漂，有没有人都一样。"
+      }
+    ],
+    "pitfalls": [
+      "大面积模糊很贵：光斑要放在独立图层里用 transform 位移，别每帧改 background-position",
+      "光斑 3–5 团就够，堆多了只会糊成一片，看不出「极光」",
+      "动画要慢（一轮 20–40s），快了像故障闪烁",
+      "深色底效果好；浅色底上要压低饱和度，否则显脏",
+      "文字压在上面要留对比度兜底（暗罩或压到暗部），别让正文落在最亮的光上",
+      "prefers-reduced-motion 下停住动画，静态渐变仍然好看"
+    ],
+    "keywords": [
+      "aurora gradient",
+      "animated gradient",
+      "radial-gradient",
+      "filter: blur()",
+      "mix-blend-mode: screen",
+      "transform: translate3d",
+      "hue-rotate()",
+      "saturate()"
+    ],
+    "scenes": [
+      "page",
+      "card"
+    ],
+    "feel": [
+      "soft",
+      "playful"
+    ],
+    "intent": [
+      "attention",
+      "hierarchy"
+    ],
+    "tags": [
+      "css-only",
+      "gradient",
+      "filter-blend",
+      "paint-heavy",
+      "motion-heavy",
+      "stable"
+    ],
+    "demo": {
+      "shape": "stage",
+      "minHeight": 320
+    },
+    "loop": "continuous",
+    "en": {
+      "oneLiner": "A few coloured blobs drift slowly across the background, like an aurora spread over the screen."
+    },
+    "defaults": {
+      "blobs": 4,
+      "blur": 80,
+      "duration": 30,
+      "palette": "aurora"
+    }
+  },
+  {
+    "slug": "mask-fade",
+    "code": "V-08",
+    "nameZh": "边缘渐隐",
+    "nameEn": "Mask Fade",
+    "aliases": [
+      "渐隐遮罩",
+      "边缘淡出",
+      "两端渐隐",
+      "mask fade",
+      "fade mask",
+      "gradient mask",
+      "edge fade"
+    ],
+    "category": "visual",
+    "oneLiner": "内容在边缘渐渐淡掉，暗示这一头还能继续滑。",
+    "whenToUse": [
+      "横向卡片列表、标签流的边缘，提示后面还有内容",
+      "固定高度的滚动区，顶部或底部用渐隐代替一条生硬的分割线",
+      "跑马灯、logo 墙的两端，让循环看不出接缝"
+    ],
+    "confusions": [
+      {
+        "with": "overflow: hidden",
+        "diff": "overflow 是硬切，内容到边就断；mask 是淡出，边缘逐渐透明。想暗示「还能滑」用 mask，想干脆截断用 overflow。"
+      },
+      {
+        "with": "渐变色盖层",
+        "diff": "盖一层同色渐变只是「看起来像」，一旦底色不是纯色（图片、渐变、深色模式）就露馅；mask 直接改内容的可见性，跟底色无关。"
+      }
+    ],
+    "pitfalls": [
+      "渐隐长度要够（约容器宽度的 8–15%），太短看起来像脏边",
+      "旧版 Safari 需要 -webkit-mask-image 前缀，写两份最稳",
+      "mask 会让被遮住的区域真的看不见，但那部分仍然可点击、可聚焦——不要用 mask 当「隐藏」",
+      "mask 与 backdrop-filter 同时用在同一个元素上，某些 Chrome 版本会渲染异常（毛玻璃会被切断）",
+      "纵向滚动区做上下渐隐时，滚到顶部/底部要淡出对应的那侧，否则永远是「下面还有」的错觉",
+      "两端用同一条线性渐变对称处理，别只做一边"
+    ],
+    "keywords": [
+      "mask-image",
+      "-webkit-mask-image",
+      "linear-gradient mask",
+      "mask-composite",
+      "edge fade",
+      "fade mask",
+      "scroll hint",
+      "CSS masking"
+    ],
+    "scenes": [
+      "list",
+      "scroll",
+      "page"
+    ],
+    "feel": [
+      "calm",
+      "crisp"
+    ],
+    "intent": [
+      "affordance",
+      "hierarchy"
+    ],
+    "tags": [
+      "css-only",
+      "modern-css",
+      "gradient",
+      "paint-heavy",
+      "stable"
+    ],
+    "demo": {
+      "shape": "stage"
+    },
+    "loop": "continuous",
+    "en": {
+      "oneLiner": "Content fades out at the edges, hinting that there is more to scroll."
+    },
+    "defaults": {
+      "fade": 12,
+      "axis": "x",
+      "hardEdge": false
+    }
+  },
+  {
     "slug": "fluid-type",
     "code": "T-01",
     "nameZh": "流体排版",
@@ -2371,6 +3032,165 @@ export const ENTRY_META: EntryMeta[] = [
       "duration": 1200,
       "easing": "easeOutExpo",
       "grouping": true
+    }
+  },
+  {
+    "slug": "text-stroke",
+    "code": "T-07",
+    "nameZh": "描边文字",
+    "nameEn": "Text Stroke",
+    "aliases": [
+      "空心字",
+      "描边字",
+      "轮廓文字",
+      "text stroke",
+      "outlined text",
+      "hollow text",
+      "text outline"
+    ],
+    "category": "type",
+    "oneLiner": "文字只留一圈轮廓、里面是空的，大标题一下就硬起来了。",
+    "whenToUse": [
+      "首屏大标题、封面字，想要比实心字更轻的体量",
+      "深色或图片背景上，需要文字有明确的轮廓边界",
+      "做「描边 + 实心」两层排版，一虚一实叠出层次"
+    ],
+    "confusions": [
+      {
+        "with": "文字阴影",
+        "diff": "text-shadow 画在字形外面，字本身的分量不变；text-stroke 是沿字形轮廓描一圈，笔画会被描边吃掉一半，字看起来更细。"
+      },
+      {
+        "with": "渐变文字",
+        "diff": "渐变文字填充的是字形内部；描边字内部是空的。想要「渐变填充 + 描边」就把两者叠加。"
+      }
+    ],
+    "pitfalls": [
+      "-webkit-text-stroke 是非标准属性（三大引擎都支持），它从轮廓中线向两侧画：小字号加粗描边会把细笔画糊掉，所以只给大字号用",
+      "描边宽度用 px 固定，别用 em 跟着字号放大，否则大标题上的笔画全被吃掉",
+      "只描边不填充时必须保证对比度：空心字放在浅色底上几乎看不见",
+      "加 paint-order: stroke fill 能让描边先画、填充后画，避免描边压住字面",
+      "描边色和填充色相同时，效果等于把字加粗，容易显得脏",
+      "不要为了描边去用 SVG path 假字：读屏和文本选择都会坏掉"
+    ],
+    "keywords": [
+      "-webkit-text-stroke",
+      "text-stroke",
+      "paint-order",
+      "outlined text",
+      "hollow text",
+      "color: transparent",
+      "@supports",
+      "stroke-width"
+    ],
+    "scenes": [
+      "text",
+      "page",
+      "card"
+    ],
+    "feel": [
+      "crisp",
+      "playful"
+    ],
+    "intent": [
+      "attention",
+      "hierarchy"
+    ],
+    "tags": [
+      "css-only",
+      "modern-css",
+      "stable"
+    ],
+    "demo": {
+      "shape": "stage"
+    },
+    "loop": "continuous",
+    "en": {
+      "oneLiner": "The glyphs keep only an outline with a hollow centre, which stiffens a big heading."
+    },
+    "defaults": {
+      "width": 2,
+      "size": 56,
+      "fill": false
+    }
+  },
+  {
+    "slug": "tabular-numbers",
+    "code": "T-08",
+    "nameZh": "等宽数字",
+    "nameEn": "Tabular Numbers",
+    "aliases": [
+      "等宽数字",
+      "数字不跳",
+      "表格数字",
+      "tabular figures",
+      "tabular-nums",
+      "monospaced digits",
+      "lining figures"
+    ],
+    "category": "type",
+    "oneLiner": "让每个数字占一样宽，数值变化时整行不会左右抖。",
+    "whenToUse": [
+      "倒计时、计时器、播放进度这类数字一直在变的组件",
+      "实时统计、价格、余额，数字跳动时会牵动整行宽度",
+      "表格里要让小数点或个位对齐成一条竖线"
+    ],
+    "confusions": [
+      {
+        "with": "数字滚动",
+        "diff": "数字滚动管的是数值怎么从 A 变到 B；等宽数字管的是每个数字占多宽。两者经常一起用——滚动时行宽不变，看起来才稳。"
+      },
+      {
+        "with": "默认比例数字",
+        "diff": "默认是比例数字（proportional）：1 比 8 窄，正文里更好看；一旦数字要纵向对齐或持续变化，就该切成等宽。"
+      }
+    ],
+    "pitfalls": [
+      "tabular-nums 需要字体支持这个 OpenType 特性，艺术字体可能没有，会悄悄退化成默认比例数字",
+      "只加等宽还不够：位数变化（9 → 10）时整块仍会变宽，要给 min-width 或预留宽度并右对齐",
+      "表格里要配合 text-align: right 且小数位数统一，否则照样对不齐",
+      "font-feature-settings: \"tnum\" 是等价的旧写法，优先用 font-variant-numeric，可读性更好",
+      "不要为了数字把整站换成等宽字体：只给需要的片段加这个特性"
+    ],
+    "keywords": [
+      "font-variant-numeric",
+      "tabular-nums",
+      "font-feature-settings tnum",
+      "lining-nums",
+      "tabular figures",
+      "text-align: right",
+      "min-width",
+      "OpenType feature"
+    ],
+    "scenes": [
+      "text",
+      "list",
+      "page"
+    ],
+    "feel": [
+      "crisp",
+      "calm"
+    ],
+    "intent": [
+      "hierarchy",
+      "affordance"
+    ],
+    "tags": [
+      "css-only",
+      "font-feature",
+      "stable"
+    ],
+    "demo": {
+      "shape": "stage"
+    },
+    "loop": "continuous",
+    "en": {
+      "oneLiner": "Every digit takes the same width, so a changing number never shifts the line."
+    },
+    "defaults": {
+      "tabular": true,
+      "compare": true,
+      "interval": 700
     }
   }
 ]

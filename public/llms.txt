@@ -1,11 +1,11 @@
 # 前端设计博物馆 Design Museum
 
-> 把说不出口的前端效果做成可交互标本：30 条中英术语对照、参数可调、一键复制成给 AI 的设计需求。
+> 把说不出口的前端效果做成可交互标本：40 条中英术语对照、参数可调、一键复制成给 AI 的设计需求。
 
 ## 数据
 
-- [catalog.json](https://publieople.github.io/design-museum/catalog.json)：机器可读索引 + 可直接交付的内容（中英名字、口语别名、关键词、标签、演示形态、控件默认值、中英需求句）
-- [catalog.md](https://publieople.github.io/design-museum/catalog.md)：逐条全文（什么时候用、别搞混、踩坑、推荐取值、无障碍降级、参考链接），每条一个 #<slug> 锚点
+- [catalog.json](https://publieople.github.io/design-museum/catalog.json)：机器可读索引 + 现成需求句（中英名字、口语别名、关键词、标签、演示形态、控件默认值、中英需求句）
+- [catalog.md](https://publieople.github.io/design-museum/catalog.md)：逐条全文（什么时候用、别搞混、踩坑、推荐取值、无障碍降级、参考链接）——上面 JSON 里没有这些长散文，每条一个 #<slug> 锚点
 - [sitemap.xml](https://publieople.github.io/design-museum/sitemap.xml)：全部页面地址
 
 ## 给 AI 的用法
@@ -21,27 +21,37 @@
 - [滚动揭示 Scroll Reveal](https://publieople.github.io/design-museum/entry/scroll-reveal/)：内容滚进视口时才淡入上移，没滚到的先藏着。
 - [视差滚动 Parallax](https://publieople.github.io/design-museum/entry/parallax/)：滚动时前景和后景走不同速度，画面因此有了纵深。
 - [滚动驱动动画 Scroll-Driven Animation](https://publieople.github.io/design-museum/entry/scroll-driven/)：滚动条就是进度条：滚到哪一帧由滚动位置决定。
+- [视图过渡 View Transitions](https://publieople.github.io/design-museum/entry/view-transitions/)：页面切换时，浏览器把新旧两屏接起来，补出中间那一下过渡。
+- [光标跟随 Cursor Follower](https://publieople.github.io/design-museum/entry/cursor-follower/)：一个圆点慢半拍地跟在指针后面，把系统鼠标指针换掉。
 - [悬停抬升 Hover Lift](https://publieople.github.io/design-museum/entry/hover-lift/)：指针移到卡片上，它轻轻上浮、阴影变大，暗示这块可以点。
 - [按压反馈 Press Feedback](https://publieople.github.io/design-museum/entry/press-feedback/)：手指按下的瞬间按钮缩小、变暗，松开立刻弹回，确认这一下点到了。
 - [磁吸按钮 Magnetic Button](https://publieople.github.io/design-museum/entry/magnetic-button/)：指针靠近时按钮被吸过去一点点，移开又弹回原位。
 - [骨架屏微光 Skeleton Shimmer](https://publieople.github.io/design-museum/entry/skeleton-shimmer/)：灰色占位块上有一道亮光反复扫过，表示内容还在加载。
 - [乐观更新 Optimistic UI](https://publieople.github.io/design-museum/entry/optimistic-ui/)：点下去界面立刻变成成功的样子，请求在后台跑，失败了再退回去。
 - [轻提示 Toast](https://publieople.github.io/design-museum/entry/toast/)：一条短消息从屏幕边缘滑进来，几秒后自己消失，不打断当前操作。
+- [涟漪反馈 Ripple](https://publieople.github.io/design-museum/entry/ripple/)：点下去的地方荡开一圈水波，告诉用户这一下收到了。
+- [命令面板 Command Palette](https://publieople.github.io/design-museum/entry/command-palette/)：按一个快捷键弹出一个搜索框，敲几个字就能跳到任何功能。
 - [粘性头部 Sticky Header](https://publieople.github.io/design-museum/entry/sticky-header/)：页面滚动时头部留在顶部，常配合「下滑隐藏、上滑出现」。
 - [粘性堆叠卡片 Sticky Stacking Cards](https://publieople.github.io/design-museum/entry/sticky-stack/)：滚动时后面的卡片一张张压上来，前一张缩小留在底下。
 - [瀑布流 Masonry](https://publieople.github.io/design-museum/entry/masonry/)：卡片高度不齐，自动落进最短的那一列，底部不留大洞。
 - [Bento 网格 Bento Grid](https://publieople.github.io/design-museum/entry/bento-grid/)：大小不一的方块拼成一整块，边线对齐，主次一眼分得清。
 - [滚动捕捉 Scroll Snap](https://publieople.github.io/design-museum/entry/scroll-snap/)：滚动停下来时自动对齐到某一张卡片，不会卡在半路上。
 - [折叠面板 Accordion](https://publieople.github.io/design-museum/entry/accordion/)：点标题展开内容，同一组里通常只开一个，标题一直在。
+- [虚拟滚动 Virtual Scrolling](https://publieople.github.io/design-museum/entry/virtual-scrolling/)：列表只渲染看得见的那几行，一万条也能滚得顺。
+- [跑马灯 Marquee](https://publieople.github.io/design-museum/entry/marquee/)：一排内容不停地横向滑过，首尾相接，看不出接缝。
 - [毛玻璃 Frosted Glass](https://publieople.github.io/design-museum/entry/frosted-glass/)：面板背后的内容被真的模糊掉，像隔着一层磨砂玻璃看过去。
 - [玻璃拟态 Glassmorphism](https://publieople.github.io/design-museum/entry/glassmorphism/)：半透明面板 + 亮边 + 柔影叠在彩色背景上，像一块玻璃浮在画面里。
 - [渐变网格 Mesh Gradient](https://publieople.github.io/design-museum/entry/mesh-gradient/)：多个径向渐变叠在一起，颜色朝任意方向过渡，没有一条直线的渐变轴。
 - [颗粒噪点 Grain Noise](https://publieople.github.io/design-museum/entry/grain-noise/)：在画面上撒一层随机像素，给纯色和渐变加质感，顺手压掉色带。
 - [光晕聚光 Spotlight Glow](https://publieople.github.io/design-museum/entry/spotlight-glow/)：一块柔光跟着指针在卡片表面移动，像有人拿手电照上去。
 - [渐变描边 Gradient Border](https://publieople.github.io/design-museum/entry/gradient-border/)：描边不是一种颜色，而是一条渐变沿着元素轮廓走一圈。
+- [极光渐变 Aurora Gradient](https://publieople.github.io/design-museum/entry/aurora-gradient/)：几团彩色光斑在底色上慢慢游动，像极光一样铺满整屏。
+- [边缘渐隐 Mask Fade](https://publieople.github.io/design-museum/entry/mask-fade/)：内容在边缘渐渐淡掉，暗示这一头还能继续滑。
 - [流体排版 Fluid Type](https://publieople.github.io/design-museum/entry/fluid-type/)：字号随容器宽度连续变化，不会在断点上突然跳一档。
 - [平衡折行 Text Balance](https://publieople.github.io/design-museum/entry/text-balance/)：多行标题的每行长度被拉齐，最后一行不再只剩一个孤字。
 - [渐变文字 Gradient Text](https://publieople.github.io/design-museum/entry/gradient-text/)：把文字当成蒙版，露出来的不是单色而是背后的渐变。
 - [逐字显现 Character Reveal](https://publieople.github.io/design-museum/entry/char-reveal/)：标题里的字一个接一个落到位，像被逐字写出来。
 - [可变字体 Variable Font](https://publieople.github.io/design-museum/entry/variable-font/)：一个字体文件里带着连续的字重轴，可以停在任意粗细。
 - [数字滚动 Count Up](https://publieople.github.io/design-museum/entry/count-up/)：数字从 0 快速滚到目标值，然后停住。
+- [描边文字 Text Stroke](https://publieople.github.io/design-museum/entry/text-stroke/)：文字只留一圈轮廓、里面是空的，大标题一下就硬起来了。
+- [等宽数字 Tabular Numbers](https://publieople.github.io/design-museum/entry/tabular-numbers/)：让每个数字占一样宽，数值变化时整行不会左右抖。
