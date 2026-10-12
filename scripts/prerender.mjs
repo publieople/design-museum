@@ -82,8 +82,9 @@ const server = await createServer({
 
 try {
   const { loadPages, renderPage } = await server.ssrLoadModule('/src/prerenderApp.tsx')
-  const { STATIC_PAGES, SITE_ORIGIN, absoluteUrl, entryPath } = await server.ssrLoadModule('/src/lib/routes.ts')
+  const { STATIC_PAGES, SITE_ORIGIN, absoluteUrl, hrefFor, entryPath } = await server.ssrLoadModule('/src/lib/routes.ts')
   const { ENTRIES } = await server.ssrLoadModule('/src/data/index.ts')
+  const { RETIRED, tombstoneTarget } = await server.ssrLoadModule('/src/data/retired.ts')
   const { translate } = await server.ssrLoadModule('/src/i18n/index.tsx')
 
   const shell = await readFile(path.join(dist, 'index.html'), 'utf8')
@@ -149,6 +150,50 @@ try {
   // 404 交给 GitHub Pages 的兜底文件，前端路由会把未知路径渲染成「这里没有展品」
   await writeFile(path.join(dist, '404.html'), shell, 'utf8')
 
+  // 墓碑：删掉的词条不能就这么消失在 URL 里。GitHub Pages 没有 301，所以给
+  // 每个墓碑写一份真实的静态页：meta refresh 跳到新地址 + canonical + noindex。
+  // 它不进 sitemap，也不挂 App 壳——没有 JS，也就不会先闪一个「这里没有展品」。
+  for (const retired of RETIRED) {
+    const target = tombstoneTarget(retired)
+    const canonical = absoluteUrl(target)
+    const html = [
+      '<!doctype html>',
+      '<html lang="zh-CN">',
+      '  <head>',
+      '    <meta charset="UTF-8" />',
+      '    <meta name="viewport" content="width=device-width, initial-scale=1" />',
+      '    <title>' + escapeHtml(retired.nameZh) + ' · 已下架 · ' + escapeHtml(siteName) + '</title>',
+      '    <meta name="robots" content="noindex" />',
+      '    <link rel="canonical" href="' + canonical + '" />',
+      '    <meta http-equiv="refresh" content="0; url=' + canonical + '" />',
+      '    <style>',
+      '      body { margin: 0; min-height: 100vh; display: grid; place-items: center; background: #f6f3ec;',
+      '        color: #1c1917; font: 14px/1.75 system-ui, -apple-system, "Noto Sans SC", sans-serif }',
+      '      main { max-width: 34rem; padding: 2.5rem }',
+      '      p.code { font-family: ui-monospace, SFMono-Regular, monospace; letter-spacing: .08em;',
+      '        color: #b3341f; margin: 0 0 .5rem }',
+      '      h1 { font-size: 1.15rem; margin: 0 0 .75rem }',
+      '      p { margin: 0 0 .6rem; color: #57534e }',
+      '      a { color: #b3341f }',
+      '    </style>',
+      '  </head>',
+      '  <body>',
+      '    <main>',
+      '      <p class="code">' + escapeHtml(retired.code) + ' · RETIRED</p>',
+      '      <h1>' + escapeHtml(retired.nameZh) + '（' + escapeHtml(retired.nameEn) + '）已下架</h1>',
+      '      <p>' + escapeHtml(retired.reason) + '</p>',
+      '      <p>This entry has been retired. Taking you to <a href="' + hrefFor(target) + '">' + target + '/</a>…</p>',
+      '    </main>',
+      '  </body>',
+      '</html>',
+      '',
+    ].join('\n')
+    const dir = path.join(dist, entryPath(retired.slug))
+    await mkdir(dir, { recursive: true })
+    await writeFile(path.join(dir, 'index.html'), html, 'utf8')
+    console.log('墓碑页 /entry/' + retired.slug + '/ → ' + target)
+  }
+
   const sitemap = [
     '<?xml version="1.0" encoding="UTF-8"?>',
     '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">',
@@ -162,7 +207,9 @@ try {
   await writeFile(path.join(dist, 'sitemap.xml'), sitemap, 'utf8')
   await rm(path.join(dist, 'sitemap.xml.placeholder'), { force: true })
 
-  console.log(`预渲染完成：${targets.length} 个页面 + 404.html，sitemap ${urls.length} 条`)
+  console.log(
+    `预渲染完成：${targets.length} 个页面 + 404.html + ${RETIRED.length} 个墓碑页，sitemap ${urls.length} 条`,
+  )
   console.log(`站点域名：${SITE_ORIGIN}，部署前缀：${base}`)
 } finally {
   await server.close()

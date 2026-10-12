@@ -137,19 +137,23 @@
 
 ### 增
 ```fish
-pnpm new:entry marquee --hall layout --shape scroll   # 阶段 B 落地
+pnpm new:entry marquee --hall layout --shape scroll
 ```
-生成 `src/data/entries/<厅>/<slug>.ts` + `src/demos/<slug>.tsx` 骨架，字段带 TODO 占位，测试必然红——
-这是故意的：空壳过不了 CI。然后按顺序：
-1. 查重（`pnpm find "人话描述"`，看有没有更该改的现有条目）
+生成 `src/data/entries/<厅>/<slug>.ts` + `src/demos/<slug>.tsx` 骨架（编号自动取该厅下一个），
+字段带 TODO 占位，测试必然红——这是故意的：空壳过不了 CI。重名（在册或墓碑）、未知厅、未知形态、
+非 kebab 的 slug 会直接报错退出。然后按顺序：
+1. 查重（`pnpm find:entry "人话描述"`，看有没有更该改的现有条目）
 2. 填 4 条判据与 `confusions` 互指
 3. 写 demo，标 `demo.shape`，接 `reducedMotion`
 4. 填 `spec` / `refs` / `prompt`
-5. `npm run gen:meta`，`npm test`、`npm run typecheck`、`npm run lint`
+5. `pnpm gen:meta`，然后 `pnpm check`（typecheck + lint + test 一条命令），最后 `pnpm dev` 打开
+   `/entry/<slug>/` 四个舞台人眼验收
 
 ### 删
-不真删：`src/data/retired.ts` 里立墓碑（slug / 退役时间 / `replacedBy`），
-预渲染为该 slug 生成一个跳转页（HTML meta refresh + canonical + noindex）。
+不真删：`src/data/retired.ts` 里立墓碑（slug / code / 中英名 / 退役时间 / `replacedBy` / 原因），
+并把词条文件从 `src/data/entries/` 里拿掉。`scripts/prerender.mjs` 已经接好：构建期为墓碑生成
+`dist/entry/<slug>/index.html`——独立静态页（不挂 App 壳），只有 meta refresh + canonical + noindex，
+指向 `replacedBy`（没填就跳 `/browse`）。墓碑不进 sitemap。
 GitHub Pages 做不了 301，这是能做到的最接近的东西——已经被搜索引擎收录的地址不会变成死链。
 同时：从 `related` 里摘掉、从速查表与 catalog 里消失（它们都读 ENTRIES，自动生效）。
 
@@ -162,7 +166,8 @@ GitHub Pages 做不了 301，这是能做到的最接近的东西——已经被
 ### 查
 - 站内：搜索框（别名 + 关键词）、展厅浏览、速查表、感觉反查，以及按 facet 过滤（阶段 C）。
 - 给 AI：`catalog.md` / `catalog.json`（阶段 D），以及配套 skill `skills/design-museum/SKILL.md`。
-- 给维护者：`pnpm find "人话"` 打印命中条目与命中理由（命中哪个字段、多少分），既是查重门，也是搜索调试器。
+- 给维护者：`pnpm find:entry "人话"` 打印命中条目与命中理由（命中哪个字段、什么权重），
+  既是查重门，也是搜索调试器——搜不到就说明该补别名或该新增条目。
 
 ---
 
@@ -174,7 +179,10 @@ GitHub Pages 做不了 301，这是能做到的最接近的东西——已经被
 | `src/data/entries.test.ts` | 逐条字段完整性与取值合法性、控件合法、code/slug 唯一、每条有 demo 且无孤儿 demo、英文覆盖层对齐 |
 | `src/data/meta.test.ts` | 生成物与源数据逐条一致（过期就红）、meta 不夹带详情页字段 |
 | `src/data/entrySpec.test.ts` | **本规范**：文件路径 = `<category>/<slug>.ts`、标签闭集与数量、孤儿标签、词表规模与双语、形态合法与 thumb 规则、自带滚动的 loop 策略 |
+| `src/data/retired.test.ts` | 墓碑：slug/code 不与在册冲突、`replacedBy` 必须指向在册条目、在册条目的 `related` 不许指向墓碑、跳转目标 |
 | `src/data/palettes.test.ts` | 配色数据与展示一致 |
+
+一条命令跑全：`pnpm check`（typecheck + lint + test）。要连预渲染一起验，跑 `pnpm build`。
 
 生成物管线：`entries/**` + `metaOf.ts` →（`gen:meta`）→ `entryMeta.ts`（首屏）
 → `meta.ts` / 搜索索引 / 卡片；`routes.ts` + `routeModules.ts` →（`build`）→ 预渲染 HTML + sitemap。
