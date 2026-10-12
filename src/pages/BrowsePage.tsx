@@ -4,10 +4,17 @@ import { CATEGORIES, FEELS, SCENES } from '../data/taxonomy'
 import { useT, useLocale } from '../i18n'
 import { pick } from '../i18n/pick'
 import { Link, useQueryUpdater, useRoute } from '../lib/router'
-import { searchEntries } from '../lib/search'
+import {
+  filterEntries,
+  hasBrowseFilter,
+  parseTags,
+  serializeTags,
+  toggleTag,
+} from '../lib/browseFilter'
 import { EntryCard } from '../components/EntryCard'
 import { FilterChips } from '../components/FilterChips'
 import { SearchBox } from '../components/SearchBox'
+import { TagFilter } from '../components/TagFilter'
 
 export function BrowsePage() {
   const t = useT()
@@ -19,18 +26,15 @@ export function BrowsePage() {
   const cat = route.query.get('cat') ?? ''
   const scene = route.query.get('scene') ?? ''
   const feel = route.query.get('feel') ?? ''
+  const tagParam = route.query.get('tag') ?? ''
+  const tags = useMemo(() => parseTags(tagParam), [tagParam])
 
-  const results = useMemo(() => {
-    const base = q ? searchEntries(ENTRY_META, q).map((hit) => hit.entry) : ENTRY_META
-    return base.filter((entry) => {
-      if (cat && entry.category !== cat) return false
-      if (scene && !entry.scenes.includes(scene as never)) return false
-      if (feel && !entry.feel.includes(feel as never)) return false
-      return true
-    })
-  }, [q, cat, scene, feel])
+  const results = useMemo(
+    () => filterEntries(ENTRY_META, { q, cat, scene, feel, tags }),
+    [q, cat, scene, feel, tags],
+  )
 
-  const hasFilter = Boolean(q || cat || scene || feel)
+  const hasFilter = hasBrowseFilter({ q, cat, scene, feel, tags })
 
   const toggle = (key: 'cat' | 'scene' | 'feel') => (value: string) => {
     const current = route.query.get(key)
@@ -80,10 +84,15 @@ export function BrowsePage() {
           selected={feel ? [feel] : []}
           onToggle={toggle('feel')}
         />
+        <TagFilter
+          legend={t('browse.tags')}
+          selected={tags}
+          onToggle={(tag) => updateQuery({ tag: serializeTags(toggleTag(tags, tag)) })}
+        />
         {hasFilter ? (
           <button
             type="button"
-            onClick={() => updateQuery({ q: null, cat: null, scene: null, feel: null })}
+            onClick={() => updateQuery({ q: null, cat: null, scene: null, feel: null, tag: null })}
             className="cursor-pointer self-start font-mono text-[11px] text-muted underline decoration-dotted hover:text-accent"
           >
             {t('browse.clear')}

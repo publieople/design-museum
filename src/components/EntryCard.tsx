@@ -1,7 +1,7 @@
 import { useMemo } from 'react'
 import { useT, useLocale } from '../i18n'
 import { aliasesFor, resolveMeta } from '../lib/localize'
-import { interactionHintKey, shouldAutoLoop } from '../lib/loop'
+import { shouldAutoLoop, thumbnailIsStill, thumbHintKey } from '../lib/loop'
 import { usePrefs } from '../lib/prefs'
 import { Link } from '../lib/router'
 import { useReplayKey } from '../lib/replay'
@@ -47,10 +47,12 @@ export function EntryCard({ entry, showDemo = true }: EntryCardProps) {
         <ErrorBoundary label={entry.slug} message={t('error.renderFailed')}>
           <DemoStage
             compact
+            shape={entry.demo.shape}
+            still={thumbnailIsStill(entry)}
             stage={stage}
             className="rounded-none border-x-0 border-t-0"
             loopable={shouldAutoLoop(entry)}
-            hint={interactionHintKey(entry)}
+            hint={thumbHintKey(entry)}
             onStageChange={() => {}}
             onReplay={replay}
           >

@@ -105,6 +105,7 @@ export const STRINGS = {
   'browse.hall': { zh: '展厅', en: 'Hall' },
   'browse.scene': { zh: '用在哪', en: 'Where' },
   'browse.feel': { zh: '什么感觉', en: 'Feel' },
+  'browse.tags': { zh: '标签', en: 'Tags' },
   'browse.all': { zh: '全部', en: 'All' },
   'browse.clear': { zh: '清空筛选', en: 'Clear filters' },
   'browse.empty': { zh: '这一组筛选下没有展品。', en: 'No specimens match this combination.' },
@@ -162,6 +163,8 @@ export const STRINGS = {
   'stage.replay': { zh: '重播', en: 'Replay' },
   // 这一档里既有滚动驱动也有点击/拖拽驱动，文案要对两者都成立
   'stage.needsScroll': { zh: '↕ 自己动手试试', en: '↕ Try it yourself' },
+  // 卡片缩略图定格时用：这一档在卡片里缩着看没意义，点开才是正经演示
+  'stage.tapToTry': { zh: '点开自己动手', en: 'Open to try it' },
   'stage.loop': { zh: '循环', en: 'Loop' },
   'stage.slow': { zh: '慢放', en: 'Slow' },
 

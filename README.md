@@ -262,7 +262,7 @@ gh api -X PATCH repos/publieople/design-museum \
 3. 俗称总表页：把全站 `aliases` 汇总成可搜、可贡献的一页。
 4. 「别搞混」做成双向对比页（毛玻璃 ⇄ 玻璃拟态 ⇄ 半透明）。
 5. 视觉回归测试：全部 demo 的截图对比。
-6. 按 facet（怎么实现 / 什么代价 / 无障碍 / 兼容性）过滤词条，以及给 AI 用的 catalog 与配套 skill——词表与形态字段已落地，规范见 [docs/ENTRY-SPEC.md](docs/ENTRY-SPEC.md)。
+6. 给 AI 用的 catalog 与配套 skill——按 facet（怎么实现 / 什么代价 / 无障碍 / 兼容性）过滤与 `demo.shape` 分派已经落地，规范见 [docs/ENTRY-SPEC.md](docs/ENTRY-SPEC.md)。
 
 ## 致谢
 

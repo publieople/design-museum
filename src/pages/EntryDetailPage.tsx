@@ -121,6 +121,7 @@ export function EntryDetailPage({ slug }: { slug?: string }) {
             <ErrorBoundary label={entry.slug} message={t('error.renderFailed')}>
               <DemoStage
                 stage={stage}
+                shape={entry.demo.shape}
                 loopable={shouldAutoLoop(entry)}
                 hint={interactionHintKey(entry)}
                 onStageChange={(next) => {
