@@ -1,7 +1,23 @@
 import { useLocale } from '../i18n'
 import { pick } from '../i18n/pick'
 import { Link } from '../lib/router'
+import { SITE_BASE } from '../lib/routes'
 import type { Bi } from '../data/types'
+
+/**
+ * 给 AI 用的入口。地址用 SITE_BASE 而不是 BASE_URL：
+ * 这两份目录发布在固定前缀下，本地开发和线上必须指向同一个地址。
+ */
+const CATALOG_SNIPPET: Bi = {
+  zh: `${SITE_BASE}/llms.txt      # 入口：两份目录 + 全部词条地址
+${SITE_BASE}/catalog.json   # 索引：别名、关键词、标签、控件默认值、现成需求句
+${SITE_BASE}/catalog.md     # 逐条全文：什么时候用、别搞混、踩坑、推荐取值
+skills/design-museum/SKILL.md   # 配套 skill：装到 ~/.dsh/skills/design-museum/`,
+  en: `${SITE_BASE}/llms.txt      # entry point: both catalogues + every entry URL
+${SITE_BASE}/catalog.json   # index: aliases, keywords, tags, control defaults, ready briefs
+${SITE_BASE}/catalog.md     # full text: when to use, confusions, pitfalls, values
+skills/design-museum/SKILL.md   # the skill that teaches an agent to use them`,
+}
 
 const TEMPLATE: Bi = {
   zh: `请用 <技术栈> 实现下面这个效果，按术语的标准做法来，不要用相近但不同的做法替代：
@@ -100,6 +116,23 @@ export function AboutPage() {
         <pre className="overflow-x-auto rounded-lg border border-line bg-raised p-4 font-mono text-xs leading-relaxed">
           {pick(TEMPLATE, locale)}
         </pre>
+      </section>
+
+      <section className="flex flex-col gap-3 border-t border-line pt-5">
+        <h2 className="label-mono">{locale === 'en' ? 'Let the AI look it up' : '让 AI 自己查'}</h2>
+        <p className="text-sm text-muted">
+          {locale === 'en'
+            ? 'This site also publishes its catalogue for machines, so an agent can search it itself instead of you pasting paragraphs into a chat. The index (aliases, keywords, tags, control defaults and ready-to-use briefs) lives in catalog.json; the full text of every entry (when to use, confusions, pitfalls, values) lives in catalog.md.'
+            : '这个站还给机器发布了一份目录：AI 可以自己查，不用你把内容一段段复制进对话框。索引（别名、关键词、标签、控件默认值、现成需求句）在 catalog.json，逐条全文（什么时候用、别搞混、踩坑、推荐取值）在 catalog.md。'}
+        </p>
+        <pre className="overflow-x-auto rounded-lg border border-line bg-raised p-4 font-mono text-xs leading-relaxed">
+          {pick(CATALOG_SNIPPET, locale)}
+        </pre>
+        <p className="text-sm text-muted">
+          {locale === 'en'
+            ? 'The catalogue is generated from the same data as these pages, so it cannot drift: every entry, alias, confusion and value you see here is in there too.'
+            : '目录与页面同源，不会各说各话：这里的每条词条、别名、易混项与推荐取值，目录里都有。'}
+        </p>
       </section>
 
       <section className="flex flex-col gap-3 border-t border-line pt-5">

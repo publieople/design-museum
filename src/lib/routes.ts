@@ -14,6 +14,13 @@ import type { StringKey } from '../i18n/strings'
 /** 站点域名。canonical、sitemap、分享链接靠它拼绝对地址 */
 export const SITE_ORIGIN = 'https://publieople.github.io'
 
+/**
+ * 线上部署前缀。和 BASE_PATH 不同：BASE_PATH 跟着构建环境走（本地开发是 /），
+ * 而这份值用来拼「发布出去以后一定成立」的绝对地址——机器可读目录
+ * （public/catalog.*、llms.txt）必须与构建环境无关，否则本地生成和 CI 生成的不一样。
+ */
+export const SITE_BASE = `${SITE_ORIGIN}/design-museum`
+
 /** 部署前缀：GitHub Pages 下是 /design-museum/，本地与测试环境是 / */
 export const BASE_PATH: string = import.meta.env.BASE_URL
 

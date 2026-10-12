@@ -39,6 +39,7 @@ pnpm check        # typecheck + lint + test 一条命令（提交门槛）
 pnpm typecheck    # tsc -b，零错误是提交门槛
 pnpm test         # vitest：内容校验 + 条目规范 + 检索 + 参数 URL + 偏好 + i18n + 提示词 + 首屏 meta 同步 + 页面与 demo 渲染冒烟（206 项）
 pnpm gen:meta     # 改过词条后重新生成首屏用的 meta（src/data/entryMeta.ts）
+pnpm gen:catalog  # 重新生成给 AI 用的目录（public/catalog.json / catalog.md / llms.txt）
 pnpm validate     # 只跑内容校验
 pnpm new:entry    # 生成一条新词条与 demo 的骨架（见下文「新增一条词条」）
 pnpm find:entry   # 用口语查重：打印命中条目、命中字段与命中理由
@@ -114,6 +115,8 @@ src/
 │   ├── meta.ts               # 首屏入口：ENTRY_META + featuredMeta()
 │   ├── order.ts              # 首页「每厅各一件」的交错排序，完整词条与 meta 共用
 │   ├── meta.test.ts          # 生成物是否过期（CI 拦这个）
+│   ├── catalog.ts            # 给 AI 用的目录：buildCatalog() / catalogMarkdown()（源数据）
+│   ├── catalog.test.ts       # 守门：public/catalog.* 与源数据逐字节一致
 │   ├── entries/<展厅>/<slug>.ts
 │   ├── entries.test.ts       # 每条词条自身合法 + 与 demo 一一对应 + 英文覆盖层
 │   ├── entrySpec.test.ts     # 条目规范：文件路径 / 标签闭集与数量 / 演示形态（docs/ENTRY-SPEC.md）
@@ -143,9 +146,18 @@ src/
 
 scripts/
 ├── prerender.mjs             # 构建期渲染 35 个地址 + sitemap.xml + 404.html + 墓碑跳转页
+├── gen-catalog.mjs           # pnpm gen:catalog：生成给 AI 的目录与 llms.txt
 ├── load-site.mjs             # 用 vite 的 ssrLoadModule 读 TS 数据（维护者脚本共用）
 ├── new-entry.mjs             # pnpm new:entry：生成词条与 demo 骨架
 └── find-entry.mjs            # pnpm find:entry：口语查重（命中字段 + 权重）
+
+public/                       # 会原样发布到站点根目录
+├── catalog.json              # 机器可读索引 + 现成需求句（生成物）
+├── catalog.md                # 逐条全文，每条一个 #<slug> 锚点（生成物）
+├── llms.txt                  # 给 AI 的入口：两份目录 + 全部词条地址（生成物）
+├── og.png  favicon.svg  robots.txt  licenses/
+skills/design-museum/SKILL.md # 配套 skill：教 AI 怎么用上面这几份目录
+docs/ENTRY-SPEC.md            # 条目规范：什么算一条、怎么增删改查（唯一真源）
 ```
 
 ## 双语是怎么做的
@@ -174,6 +186,28 @@ scripts/
 5. 跑 `pnpm gen:meta`，再跑 `pnpm check`（typecheck + lint + test）。绿了就完事——缺 demo、字段空、
    编号不连续、`related` 有死链、`en` 块条数对不齐、首屏 meta 没重新生成都会被拦下来。最后 `pnpm dev`
    打开 `/entry/<slug>/` 把四个舞台人眼验收一遍。
+
+## 给 AI 用
+
+站点把同一份数据发布成两份机器可读目录，外加一份入口文件（`pnpm gen:catalog` 生成，`src/data/catalog.test.ts` 守着别过期）：
+
+| 地址 | 内容 |
+| --- | --- |
+| [`/llms.txt`](https://publieople.github.io/design-museum/llms.txt) | 入口：两份目录 + 全部词条地址 |
+| [`/catalog.json`](https://publieople.github.io/design-museum/catalog.json) | 索引 + 可直接交付：中英名字、口语别名、关键词、标签、演示形态、控件默认值与中英需求句 |
+| [`/catalog.md`](https://publieople.github.io/design-museum/catalog.md) | 逐条全文：什么时候用、别搞混、踩坑、推荐取值、无障碍降级、参考链接 |
+
+长散文刻意不进 JSON（否则会长到 160KB+）：JSON 负责「找到它并拿到需求句」，Markdown 负责「读细节」。
+
+仓库里还有配套 skill [`skills/design-museum/SKILL.md`](skills/design-museum/SKILL.md)，它教 AI 先查目录、再回答「这个效果叫什么、怎么做、参数给多少」，最后给出可粘贴的需求句。装到本机 harness：
+
+```bash
+mkdir -p ~/.dsh/skills/design-museum
+curl -fsSL https://raw.githubusercontent.com/publieople/design-museum/main/skills/design-museum/SKILL.md \
+  -o ~/.dsh/skills/design-museum/SKILL.md
+```
+
+不想装 skill 也行：把 `https://publieople.github.io/design-museum/catalog.json` 丢给 AI，让它自己查。
 
 ## 部署
 
@@ -262,7 +296,8 @@ gh api -X PATCH repos/publieople/design-museum \
 3. 俗称总表页：把全站 `aliases` 汇总成可搜、可贡献的一页。
 4. 「别搞混」做成双向对比页（毛玻璃 ⇄ 玻璃拟态 ⇄ 半透明）。
 5. 视觉回归测试：全部 demo 的截图对比。
-6. 给 AI 用的 catalog 与配套 skill——按 facet（怎么实现 / 什么代价 / 无障碍 / 兼容性）过滤与 `demo.shape` 分派已经落地，规范见 [docs/ENTRY-SPEC.md](docs/ENTRY-SPEC.md)。
+6. 词条扩充：现在 30 条，目标是每厅再加 2 条（View Transitions、命令面板、虚拟滚动、跑马灯、极光渐变、文字描边……），加完把界面文案里写死的「30」改成动态数字。
+7. 给 AI 的目录做增量索引：现在是一份 68KB 的 JSON 全量读；条目再多就该按展厅或标签分片。
 
 ## 致谢
 

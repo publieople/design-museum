@@ -17,11 +17,12 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build": "tsc -b && vite build && node scripts/prerender.mjs",
+    "build": "tsc -b && node scripts/gen-catalog.mjs && vite build && node scripts/prerender.mjs",
     "lint": "oxlint",
     "preview": "vite preview",
     "typecheck": "tsc -b",
     "gen:meta": "node scripts/gen-entry-meta.mjs",
+    "gen:catalog": "node scripts/gen-catalog.mjs",
     "prerender": "node scripts/prerender.mjs",
     "new:entry": "node scripts/new-entry.mjs",
     "find:entry": "node scripts/find-entry.mjs",
