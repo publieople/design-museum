@@ -49,6 +49,8 @@ const entry: Entry = {
   scenes: ['text', 'card', 'page'],
   feel: ['calm', 'soft'],
   intent: ['hierarchy'],
+  tags: ['css-only', 'modern-css', 'layout-triggering', 'check-support'],
+  demo: { shape: 'stage' },
   controls: [
     { kind: 'range', id: 'width', label: '容器宽度', min: 10, max: 26, step: 1, def: 16, unit: 'ch', hint: 'ch 是数字 0 的宽度，16ch 上下就是一行标题的常见长度' },
     {

@@ -47,6 +47,8 @@ const entry: Entry = {
   scenes: ['page', 'card'],
   feel: ['crisp', 'calm'],
   intent: ['hierarchy', 'attention'],
+  tags: ['css-only', 'stable'],
+  demo: { shape: 'stage' },
   controls: [
     { kind: 'range', id: 'columns', label: '列数', min: 3, max: 5, step: 1, def: 4, unit: '列' },
     { kind: 'range', id: 'gap', label: '格子间距', min: 0, max: 16, step: 1, def: 8, unit: 'px' },

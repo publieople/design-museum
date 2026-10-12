@@ -47,6 +47,8 @@ const entry: Entry = {
   scenes: ['form', 'page', 'list'],
   feel: ['calm', 'crisp'],
   intent: ['affordance', 'hierarchy'],
+  tags: ['css-only', 'stateful', 'layout-triggering', 'keyboard-operable', 'stable'],
+  demo: { shape: 'stage' },
   controls: [
     {
       kind: 'select',

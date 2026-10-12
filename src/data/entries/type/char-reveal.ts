@@ -49,6 +49,8 @@ const entry: Entry = {
   scenes: ['text', 'page'],
   feel: ['playful', 'crisp'],
   intent: ['attention', 'hierarchy'],
+  tags: ['js', 'composited', 'motion-heavy', 'stable'],
+  demo: { shape: 'stage' },
   controls: [
     { kind: 'range', id: 'duration', label: '单字时长', min: 200, max: 900, step: 20, def: 480, unit: 'ms', hint: '每个字自己走完这段时长' },
     { kind: 'range', id: 'stagger', label: '字间隔', min: 0, max: 120, step: 5, def: 45, unit: 'ms', hint: '调到 0 就变成整句一起出现' },

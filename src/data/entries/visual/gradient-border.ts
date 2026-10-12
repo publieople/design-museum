@@ -63,6 +63,8 @@ const entry: Entry = {
   scenes: ['card', 'button', 'form'],
   feel: ['crisp', 'playful'],
   intent: ['attention', 'hierarchy'],
+  tags: ['css-only', 'gradient', 'modern-css', 'check-support'],
+  demo: { shape: 'stage' },
   controls: [
     {
       kind: 'range',

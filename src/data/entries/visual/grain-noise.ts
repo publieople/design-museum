@@ -62,6 +62,8 @@ const entry: Entry = {
   scenes: ['page', 'card'],
   feel: ['calm', 'soft'],
   intent: ['hierarchy'],
+  tags: ['css-only', 'filter-blend', 'paint-heavy', 'stable'],
+  demo: { shape: 'stage' },
   controls: [
     {
       kind: 'range',

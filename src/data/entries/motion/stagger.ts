@@ -45,6 +45,8 @@ const entry: Entry = {
   scenes: ['list', 'page', 'nav'],
   feel: ['crisp', 'playful'],
   intent: ['hierarchy', 'attention'],
+  tags: ['css-only', 'composited', 'motion-heavy', 'stable'],
+  demo: { shape: 'stage' },
   controls: [
     { kind: 'range', id: 'duration', label: '单项时长', min: 120, max: 900, step: 20, def: 420, unit: 'ms' },
     {

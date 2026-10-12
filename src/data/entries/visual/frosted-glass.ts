@@ -56,6 +56,8 @@ const entry: Entry = {
   scenes: ['card', 'nav', 'page'],
   feel: ['soft', 'calm'],
   intent: ['hierarchy'],
+  tags: ['css-only', 'modern-css', 'filter-blend', 'paint-heavy', 'stable'],
+  demo: { shape: 'stage' },
   controls: [
     {
       kind: 'range',

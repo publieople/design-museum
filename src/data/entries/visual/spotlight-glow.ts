@@ -62,6 +62,8 @@ const entry: Entry = {
   scenes: ['card', 'button', 'page'],
   feel: ['playful', 'crisp'],
   intent: ['attention', 'affordance'],
+  tags: ['js', 'browser-api', 'gradient', 'filter-blend', 'main-thread', 'pointer-dependent'],
+  demo: { shape: 'interactive', thumb: 'still' },
   controls: [
     {
       kind: 'range',

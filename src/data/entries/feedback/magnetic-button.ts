@@ -47,6 +47,8 @@ const entry: Entry = {
   scenes: ['button', 'nav', 'page'],
   feel: ['playful', 'crisp'],
   intent: ['attention', 'affordance'],
+  tags: ['js', 'browser-api', 'main-thread', 'pointer-dependent', 'stable'],
+  demo: { shape: 'interactive', thumb: 'still' },
   controls: [
     { kind: 'range', id: 'strength', label: '跟随系数', min: 0, max: 0.6, step: 0.02, def: 0.3, hint: '0 就是完全不动' },
     { kind: 'range', id: 'maxDistance', label: '最大位移', min: 0, max: 24, step: 2, def: 12, unit: 'px' },

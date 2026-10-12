@@ -45,6 +45,8 @@ const entry: Entry = {
   scenes: ['text', 'page', 'card'],
   feel: ['calm', 'crisp'],
   intent: ['hierarchy'],
+  tags: ['css-only', 'modern-css', 'layout-triggering', 'check-support'],
+  demo: { shape: 'stage' },
   controls: [
     { kind: 'range', id: 'minSize', label: '最小字号', min: 12, max: 32, step: 1, def: 16, unit: 'px', hint: '窄容器下也不会小于这个值' },
     { kind: 'range', id: 'maxSize', label: '最大字号', min: 32, max: 80, step: 2, def: 44, unit: 'px', hint: '字号涨到这个值就不再变大' },

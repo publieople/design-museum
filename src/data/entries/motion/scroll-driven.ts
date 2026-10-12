@@ -54,6 +54,8 @@ const entry: Entry = {
   scenes: ['scroll', 'page', 'nav'],
   feel: ['crisp', 'calm'],
   intent: ['attention', 'affordance'],
+  tags: ['modern-css', 'scroll-linked', 'composited', 'motion-heavy', 'check-support'],
+  demo: { shape: 'scroll', thumb: 'still' },
   controls: [
     { kind: 'range', id: 'rotate', label: '最大旋转', min: 0, max: 90, step: 5, def: 30, unit: 'deg' },
     {

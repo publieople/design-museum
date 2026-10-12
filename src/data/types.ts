@@ -12,6 +12,57 @@ export type Intent = 'attention' | 'hierarchy' | 'affordance' | 'waiting'
 /** demo 舞台背景：毛玻璃这类效果必须靠背景才看得出来 */
 export type StageId = 'light' | 'dark' | 'accent' | 'photo'
 
+/**
+ * 标签有四个面（facet）。scenes / feel / intent 是另外三个面，
+ * 它们有自己的字段（历史原因），其余 facet 统一收进 Entry.tags。
+ * 词表与双语标签都在 src/data/taxonomy.ts，自由标签一律不收。
+ */
+export type FacetId = 'tech' | 'cost' | 'a11y' | 'support'
+
+export type TagId =
+  // tech：怎么实现
+  | 'css-only'
+  | 'js'
+  | 'browser-api'
+  | 'modern-css'
+  | 'filter-blend'
+  | 'gradient'
+  | 'font-feature'
+  | 'scroll-linked'
+  | 'stateful'
+  // cost：什么代价
+  | 'composited'
+  | 'paint-heavy'
+  | 'layout-triggering'
+  | 'main-thread'
+  // a11y：无障碍
+  | 'motion-heavy'
+  | 'keyboard-operable'
+  | 'pointer-dependent'
+  // support：兼容性
+  | 'stable'
+  | 'check-support'
+
+/**
+ * 演示形态。舞台不是只有一种：滚动类要自带滚动容器，指针类要一大块可移动的区域，
+ * 整页对比类要两块「页面」。形态决定容器尺寸、缩略图策略与测试断言，所以放数据里。
+ */
+export type DemoShape = 'stage' | 'interactive' | 'scroll' | 'sequence' | 'page'
+
+export interface DemoSpec {
+  shape: DemoShape
+  /** 舞台内容区最小高度（px），默认 256；scroll/sequence 这类需要更高时给 */
+  minHeight?: number
+  /**
+   * 卡片缩略图策略：默认 fit（等比缩放到填满舞台）。
+   * 非 stage 形态要给 still——把交互定格成一帧，配「自己动手试试」角标，
+   * 因为缩小的假交互既看不出效果又骗人。
+   */
+  thumb?: 'fit' | 'still'
+  /** 缩略图角标文案键，不给就由 loop 策略推 */
+  hintKey?: 'stage.needsScroll'
+}
+
 export type Control =
   | {
       kind: 'range'
@@ -99,6 +150,10 @@ export interface Entry {
   scenes: Scene[]
   feel: Feel[]
   intent: Intent[]
+  /** 跨展厅的受控标签，词表在 taxonomy.ts 的 TAGS */
+  tags: TagId[]
+  /** 演示形态：舞台容器、缩略图策略与测试断言都看它 */
+  demo: DemoSpec
   controls: Control[]
   /** 随参数实时生成的可复制需求 */
   prompt: (values: ControlValues) => PromptPair

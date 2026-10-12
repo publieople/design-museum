@@ -27,6 +27,8 @@ export function metaOf(entry: Entry): EntryMeta {
     scenes: entry.scenes,
     feel: entry.feel,
     intent: entry.intent,
+    tags: entry.tags,
+    demo: entry.demo,
     ...(entry.loop ? { loop: entry.loop } : {}),
     ...(en ? { en } : {}),
     defaults,

@@ -48,6 +48,8 @@ const entry: Entry = {
   scenes: ['scroll', 'nav', 'card'],
   feel: ['crisp', 'calm'],
   intent: ['affordance', 'hierarchy'],
+  tags: ['css-only', 'scroll-linked', 'stable'],
+  demo: { shape: 'scroll', thumb: 'still' },
   controls: [
     {
       kind: 'select',

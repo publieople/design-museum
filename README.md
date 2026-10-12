@@ -36,7 +36,7 @@ pnpm dev          # http://localhost:5173
 
 ```bash
 pnpm typecheck    # tsc -b，零错误是提交门槛
-pnpm test         # vitest：内容校验 + 检索 + 参数 URL + 偏好 + i18n + 提示词 + 首屏 meta 同步 + 页面与 demo 渲染冒烟（192 项）
+pnpm test         # vitest：内容校验 + 条目规范 + 检索 + 参数 URL + 偏好 + i18n + 提示词 + 首屏 meta 同步 + 页面与 demo 渲染冒烟（199 项）
 pnpm gen:meta     # 改过词条后重新生成首屏用的 meta（src/data/entryMeta.ts）
 pnpm validate     # 只跑内容校验
 pnpm build        # tsc -b + vite build + 预渲染静态页（产物在 dist/）
@@ -103,17 +103,18 @@ Vite 8 + React 19 + TypeScript + Tailwind CSS v4。零后端，纯静态产物�
 ```
 src/
 ├── data/
-│   ├── types.ts              # Entry / Control / DemoProps / EntryTranslation
-│   ├── taxonomy.ts           # 展厅、场景、感觉、目的（双语标签）
+│   ├── types.ts              # Entry / Control / DemoProps / EntryTranslation / TagId / DemoSpec
+│   ├── taxonomy.ts           # 展厅、场景、感觉、目的、标签词表（TAGS）与演示形态（DEMO_SHAPES）
 │   ├── index.ts              # import.meta.glob 聚合完整词条（只被详情页等懒加载路由引用）
 │   ├── metaOf.ts             # 从完整词条里挑出首屏要用的字段（唯一的挑选规则）
-│   ├── entryMeta.ts          # pnpm gen:meta 的生成物：首屏用的 30 条 meta
+│   ├── entryMeta.ts          # pnpm gen:meta 的生成物：首屏用的 meta（当前 30 条）
 │   ├── meta.ts               # 首屏入口：ENTRY_META + featuredMeta()
 │   ├── order.ts              # 首页「每厅各一件」的交错排序，完整词条与 meta 共用
 │   ├── meta.test.ts          # 生成物是否过期（CI 拦这个）
 │   ├── entries/<展厅>/<slug>.ts
 │   ├── entries.test.ts       # 每条词条自身合法 + 与 demo 一一对应 + 英文覆盖层
-│   └── content.test.ts       # 全馆收齐（30 条 / 每厅 6 条 / 无死链）
+│   ├── entrySpec.test.ts     # 条目规范：文件路径 / 标签闭集与数量 / 演示形态（docs/ENTRY-SPEC.md）
+│   └── content.test.ts       # 每厅至少 6 件 / 编号从 01 连续 / related 无死链
 ├── demos/<slug>.tsx          # 文件名必须等于词条 slug，按需加载
 ├── i18n/
 │   ├── strings.ts            # 界面文案表（每条都必须有 zh 与 en，有测试把关）
@@ -147,6 +148,8 @@ scripts/
 
 ## 新增一条词条（5 步）
 
+完整规矩（什么算一条、怎么删、怎么改、预算）见 [docs/ENTRY-SPEC.md](docs/ENTRY-SPEC.md)，这里是可操作的 5 步。
+
 1. 想清楚它有没有公认的名字。没有名字的效果先别加——这个站的价值全在「有名字」。
 2. 复制 `src/data/entries/visual/frosted-glass.ts`，放到对应展厅目录下，文件名用 slug。
 3. 填内容。几条硬规矩：
@@ -154,7 +157,9 @@ scripts/
    - `confusions` 至少一条，写清它和最容易混的效果差在哪（AI 也最容易在这里做错）；
    - `refs` 至少一条 MDN 或 web.dev，别凭印象写属性；
    - `oneLiner` 一句话说清「它是什么」，不写「它能带来什么价值」；
-   - `loop` 要按 demo 的**实际行为**选，别按名字猜——选的依据见上面那张表。
+   - `loop` 要按 demo 的**实际行为**选，别按名字猜——选的依据见上面那张表；
+   - `tags` 只准用 `src/data/taxonomy.ts` 的闭集 id（2–6 个，至少 1 个 tech），口语俗称进 `aliases` 而不是自造标签；
+   - `demo.shape` 按容器需求选：滚动类 `scroll`（自带滚动容器）、指针类 `interactive`、整页对比 `page`，其余 `stage`；非 `stage` 要给 `thumb: 'still'`。
 4. 写 `src/demos/<slug>.tsx`，默认导出组件，接收 `{ values, stage, replayKey, timeScale, locale }`。控件一动画面就要变；会动的记得走 `usePrefersReducedMotion()`；配色用 `var(--stage-ink)` 而不是写死颜色；需要一块不透明的底（进度条轨道、卡片面）时用 `color-mix(in srgb, var(--stage-ink) 10%, var(--stage-bg, transparent))`，`--stage-bg` 是当前舞台的实底近似色；**组件里的示例文案也要按 `locale` 切换**——测试会检查英文模式下渲染结果里没有任何中文字符。
 5. 跑 `pnpm gen:meta`，再跑 `pnpm test`。绿了就完事——缺 demo、字段空、编号不连续、`related` 有死链、`en` 块条数对不齐、首屏 meta 没重新生成都会被拦下来。
 
@@ -244,7 +249,8 @@ gh api -X PATCH repos/publieople/design-museum \
 2. 拼音搜索（maoboli → 毛玻璃）与错别字容错。
 3. 俗称总表页：把全站 `aliases` 汇总成可搜、可贡献的一页。
 4. 「别搞混」做成双向对比页（毛玻璃 ⇄ 玻璃拟态 ⇄ 半透明）。
-5. 视觉回归测试：30 个 demo 的截图对比。
+5. 视觉回归测试：全部 demo 的截图对比。
+6. 按 facet（怎么实现 / 什么代价 / 无障碍 / 兼容性）过滤词条，以及给 AI 用的 catalog 与配套 skill——词表与形态字段已落地，规范见 [docs/ENTRY-SPEC.md](docs/ENTRY-SPEC.md)。
 
 ## 致谢
 

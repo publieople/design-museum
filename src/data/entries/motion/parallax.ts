@@ -53,6 +53,8 @@ const entry: Entry = {
   scenes: ['scroll', 'page', 'card'],
   feel: ['calm', 'soft'],
   intent: ['attention', 'hierarchy'],
+  tags: ['js', 'modern-css', 'scroll-linked', 'paint-heavy', 'motion-heavy', 'stable'],
+  demo: { shape: 'scroll', thumb: 'still' },
   controls: [
     {
       kind: 'range',

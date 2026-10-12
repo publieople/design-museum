@@ -55,6 +55,8 @@ const entry: Entry = {
   scenes: ['button', 'card', 'page'],
   feel: ['playful', 'soft'],
   intent: ['affordance', 'attention'],
+  tags: ['js', 'modern-css', 'composited', 'main-thread', 'motion-heavy', 'stable'],
+  demo: { shape: 'stage' },
   controls: [
     {
       kind: 'range',
