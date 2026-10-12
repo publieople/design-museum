@@ -8,7 +8,7 @@
 
 ## 这个站里有什么
 
-- **30 条词条**，分五个展厅：动效与节奏、交互反馈、布局与结构、视觉质感、排版与文字。每条**中英双语**。
+- **40 条词条**，分五个展厅：动效与节奏、交互反馈、布局与结构、视觉质感、排版与文字。每条**中英双语**。
 - **每条词条**：一句话是什么、什么时候用、最容易混的两个概念差在哪、真实踩坑、推荐取值、无障碍降级写法、参考链接，以及——
 - **一个活的演示**：参数滑块实时生效，舞台背景可切浅色/深色/彩色/照片感（毛玻璃、发光这类效果离开背景就不成立），可重播、可**循环重播**、可**慢放**。词条库里的缩略图会等比放大到填满卡片，**该循环的才循环**（见下）。
 - **一键复制的提示词**：中文需求句（带当前参数）和英文关键词（AI 最容易认的术语），随滑块实时更新；外加一个**分享链接**，把你调好的那组参数一起带走。
@@ -75,7 +75,7 @@ Vite 8 + React 19 + TypeScript + Tailwind CSS v4。零后端，纯静态产物�
 |---|---|
 | `/` | 首页 |
 | `/browse/`、`/feel/`、`/cheatsheet/`、`/about/` | 词条库、感觉导航、速查表、怎么用 |
-| `/entry/<slug>/` | 30 条词条，每条一个独立地址（例：<https://publieople.github.io/design-museum/entry/frosted-glass/>） |
+| `/entry/<slug>/` | 每条词条一个独立地址（例：<https://publieople.github.io/design-museum/entry/frosted-glass/>） |
 | `/debug/all` | 只在开发模式可达，生产构建渲染 404 |
 
 `pnpm build` 的最后一步 `scripts/prerender.mjs` 用 React 的 `renderToStaticMarkup` 把 35 个地址渲染成 `dist/<地址>/index.html`，同时生成 `dist/sitemap.xml` 与 `dist/404.html`；每页的 `<title>`、`description`、`canonical`、`og:*` 和 JSON-LD 都按页写（词条页是 `TechArticle`）。浏览器侧照常 `createRoot` 重新渲染，不做水合——localStorage 里的主题与语言可能和预渲染的默认值不一样。旧的 `#/entry/frosted-glass` 这类链接会在挂载前被 `history.replaceState` 归一化成新地址，历史分享链接不会失效。
@@ -96,11 +96,11 @@ Vite 8 + React 19 + TypeScript + Tailwind CSS v4。零后端，纯静态产物�
 
 ### 版式
 
-列表类页面（词条库 / 感觉导航 / 速查表）外壳放到 `max-w-[90rem]`，大屏下卡片约 450px；正文类页面（首页 / 词条详情 / 怎么用）保持 `max-w-5xl` 的易读行宽。缩略图舞台用 `aspect-[4/3]` 跟着卡片宽度自适应，里面的 demo 由 `DemoRunner` 量出自然尺寸后等比缩放到填满舞台（0.7–1.7 倍）——30 个 demo 各自按自己的尺寸设计，不缩放的话在宽卡片里只占一小块。
+列表类页面（词条库 / 感觉导航 / 速查表）外壳放到 `max-w-[90rem]`，大屏下卡片约 450px；正文类页面（首页 / 词条详情 / 怎么用）保持 `max-w-5xl` 的易读行宽。缩略图舞台用 `aspect-[4/3]` 跟着卡片宽度自适应，里面的 demo 由 `DemoRunner` 量出自然尺寸后等比缩放到填满舞台（0.7–1.7 倍）——每个 demo 各自按自己的尺寸设计，不缩放的话在宽卡片里只占一小块。
 
 ### 性能
 
-页面与 demo 都是按需加载：`src/demos/registry.ts` 用非 eager 的 `import.meta.glob`，30 个 demo 各自成一个 chunk（每个 1–4KB），首页只下载真正挂出来的那几个；`src/App.tsx` 里各页面也是 `lazy`。构建产物 50 个 JS chunk（另有 1 个 CSS 与 8 个字体文件）。改之前是单包 433KB（gzip 138KB），现在首屏约 356KB（gzip 119KB），且换页不再重新下载所有 demo。
+页面与 demo 都是按需加载：`src/demos/registry.ts` 用非 eager 的 `import.meta.glob`，每个 demo 各自成一个 chunk（每个 1–4KB），首页只下载真正挂出来的那几个；`src/App.tsx` 里各页面也是 `lazy`。构建产物 50 个 JS chunk（另有 1 个 CSS 与 8 个字体文件）。改之前是单包 433KB（gzip 138KB），现在首屏约 356KB（gzip 119KB），且换页不再重新下载所有 demo。
 
 ## 目录结构
 
@@ -111,7 +111,7 @@ src/
 │   ├── taxonomy.ts           # 展厅、场景、感觉、目的、标签词表（TAGS）与演示形态（DEMO_SHAPES）
 │   ├── index.ts              # import.meta.glob 聚合完整词条（只被详情页等懒加载路由引用）
 │   ├── metaOf.ts             # 从完整词条里挑出首屏要用的字段（唯一的挑选规则）
-│   ├── entryMeta.ts          # pnpm gen:meta 的生成物：首屏用的 meta（当前 30 条）
+│   ├── entryMeta.ts          # pnpm gen:meta 的生成物：首屏用的 meta（随条目数生成）
 │   ├── meta.ts               # 首屏入口：ENTRY_META + featuredMeta()
 │   ├── order.ts              # 首页「每厅各一件」的交错排序，完整词条与 meta 共用
 │   ├── meta.test.ts          # 生成物是否过期（CI 拦这个）
@@ -296,7 +296,7 @@ gh api -X PATCH repos/publieople/design-museum \
 3. 俗称总表页：把全站 `aliases` 汇总成可搜、可贡献的一页。
 4. 「别搞混」做成双向对比页（毛玻璃 ⇄ 玻璃拟态 ⇄ 半透明）。
 5. 视觉回归测试：全部 demo 的截图对比。
-6. 词条扩充：现在 30 条，目标是每厅再加 2 条（View Transitions、命令面板、虚拟滚动、跑马灯、极光渐变、文字描边……），加完把界面文案里写死的「30」改成动态数字。
+6. ~~词条扩充：现在 30 条，每厅再加 2 条。~~ 已完成：40 条（每厅 8 条），界面与 SEO 文案里的计数已改成动态数字（`{n}` 占位）。
 7. 给 AI 的目录做增量索引：现在是一份 68KB 的 JSON 全量读；条目再多就该按展厅或标签分片。
 
 ## 致谢

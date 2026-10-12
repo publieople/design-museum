@@ -11,8 +11,9 @@ await withSite(async (load) => {
 
   const data = buildCatalog(ENTRIES)
   const markdown = catalogMarkdown(ENTRIES)
-  // 不缩进：目录是给机器读的，缩进白白多出 30KB（69KB → 99KB）
-  const json = JSON.stringify(data) + '\n'
+  // 两空格缩进：这份 JSON 是给 AI 的行式 read 工具读的，单行版本会被截断到 2000 字符读不出，
+  // 缩进后体积变大但仍是全文里最小的一份，加上换行还顺带让 PR diff 可读。
+  const json = JSON.stringify(data, null, 2) + '\n'
 
   const lines = [
     '# 前端设计博物馆 Design Museum',
@@ -21,8 +22,8 @@ await withSite(async (load) => {
     '',
     '## 数据',
     '',
-    `- [catalog.json](${SITE_BASE}/catalog.json)：机器可读索引 + 可直接交付的内容（中英名字、口语别名、关键词、标签、演示形态、控件默认值、中英需求句）`,
-    `- [catalog.md](${SITE_BASE}/catalog.md)：逐条全文（什么时候用、别搞混、踩坑、推荐取值、无障碍降级、参考链接），每条一个 #<slug> 锚点`,
+    `- [catalog.json](${SITE_BASE}/catalog.json)：机器可读索引 + 现成需求句（中英名字、口语别名、关键词、标签、演示形态、控件默认值、中英需求句）`,
+    `- [catalog.md](${SITE_BASE}/catalog.md)：逐条全文（什么时候用、别搞混、踩坑、推荐取值、无障碍降级、参考链接）——上面 JSON 里没有这些长散文，每条一个 #<slug> 锚点`,
     `- [sitemap.xml](${SITE_BASE}/sitemap.xml)：全部页面地址`,
     '',
     '## 给 AI 的用法',

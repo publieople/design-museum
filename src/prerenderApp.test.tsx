@@ -14,7 +14,7 @@ describe('预渲染', () => {
     }
   })
 
-  it('30 条词条都渲染出自己的名字（不是空舞台）', async () => {
+  it('每条词条都渲染出自己的名字（不是空舞台）', async () => {
     const pages = await loadPages()
     for (const entry of ENTRIES) {
       const html = renderPage(entryPath(entry.slug), pages)

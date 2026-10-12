@@ -20,20 +20,20 @@ export const STRINGS = {
 
   // 预渲染写进 <meta name="description"> 的文案（爬虫不跑 JS，这些必须静态存在）
   'seo.home.desc': {
-    zh: '用 AI 做网页时最难的一步是把想要的效果说清楚。这里把 30 个常见效果做成可交互标本：看得到、摸得着、调得了参数，然后复制一句 AI 听得懂的需求。',
-    en: 'The hardest part of building with AI is saying what you want. 30 common effects as interactive specimens: look, touch, tune the parameters, then copy a request AI understands.',
+    zh: '用 AI 做网页时最难的一步是把想要的效果说清楚。这里把 {n} 个常见效果做成可交互标本：看得到、摸得着、调得了参数，然后复制一句 AI 听得懂的需求。',
+    en: 'The hardest part of building with AI is saying what you want. {n} common effects as interactive specimens: look, touch, tune the parameters, then copy a request AI understands.',
   },
   'seo.browse.desc': {
-    zh: '按展厅浏览全部 30 条词条：动效与节奏、交互反馈、布局结构、视觉质感、文字排版。每条都含可交互演示、参数滑块与 CSS 参数。',
-    en: 'Browse all 30 entries by gallery: motion, feedback, layout, visual and typography. Each one comes with an interactive demo, parameter sliders and CSS values.',
+    zh: '按展厅浏览全部 {n} 条词条：动效与节奏、交互反馈、布局结构、视觉质感、文字排版。每条都含可交互演示、参数滑块与 CSS 参数。',
+    en: 'Browse all {n} entries by gallery: motion, feedback, layout, visual and typography. Each one comes with an interactive demo, parameter sliders and CSS values.',
   },
   'seo.feel.desc': {
     zh: '只说感觉也能找到名字：从「轻快」「稳重」「顺滑」这类形容词反查效果的英文术语和 CSS 属性。',
     en: 'Find the name from a feeling: turn adjectives like light, steady or smooth into the English term and CSS property behind an effect.',
   },
   'seo.cheatsheet.desc': {
-    zh: '一页速查表：30 条效果的中英文名称、CSS 属性名与关键参数，方便整体对照和复制给 AI。',
-    en: 'One-page cheat sheet: Chinese and English names, CSS properties and key parameters for all 30 effects, ready to copy into a request.',
+    zh: '一页速查表：{n} 条效果的中英文名称、CSS 属性名与关键参数，方便整体对照和复制给 AI。',
+    en: 'One-page cheat sheet: Chinese and English names, CSS properties and key parameters for all {n} effects, ready to copy into a request.',
   },
   'seo.about.desc': {
     zh: '怎么用这份词典：从找到名字、调参数，到复制成 AI 能执行的需求；页尾是许可与致谢。',

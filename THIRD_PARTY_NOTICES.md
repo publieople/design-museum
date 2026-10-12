@@ -44,7 +44,7 @@ OFL 允许自由使用、修改、再分发（包括商用），但**不得单�
 
 ## 4. 内容引用政策
 
-30 条词条的正文是**原创改写**，只做链接引用，不复制原文：
+全部词条的正文都是**原创改写**，只做链接引用，不复制原文：
 
 - 参考链接指向 [MDN Web Docs](https://developer.mozilla.org/)、[web.dev](https://web.dev/)、[W3C](https://www.w3.org/) 与 [Chrome for Developers](https://developer.chrome.com/) 的规范与文档页；这些页面的版权归各自所有者，本项目只提供引用地址。
 - 演示（`src/demos/*.tsx`）全部为本仓库自行实现，未拷贝第三方组件库源码或示例代码。

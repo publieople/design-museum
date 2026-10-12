@@ -3,7 +3,7 @@ import type { DemoProps } from '../data/types'
 import { lazyWithRetry } from '../lib/lazyWithRetry'
 
 /**
- * 非 eager：30 个 demo 各自一个 chunk，首页只下载真正挂出来的那几个。
+ * 非 eager：每个 demo 各自一个 chunk，首页只下载真正挂出来的那几个。
  * eager 版本会把全部 demo 打进主包（实测单包 433KB）。
  */
 // 负数模式排除放在同目录的测试文件：它们也是 .tsx，但不能被当成 demo——
