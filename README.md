@@ -35,10 +35,13 @@ pnpm dev          # http://localhost:5173
 ```
 
 ```bash
+pnpm check        # typecheck + lint + test 一条命令（提交门槛）
 pnpm typecheck    # tsc -b，零错误是提交门槛
-pnpm test         # vitest：内容校验 + 条目规范 + 检索 + 参数 URL + 偏好 + i18n + 提示词 + 首屏 meta 同步 + 页面与 demo 渲染冒烟（199 项）
+pnpm test         # vitest：内容校验 + 条目规范 + 检索 + 参数 URL + 偏好 + i18n + 提示词 + 首屏 meta 同步 + 页面与 demo 渲染冒烟（206 项）
 pnpm gen:meta     # 改过词条后重新生成首屏用的 meta（src/data/entryMeta.ts）
 pnpm validate     # 只跑内容校验
+pnpm new:entry    # 生成一条新词条与 demo 的骨架（见下文「新增一条词条」）
+pnpm find:entry   # 用口语查重：打印命中条目、命中字段与命中理由
 pnpm build        # tsc -b + vite build + 预渲染静态页（产物在 dist/）
 pnpm prerender    # 只补跑预渲染，需要已有 dist/（改完内容想单独重跑时用）
 pnpm preview      # 预览产物
@@ -114,6 +117,8 @@ src/
 │   ├── entries/<展厅>/<slug>.ts
 │   ├── entries.test.ts       # 每条词条自身合法 + 与 demo 一一对应 + 英文覆盖层
 │   ├── entrySpec.test.ts     # 条目规范：文件路径 / 标签闭集与数量 / 演示形态（docs/ENTRY-SPEC.md）
+│   ├── retired.ts            # 墓碑表：删掉的 slug 与它该跳去哪（构建期据此生成跳转页）
+│   ├── retired.test.ts       # 墓碑合法 + replacedBy 指向在册条目 + related 不指向墓碑
 │   └── content.test.ts       # 每厅至少 6 件 / 编号从 01 连续 / related 无死链
 ├── demos/<slug>.tsx          # 文件名必须等于词条 slug，按需加载
 ├── i18n/
@@ -137,7 +142,10 @@ src/
 └── styles/global.css         # 设计 token、主题变量、切换过渡
 
 scripts/
-└── prerender.mjs             # 构建期渲染 35 个地址 + sitemap.xml + 404.html
+├── prerender.mjs             # 构建期渲染 35 个地址 + sitemap.xml + 404.html + 墓碑跳转页
+├── load-site.mjs             # 用 vite 的 ssrLoadModule 读 TS 数据（维护者脚本共用）
+├── new-entry.mjs             # pnpm new:entry：生成词条与 demo 骨架
+└── find-entry.mjs            # pnpm find:entry：口语查重（命中字段 + 权重）
 ```
 
 ## 双语是怎么做的
@@ -150,8 +158,10 @@ scripts/
 
 完整规矩（什么算一条、怎么删、怎么改、预算）见 [docs/ENTRY-SPEC.md](docs/ENTRY-SPEC.md)，这里是可操作的 5 步。
 
-1. 想清楚它有没有公认的名字。没有名字的效果先别加——这个站的价值全在「有名字」。
-2. 复制 `src/data/entries/visual/frosted-glass.ts`，放到对应展厅目录下，文件名用 slug。
+1. 想清楚它有没有公认的名字（没有名字的效果先别加——这个站的价值全在「有名字」），
+   再用 `pnpm find:entry "口语说法"` 查一遍：它打印命中条目与命中理由，把最像的那几条看一遍。
+2. 跑 `pnpm new:entry <slug> --hall <厅> --shape <形态>` 生成词条文件与 demo 骨架（编号自动接在该厅后面；
+   重名、未知厅、未知形态、非 kebab 的 slug 会直接报错）。骨架里字段都是 TODO，所以 `pnpm check` 必然红，这是故意的。
 3. 填内容。几条硬规矩：
    - `aliases` 里必须写大家嘴上会说的中文俗称（「磨砂」「果冻」），搜索靠它命中；
    - `confusions` 至少一条，写清它和最容易混的效果差在哪（AI 也最容易在这里做错）；
@@ -161,7 +171,9 @@ scripts/
    - `tags` 只准用 `src/data/taxonomy.ts` 的闭集 id（2–6 个，至少 1 个 tech），口语俗称进 `aliases` 而不是自造标签；
    - `demo.shape` 按容器需求选：滚动类 `scroll`（自带滚动容器）、指针类 `interactive`、整页对比 `page`，其余 `stage`；非 `stage` 要给 `thumb: 'still'`。
 4. 写 `src/demos/<slug>.tsx`，默认导出组件，接收 `{ values, stage, replayKey, timeScale, locale }`。控件一动画面就要变；会动的记得走 `usePrefersReducedMotion()`；配色用 `var(--stage-ink)` 而不是写死颜色；需要一块不透明的底（进度条轨道、卡片面）时用 `color-mix(in srgb, var(--stage-ink) 10%, var(--stage-bg, transparent))`，`--stage-bg` 是当前舞台的实底近似色；**组件里的示例文案也要按 `locale` 切换**——测试会检查英文模式下渲染结果里没有任何中文字符。
-5. 跑 `pnpm gen:meta`，再跑 `pnpm test`。绿了就完事——缺 demo、字段空、编号不连续、`related` 有死链、`en` 块条数对不齐、首屏 meta 没重新生成都会被拦下来。
+5. 跑 `pnpm gen:meta`，再跑 `pnpm check`（typecheck + lint + test）。绿了就完事——缺 demo、字段空、
+   编号不连续、`related` 有死链、`en` 块条数对不齐、首屏 meta 没重新生成都会被拦下来。最后 `pnpm dev`
+   打开 `/entry/<slug>/` 把四个舞台人眼验收一遍。
 
 ## 部署
 

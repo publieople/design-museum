@@ -23,6 +23,7 @@ pnpm dev          # http://localhost:5173
 四项全绿，和 CI 一一对应：
 
 ```fish
+pnpm check        # 下面三项一条命令（typecheck + lint + test）
 pnpm typecheck    # tsc -b，零错误
 pnpm lint         # oxlint，零 error（warning 暂时允许）
 pnpm test         # vitest 全绿
@@ -30,6 +31,9 @@ pnpm build        # 产物进 dist/（最后一步跑 scripts/prerender.mjs：35
 ```
 
 `pnpm validate` 只跑内容校验，改词条时可以先跑它快速回归。
+
+新增词条先 `pnpm find:entry "口语说法"` 查重，再用 `pnpm new:entry <slug> --hall <厅> --shape <形态>` 生成骨架；
+删词条不是删文件：在 `src/data/retired.ts` 立墓碑，构建期会为它生成跳转页（GitHub Pages 做不了 301）。
 
 本地跑不过就别开 PR —— CI 会挡，来回一轮比本地跑一次慢。
 
@@ -98,6 +102,7 @@ scope 可选，如 `fix(router): …`。一条提交只做一件事；正文写"
 - `demo.shape` 按容器需求选（`stage` / `interactive` / `scroll` / `sequence` / `page`），非 `stage` 要给 `thumb: 'still'`；滚动类必须在舞台里自带滚动容器
 - `controls` 只用 range / select / toggle：`prompt`、速查表与 catalog 都从它自动派生
 - 条目满足规范第 1 节的四条判据，并在 PR 里回答三问：和哪条最像、差异是哪一行属性、为什么那条装不下它
+- 新增词条前先用 `pnpm find:entry` 查过重；`slug` 一旦上线就是主键，改名等于删 + 增 + 墓碑
 
 ## 7. 文案与无障碍
 
@@ -114,6 +119,7 @@ scope 可选，如 `fix(router): …`。一条提交只做一件事；正文写"
 - [ ] 四项命令作者本地跑过，CI 全绿
 - [ ] 改过词条内容或 `metaOf.ts` 的话，`pnpm gen:meta` 已跑，生成物与词条一致
 - [ ] 条目符合 [docs/ENTRY-SPEC.md](docs/ENTRY-SPEC.md)：四条判据过关，`confusions` 与本条最像的条目互相指认
+- [ ] 新增词条跑过 `pnpm find:entry` 查重；删词条在 `src/data/retired.ts` 有墓碑且 `replacedBy` 指向在册条目（`pnpm build` 输出里能看到墓碑页）
 - [ ] `tags` 用词表内的 id，2–6 个、至少 1 个 tech；没有自造标签，没有孤儿标签
 - [ ] `demo.shape` 与容器需求一致，非 `stage` 形态给了 `thumb: 'still'`，滚动类不依赖整页滚动
 - [ ] 词条有公认名字，不是自造概念

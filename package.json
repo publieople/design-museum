@@ -23,6 +23,9 @@
     "typecheck": "tsc -b",
     "gen:meta": "node scripts/gen-entry-meta.mjs",
     "prerender": "node scripts/prerender.mjs",
+    "new:entry": "node scripts/new-entry.mjs",
+    "find:entry": "node scripts/find-entry.mjs",
+    "check": "pnpm typecheck && pnpm lint && pnpm test",
     "test": "vitest run",
     "test:watch": "vitest",
     "validate": "vitest run src/data"
