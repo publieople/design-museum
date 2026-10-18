@@ -60,6 +60,7 @@ describe('URL 规则', () => {
       '/about',
       '/reverse',
       '/aliases',
+      '/live',
     ])
     for (const page of STATIC_PAGES) {
       // path 与 head 必须一致，否则预渲染出来的 HTML 会是另一个页面

@@ -11,7 +11,7 @@ import { resolveEntry, resolveMeta } from '../lib/localize'
 import { interactionHintKey, loopPolicy, shouldAutoLoop, type LoopPolicy } from '../lib/loop'
 import { usePrefs } from '../lib/prefs'
 import { Link, navigate, useRoute } from '../lib/router'
-import { entryPath } from '../lib/routes'
+import { entryPath, liveDemoPath } from '../lib/routes'
 import { buttonClass } from '../components/Button'
 import { ControlPanel } from '../components/ControlPanel'
 import { DemoRunner } from '../components/DemoRunner'
@@ -21,7 +21,8 @@ import { ErrorBoundary } from '../components/ErrorBoundary'
 import { MetaLine, Rule, Tag } from '../components/Meta'
 import { PromptPanel } from '../components/PromptPanel'
 import { resolveStage } from '../components/stageStyles'
-import { IconExternal } from '../components/icons'
+import { IconArrowUpRight, IconExternal } from '../components/icons'
+import { hasLiveDemo } from '../data/live'
 import { hasDemo } from '../demos/registry'
 
 const LOOP_KEYS: Record<LoopPolicy, StringKey> = {
@@ -187,6 +188,17 @@ export function EntryDetailPage({ slug }: { slug?: string }) {
                 </span>
                 <span className="ml-auto truncate">{resolved.nameEn}</span>
               </div>
+              {hasLiveDemo(entry.slug) ? (
+                <div className="flex items-center justify-between gap-3 border-t border-line px-3 py-2">
+                  <span className="label-mono">{t('live.badge')}</span>
+                  <Link
+                    to={liveDemoPath(entry.slug)}
+                    className={buttonClass({ variant: 'secondary', size: 'sm' })}
+                  >
+                    {t('live.open')} <IconArrowUpRight size={13} />
+                  </Link>
+                </div>
+              ) : null}
             </div>
           ) : (
             <div className="rounded-[6px] border border-dashed border-line px-4 py-8 text-caption text-muted">

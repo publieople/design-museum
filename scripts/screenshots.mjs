@@ -26,6 +26,12 @@ const ROUTES = [
   ['sheet', '/cheatsheet/'],
   ['entry', '/entry/frosted-glass/'],
   ['about', '/about/'],
+  ['live', '/live/'],
+  ['live-scroll', '/live/scroll-driven/'],
+  ['live-reveal', '/live/scroll-reveal/'],
+  ['live-parallax', '/live/parallax/'],
+  ['live-stack', '/live/sticky-stack/'],
+  ['live-cursor', '/live/cursor-follower/'],
 ]
 const VIEWPORTS = [
   ['375', 375, 812],

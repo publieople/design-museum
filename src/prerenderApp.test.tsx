@@ -1,7 +1,8 @@
 import { describe, expect, it } from 'vitest'
-import { ENTRIES } from './data'
+import { ENTRIES, findEntry } from './data'
+import { LIVE_DEMOS } from './data/live'
 import { translate } from './i18n'
-import { STATIC_PAGES, entryPath } from './lib/routes'
+import { STATIC_PAGES, entryPath, liveDemoPath } from './lib/routes'
 import { loadPages, renderPage } from './prerenderApp'
 
 describe('预渲染', () => {
@@ -19,6 +20,20 @@ describe('预渲染', () => {
     for (const entry of ENTRIES) {
       const html = renderPage(entryPath(entry.slug), pages)
       expect(html, entry.slug).toContain(entry.nameZh)
+    }
+  })
+
+  it('每个现场页都渲染出词条名与「为什么需要整页」的说明', async () => {
+    const pages = await loadPages()
+    for (const demo of LIVE_DEMOS) {
+      const entry = findEntry(demo.slug)
+      expect(entry, demo.slug).toBeTruthy()
+      if (!entry) continue
+      const html = renderPage(liveDemoPath(demo.slug), pages)
+      expect(html, demo.slug).toContain(entry.nameZh)
+      expect(html, demo.slug).toContain(translate('zh', demo.noteKey))
+      // 现场页不套站点头尾：不应出现全站页脚的许可行
+      expect(html, demo.slug).not.toContain(translate('zh', 'footer.source'))
     }
   })
 

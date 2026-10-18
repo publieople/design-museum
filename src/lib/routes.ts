@@ -74,6 +74,11 @@ export function entryPath(slug: string): string {
   return `/entry/${slug}`
 }
 
+/** 现场页（整页演示）的路径：/live/<slug> */
+export function liveDemoPath(slug: string): string {
+  return `/live/${slug}`
+}
+
 /** 各页面的标题文案键。App 与预渲染脚本共用，避免两处各写一份 */
 export const TITLE_KEYS: Record<string, StringKey> = {
   browse: 'titles.browse',
@@ -83,6 +88,7 @@ export const TITLE_KEYS: Record<string, StringKey> = {
   reverse: 'titles.reverse',
   aliases: 'titles.aliases',
   entry: 'titles.entry',
+  live: 'titles.live',
   debug: 'titles.debug',
 }
 
@@ -108,4 +114,5 @@ export const STATIC_PAGES: readonly StaticPage[] = [
   { path: '/about', head: 'about', titleKey: TITLE_KEYS.about, descKey: 'seo.about.desc' },
   { path: '/reverse', head: 'reverse', titleKey: TITLE_KEYS.reverse, descKey: 'seo.reverse.desc' },
   { path: '/aliases', head: 'aliases', titleKey: TITLE_KEYS.aliases, descKey: 'seo.aliases.desc' },
+  { path: '/live', head: 'live', titleKey: TITLE_KEYS.live, descKey: 'seo.live.desc' },
 ]
