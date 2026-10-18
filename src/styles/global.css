@@ -1,198 +1,319 @@
 @import 'tailwindcss';
 
 /* ─────────────────────────────────────────────────────────────
-   设计 token。展厅墙是中性色，唯一的强调色是「导览朱红」。
-   主题由 <html data-theme> 决定：
-     - 没有 data-theme            → 跟随系统
-     - data-theme="light"/"dark"  → 用户手动锁定
-   展品舞台的背景与这里完全无关，它由 DemoStage 内联控制。
+   INDEX / 索引档案 —— 全站视觉基础层
+
+   这一层只定义"纸张、墨、朱红"三样东西：
+     - canvas  纸面（页面底色）
+     - surface 内嵌区域（输入框、代码块、抽屉）
+     - raised  抬起的纸片（卡片、弹层）
+     - line    发丝线；line-strong 用于二级分隔
+     - ink/ink-2/muted 三级文字
+     - accent  唯一的强调色：朱红，只给"当前项 / 编号 / 动作"
+   方角、细线、mono 小标签是这套语言的全部装饰。没有渐变光斑、
+   没有网点背景、没有卡片投影——层次靠线和留白，不靠阴影。
+   主题由 <html data-theme> 决定：无属性跟随系统，light/dark 手动锁定。
+   展品舞台的背景与这里无关，它由 DemoStage 内联控制。
    ───────────────────────────────────────────────────────────── */
 :root {
   color-scheme: light;
-  --surface: #f7f6f3;
-  --raised: #ffffff;
-  --line: #e3e1db;
-  --ink: #16161a;
-  --muted: #5c5c66;
-  --accent: #c9382a;
-  /* 浅色下用投影表达"浮起来"；暗色下投影看不见，改用描边 + 1px 高光（见下面两处覆盖） */
-  --shadow-card: 0 1px 2px rgba(22, 22, 26, 0.04), 0 10px 24px -16px rgba(22, 22, 26, 0.2);
-  --shadow-lift: 0 3px 7px rgba(22, 22, 26, 0.08), 0 26px 50px -22px rgba(22, 22, 26, 0.4);
-  /* 展墙景观：一层极淡的渐变 + 两团光，给"墙"一点纵深。
-     纯色背景在深色下会像一块死黑，在浅色下会像一张没铺完的白纸。 */
-  --wash-top: #fdfcf9;
-  --wash-bottom: #e9e5da;
-  --wash-a: rgba(201, 56, 42, 0.075);
-  --wash-b: rgba(206, 158, 74, 0.1);
-  --wall-dot: rgba(22, 22, 26, 0.55);
-  /* 展墙网点：只负责让人觉出这是纸/墙，不能抢字 */
-  --wall-dot-size: 22px;
+  --canvas: #f2f0e9;
+  --surface: #f8f6f1;
+  --raised: #fffdf9;
+  --ink: #141414;
+  --ink-2: #3b3a36;
+  --muted: #6b6960;
+  --line: #d9d3c6;
+  --line-strong: #b5ad9c;
+  --accent: #c23b22;
+  --accent-ink: #fffdf9;
+  --accent-soft: color-mix(in srgb, #c23b22 10%, transparent);
+  --selection: color-mix(in srgb, #c23b22 20%, transparent);
+  --overlay: rgba(20, 20, 20, 0.42);
+  /* 只有浮层（对话框、设置面板）用阴影，静态内容一律不用 */
+  --shadow-overlay: 0 1px 2px rgba(20, 20, 20, 0.06), 0 18px 48px -20px rgba(20, 20, 20, 0.35);
 }
 
-/* 暗色：raised 提亮一档、描边拉开一档，再用 1px 高光顶边代替阴影 */
 @media (prefers-color-scheme: dark) {
   :root:not([data-theme='light']) {
     color-scheme: dark;
-    --surface: #0d0d10;
-    --raised: #1a1a20;
-    --line: #34343f;
-    --ink: #ececef;
-    --muted: #9a9aa6;
-    --accent: #ff5a45;
-    --shadow-card: 0 1px 2px rgba(0, 0, 0, 0.5), inset 0 1px 0 rgba(255, 255, 255, 0.045);
-    --shadow-lift: 0 3px 10px rgba(0, 0, 0, 0.55), inset 0 1px 0 rgba(255, 255, 255, 0.075);
-    /* 暗色不铺死黑：顶上略亮、底下略沉，再加一团朱红余温与一团冷光 */
-    --wash-top: #16161e;
-    --wash-bottom: #08080b;
-    --wash-a: rgba(255, 90, 69, 0.13);
-    --wash-b: rgba(96, 122, 200, 0.11);
-    --wall-dot: rgba(255, 255, 255, 0.62);
+    --canvas: #0e0e10;
+    --surface: #151518;
+    --raised: #1a1a1e;
+    --ink: #f1efe9;
+    --ink-2: #cbc9c1;
+    --muted: #908d84;
+    --line: #2d2c31;
+    --line-strong: #49474f;
+    --accent: #ff614a;
+    --accent-ink: #160b08;
+    --accent-soft: color-mix(in srgb, #ff614a 14%, transparent);
+    --selection: color-mix(in srgb, #ff614a 26%, transparent);
+    --overlay: rgba(0, 0, 0, 0.62);
+    --shadow-overlay: 0 1px 2px rgba(0, 0, 0, 0.6), 0 18px 48px -20px rgba(0, 0, 0, 0.8);
   }
 }
 
 :root[data-theme='dark'] {
   color-scheme: dark;
-  --surface: #0d0d10;
-  --raised: #1a1a20;
-  --line: #34343f;
-  --ink: #ececef;
-  --muted: #9a9aa6;
-  --accent: #ff5a45;
-  --shadow-card: 0 1px 2px rgba(0, 0, 0, 0.5), inset 0 1px 0 rgba(255, 255, 255, 0.045);
-  --shadow-lift: 0 3px 10px rgba(0, 0, 0, 0.55), inset 0 1px 0 rgba(255, 255, 255, 0.075);
-  /* 暗色不铺死黑：顶上略亮、底下略沉，再加一团朱红余温与一团冷光 */
-  --wash-top: #16161e;
-  --wash-bottom: #08080b;
-  --wash-a: rgba(255, 90, 69, 0.13);
-  --wash-b: rgba(96, 122, 200, 0.11);
-  --wall-dot: rgba(255, 255, 255, 0.62);
+  --canvas: #0e0e10;
+  --surface: #151518;
+  --raised: #1a1a1e;
+  --ink: #f1efe9;
+  --ink-2: #cbc9c1;
+  --muted: #908d84;
+  --line: #2d2c31;
+  --line-strong: #49474f;
+  --accent: #ff614a;
+  --accent-ink: #160b08;
+  --accent-soft: color-mix(in srgb, #ff614a 14%, transparent);
+  --selection: color-mix(in srgb, #ff614a 26%, transparent);
+  --overlay: rgba(0, 0, 0, 0.62);
+  --shadow-overlay: 0 1px 2px rgba(0, 0, 0, 0.6), 0 18px 48px -20px rgba(0, 0, 0, 0.8);
 }
 
 @theme inline {
+  --color-canvas: var(--canvas);
   --color-surface: var(--surface);
   --color-raised: var(--raised);
-  --color-line: var(--line);
   --color-ink: var(--ink);
+  --color-ink-2: var(--ink-2);
   --color-muted: var(--muted);
+  --color-line: var(--line);
+  --color-line-strong: var(--line-strong);
   --color-accent: var(--accent);
+  --color-accent-ink: var(--accent-ink);
+  --color-accent-soft: var(--accent-soft);
 
   --font-sans: ui-sans-serif, system-ui, 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei',
     'Noto Sans SC', sans-serif;
   --font-display: 'Space Grotesk Variable', ui-sans-serif, system-ui, 'PingFang SC',
-    'Microsoft YaHei', sans-serif;
+    'Hiragino Sans GB', 'Microsoft YaHei', 'Noto Sans SC', sans-serif;
   --font-mono: 'JetBrains Mono Variable', ui-monospace, SFMono-Regular, Menlo, monospace;
 
-  /* 字号阶梯：大标题随视口走，小屏不挤成三行、大屏也不显得怂 */
-  --text-display: clamp(2.4rem, 1.25rem + 3.9vw, 3.75rem);
-  --text-display--line-height: 1.06;
-  --text-display--letter-spacing: -0.022em;
-  --text-title: clamp(1.4rem, 1.15rem + 1.1vw, 1.95rem);
-  --text-title--line-height: 1.18;
-  --text-title--letter-spacing: -0.015em;
+  /* 字阶是档案式的：大标题很紧，正文很宽，小标签全部 mono。
+     caption / micro 同时给 mono 用，不需要再单独记字号。 */
+  --text-display: clamp(2.1rem, 1.2rem + 4vw, 4.25rem);
+  --text-display--line-height: 0.98;
+  --text-display--letter-spacing: -0.035em;
+  --text-h1: clamp(2rem, 1.35rem + 2.2vw, 3rem);
+  --text-h1--line-height: 1.02;
+  --text-h1--letter-spacing: -0.025em;
+  --text-h2: clamp(1.45rem, 1.2rem + 1vw, 2rem);
+  --text-h2--line-height: 1.1;
+  --text-h2--letter-spacing: -0.02em;
+  --text-h3: 1.1875rem;
+  --text-h3--line-height: 1.3;
+  --text-h3--letter-spacing: -0.01em;
+  --text-body: 1rem;
+  --text-body--line-height: 1.72;
+  --text-caption: 0.875rem;
+  --text-caption--line-height: 1.5;
+  --text-micro: 0.6875rem;
+  --text-micro--line-height: 1.4;
+  --text-micro--letter-spacing: 0.08em;
+
+  --radius-plate: 6px;
 }
 
+/* ── 基础排版 ─────────────────────────────────────────────── */
 @layer base {
+  * {
+    border-color: var(--line);
+  }
+
   html {
-    scroll-behavior: smooth;
     -webkit-text-size-adjust: 100%;
-    /* 头部是粘性的，日后加页内锚点跳转时别让标题钻到它下面 */
-    scroll-padding-top: 5.5rem;
-    /* 骨架长成真实高度时竖直滚动条才出现，视口要窄 15px，
-       所有 mx-auto 的居中容器就横移一次（线上首页 CLS 0.42 全来自这一下）。
-       预留滚动条槽位，滚动条来去都不再改变布局宽度。 */
-    scrollbar-gutter: stable;
   }
 
   body {
-    margin: 0;
-    background-color: var(--surface);
+    min-height: 100svh;
+    background-color: var(--canvas);
     color: var(--ink);
     font-family: var(--font-sans);
-    font-size: 16px;
-    /* 中文正文比英文需要更松的行高 */
-    line-height: 1.7;
-    /* 没有粗体字重时不要伪造一个，宁可它细 */
-    font-synthesis: none;
-    /* 中英之间自动留一点缝（支持的浏览器才生效，不支持就忽略） */
+    font-size: 1rem;
+    line-height: 1.72;
     text-autospace: normal;
     -webkit-font-smoothing: antialiased;
-    text-rendering: optimizeLegibility;
   }
 
-  /* 展墙景观：一层竖向渐变（顶亮底沉）+ 两团极淡的光。
-     和网点分两个图层：景观在下，网点在上，各自都好单独调。 */
-  body::before {
-    content: '';
-    position: fixed;
-    inset: 0;
-    z-index: 0;
-    pointer-events: none;
-    background-image:
-      radial-gradient(88% 52% at 10% -8%, var(--wash-a) 0%, transparent 60%),
-      radial-gradient(72% 46% at 94% 2%, var(--wash-b) 0%, transparent 58%),
-      linear-gradient(180deg, var(--wash-top) 0%, var(--surface) 46%, var(--wash-bottom) 100%);
+  /* 切换主题时让底色与文字颜色过渡，而不是闪一下；
+     只在这一小段时间里开过渡，避免影响所有 hover 性能 */
+  html.theme-animating,
+  html.theme-animating body,
+  html.theme-animating .site-header {
+    transition:
+      background-color 280ms ease,
+      color 280ms ease,
+      border-color 280ms ease;
   }
 
-  /* 展墙的网点：一层极淡的点阵，铺在内容下面。
-     用 body::after 而不是 body 自己的 background-image —— 后者会跟着文档滚动，
-     网点在滚动时会"粘"在文字上，看着像脏。 */
-  body::after {
-    content: '';
-    position: fixed;
-    inset: 0;
-    z-index: 0;
-    pointer-events: none;
-    background-image: radial-gradient(var(--wall-dot) 1px, transparent 1.3px);
-    background-size: var(--wall-dot-size) var(--wall-dot-size);
-    opacity: 0.12;
-  }
-
-  /* 内容抬到网点之上；不设 stacking context 之外的副作用 */
-  #root {
-    position: relative;
-    z-index: 1;
+  ::selection {
+    background: var(--selection);
+    color: var(--ink);
   }
 
   :focus-visible {
     outline: 2px solid var(--accent);
     outline-offset: 2px;
-    border-radius: 2px;
   }
 
-  ::selection {
-    background: color-mix(in oklab, var(--accent) 25%, transparent);
+  a {
+    color: inherit;
+    text-decoration-color: color-mix(in srgb, var(--ink) 30%, transparent);
+    text-underline-offset: 0.2em;
+  }
+
+  a:hover {
+    text-decoration-color: currentColor;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4 {
+    font-family: var(--font-display);
+    font-weight: 600;
+    text-wrap: balance;
+  }
+
+  p {
+    text-wrap: pretty;
+  }
+
+  hr {
+    border: 0;
+    border-top: 1px solid var(--line);
+  }
+
+  input,
+  textarea,
+  select,
+  button {
+    font: inherit;
+    color: inherit;
+  }
+
+  textarea {
+    field-sizing: content;
+  }
+
+  summary {
+    cursor: pointer;
   }
 }
 
-/* ── 主题 / 语言切换的过渡 ─────────────────────────────────────
-   首选 View Transitions（真交叉淡入）；不支持的浏览器由
-   withThemeTransition 临时挂 .theme-animating 走下面的 transition。
-   只在切换的 300ms 内生效，不常开——常开会拖慢每一次 hover。 */
-@media (prefers-reduced-motion: no-preference) {
-  ::view-transition-old(root),
-  ::view-transition-new(root) {
-    animation-duration: 280ms;
-    animation-timing-function: cubic-bezier(0.22, 1, 0.36, 1);
-  }
+/* ── 通用工具类 ────────────────────────────────────────────
+   只保留"跨页面语义一致"的几件套；具体排版交给 Tailwind 原子类。
+   ─────────────────────────────────────────────────────────── */
 
-  html.theme-animating,
-  html.theme-animating *,
-  html.theme-animating *::before,
-  html.theme-animating *::after {
-    transition:
-      background-color 280ms cubic-bezier(0.22, 1, 0.36, 1),
-      color 280ms cubic-bezier(0.22, 1, 0.36, 1),
-      border-color 280ms cubic-bezier(0.22, 1, 0.36, 1),
-      fill 280ms cubic-bezier(0.22, 1, 0.36, 1),
-      stroke 280ms cubic-bezier(0.22, 1, 0.36, 1) !important;
+/* 档案标签：mono、大写、拉开字距。用于小节名、栏目、编号旁边的说明。 */
+.label-mono {
+  font-family: var(--font-mono);
+  font-size: 0.6875rem;
+  font-weight: 500;
+  line-height: 1.4;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+/* 藏品编号戳：方角、朱红描边与字。整站唯一的"印章"。
+   它出现在卡片图注、详情页展签和筛选栏计数上。 */
+.stamp {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  border: 1px solid color-mix(in srgb, var(--accent) 55%, transparent);
+  border-radius: 3px;
+  padding: 0.0625rem 0.3125rem;
+  font-family: var(--font-mono);
+  font-size: 0.6875rem;
+  font-weight: 500;
+  font-variant-numeric: tabular-nums;
+  letter-spacing: 0.06em;
+  line-height: 1.5;
+  color: var(--accent);
+  background: transparent;
+}
+
+/* 纸片：静态卡片的唯一外壳。方角、1px 线、抬起面。
+   hover 只加一层极淡的 accent 线，不做位移与投影。 */
+.plate {
+  border: 1px solid var(--line);
+  border-radius: 6px;
+  background: var(--raised);
+  transition:
+    border-color 160ms ease,
+    background-color 160ms ease;
+}
+
+.plate-interactive:hover,
+.plate-interactive:focus-within {
+  border-color: color-mix(in srgb, var(--accent) 45%, var(--line));
+}
+
+/* 内嵌面：输入框、代码块、说明条。比纸片低一档。 */
+.well {
+  border: 1px solid var(--line);
+  border-radius: 6px;
+  background: var(--surface);
+}
+
+/* 分隔线：1px 细线 + 可选的重线。用于页面头、列表行、页脚。 */
+.rule {
+  border-top: 1px solid var(--line);
+}
+
+.rule-strong {
+  border-top: 1px solid var(--line-strong);
+}
+
+/* 可点击的整行（索引表格、俗称总表）。 */
+.row-link {
+  transition: background-color 140ms ease;
+}
+
+.row-link:hover {
+  background: color-mix(in srgb, var(--ink) 3.5%, transparent);
+}
+
+/* 文本链：下划线用细线，hover 才变实。 */
+.text-link {
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
+  text-decoration-color: color-mix(in srgb, var(--ink) 28%, transparent);
+  text-underline-offset: 0.22em;
+  transition: text-decoration-color 140ms ease;
+}
+
+.text-link:hover {
+  text-decoration-color: currentColor;
+}
+
+/* 骨架占位：只在加载态使用。 */
+.skeleton {
+  background: color-mix(in srgb, var(--ink) 7%, transparent);
+  border-radius: 3px;
+  animation: museum-pulse 1.4s ease-in-out infinite;
+}
+
+/* ── 动效 ──────────────────────────────────────────────────── */
+@keyframes museum-pulse {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.45;
   }
 }
 
-/* demo 用到的公共关键帧：交错进场 */
+/* demo 用：交错进场。关键帧名被 src/demos/stagger.tsx 引用，改名会断。 */
 @keyframes museum-stagger {
   from {
     opacity: 0;
-    transform: translateY(var(--stagger-distance, 16px));
+    transform: translateY(8px);
   }
   to {
     opacity: 1;
@@ -200,137 +321,6 @@
   }
 }
 
-/* demo 加载中的骨架位，避免懒加载时舞台跳动 */
-@keyframes museum-pulse {
-  0%,
-  100% {
-    opacity: 0.35;
-  }
-  50% {
-    opacity: 0.7;
-  }
-}
-
-@utility label-mono {
-  font-family: var(--font-mono);
-  font-size: 0.6875rem;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-  color: var(--muted);
-}
-
-/* ── 藏品编号章 ───────────────────────────────────────────────
-   编号是这站自己的"藏品体系"，值得有个固定的样子：
-   等宽字、细描边、极淡的底。朱红留给"当前 / 可交互"，不浪费在编号上。 */
-@utility stamp {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.35em;
-  padding: 0.05rem 0.4rem;
-  border: 1px solid color-mix(in srgb, var(--ink) 20%, transparent);
-  border-radius: 0.3rem;
-  background: color-mix(in srgb, var(--ink) 4%, transparent);
-  font-family: var(--font-mono);
-  font-size: 0.6875rem;
-  line-height: 1.6;
-  letter-spacing: 0.09em;
-  color: var(--ink);
-}
-
-/* ── 进门 ─────────────────────────────────────────────────────
-   复用 demo 那套 museum-stagger：位移小一点、时长长一点，
-   只播一次。次数编号由 .enter-N 控制错峰。 */
-@utility enter {
-  animation: museum-stagger 620ms cubic-bezier(0.22, 1, 0.36, 1) both;
-  --stagger-distance: 10px;
-}
-
-@utility enter-1 {
-  animation-delay: 60ms;
-}
-
-@utility enter-2 {
-  animation-delay: 130ms;
-}
-
-@utility enter-3 {
-  animation-delay: 200ms;
-}
-
-@utility enter-4 {
-  animation-delay: 270ms;
-}
-
-@utility enter-5 {
-  animation-delay: 340ms;
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .enter {
-    animation: none;
-  }
-
-  /* 该收还是要收，只是不做那 240ms 的滑出 */
-  .site-header {
-    transition: none;
-  }
-}
-
-/* ── 交互表面的三层手感 ──────────────────────────────────────
-   同一个「可以点」的意思，在不同尺寸的表面上给一致但不相同的回应：
-   卡片抬起来、可点行铺一层底、小药丸只换颜色。
-   只动 translate / box-shadow / 颜色，不碰布局属性。 */
-.surface-card {
-  box-shadow: var(--shadow-card);
-  transition:
-    translate 300ms cubic-bezier(0.22, 1, 0.36, 1),
-    box-shadow 300ms cubic-bezier(0.22, 1, 0.36, 1),
-    border-color 300ms cubic-bezier(0.22, 1, 0.36, 1);
-}
-
-.surface-card:hover {
-  translate: 0 -6px;
-  border-color: color-mix(in srgb, var(--accent) 45%, transparent);
-  box-shadow: var(--shadow-lift);
-}
-
-.surface-row {
-  transition:
-    background-color 240ms ease,
-    color 240ms ease;
-}
-
-.surface-row:hover {
-  background-color: color-mix(in srgb, var(--ink) 3.5%, transparent);
-}
-
-.surface-pill {
-  transition:
-    border-color 200ms ease,
-    background-color 200ms ease,
-    color 200ms ease;
-}
-
-.surface-pill:hover {
-  border-color: color-mix(in srgb, var(--accent) 50%, transparent);
-  background-color: color-mix(in srgb, var(--accent) 7%, transparent);
-  color: var(--accent);
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .surface-card {
-    transition: none;
-  }
-
-  .surface-card:hover {
-    translate: none;
-  }
-}
-
-/* ── 路由转场 ────────────────────────────────────────────────
-   只有路径真的变了才播（切主题、改参数不播）。主题切换是纯交叉淡入
-   （见文件上面那段），路由切换再多一点点位移，让人感到「翻页」。
-   平时不给 main 起 view-transition-name，免得主题切换也带上位移。 */
 @keyframes museum-page-in {
   from {
     opacity: 0;
@@ -349,7 +339,7 @@
   }
   to {
     opacity: 0;
-    transform: translateY(-6px);
+    transform: translateY(-4px);
   }
 }
 
@@ -363,34 +353,27 @@
   }
 
   ::view-transition-new(museum-page) {
-    animation: museum-page-in 340ms cubic-bezier(0.22, 1, 0.36, 1) both;
+    animation: museum-page-in 240ms cubic-bezier(0.22, 1, 0.36, 1) both;
   }
 }
 
 /* ── 粘性头部 ────────────────────────────────────────────────
-   半透明 + 背景模糊（这站本来就在教毛玻璃，自己用一次很自然），
-   内容从下面穿过去。顶部未滚动时刻意和纸面同色、只有一条分隔线，
-   滚下去之后再用 CSS 滚动驱动动画补上投影与发丝线——不支持时间线的
-   浏览器就一直是那条静态的线，不会出现「滚下去却透明」的失控状态。
-   这条动画本身也是本站课程里的东西：滚动驱动动画，一行 JS 都没有。 */
-.site-header[data-hidden='true'] {
-  transform: translateY(-102%);
-}
-
+   与纸面同色的 92% + 8px 模糊，内容从下面穿过去。
+   顶部未滚动时刻意只有一条线，滚下去之后用 CSS 滚动驱动动画补上
+   投影与更强的线——不支持时间线的浏览器就一直是一条静态的线。
+   这条动画本身就是站内课程里的「滚动驱动动画」，一行 JS 都没有。 */
 .site-header {
   position: sticky;
   top: 0;
   z-index: 40;
-  background-color: color-mix(in srgb, var(--wash-top) 84%, transparent);
-  /* 往下滚收起来、往上滚回来（可见 useHeaderHidden）。
-     过渡写在 translate 上——Tailwind 的 -translate-y 动的是 translate 属性，
-     不是 transform，写错的话位置变化会是瞬移。 */
+  background-color: color-mix(in srgb, var(--canvas) 92%, transparent);
   transition: transform 240ms cubic-bezier(0.22, 1, 0.36, 1);
   will-change: transform;
-  /* 模糊交给 Tailwind 的 backdrop-blur-md / backdrop-saturate-150 类：
-     手写「标准属性 + -webkit- 前缀」这一对会被 Lightning CSS 当成重复声明
-     去重，最后只剩前缀那一份，标准属性在产物里就消失了。 */
   border-bottom: 1px solid var(--line);
+}
+
+.site-header[data-hidden='true'] {
+  transform: translateY(-102%);
 }
 
 @supports (animation-timeline: scroll()) {
@@ -398,11 +381,11 @@
     @keyframes museum-header-edge {
       from {
         border-bottom-color: transparent;
-        box-shadow: 0 0 0 0 rgba(22, 22, 26, 0);
+        box-shadow: 0 0 0 0 rgba(20, 20, 20, 0);
       }
       to {
-        border-bottom-color: var(--line);
-        box-shadow: 0 10px 24px -18px rgba(22, 22, 26, 0.55);
+        border-bottom-color: var(--line-strong);
+        box-shadow: 0 12px 24px -22px rgba(20, 20, 20, 0.5);
       }
     }
 
@@ -411,5 +394,30 @@
       animation-timeline: scroll();
       animation-range: 0 72px;
     }
+  }
+}
+
+/* 打印：去掉外壳，只留正文。 */
+@media print {
+  .site-header,
+  .site-footer,
+  .no-print {
+    display: none !important;
+  }
+
+  body {
+    background: #fff;
+    color: #000;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
   }
 }

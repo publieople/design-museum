@@ -22,6 +22,8 @@ interface DemoStageProps {
   still?: boolean
   /** 舞台角标：卡片里或详情页里看不出效果时，告诉观众要自己动手 */
   hint?: 'stage.needsScroll' | 'stage.tapToTry' | null
+  /** 嵌在卡片里时去掉自己的边框与方角，由外层纸片决定轮廓 */
+  flush?: boolean
   className?: string
 }
 
@@ -38,6 +40,7 @@ export function DemoStage({
   still = false,
   loopable = true,
   hint = null,
+  flush = false,
   className = '',
 }: DemoStageProps) {
   const t = useT()
@@ -70,13 +73,17 @@ export function DemoStage({
   } as CSSProperties
 
   const toolbarButton = (active: boolean) =>
-    `cursor-pointer rounded-full px-2 py-1 font-mono text-[10px] tracking-wide transition-colors ${
+    `cursor-pointer rounded-[2px] px-2 py-1 font-mono text-[10px] tracking-wide transition-colors ${
       active ? 'bg-white text-black' : 'text-white/65 hover:text-white'
     }`
 
   return (
     <div
-      className={`relative overflow-hidden rounded-lg border border-line ${className}`}
+      className={
+        flush
+          ? `relative overflow-hidden ${className}`
+          : `relative overflow-hidden rounded-[6px] border border-line ${className}`
+      }
       style={stageStyle}
     >
       {/* flex 而不是 grid：grid 的 justify-items:center 会让 w-full 的子元素按 max-content 收缩，
@@ -91,7 +98,7 @@ export function DemoStage({
 
       {hint ? (
         <span
-          className="pointer-events-none absolute bottom-2 left-2 rounded-full px-2 py-0.5 font-mono text-[10px] tracking-wide text-white/90 backdrop-blur-md"
+          className="pointer-events-none absolute bottom-2 left-2 rounded-[2px] px-2 py-0.5 font-mono text-[10px] tracking-wide text-white/90 backdrop-blur-md"
           style={{ background: 'rgba(0,0,0,0.45)' }}
         >
           {t(hint)}
@@ -103,7 +110,7 @@ export function DemoStage({
         // 跟着舞台取色会在浅色/照片感背景上糊掉。
         <div className="absolute right-2 top-2 flex flex-wrap items-center justify-end gap-1.5">
           <div
-            className="flex overflow-hidden rounded-full p-0.5 backdrop-blur-md"
+            className="flex overflow-hidden rounded-[3px] p-0.5 backdrop-blur-md"
             style={{ background: 'rgba(0,0,0,0.45)' }}
             role="group"
             aria-label={t('entry.stageGroup')}
@@ -123,7 +130,7 @@ export function DemoStage({
           </div>
 
           <div
-            className="flex items-center gap-0.5 rounded-full p-0.5 backdrop-blur-md"
+            className="flex items-center gap-0.5 rounded-[3px] p-0.5 backdrop-blur-md"
             style={{ background: 'rgba(0,0,0,0.45)' }}
           >
             <button

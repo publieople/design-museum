@@ -2,7 +2,8 @@ import { useEffect, useId, useMemo, useRef, useState, type KeyboardEvent } from 
 import { ENTRY_META } from '../data/meta'
 import { useT } from '../i18n'
 import { navigate } from '../lib/router'
-import { searchEntries } from '../lib/search'
+import { suggestionsFor } from '../lib/search'
+import { IconClose, IconSearch } from './icons'
 
 const MAX_SUGGESTIONS = 6
 
@@ -10,6 +11,7 @@ interface SearchBoxProps {
   value: string
   onChange: (value: string) => void
   autoFocus?: boolean
+  placeholder?: string
   className?: string
 }
 
@@ -19,17 +21,24 @@ function isTypingTarget(target: EventTarget | null): boolean {
   return tag === 'input' || tag === 'textarea' || tag === 'select' || target.isContentEditable
 }
 
-export function SearchBox({ value, onChange, autoFocus = false, className = '' }: SearchBoxProps) {
+/**
+ * 页面内搜索框：首页与索引页共用。
+ * 与全站搜索对话框（SearchDialog）共用 suggestionsFor，两个入口排序一致。
+ */
+export function SearchBox({
+  value,
+  onChange,
+  autoFocus = false,
+  placeholder,
+  className = '',
+}: SearchBoxProps) {
   const t = useT()
   const inputRef = useRef<HTMLInputElement | null>(null)
   const [open, setOpen] = useState(false)
   const [active, setActive] = useState(-1)
   const listId = useId()
 
-  const hits = useMemo(
-    () => (value.trim() ? searchEntries(ENTRY_META, value).slice(0, MAX_SUGGESTIONS) : []),
-    [value],
-  )
+  const hits = useMemo(() => suggestionsFor(ENTRY_META, value, MAX_SUGGESTIONS), [value])
 
   useEffect(() => {
     if (autoFocus) inputRef.current?.focus()
@@ -48,10 +57,6 @@ export function SearchBox({ value, onChange, autoFocus = false, className = '' }
     window.addEventListener('keydown', onKeyDown)
     return () => window.removeEventListener('keydown', onKeyDown)
   }, [])
-
-  useEffect(() => {
-    setActive(-1)
-  }, [value])
 
   const go = (slug: string) => {
     setOpen(false)
@@ -100,9 +105,9 @@ export function SearchBox({ value, onChange, autoFocus = false, className = '' }
     <div className={`relative ${className}`}>
       <span
         aria-hidden="true"
-        className="pointer-events-none absolute left-4 top-1/2 -translate-y-1/2 font-mono text-sm text-muted"
+        className="pointer-events-none absolute left-3.5 top-1/2 -translate-y-1/2 text-muted"
       >
-        /
+        <IconSearch size={18} />
       </span>
       <input
         ref={inputRef}
@@ -114,15 +119,16 @@ export function SearchBox({ value, onChange, autoFocus = false, className = '' }
         aria-controls={listId}
         aria-autocomplete="list"
         aria-activedescendant={active >= 0 ? `${listId}-${active}` : undefined}
-        placeholder={t('search.placeholder')}
+        placeholder={placeholder ?? t('search.placeholder')}
         onChange={(event) => {
           onChange(event.target.value)
+          setActive(-1)
           setOpen(true)
         }}
         onFocus={() => setOpen(true)}
         onBlur={() => window.setTimeout(() => setOpen(false), 120)}
         onKeyDown={onKeyDown}
-        className="w-full rounded-xl border border-line bg-raised py-3 pl-9 pr-20 text-sm shadow-[var(--shadow-card)] outline-none transition-[box-shadow,border-color] duration-300 placeholder:text-muted focus:border-accent focus:shadow-[0_0_0_3px_color-mix(in_srgb,var(--accent)_14%,transparent),var(--shadow-card)]"
+        className="w-full rounded-[3px] border border-line-strong bg-raised py-3 pl-11 pr-16 text-body text-ink outline-none transition-colors placeholder:text-muted hover:border-ink focus:border-ink focus:ring-2 focus:ring-accent/25"
       />
       {value ? (
         <button
@@ -130,11 +136,13 @@ export function SearchBox({ value, onChange, autoFocus = false, className = '' }
           aria-label={t('search.clear')}
           onClick={() => {
             onChange('')
+            setActive(-1)
             inputRef.current?.focus()
           }}
-          className="absolute right-3 top-1/2 -translate-y-1/2 cursor-pointer font-mono text-xs text-muted hover:text-accent"
+          className="absolute right-3 top-1/2 flex -translate-y-1/2 cursor-pointer items-center gap-1 rounded-[2px] p-1 text-muted transition-colors hover:text-accent"
         >
-          ESC
+          <IconClose size={14} />
+          <span className="font-mono text-[10px]">ESC</span>
         </button>
       ) : null}
 
@@ -143,7 +151,7 @@ export function SearchBox({ value, onChange, autoFocus = false, className = '' }
           id={listId}
           role="listbox"
           aria-label={t('search.suggest')}
-          className="absolute inset-x-0 top-full z-30 mt-1 overflow-hidden rounded-lg border border-line bg-raised shadow-lg"
+          className="absolute inset-x-0 top-full z-30 mt-1 border border-line bg-raised shadow-[var(--shadow-overlay)]"
         >
           {hits.map((hit, index) => (
             <li key={hit.entry.slug} role="none">
@@ -158,12 +166,14 @@ export function SearchBox({ value, onChange, autoFocus = false, className = '' }
                 }}
                 onMouseEnter={() => setActive(index)}
                 className={`flex w-full cursor-pointer items-baseline gap-3 px-3 py-2 text-left transition-colors ${
-                  index === active ? 'bg-accent/10' : ''
+                  index === active ? 'bg-surface' : ''
                 }`}
               >
-                <span className="font-mono text-[11px] text-accent">{hit.entry.code}</span>
-                <span className="font-display text-sm font-semibold">{hit.entry.nameZh}</span>
-                <span className="font-mono text-[11px] text-muted">{hit.entry.nameEn}</span>
+                <span className="stamp">{hit.entry.code}</span>
+                <span className="font-display text-[15px] font-semibold text-ink">
+                  {hit.entry.nameZh}
+                </span>
+                <span className="truncate font-mono text-[11px] text-muted">{hit.entry.nameEn}</span>
               </button>
             </li>
           ))}
@@ -171,7 +181,7 @@ export function SearchBox({ value, onChange, autoFocus = false, className = '' }
       ) : null}
 
       {open && value.length === 0 ? (
-        <p className="mt-1.5 px-1 font-mono text-[11px] text-muted">{t('search.hint')}</p>
+        <p className="mt-2 pl-1 font-mono text-[11px] text-muted">{t('search.hint')}</p>
       ) : null}
     </div>
   )

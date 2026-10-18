@@ -274,3 +274,13 @@ export function searchEntries(entries: EntryMeta[], rawQuery: string): SearchHit
       b.score - a.score || codeOrder(a.entry.code).localeCompare(codeOrder(b.entry.code)),
   )
 }
+
+/**
+ * 搜索建议：空查询返回空数组（调用方自己决定要不要显示热门/示例），
+ * 非空就按 searchEntries 的排序截前 limit 条。对话框与输入框共用这一层，
+ * 保证「输入框里看到的顺序」和「全量搜索页的顺序」不会两套。
+ */
+export function suggestionsFor(entries: EntryMeta[], raw: string, limit = 8): SearchHit[] {
+  if (raw.trim().length === 0) return []
+  return searchEntries(entries, raw).slice(0, limit)
+}

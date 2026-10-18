@@ -45,15 +45,15 @@ export function ToastProvider({ children }: { children: ReactNode }) {
       <div
         aria-live="polite"
         aria-atomic="true"
-        className="pointer-events-none fixed inset-x-0 bottom-6 z-50 flex flex-col items-center gap-2"
+        className="pointer-events-none fixed bottom-4 left-4 z-50 flex flex-col items-start gap-2"
       >
         {items.map((item) => (
           <div
             key={item.id}
-            className={`rounded-full border px-4 py-1.5 text-sm shadow-sm ${
+            className={`border px-3 py-1.5 font-mono text-[11px] tracking-[0.02em] shadow-[var(--shadow-overlay)] ${
               item.tone === 'error'
-                ? 'border-accent/40 bg-raised text-accent'
-                : 'border-line bg-raised text-ink'
+                ? 'border-accent bg-raised text-accent'
+                : 'border-line-strong bg-raised text-ink'
             }`}
           >
             {item.message}

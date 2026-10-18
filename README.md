@@ -40,7 +40,7 @@ pnpm dev          # http://localhost:5173
 ```bash
 pnpm check        # typecheck + lint + test 一条命令（提交门槛）
 pnpm typecheck    # tsc -b，零错误是提交门槛
-pnpm test         # vitest：内容校验 + 条目规范 + 检索 + 参数 URL + 偏好 + i18n + 提示词 + 首屏 meta 同步 + 反查/拼音/俗称 + 页面与 demo 渲染冒烟（292 项）
+pnpm test         # vitest：内容校验 + 条目规范 + 检索 + 参数 URL + 偏好 + i18n + 提示词 + 首屏 meta 同步 + 反查/拼音/俗称/索引数据 + 页面与 demo 渲染冒烟（338 项）
 pnpm gen:meta     # 改过词条后重新生成首屏用的 meta（src/data/entryMeta.ts）
 pnpm gen:catalog  # 重新生成给 AI 用的目录（public/catalog.json / catalog.md / llms.txt）
 pnpm validate     # 只跑内容校验
@@ -55,7 +55,8 @@ pnpm preview      # 预览产物
 
 ## 键盘
 
-- `/` 聚焦搜索框（在别的输入框里打字时不会抢）
+- `⌘K` / `Ctrl+K` 打开全站搜索面板（Esc 关闭）
+- `/` 聚焦页面里的搜索框（首页 / 词条库 / 404；在别的输入框里打字时不会抢）
 - `↑` `↓` 在搜索建议里移动，`Enter` 打开，`Esc` 清空
 - 搜索框是一个符合 combobox 语义的控件，带 `aria-activedescendant`
 - 「反查」页里按 `Ctrl` / `Cmd` + `Enter` 直接提交查询
@@ -113,13 +114,21 @@ node /home/po/design-museum/scripts/gen-pinyin.mjs
 
 **俗称总表（`/aliases/`）** 把全站 251 个 `aliases` 摊平成一页：按展厅分组、可搜（复用同一套检索，所以拼音/错别字也能用），每条都链回词条；发现新叫法可以直接去 GitHub 提交。
 
-### 版式
+### 视觉语言：INDEX / 索引档案
 
-列表类页面（词条库 / 感觉导航 / 速查表 / 反查 / 俗称总表）外壳放到 `max-w-[90rem]`，大屏下卡片约 450px；正文类页面（首页 / 词条详情 / 怎么用）保持 `max-w-5xl` 的易读行宽。缩略图舞台用 `aspect-[4/3]` 跟着卡片宽度自适应，里面的 demo 由 `DemoRunner` 量出自然尺寸后等比缩放到填满舞台（0.7–1.7 倍）——每个 demo 各自按自己的尺寸设计，不缩放的话在宽卡片里只占一小块。
+全站（2026-10 重设计）把站点当成一座**索引档案室**：纸、墨、朱红三色；方角 + 1px 线 + mono 小标签；除浮层外不用阴影，层次靠线与留白。设计 token、字阶、组件清单和「加一个页面」的步骤都在 [docs/DESIGN.md](docs/DESIGN.md)，改页面前先读它。
+
+- **外壳**：`max-w-[88rem]` 一栏到底，页面自己决定行宽（列表页铺满、正文页收在 68ch 左右）。顶栏 56px 粘性，桌面上是五个索引入口 + 搜索面板 + 设置；窄屏收进右侧抽屉。
+- **卡片**：`SpecimenPlate` 三种形态（网格 / 头条 / 索引行），缩略图舞台 `aspect-[4/3]`，里面的 demo 由 `DemoRunner` 量出自然尺寸后等比缩放到填满舞台（0.7–1.7 倍）——每个 demo 各自按自己的尺寸设计。
+- **列表页**（词条库 / 俗称总表）：左侧粘性索引栏 + 右侧结果；窄屏把索引折成横向条。
+- **词条详情**：左边粘性展台 + 参数工作台，右边「输出舱」（中文需求句 / 英文术语 / 分享链接）与档案分节；参数改动照旧回写 URL。
+- **动效**：只保留 View Transitions（页面进出 200/240ms）、粘性头部的滚动驱动边线，以及 demo 自己的动画；不再做逐卡错峰入场。
+
+> 想一次看完所有页面：`pnpm build && pnpm screenshots`，会在 `.screenshots/` 生成 8 个页面 × 3 个宽度的 24 张截图，用本机 Chrome 的 `--screenshot`，不引 puppeteer/playwright。
 
 ### 性能
 
-页面与 demo 都是按需加载：`src/demos/registry.ts` 用非 eager 的 `import.meta.glob`，每个 demo 各自成一个 chunk（每个 1–4KB），首页只下载真正挂出来的那几个；`src/App.tsx` 里各页面也是 `lazy`。构建产物 64 个 JS chunk（另有 1 个 CSS 与 8 个字体文件）。改之前是单包 433KB（gzip 138KB）；现在首页首屏 20 个请求、498KB 原始 / 213KB gzip，其中主包 80.9KB、首屏词条 meta 31KB、两个字体 61.9KB（以上为 gzip），拼音表只给检索 chunk 加了约 5.4KB（gzip 约 2.6KB），换页不再重新下载所有 demo。
+页面与 demo 都是按需加载：`src/demos/registry.ts` 用非 eager 的 `import.meta.glob`，每个 demo 各自成一个 chunk（每个 1–4KB），首页只下载真正挂出来的那几个；`src/App.tsx` 里各页面也是 `lazy`。构建产物 72 个 JS chunk（另有 1 个 CSS 与 8 个字体文件）。改之前是单包 433KB（gzip 138KB）；现在首页首屏 26 个请求、约 219KB gzip，其中主包 74.5KB、首屏词条 meta 32.4KB、i18n 13KB、两个字体 61KB、CSS 12KB（以上为 gzip）；词条详情与速查表还要额外拉完整词条数据，约 298KB / 290KB gzip。拼音表只给检索 chunk 加了约 5.4KB（gzip 约 2.6KB），换页不再重新下载所有 demo。
 
 ## 目录结构
 
@@ -154,19 +163,21 @@ src/
 │   ├── routes.ts             # 地址工具：withBase / hrefFor / absoluteUrl / STATIC_PAGES
 │   ├── router.tsx            # 手写路由：pushState + popstate，Link / navigate / useRoute
 │   ├── pageFor.tsx           # 由路径段挑页面，App 与预渲染共用这一份路由表
-│   ├── search.ts  pinyin.ts  pinyinTable.ts  reverseLookup.ts  aliasIndex.ts  prompt.ts  copy.ts  controls.ts  motion.ts  viewport.ts
+│   ├── search.ts  pinyin.ts  pinyinTable.ts  reverseLookup.ts  aliasIndex.ts  indexData.ts  confusions.ts  browseSort.ts  prompt.ts  copy.ts  controls.ts  motion.ts  viewport.ts
 │   ├── timeScale.ts          # 慢放：给子树里的 Web Animations 设 playbackRate
 │   ├── loop.ts               # 循环策略：哪些演示该被自动重播
+│   ├── useModal.ts           # 弹层共用行为：焦点陷阱 / 滚动锁 / Esc
 │   └── replay.ts             # 循环重播用的计数器
-├── components/               # DemoStage / DemoRunner / ControlPanel / PromptCard / SettingsMenu / NotFound ...
+├── components/               # 外壳与通用件：Layout / SearchDialog / SearchBox / SpecimenPlate / PageHeader / PromptPanel / ControlPanel / DemoStage / DemoRunner / SettingsMenu / FilterRow / FilterDisclosure / Meta / StepList / EmptyState / Button / icons / NotFound ...
 ├── pages/                    # 页面组件 + routeModules.ts（各页的动态 import 表）
 ├── prerenderApp.tsx          # 预渲染入口：静态 import 页面 + renderToStaticMarkup
-└── styles/global.css         # 设计 token、主题变量、切换过渡
+└── styles/global.css         # 设计 token（纸 / 墨 / 朱红）、字阶、主题变量、切换过渡
 
 scripts/
 ├── prerender.mjs             # 构建期渲染 47 个地址 + sitemap.xml + 404.html + 墓碑跳转页
 ├── gen-pinyin.mjs            # 生成拼音检索用的汉字读音表（需临时装 pinyin-pro，见 README）
 ├── gen-catalog.mjs           # pnpm gen:catalog：生成给 AI 的目录与 llms.txt
+├── screenshots.mjs           # pnpm screenshots：用本机 Chrome 截 8 页 × 3 宽度到 .screenshots/
 ├── load-site.mjs             # 用 vite 的 ssrLoadModule 读 TS 数据（维护者脚本共用）
 ├── new-entry.mjs             # pnpm new:entry：生成词条与 demo 骨架
 └── find-entry.mjs            # pnpm find:entry：口语查重（命中字段 + 权重）
@@ -178,6 +189,8 @@ public/                       # 会原样发布到站点根目录
 ├── og.png  favicon.svg  robots.txt  licenses/
 skills/design-museum/SKILL.md # 配套 skill：教 AI 怎么用上面这几份目录
 docs/ENTRY-SPEC.md            # 条目规范：什么算一条、怎么增删改查（唯一真源）
+docs/DESIGN.md                # 重设计后的设计系统：token、字阶、组件、页面原型、加页面步骤
+docs/REDESIGN-PLAN.md         # 这次重设计的分阶段方案与验收记录
 ```
 
 ## 双语是怎么做的
@@ -246,6 +259,7 @@ gh api -X POST repos/publieople/design-museum/pages -f build_type=workflow
 ## 协作
 
 - [CONTRIBUTING.md](CONTRIBUTING.md) —— 环境、提交门槛、分支与 PR 流程、提交信息格式、**能改哪里**、评审清单
+- [docs/DESIGN.md](docs/DESIGN.md) —— 视觉语言与组件约定：token、字阶、页面原型、加页面步骤（改页面前必读）
 - [AGENTS.md](AGENTS.md) —— 给 AI 编码代理的硬规矩（用 Cursor / Claude Code / DSH 之类写代码时，把它一起交给代理）
 - [CODE_OF_CONDUCT.md](CODE_OF_CONDUCT.md) —— 行为准则
 - [`.github/`](.github/) —— PR 模板与 Issue 表单（报告问题 / 申请新词条）
@@ -316,7 +330,7 @@ gh api -X PATCH repos/publieople/design-museum \
 2. ~~拼音搜索（maoboli → 毛玻璃）与错别字容错。~~ 已完成：构建期读音表 + 有界编辑距离，原文命中优先。
 3. ~~俗称总表页：把全站 `aliases` 汇总成可搜、可贡献的一页。~~ 已完成：`/aliases/`，251 条、按展厅分组、可搜。
 4. 「别搞混」做成双向对比页（毛玻璃 ⇄ 玻璃拟态 ⇄ 半透明）。
-5. 视觉回归测试：全部 demo 的截图对比。
+5. 视觉回归：`pnpm screenshots` 已能一键截 8 个页面 × 3 个宽度（`scripts/screenshots.mjs`，只依赖本机 Chrome）；还差基线图与自动像素比对。
 6. ~~词条扩充：现在 30 条，每厅再加 2 条。~~ 已完成：40 条（每厅 8 条），界面与 SEO 文案里的计数已改成动态数字（`{n}` 占位）。
 7. 给 AI 的目录做增量索引：现在是一份 68KB 的 JSON 全量读；条目再多就该按展厅或标签分片。
 

@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest'
 import { ENTRY_META } from '../data/meta'
-import { normalizeText, searchEntries, tokenize } from './search'
+import { normalizeText, searchEntries, suggestionsFor, tokenize } from './search'
 
 function firstSlug(query: string): string | undefined {
   return searchEntries(ENTRY_META, query)[0]?.entry.slug
@@ -91,6 +91,29 @@ describe('拼音搜索', () => {
   it('空查询仍返回全部，分数为 0', () => {
     expect(searchEntries(ENTRY_META, '   ')).toHaveLength(ENTRY_META.length)
     expect(searchEntries(ENTRY_META, '   ').every((hit) => hit.score === 0)).toBe(true)
+  })
+})
+
+describe('搜索建议（对话框与页面搜索框共用）', () => {
+  it('空查询不给建议，避免弹出 40 条', () => {
+    expect(suggestionsFor(ENTRY_META, '')).toEqual([])
+    expect(suggestionsFor(ENTRY_META, '   ')).toEqual([])
+  })
+
+  it('建议顺序与 searchEntries 完全一致，只是截断', () => {
+    const all = searchEntries(ENTRY_META, 'maoboli')
+    const hits = suggestionsFor(ENTRY_META, 'maoboli', 8)
+    expect(hits.map((hit) => hit.entry.slug)).toEqual(all.slice(0, 8).map((hit) => hit.entry.slug))
+  })
+
+  it('默认最多 8 条，传 limit 时按 limit 截断', () => {
+    expect(suggestionsFor(ENTRY_META, '毛玻璃').length).toBeLessThanOrEqual(8)
+    expect(suggestionsFor(ENTRY_META, '毛玻璃', 2)).toHaveLength(2)
+    expect(suggestionsFor(ENTRY_META, '毛玻璃', 1)[0].entry.slug).toBe('frosted-glass')
+  })
+
+  it('没有命中时是空数组而不是抛错', () => {
+    expect(suggestionsFor(ENTRY_META, 'zzzqqqxxx')).toEqual([])
   })
 })
 
