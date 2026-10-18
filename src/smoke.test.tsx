@@ -14,6 +14,8 @@ import { DebugAllPage } from './pages/DebugAllPage'
 import { EntryDetailPage } from './pages/EntryDetailPage'
 import { FeelPage } from './pages/FeelPage'
 import { HomePage } from './pages/HomePage'
+import { ReversePage } from './pages/ReversePage'
+import { AliasesPage } from './pages/AliasesPage'
 
 /**
  * 没有浏览器时的渲染冒烟：任何页面或 demo 在渲染期抛错都会在这里被抓住。
@@ -50,6 +52,13 @@ describe('页面渲染冒烟', () => {
     expect(render(<AboutPage />)).toContain('怎么用这份词典')
     expect(render(<AboutPage />, { locale: 'en' })).toContain('How to use this glossary')
     expect(render(<DebugAllPage />)).toContain('冒烟测试')
+  })
+
+  it('反查页与俗称总表页能渲染标题', () => {
+    expect(render(<ReversePage />)).toContain('反查')
+    expect(render(<AliasesPage />)).toContain('俗称总表')
+    expect(render(<ReversePage />, { locale: 'en' })).toContain('Reverse lookup')
+    expect(render(<AliasesPage />, { locale: 'en' })).toContain('Alias index')
   })
 
   it('英文界面下「怎么用」页不残留中文', () => {

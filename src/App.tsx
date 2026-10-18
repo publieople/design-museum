@@ -19,6 +19,8 @@ const PAGES = {
   feel: lazyWithRetry(ROUTE_MODULES.feel),
   cheatsheet: lazyWithRetry(ROUTE_MODULES.cheatsheet),
   about: lazyWithRetry(ROUTE_MODULES.about),
+  reverse: lazyWithRetry(ROUTE_MODULES.reverse),
+  aliases: lazyWithRetry(ROUTE_MODULES.aliases),
   debug: lazyWithRetry(ROUTE_MODULES.debug),
 } satisfies PageComponents
 

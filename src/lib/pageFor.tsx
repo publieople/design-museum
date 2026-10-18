@@ -27,6 +27,10 @@ export function pageFor(
       return <pages.cheatsheet />
     case 'about':
       return <pages.about />
+    case 'reverse':
+      return <pages.reverse />
+    case 'aliases':
+      return <pages.aliases />
     case 'debug':
       return devOnly ? <NotFound /> : <pages.debug />
     default:

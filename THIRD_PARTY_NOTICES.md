@@ -29,6 +29,10 @@ CC BY 4.0 要求署名：转载或改编内容时请注明「前端设计博物�
 
 开发期依赖（`vitest`、`oxlint`、`typescript`、`@vitejs/plugin-react`）不会进入发布产物；其余组件会随构建结果分发，其许可全文见各自仓库的 `LICENSE` 文件。
 
+### 构建期生成的数据（拼音表）
+
+`src/lib/pinyinTable.ts` 是 `scripts/gen-pinyin.mjs` 用 [pinyin-pro](https://github.com/zh-lx/pinyin-pro) **3.29.5** 生成的汉字读音表；pinyin-pro 以 MIT 许可发布，Copyright (c) 2022-present zh-lx。它只在生成时使用，**不是本项目的依赖**：不写在 `package.json`、不进入 `pnpm-lock.yaml`、不随产物分发；生成物只保留词条名称与别名用到的汉字读音，不包含 pinyin-pro 的源代码。重新生成的命令见 README 的「反查、拼音与俗称总表」一节。
+
 ## 3. 字体
 
 站点**不请求外部字体 CDN**，两个可变字体以 `@fontsource-variable` 打包，构建后作为 `.woff2` 随站点分发。二者均为 **SIL Open Font License 1.1**：
