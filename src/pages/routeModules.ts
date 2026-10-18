@@ -12,6 +12,8 @@ export interface PageComponents {
   about: PageComponent
   reverse: PageComponent
   aliases: PageComponent
+  liveIndex: PageComponent
+  liveDetail: PageComponent
   debug: PageComponent
 }
 
@@ -31,5 +33,7 @@ export const ROUTE_MODULES = {
   about: () => import('./AboutPage').then((m) => ({ default: m.AboutPage })),
   reverse: () => import('./ReversePage').then((m) => ({ default: m.ReversePage })),
   aliases: () => import('./AliasesPage').then((m) => ({ default: m.AliasesPage })),
+  liveIndex: () => import('./LiveIndexPage').then((m) => ({ default: m.LiveIndexPage })),
+  liveDetail: () => import('./LivePage').then((m) => ({ default: m.LivePage })),
   debug: () => import('./DebugAllPage').then((m) => ({ default: m.DebugAllPage })),
 } satisfies { [K in keyof PageComponents]: () => Promise<{ default: PageComponents[K] }> }

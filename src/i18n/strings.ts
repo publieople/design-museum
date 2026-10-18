@@ -493,6 +493,59 @@ export const STRINGS = {
   },
 
   'notFound.search': { zh: '去搜索', en: 'Search instead' },
+
+  // ── 现场页（/live，整页演示）────────────────────────────────
+  'titles.live': { zh: '现场演示', en: 'Live demos' },
+  'seo.live.desc': {
+    zh: '有些效果离开整页就不成立：滚动驱动、滚动揭示、视差、粘性堆叠、光标跟随。这里每个效果都占满整页，页面本身就是演示，共 {n} 个现场。',
+    en: 'Some effects do not survive a box: scroll-driven animation, scroll reveal, parallax, sticky stacking, cursor followers. Each effect takes over the whole page here — the page is the demo. {n} live demos.',
+  },
+  'seo.liveEntry.desc': {
+    zh: '{name} 的整页现场演示：{oneLiner} 向下滚动，页面本身就是效果的一部分。',
+    en: 'A full-page live demo of {name}: {oneLiner} Scroll — the page itself is part of the effect.',
+  },
+  'live.lede': {
+    zh: '有些效果在展台里演不出来：它们要的是整页滚动、整个视口或者真实的指针。这里不给盒子——页面本身就是演示。',
+    en: 'Some effects cannot be staged in a box: they need the whole page scrolling, the whole viewport or a real pointer. No boxes here — the page itself is the demo.',
+  },
+  'live.indexLede': {
+    zh: '每个效果占满一整页，你正常滚动、移动指针就行。看完从浮动条回词条，或者接着看下一个。',
+    en: 'Each effect takes over a full page — just scroll and move the pointer. Use the floating bar to go back to the entry or on to the next one.',
+  },
+  'live.count': { zh: '{n} 个现场演示', en: '{n} live demos' },
+  'live.badge': { zh: '现场演示', en: 'Live demo' },
+  'live.backEntry': { zh: '返回词条', en: 'Back to entry' },
+  'live.index': { zh: '全部现场', en: 'All live demos' },
+  'live.prev': { zh: '上一个现场', en: 'Previous live demo' },
+  'live.next': { zh: '下一个现场', en: 'Next live demo' },
+  'live.loading': { zh: '正在布置展台…', en: 'Setting up the specimen…' },
+  'live.closeHint': { zh: 'Esc 返回词条', en: 'Esc to go back' },
+  'live.reduced': { zh: '已按系统设置减少动态', en: 'Reduced motion is on' },
+  'live.scrollHint': { zh: '向下滚动', en: 'Scroll down' },
+  'live.open': { zh: '进入现场', en: 'Open live demo' },
+  'live.group.scroll': { zh: '滚动时间线', en: 'Scroll timeline' },
+  'live.group.layout': { zh: '布局与堆叠', en: 'Layout & stacking' },
+  'live.group.pointer': { zh: '指针与视口', en: 'Pointer & viewport' },
+  'live.note.scroll-driven': {
+    zh: '页面滚到哪，动画就走到哪：进度条、卡片转正与入场都由滚动位置驱动，没有演示框。',
+    en: 'Scroll position is the animation: the progress bar and the cards entering and straightening up are all driven by where the page is scrolled. No demo box.',
+  },
+  'live.note.scroll-reveal': {
+    zh: '每一段内容进入视口时自己浮上来。往下滚，看整页的节奏而不是一个盒子里的循环。',
+    en: 'Each block rises into place as it enters the viewport. Scroll to feel the rhythm of a whole page instead of a loop inside a box.',
+  },
+  'live.note.parallax': {
+    zh: '前景、中景、背景以不同速度移动。纵深感只有在整页滚动、整块视口里才成立。',
+    en: 'Foreground, middle ground and background move at different speeds. That sense of depth only works across a whole page and viewport.',
+  },
+  'live.note.sticky-stack': {
+    zh: '一张卡片粘住，下一张压上来。整页滚动时，卡片堆叠才有真正的重量。',
+    en: 'One card sticks, the next covers it. Stacking only carries weight when it happens across a whole page.',
+  },
+  'live.note.cursor-follower': {
+    zh: '圆点跟着指针慢半拍。这里跟随的是整页的指针，不再局限在某个演示框里。',
+    en: 'A dot trails behind the pointer. Here it follows the pointer across the entire page, not inside a demo box.',
+  },
 } as const
 
 export type StringKey = keyof typeof STRINGS

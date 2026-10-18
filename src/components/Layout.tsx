@@ -255,6 +255,9 @@ export function Layout({ children }: { children: ReactNode }) {
             >
               {t('nav.cheatsheet')}
             </Link>
+            <Link to="/live" className="text-caption text-ink-2 no-underline hover:text-accent">
+              {t('titles.live')}
+            </Link>
           </div>
 
           <div className="flex flex-col gap-2">

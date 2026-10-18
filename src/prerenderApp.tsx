@@ -14,7 +14,19 @@ import { ROUTE_MODULES, type PageComponents } from './pages/routeModules'
  */
 
 export async function loadPages(): Promise<PageComponents> {
-  const [home, browse, entry, feel, cheatsheet, about, reverse, aliases, debug] = await Promise.all([
+  const [
+    home,
+    browse,
+    entry,
+    feel,
+    cheatsheet,
+    about,
+    reverse,
+    aliases,
+    liveIndex,
+    liveDetail,
+    debug,
+  ] = await Promise.all([
     ROUTE_MODULES.home(),
     ROUTE_MODULES.browse(),
     ROUTE_MODULES.entry(),
@@ -23,6 +35,8 @@ export async function loadPages(): Promise<PageComponents> {
     ROUTE_MODULES.about(),
     ROUTE_MODULES.reverse(),
     ROUTE_MODULES.aliases(),
+    ROUTE_MODULES.liveIndex(),
+    ROUTE_MODULES.liveDetail(),
     ROUTE_MODULES.debug(),
   ])
   return {
@@ -34,6 +48,8 @@ export async function loadPages(): Promise<PageComponents> {
     about: about.default,
     reverse: reverse.default,
     aliases: aliases.default,
+    liveIndex: liveIndex.default,
+    liveDetail: liveDetail.default,
     debug: debug.default,
   }
 }
@@ -43,11 +59,12 @@ export function renderPage(target: string, pages: PageComponents): string {
   setServerRoute(target)
   const route = parseRoute(target)
   const [head, param] = route.segments
+  // 现场页是独立壳：不套站点头尾，页面本身就是演示
+  const standalone = head === 'live' && Boolean(param)
+  const page = pageFor(head, param, pages, false)
   return renderToStaticMarkup(
     <PrefsProvider>
-      <ToastProvider>
-        <Layout>{pageFor(head, param, pages, false)}</Layout>
-      </ToastProvider>
+      <ToastProvider>{standalone ? page : <Layout>{page}</Layout>}</ToastProvider>
     </PrefsProvider>,
   )
 }

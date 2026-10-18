@@ -31,6 +31,8 @@ export function pageFor(
       return <pages.reverse />
     case 'aliases':
       return <pages.aliases />
+    case 'live':
+      return param ? <pages.liveDetail key={param} slug={param} /> : <pages.liveIndex />
     case 'debug':
       return devOnly ? <NotFound /> : <pages.debug />
     default:

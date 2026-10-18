@@ -82,9 +82,10 @@ const server = await createServer({
 
 try {
   const { loadPages, renderPage } = await server.ssrLoadModule('/src/prerenderApp.tsx')
-  const { STATIC_PAGES, SITE_ORIGIN, absoluteUrl, hrefFor, entryPath } = await server.ssrLoadModule('/src/lib/routes.ts')
+  const { STATIC_PAGES, SITE_ORIGIN, absoluteUrl, hrefFor, entryPath, liveDemoPath } = await server.ssrLoadModule('/src/lib/routes.ts')
   const { ENTRIES } = await server.ssrLoadModule('/src/data/index.ts')
   const { RETIRED, tombstoneTarget } = await server.ssrLoadModule('/src/data/retired.ts')
+  const { LIVE_DEMOS } = await server.ssrLoadModule('/src/data/live.ts')
   const { translate } = await server.ssrLoadModule('/src/i18n/index.tsx')
 
   const shell = await readFile(path.join(dist, 'index.html'), 'utf8')
@@ -95,7 +96,9 @@ try {
     ...STATIC_PAGES.map((page) => ({
       target: page.path,
       title: page.titleKey ? `${translate('zh', page.titleKey)} · ${siteName}` : `${siteName} · ${translate('zh', 'site.tagline')}`,
-      description: translate('zh', page.descKey, { n: ENTRIES.length }),
+      description: translate('zh', page.descKey, {
+        n: page.path === '/live' ? LIVE_DEMOS.length : ENTRIES.length,
+      }),
       ogType: 'website',
     })),
     ...ENTRIES.map((entry) => ({
@@ -109,6 +112,19 @@ try {
       ogType: 'article',
       entry,
     })),
+    ...LIVE_DEMOS.map((demo) => {
+      const entry = ENTRIES.find((item) => item.slug === demo.slug)
+      return {
+        target: liveDemoPath(demo.slug),
+        title: `${entry.nameZh}·现场演示 · ${siteName}`,
+        description: translate('zh', 'seo.liveEntry.desc', {
+          name: entry.nameZh,
+          oneLiner: entry.oneLiner,
+        }),
+        ogType: 'article',
+        live: true,
+      }
+    }),
   ]
 
   const urls = []
@@ -144,7 +160,10 @@ try {
     const dir = item.target === '/' ? dist : path.join(dist, item.target)
     await mkdir(dir, { recursive: true })
     await writeFile(path.join(dir, 'index.html'), html, 'utf8')
-    urls.push({ loc: canonical, priority: item.entry ? '0.6' : item.target === '/' ? '1.0' : '0.8' })
+    urls.push({
+      loc: canonical,
+      priority: item.live ? '0.5' : item.entry ? '0.6' : item.target === '/' ? '1.0' : '0.8',
+    })
   }
 
   // 404 交给 GitHub Pages 的兜底文件，前端路由会把未知路径渲染成「这里没有展品」

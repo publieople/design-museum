@@ -40,7 +40,7 @@ pnpm dev          # http://localhost:5173
 ```bash
 pnpm check        # typecheck + lint + test 一条命令（提交门槛）
 pnpm typecheck    # tsc -b，零错误是提交门槛
-pnpm test         # vitest：内容校验 + 条目规范 + 检索 + 参数 URL + 偏好 + i18n + 提示词 + 首屏 meta 同步 + 反查/拼音/俗称/索引数据 + 页面与 demo 渲染冒烟（338 项）
+pnpm test         # vitest：内容校验 + 条目规范 + 检索 + 参数 URL + 偏好 + i18n + 提示词 + 首屏 meta 同步 + 反查/拼音/俗称/索引数据 + 页面与 demo 渲染冒烟（352 项；含现场页演示冒烟）
 pnpm gen:meta     # 改过词条后重新生成首屏用的 meta（src/data/entryMeta.ts）
 pnpm gen:catalog  # 重新生成给 AI 用的目录（public/catalog.json / catalog.md / llms.txt）
 pnpm validate     # 只跑内容校验
@@ -81,12 +81,13 @@ Vite 8 + React 19 + TypeScript + Tailwind CSS v4。零后端，纯静态产物�
 | `/` | 首页 |
 | `/browse/`、`/feel/`、`/cheatsheet/`、`/about/` | 词条库、感觉导航、速查表、怎么用 |
 | `/reverse/`、`/aliases/` | 反查、俗称总表 |
+| `/live/`、`/live/<slug>/` | 现场页索引与整页演示（不套站点头尾） |
 | `/entry/<slug>/` | 每条词条一个独立地址（例：<https://publieople.github.io/design-museum/entry/frosted-glass/>） |
 | `/debug/all` | 只在开发模式可达，生产构建渲染 404 |
 
-`pnpm build` 的最后一步 `scripts/prerender.mjs` 用 React 的 `renderToStaticMarkup` 把 47 个地址渲染成 `dist/<地址>/index.html`，同时生成 `dist/sitemap.xml` 与 `dist/404.html`；每页的 `<title>`、`description`、`canonical`、`og:*` 和 JSON-LD 都按页写（词条页是 `TechArticle`）。浏览器侧照常 `createRoot` 重新渲染，不做水合——localStorage 里的主题与语言可能和预渲染的默认值不一样。旧的 `#/entry/frosted-glass` 这类链接会在挂载前被 `history.replaceState` 归一化成新地址，历史分享链接不会失效。
+`pnpm build` 的最后一步 `scripts/prerender.mjs` 用 React 的 `renderToStaticMarkup` 把 53 个地址渲染成 `dist/<地址>/index.html`，同时生成 `dist/sitemap.xml` 与 `dist/404.html`；每页的 `<title>`、`description`、`canonical`、`og:*` 和 JSON-LD 都按页写（词条页是 `TechArticle`）。浏览器侧照常 `createRoot` 重新渲染，不做水合——localStorage 里的主题与语言可能和预渲染的默认值不一样。旧的 `#/entry/frosted-glass` 这类链接会在挂载前被 `history.replaceState` 归一化成新地址，历史分享链接不会失效。
 
-代价是首屏 HTML 从 2.5KB 变成约 16KB（未压缩），换来的是爬虫不执行 JS 也能读到 47 个页面的正文。
+代价是首屏 HTML 从 2.5KB 变成约 16KB（未压缩），换来的是爬虫不执行 JS 也能读到 53 个页面的正文。
 
 ### 循环重播不是无差别的
 
@@ -114,6 +115,22 @@ node /home/po/design-museum/scripts/gen-pinyin.mjs
 
 **俗称总表（`/aliases/`）** 把全站 251 个 `aliases` 摊平成一页：按展厅分组、可搜（复用同一套检索，所以拼音/错别字也能用），每条都链回词条；发现新叫法可以直接去 GitHub 提交。
 
+### 现场页：整页就是一个演示
+
+有些效果塞进展台就失真：滚动驱动的进度条需要整页的滚动距离，视差需要真实景深，光标跟随需要整个视口。参考 Magic UI 的做法，这些效果有第二种呈现方式——**现场页 `/live/<slug>/`**：不套站点头尾，页面本身就是演示场，只留一条浮动导航（返回词条 / 上一个 / 下一个 / Esc）。索引在 `/live/`。
+
+第一批搬进去的 5 个：
+
+| 现场页 | 为什么必须整页 |
+|---|---|
+| `/live/scroll-driven/` | 进度条要读整页滚动，卡片转正需要 190vh 的滚动距离 |
+| `/live/scroll-reveal/` | 入场由元素进入视口的连续过程决定，不是一次 class 切换 |
+| `/live/parallax/` | 视差要真实景深，几百像素的盒子只能看到抖动 |
+| `/live/sticky-stack/` | 粘性堆叠靠整页滚动距离，卡片是一张张压上来的 |
+| `/live/cursor-follower/` | 跟随的是整个指针场，需要全屏可移动区域 |
+
+实现上，注册表在 `src/data/live.ts`（`{ slug, group, noteKey }`，不往 `Entry` 加字段），演示组件在 `src/livedemos/<slug>.tsx`，经 `src/livedemos/registry.ts` 按路由懒加载。现场页的静态 HTML 只渲染「封面」（名字、一句话、为什么需要整页、返回链接），整页演示在客户端挂载——爬虫读到的信息不依赖 JS。只有现场页允许依赖 `window` 滚动；展台 demo 仍必须自带滚动容器（`docs/ENTRY-SPEC.md` 的唯一例外写在现场页这一层）。
+
 ### 视觉语言：INDEX / 索引档案
 
 全站（2026-10 重设计）把站点当成一座**索引档案室**：纸、墨、朱红三色；方角 + 1px 线 + mono 小标签；除浮层外不用阴影，层次靠线与留白。设计 token、字阶、组件清单和「加一个页面」的步骤都在 [docs/DESIGN.md](docs/DESIGN.md)，改页面前先读它。
@@ -124,11 +141,11 @@ node /home/po/design-museum/scripts/gen-pinyin.mjs
 - **词条详情**：左边粘性展台 + 参数工作台，右边「输出舱」（中文需求句 / 英文术语 / 分享链接）与档案分节；参数改动照旧回写 URL。
 - **动效**：只保留 View Transitions（页面进出 200/240ms）、粘性头部的滚动驱动边线，以及 demo 自己的动画；不再做逐卡错峰入场。
 
-> 想一次看完所有页面：`pnpm build && pnpm screenshots`，会在 `.screenshots/` 生成 8 个页面 × 3 个宽度的 24 张截图，用本机 Chrome 的 `--screenshot`，不引 puppeteer/playwright。
+> 想一次看完所有页面：`pnpm build && pnpm screenshots`，会在 `.screenshots/` 生成 14 个页面 × 3 个宽度的 42 张截图（含 5 个现场页），用本机 Chrome 的 `--screenshot`，不引 puppeteer/playwright。
 
 ### 性能
 
-页面与 demo 都是按需加载：`src/demos/registry.ts` 用非 eager 的 `import.meta.glob`，每个 demo 各自成一个 chunk（每个 1–4KB），首页只下载真正挂出来的那几个；`src/App.tsx` 里各页面也是 `lazy`。构建产物 72 个 JS chunk（另有 1 个 CSS 与 8 个字体文件）。改之前是单包 433KB（gzip 138KB）；现在首页首屏 26 个请求、约 219KB gzip，其中主包 74.5KB、首屏词条 meta 32.4KB、i18n 13KB、两个字体 61KB、CSS 12KB（以上为 gzip）；词条详情与速查表还要额外拉完整词条数据，约 298KB / 290KB gzip。拼音表只给检索 chunk 加了约 5.4KB（gzip 约 2.6KB），换页不再重新下载所有 demo。
+页面与 demo 都是按需加载：`src/demos/registry.ts` 用非 eager 的 `import.meta.glob`，每个 demo 各自成一个 chunk（每个 1–4KB），首页只下载真正挂出来的那几个；`src/App.tsx` 里各页面也是 `lazy`。构建产物 82 个 JS chunk（另有 1 个 CSS 与 8 个字体文件）。改之前是单包 433KB（gzip 138KB）；现在首页首屏 26 个请求、约 219KB gzip，其中主包 74.5KB、首屏词条 meta 32.4KB、i18n 13KB、两个字体 61KB、CSS 12KB（以上为 gzip）；词条详情与速查表还要额外拉完整词条数据，约 298KB / 290KB gzip。拼音表只给检索 chunk 加了约 5.4KB（gzip 约 2.6KB），换页不再重新下载所有 demo。
 
 ## 目录结构
 
@@ -150,8 +167,11 @@ src/
 │   ├── entrySpec.test.ts     # 条目规范：文件路径 / 标签闭集与数量 / 演示形态（docs/ENTRY-SPEC.md）
 │   ├── retired.ts            # 墓碑表：删掉的 slug 与它该跳去哪（构建期据此生成跳转页）
 │   ├── retired.test.ts       # 墓碑合法 + replacedBy 指向在册条目 + related 不指向墓碑
-│   └── content.test.ts       # 每厅至少 6 件 / 编号从 01 连续 / related 无死链
+│   ├── content.test.ts       # 每厅至少 6 件 / 编号从 01 连续 / related 无死链
+│   └── live.ts               # 现场页注册表：哪些词条有整页演示、分组与说明
 ├── demos/<slug>.tsx          # 文件名必须等于词条 slug，按需加载
+├── livedemos/<slug>.tsx      # 现场页的整页演示，只在 /live/<slug>/ 懒加载
+├── livedemos/registry.ts     # 现场页 slug → 动态 import 表
 ├── i18n/
 │   ├── strings.ts            # 界面文案表（每条都必须有 zh 与 en，有测试把关）
 │   ├── index.tsx             # translate() / useT() / useLocale()
@@ -168,16 +188,16 @@ src/
 │   ├── loop.ts               # 循环策略：哪些演示该被自动重播
 │   ├── useModal.ts           # 弹层共用行为：焦点陷阱 / 滚动锁 / Esc
 │   └── replay.ts             # 循环重播用的计数器
-├── components/               # 外壳与通用件：Layout / SearchDialog / SearchBox / SpecimenPlate / PageHeader / PromptPanel / ControlPanel / DemoStage / DemoRunner / SettingsMenu / FilterRow / FilterDisclosure / Meta / StepList / EmptyState / Button / icons / NotFound ...
+├── components/               # 外壳与通用件：Layout / LiveShell / SearchDialog / SearchBox / SpecimenPlate / PageHeader / PromptPanel / ControlPanel / DemoStage / DemoRunner / SettingsMenu / FilterRow / FilterDisclosure / Meta / StepList / EmptyState / Button / icons / NotFound ...
 ├── pages/                    # 页面组件 + routeModules.ts（各页的动态 import 表）
 ├── prerenderApp.tsx          # 预渲染入口：静态 import 页面 + renderToStaticMarkup
 └── styles/global.css         # 设计 token（纸 / 墨 / 朱红）、字阶、主题变量、切换过渡
 
 scripts/
-├── prerender.mjs             # 构建期渲染 47 个地址 + sitemap.xml + 404.html + 墓碑跳转页
+├── prerender.mjs             # 构建期渲染 53 个地址 + sitemap.xml + 404.html + 墓碑跳转页
 ├── gen-pinyin.mjs            # 生成拼音检索用的汉字读音表（需临时装 pinyin-pro，见 README）
 ├── gen-catalog.mjs           # pnpm gen:catalog：生成给 AI 的目录与 llms.txt
-├── screenshots.mjs           # pnpm screenshots：用本机 Chrome 截 8 页 × 3 宽度到 .screenshots/
+├── screenshots.mjs           # pnpm screenshots：用本机 Chrome 截 14 页 × 3 宽度到 .screenshots/
 ├── load-site.mjs             # 用 vite 的 ssrLoadModule 读 TS 数据（维护者脚本共用）
 ├── new-entry.mjs             # pnpm new:entry：生成词条与 demo 骨架
 └── find-entry.mjs            # pnpm find:entry：口语查重（命中字段 + 权重）
@@ -330,9 +350,10 @@ gh api -X PATCH repos/publieople/design-museum \
 2. ~~拼音搜索（maoboli → 毛玻璃）与错别字容错。~~ 已完成：构建期读音表 + 有界编辑距离，原文命中优先。
 3. ~~俗称总表页：把全站 `aliases` 汇总成可搜、可贡献的一页。~~ 已完成：`/aliases/`，251 条、按展厅分组、可搜。
 4. 「别搞混」做成双向对比页（毛玻璃 ⇄ 玻璃拟态 ⇄ 半透明）。
-5. 视觉回归：`pnpm screenshots` 已能一键截 8 个页面 × 3 个宽度（`scripts/screenshots.mjs`，只依赖本机 Chrome）；还差基线图与自动像素比对。
+5. 视觉回归：`pnpm screenshots` 已能一键截 14 个页面 × 3 个宽度（含 5 个现场页，脚本 `scripts/screenshots.mjs`，只依赖本机 Chrome）；还差基线图与自动像素比对。
 6. ~~词条扩充：现在 30 条，每厅再加 2 条。~~ 已完成：40 条（每厅 8 条），界面与 SEO 文案里的计数已改成动态数字（`{n}` 占位）。
 7. 给 AI 的目录做增量索引：现在是一份 68KB 的 JSON 全量读；条目再多就该按展厅或标签分片。
+8. ~~现场页第一批~~ 已完成：`/live/` + 5 个整页演示（scroll-driven / scroll-reveal / parallax / sticky-stack / cursor-follower）。第二批候选：sticky-header、view-transitions、command-palette、virtual-scrolling、toast；顺带补一条 `scroll-progress` 词条（滚动进度条，目前馆里没有）。
 
 ## 致谢
 

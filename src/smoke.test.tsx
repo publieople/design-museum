@@ -1,6 +1,7 @@
 import { renderToString } from 'react-dom/server'
 import { describe, expect, it } from 'vitest'
 import { ENTRIES, findEntry } from './data'
+import { LIVE_DEMOS } from './data/live'
 import { ENTRY_META } from './data/meta'
 import { defaultValues } from './lib/controls'
 import { demoLoader, hasDemo } from './demos/registry'
@@ -16,6 +17,9 @@ import { FeelPage } from './pages/FeelPage'
 import { HomePage } from './pages/HomePage'
 import { ReversePage } from './pages/ReversePage'
 import { AliasesPage } from './pages/AliasesPage'
+import { LiveIndexPage } from './pages/LiveIndexPage'
+import { LivePage } from './pages/LivePage'
+import { LIVE_MODULES } from './livedemos/registry'
 
 /**
  * 没有浏览器时的渲染冒烟：任何页面或 demo 在渲染期抛错都会在这里被抓住。
@@ -104,12 +108,57 @@ describe('页面渲染冒烟', () => {
     expect(stage).not.toContain('min-h-80')
   })
 
+  it('现场页索引与每个现场页封面都能渲染', () => {
+    expect(render(<LiveIndexPage />)).toContain('现场演示')
+    expect(render(<LiveIndexPage />, { locale: 'en' })).toContain('Live demos')
+    for (const demo of LIVE_DEMOS) {
+      const entry = findEntry(demo.slug)
+      expect(entry, demo.slug).toBeTruthy()
+      if (!entry) continue
+      const html = render(<LivePage slug={demo.slug} />)
+      // 预渲染（SSR）只出封面，但封面必须能独立读懂
+      expect(html, demo.slug).toContain(entry.nameZh)
+      expect(html, demo.slug).toContain('现场演示')
+    }
+    expect(render(<LivePage slug="not-a-live-demo" />)).toContain('这里没有展品')
+  })
+
+  it('有现场页的词条详情页给出「进入现场」入口', () => {
+    for (const demo of LIVE_DEMOS) {
+      const html = render(<EntryDetailPage slug={demo.slug} />)
+      expect(html, demo.slug).toContain('进入现场')
+      expect(html, demo.slug).toContain(`/live/${demo.slug}/`)
+    }
+    // 没有现场页的词条不该出现这个入口
+    expect(render(<EntryDetailPage slug="frosted-glass" />)).not.toContain('进入现场')
+  })
+
   it('找不到的词条给出友好提示', () => {
     expect(render(<EntryDetailPage slug="not-a-real-entry" />)).toContain('没有这件展品')
     expect(render(<EntryDetailPage slug="not-a-real-entry" />, { locale: 'en' })).toContain(
       'No such specimen',
     )
   })
+})
+
+describe('现场页演示冒烟', () => {
+  it.each(LIVE_DEMOS.map((demo) => [demo.slug, demo] as const))(
+    '%s 能整页渲染，英文模式不残留中文',
+    async (slug) => {
+      const loader = LIVE_MODULES[slug]
+      expect(loader, `${slug} 缺少现场演示组件`).toBeTruthy()
+      if (!loader) return
+      const mod = await loader()
+      const zh = render(<mod.default />)
+      expect(zh.length, `${slug} 现场演示渲染为空`).toBeGreaterThan(200)
+      const en = render(<mod.default />, { locale: 'en' })
+      const leftovers = en.match(/[\u4e00-\u9fff]+/g)
+      expect(
+        leftovers,
+        `${slug} 的现场演示在英文模式下仍有中文：${(leftovers ?? []).slice(0, 6).join(' / ')}`,
+      ).toBeNull()
+    },
+  )
 })
 
 describe('demo 渲染冒烟', () => {

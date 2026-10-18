@@ -97,6 +97,7 @@ Tailwind 里通过 `@theme inline` 映射成 `bg-canvas`、`text-ink-2`、`borde
 2. **工作台**（词条详情、反查、速查表）：左/上展台（`DemoStage` + `ControlPanel` 或输入框），右/下输出舱（`PromptPanel`、结果列表、导出预览）；`lg` 两栏，展台 `sticky top-20`。
 3. **叙事页**（首页、怎么用、404）：大标题 + 导语 + 一条主路径（搜索或操作），其余内容按 `Rule` 分节；正文 `max-w-[68ch]`。
 4. **首页**例外：以搜索为第一屏，其他区块（正在展出、五厅索引、工具入口、三步走）都是搜索的补充，不做轮播、不做大图。
+5. **现场页**（`/live/<slug>/`）：不套站点头尾，页面即演示；只保留一条底部浮动导航（返回词条 / 演示名与编号 / 上一个下一个 / 索引 / Esc 提示）。页面内用 `<h1 class="sr-only">` 保住文档标题，视觉大标题用 `h2`/大字号文本。演示区可以整页铺满、可以依赖 `window` 滚动与真实指针；静态 HTML 只渲染封面（名字、一句话、为什么需要整页、返回链接）。
 
 ## 7. 动效与无障碍
 
@@ -104,6 +105,7 @@ Tailwind 里通过 `@theme inline` 映射成 `bg-canvas`、`text-ink-2`、`borde
 - 交互态用颜色/边框变化，不用 transform 大位移；`.plate-interactive` 只变边框色。
 - 焦点：`focus-visible` 2px accent 轮廓；弹层必须有 Esc、焦点陷阱与可读的 `aria-label`。
 - 展品 demo 会动的效果必须走 `usePrefersReducedMotion()`；demo 不写死颜色，用 `var(--stage-ink)` / `var(--stage-muted)` / `var(--stage-bg)`。
+- 现场页的动效同样要降级：`reduced-motion` 下不做位移/缩放/跟随，内容静态可读；触屏（`pointer: coarse`）下不假装有光标跟随。优先用 CSS 的 `animation-timeline: scroll()/view()`，JS 只做兜底，且监听要 cleanup。
 
 ## 8. 不要做的事
 
@@ -113,9 +115,12 @@ Tailwind 里通过 `@theme inline` 映射成 `bg-canvas`、`text-ink-2`、`borde
 - 不在页面里手写 `#/…` 链接；用 `Link`、`hrefFor`、`entryPath`。
 - 不手改 `src/data/entryMeta.ts`、不提交 `dist/`。
 - 首屏只准 import `ENTRY_META`（`src/data/meta.ts`），完整词条只给详情页/速查表这类懒加载路由。
+- 现场页里不要用可见的 `h1`（外壳已有 sr-only h1），也不要把代码片段注释写成中文——英文模式下整页会做「不含中文字符」的断言。
+- 不在展台 demo 里依赖整页滚动；需要整页才能成立的效果，去做现场页。
 
 ## 9. 加页面 / 加组件
 
 - 新页面：写 `src/pages/XPage.tsx` → `src/pages/routeModules.ts` 注册 → `src/lib/routes.ts` 的 `STATIC_PAGES` 登记 → `src/lib/pageFor.tsx` 加 case → `src/prerenderApp.tsx` 的 `loadPages()` 加载。缺一步预渲染就漏页。
 - 新组件：先看能不能用上表里的组合；确实要新组件时，API 用小而扁的 props，颜色/字号用 token 类，文案由调用方传入。
-- 改视觉后必须截图人眼验收（/、/browse/、详情页、反查、俗称总表；375px 与 1280px；明暗两主题）；`pnpm check && pnpm build` 只是门槛，看不出好不好看。
+- 加现场页：`src/data/live.ts` 登记 `{ slug, group, noteKey }`（slug 必须是已有词条）→ `src/livedemos/<slug>.tsx` 写默认导出、无 props 的整页组件 → `src/livedemos/registry.ts` 加一条动态 import。路由、预渲染、索引页与 `/live/` 的 sitemap 会自动跟上。文案 key 加在 `strings.ts`（`live.note.<slug>`、分组 `live.group.*`）。
+- 改视觉后必须截图人眼验收（/、/browse/、详情页、反查、俗称总表、现场页；375px 与 1280px；明暗两主题）；`pnpm check && pnpm build` 只是门槛，看不出好不好看。
