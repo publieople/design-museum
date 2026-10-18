@@ -34,6 +34,7 @@ export function HomePage() {
 
         <div className="enter enter-4">
           <SearchBox value={query} onChange={setQuery} />
+          <p className="mt-2 px-1 font-mono text-[11px] text-muted">{t('search.pinyinHint')}</p>
         </div>
 
         {query ? (
@@ -115,6 +116,20 @@ export function HomePage() {
 
       {!query ? (
         <section className="grid gap-4 sm:grid-cols-2">
+          <Link
+            to="/reverse"
+            className="surface-card rounded-xl border border-line bg-raised p-5 no-underline"
+          >
+            <h2 className="font-display text-lg font-semibold">{t('home.reverseTitle')}</h2>
+            <p className="mt-1 text-sm text-muted">{t('home.reverseDesc')}</p>
+          </Link>
+          <Link
+            to="/aliases"
+            className="surface-card rounded-xl border border-line bg-raised p-5 no-underline"
+          >
+            <h2 className="font-display text-lg font-semibold">{t('home.aliasTitle')}</h2>
+            <p className="mt-1 text-sm text-muted">{t('home.aliasDesc')}</p>
+          </Link>
           <Link
             to="/feel"
             className="surface-card rounded-xl border border-line bg-raised p-5 no-underline"

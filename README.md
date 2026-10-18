@@ -14,6 +14,9 @@
 - **一键复制的提示词**：中文需求句（带当前参数）和英文关键词（AI 最容易认的术语），随滑块实时更新；外加一个**分享链接**，把你调好的那组参数一起带走。
 - **感觉导航**：不知道叫什么，就回答「用在哪 / 什么感觉 / 想达到什么」，从候选里挑。
 - **速查表**：勾选这次要用的几个效果，导出一整段需求清单；**会带上你在词条页调过的参数**，不是永远用默认值。
+- **反查**：手里只有一段 CSS 或别人的一句描述？粘进去，按 CSS 属性、关键词和描述相似度给出最可能的效果、匹配度与命中理由。
+- **俗称总表**：251 个俗称、口语说法和英文术语摊在一页，按展厅分组、可搜，点一下进词条。
+- **搜得到**：中文名支持拼音与首字母（`maoboli`、`mbl` → 毛玻璃），还能容忍一两个拼写错误（`backdop filter` 也能找到）。
 
 ## 设置（右上角）
 
@@ -37,7 +40,7 @@ pnpm dev          # http://localhost:5173
 ```bash
 pnpm check        # typecheck + lint + test 一条命令（提交门槛）
 pnpm typecheck    # tsc -b，零错误是提交门槛
-pnpm test         # vitest：内容校验 + 条目规范 + 检索 + 参数 URL + 偏好 + i18n + 提示词 + 首屏 meta 同步 + 页面与 demo 渲染冒烟（206 项）
+pnpm test         # vitest：内容校验 + 条目规范 + 检索 + 参数 URL + 偏好 + i18n + 提示词 + 首屏 meta 同步 + 反查/拼音/俗称 + 页面与 demo 渲染冒烟（292 项）
 pnpm gen:meta     # 改过词条后重新生成首屏用的 meta（src/data/entryMeta.ts）
 pnpm gen:catalog  # 重新生成给 AI 用的目录（public/catalog.json / catalog.md / llms.txt）
 pnpm validate     # 只跑内容校验
@@ -55,6 +58,7 @@ pnpm preview      # 预览产物
 - `/` 聚焦搜索框（在别的输入框里打字时不会抢）
 - `↑` `↓` 在搜索建议里移动，`Enter` 打开，`Esc` 清空
 - 搜索框是一个符合 combobox 语义的控件，带 `aria-activedescendant`
+- 「反查」页里按 `Ctrl` / `Cmd` + `Enter` 直接提交查询
 
 ## 技术栈
 
@@ -63,7 +67,7 @@ Vite 8 + React 19 + TypeScript + Tailwind CSS v4。零后端，纯静态产物�
 刻意的取舍：
 
 - **不引路由库**：路由表是静态的，`src/lib/router.tsx` + `src/lib/routes.ts` 自己写；构建期再跑 `scripts/prerender.mjs` 把每个地址渲染成静态 HTML，所以也省掉 Pages 的 404 重写。
-- **不引检索库**：几十条数据在内存里，`src/lib/search.ts` 用「归一化 + 分字段加权 + 逐词兜底」打分。
+- **不引检索库**：几十条数据在内存里，`src/lib/search.ts` 用「归一化 + 分字段加权 + 逐词兜底 + 拼音/编辑距离兜底」打分；拼音表是构建期生成的一份读音表，运行时只查表。
 - **不引状态库**：偏好只有五项，`src/lib/prefs.tsx` 一个 context 就够。
 - **字体本地打包**：`@fontsource-variable/*`，不请求外部字体 CDN。
 
@@ -75,12 +79,13 @@ Vite 8 + React 19 + TypeScript + Tailwind CSS v4。零后端，纯静态产物�
 |---|---|
 | `/` | 首页 |
 | `/browse/`、`/feel/`、`/cheatsheet/`、`/about/` | 词条库、感觉导航、速查表、怎么用 |
+| `/reverse/`、`/aliases/` | 反查、俗称总表 |
 | `/entry/<slug>/` | 每条词条一个独立地址（例：<https://publieople.github.io/design-museum/entry/frosted-glass/>） |
 | `/debug/all` | 只在开发模式可达，生产构建渲染 404 |
 
-`pnpm build` 的最后一步 `scripts/prerender.mjs` 用 React 的 `renderToStaticMarkup` 把 35 个地址渲染成 `dist/<地址>/index.html`，同时生成 `dist/sitemap.xml` 与 `dist/404.html`；每页的 `<title>`、`description`、`canonical`、`og:*` 和 JSON-LD 都按页写（词条页是 `TechArticle`）。浏览器侧照常 `createRoot` 重新渲染，不做水合——localStorage 里的主题与语言可能和预渲染的默认值不一样。旧的 `#/entry/frosted-glass` 这类链接会在挂载前被 `history.replaceState` 归一化成新地址，历史分享链接不会失效。
+`pnpm build` 的最后一步 `scripts/prerender.mjs` 用 React 的 `renderToStaticMarkup` 把 47 个地址渲染成 `dist/<地址>/index.html`，同时生成 `dist/sitemap.xml` 与 `dist/404.html`；每页的 `<title>`、`description`、`canonical`、`og:*` 和 JSON-LD 都按页写（词条页是 `TechArticle`）。浏览器侧照常 `createRoot` 重新渲染，不做水合——localStorage 里的主题与语言可能和预渲染的默认值不一样。旧的 `#/entry/frosted-glass` 这类链接会在挂载前被 `history.replaceState` 归一化成新地址，历史分享链接不会失效。
 
-代价是首屏 HTML 从 2.5KB 变成约 16KB（未压缩）：首页首屏总字节 197KB → 201KB（+2.2%），换来的是爬虫不执行 JS 也能读到 35 个页面的正文。
+代价是首屏 HTML 从 2.5KB 变成约 16KB（未压缩），换来的是爬虫不执行 JS 也能读到 47 个页面的正文。
 
 ### 循环重播不是无差别的
 
@@ -88,19 +93,33 @@ Vite 8 + React 19 + TypeScript + Tailwind CSS v4。零后端，纯静态产物�
 
 | 取值 | 含义 | 数量 |
 |---|---|---|
-| `replay` | 挂载后自己播一次就停，重播就是再看一遍（交错进场、弹簧、逐字显现、数字滚动） | 4 |
-| `continuous` | 不需要外部重播——它自己在动（骨架微光、渐变漂移、颗粒抖动、描边自转），或者本来就是静态的（毛玻璃、玻璃拟态、可变字体） | 11 |
-| `manual` | 要用户滚动 / 拖动 / 指针交互才会动（视差、滚动驱动、粘性、滚动吸附、磁吸、按压反馈、手风琴、瀑布流） | 15 |
+| `replay` | 挂载后自己播一次就停，重播就是再看一遍（交错进场、弹簧、逐字显现、数字滚动、涟漪） | 5 |
+| `continuous` | 不需要外部重播——它自己在动（骨架微光、跑马灯、极光渐变、颗粒抖动、描边自转），或者本来就是静态的（毛玻璃、玻璃拟态、可变字体） | 16 |
+| `manual` | 要用户滚动 / 拖动 / 指针交互才会动（视差、滚动驱动、粘性、滚动吸附、磁吸、按压反馈、手风琴、瀑布流） | 19 |
 
 只有 `replay` 会被循环定时器重挂载。`manual` 的缩略图左下角会显示「↕ 自己动手试试」——不放这个角标的话，滚动驱动的卡片看上去就只是一张静止的图。
 
+### 反查、拼音与俗称总表
+
+**反查（`/reverse/`）** 把「贴一段代码或一句描述，问它叫什么」做成了页面：先认 CSS 属性（含 `-webkit-` 前缀、多行声明、`var()` 与函数值），再拿属性名去词条 `keywords` 里精确匹配，然后叠加关键词/别名短语、描述相似度（包含关系 + 2-gram + 中文单字覆盖率）与 `searchEntries` 兜底，合成 0–100 的匹配度，并把命中理由（哪条 CSS 属性、哪个关键词、哪句描述相近）列出来。它是**启发式打分，不是语义理解**：粘代码的命中率最高，纯口语描述只保证「大概率在前几条」。
+
+**拼音与错别字** 走 `src/lib/search.ts` 的兜底层：`src/lib/pinyinTable.ts` 是构建期生成的汉字读音表（只收词条 `nameZh` / `aliases` 里出现的字 + 少量同音错字），运行时用纯函数查表，不引任何拼音库。原文命中永远优先于拼音命中；拼音只负责把 `maoboli`、`mbl` 这类输入接回词条，拉丁文再叠加有界编辑距离（4–7 个字母容 1 个错，8 个以上容 2 个），所以 `backdop filter` 也能命中。读音表由 `scripts/gen-pinyin.mjs` 从词条数据重新生成，`pinyin-pro` 只装在临时目录，不进依赖、不进产物：
+
+```bash
+mkdir -p /tmp/pinyin-gen && cd /tmp/pinyin-gen
+npm init -y && npm i pinyin-pro@3
+node /home/po/design-museum/scripts/gen-pinyin.mjs
+```
+
+**俗称总表（`/aliases/`）** 把全站 251 个 `aliases` 摊平成一页：按展厅分组、可搜（复用同一套检索，所以拼音/错别字也能用），每条都链回词条；发现新叫法可以直接去 GitHub 提交。
+
 ### 版式
 
-列表类页面（词条库 / 感觉导航 / 速查表）外壳放到 `max-w-[90rem]`，大屏下卡片约 450px；正文类页面（首页 / 词条详情 / 怎么用）保持 `max-w-5xl` 的易读行宽。缩略图舞台用 `aspect-[4/3]` 跟着卡片宽度自适应，里面的 demo 由 `DemoRunner` 量出自然尺寸后等比缩放到填满舞台（0.7–1.7 倍）——每个 demo 各自按自己的尺寸设计，不缩放的话在宽卡片里只占一小块。
+列表类页面（词条库 / 感觉导航 / 速查表 / 反查 / 俗称总表）外壳放到 `max-w-[90rem]`，大屏下卡片约 450px；正文类页面（首页 / 词条详情 / 怎么用）保持 `max-w-5xl` 的易读行宽。缩略图舞台用 `aspect-[4/3]` 跟着卡片宽度自适应，里面的 demo 由 `DemoRunner` 量出自然尺寸后等比缩放到填满舞台（0.7–1.7 倍）——每个 demo 各自按自己的尺寸设计，不缩放的话在宽卡片里只占一小块。
 
 ### 性能
 
-页面与 demo 都是按需加载：`src/demos/registry.ts` 用非 eager 的 `import.meta.glob`，每个 demo 各自成一个 chunk（每个 1–4KB），首页只下载真正挂出来的那几个；`src/App.tsx` 里各页面也是 `lazy`。构建产物 50 个 JS chunk（另有 1 个 CSS 与 8 个字体文件）。改之前是单包 433KB（gzip 138KB），现在首屏约 356KB（gzip 119KB），且换页不再重新下载所有 demo。
+页面与 demo 都是按需加载：`src/demos/registry.ts` 用非 eager 的 `import.meta.glob`，每个 demo 各自成一个 chunk（每个 1–4KB），首页只下载真正挂出来的那几个；`src/App.tsx` 里各页面也是 `lazy`。构建产物 64 个 JS chunk（另有 1 个 CSS 与 8 个字体文件）。改之前是单包 433KB（gzip 138KB）；现在首页首屏 20 个请求、498KB 原始 / 213KB gzip，其中主包 80.9KB、首屏词条 meta 31KB、两个字体 61.9KB（以上为 gzip），拼音表只给检索 chunk 加了约 5.4KB（gzip 约 2.6KB），换页不再重新下载所有 demo。
 
 ## 目录结构
 
@@ -135,7 +154,7 @@ src/
 │   ├── routes.ts             # 地址工具：withBase / hrefFor / absoluteUrl / STATIC_PAGES
 │   ├── router.tsx            # 手写路由：pushState + popstate，Link / navigate / useRoute
 │   ├── pageFor.tsx           # 由路径段挑页面，App 与预渲染共用这一份路由表
-│   ├── search.ts  prompt.ts  copy.ts  controls.ts  motion.ts  viewport.ts
+│   ├── search.ts  pinyin.ts  pinyinTable.ts  reverseLookup.ts  aliasIndex.ts  prompt.ts  copy.ts  controls.ts  motion.ts  viewport.ts
 │   ├── timeScale.ts          # 慢放：给子树里的 Web Animations 设 playbackRate
 │   ├── loop.ts               # 循环策略：哪些演示该被自动重播
 │   └── replay.ts             # 循环重播用的计数器
@@ -145,7 +164,8 @@ src/
 └── styles/global.css         # 设计 token、主题变量、切换过渡
 
 scripts/
-├── prerender.mjs             # 构建期渲染 35 个地址 + sitemap.xml + 404.html + 墓碑跳转页
+├── prerender.mjs             # 构建期渲染 47 个地址 + sitemap.xml + 404.html + 墓碑跳转页
+├── gen-pinyin.mjs            # 生成拼音检索用的汉字读音表（需临时装 pinyin-pro，见 README）
 ├── gen-catalog.mjs           # pnpm gen:catalog：生成给 AI 的目录与 llms.txt
 ├── load-site.mjs             # 用 vite 的 ssrLoadModule 读 TS 数据（维护者脚本共用）
 ├── new-entry.mjs             # pnpm new:entry：生成词条与 demo 骨架
@@ -288,12 +308,13 @@ gh api -X PATCH repos/publieople/design-museum \
 - 预渲染给的是文案与结构，**动起来的效果仍然需要 JS**：爬虫读到的是正文，不是演示。
 - 构建产物里还有一个约 1.7KB 的 `DebugAllPage-*.js` 死 chunk（动态 import 被静态分析收进图谱，不产生网络请求）。
 - `pnpm lint` 目前有 21 条 warning、0 error：主要是 `react-hooks/set-state-in-effect`、`react(only-export-components)`（`src/lib/prefs.tsx`、`src/lib/router.tsx`、`src/components/Toast.tsx` 这类「一个文件里既有组件又有 hook/工具」的写法）与 1 条 `DemoRunner.tsx` 的 `static-components`。CI 会跑 lint，只拦 error，warning 不阻塞合并。
+- 反查是启发式打分，不是语义理解：粘 CSS 命中率最高，纯口语描述不保证答案一定对；拼音表只覆盖词条名称/别名里出现过的字，表外同音字不会映射。
 
 ## 待办（按性价比排序）
 
-1. 反查：粘贴一段代码或别人的描述 → 说出它叫什么。
-2. 拼音搜索（maoboli → 毛玻璃）与错别字容错。
-3. 俗称总表页：把全站 `aliases` 汇总成可搜、可贡献的一页。
+1. ~~反查：粘贴一段代码或别人的描述 → 说出它叫什么。~~ 已完成：`/reverse/`，CSS 属性 + 关键词 + 描述相似度打分，附命中理由。
+2. ~~拼音搜索（maoboli → 毛玻璃）与错别字容错。~~ 已完成：构建期读音表 + 有界编辑距离，原文命中优先。
+3. ~~俗称总表页：把全站 `aliases` 汇总成可搜、可贡献的一页。~~ 已完成：`/aliases/`，251 条、按展厅分组、可搜。
 4. 「别搞混」做成双向对比页（毛玻璃 ⇄ 玻璃拟态 ⇄ 半透明）。
 5. 视觉回归测试：全部 demo 的截图对比。
 6. ~~词条扩充：现在 30 条，每厅再加 2 条。~~ 已完成：40 条（每厅 8 条），界面与 SEO 文案里的计数已改成动态数字（`{n}` 占位）。

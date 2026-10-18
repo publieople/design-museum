@@ -6,6 +6,12 @@ function firstSlug(query: string): string | undefined {
   return searchEntries(ENTRY_META, query)[0]?.entry.slug
 }
 
+function topSlugs(query: string, count: number): string[] {
+  return searchEntries(ENTRY_META, query)
+    .slice(0, count)
+    .map((hit) => hit.entry.slug)
+}
+
 describe('归一化与分词', () => {
   it('去空白、去标点、转小写', () => {
     expect(normalizeText('  Backdrop-Filter ')).toBe('backdropfilter')
@@ -42,7 +48,49 @@ describe('搜索', () => {
   })
 
   it('只说「玻璃」时毛玻璃排在玻璃拟态前面', () => {
-    const hits = searchEntries(ENTRY_META, '玻璃').map((hit) => hit.entry.slug)
-    expect(hits[0]).toBe('frosted-glass')
+    const slugs = searchEntries(ENTRY_META, '玻璃').map((hit) => hit.entry.slug)
+    expect(slugs[0]).toBe('frosted-glass')
   })
 })
+
+describe('拼音搜索', () => {
+  it('全拼命中：连写、空格、大写都对', () => {
+    expect(firstSlug('maoboli')).toBe('frosted-glass')
+    expect(firstSlug('mao bo li')).toBe('frosted-glass')
+    expect(firstSlug('MAOBOLI')).toBe('frosted-glass')
+    expect(firstSlug('MaoBoLi')).toBe('frosted-glass')
+  })
+
+  it('拼音少打一个字母（编辑距离 1）仍能命中', () => {
+    expect(firstSlug('moboli')).toBe('frosted-glass')
+  })
+
+  it('首字母缩写出现在前 3', () => {
+    expect(topSlugs('mbl', 3)).toContain('frosted-glass')
+  })
+
+  it('同音错别字靠拼音命中', () => {
+    expect(firstSlug('磨沙玻璃')).toBe('frosted-glass')
+  })
+
+  it('英文 typo（编辑距离 1）仍能命中', () => {
+    expect(firstSlug('backdop filter')).toBe('frosted-glass')
+    expect(firstSlug('backdorp blur')).toBe('frosted-glass')
+  })
+
+  it('拼音兜底不改变原文命中的排序', () => {
+    expect(firstSlug('玻璃')).toBe('frosted-glass')
+    expect(firstSlug('磨砂玻璃')).toBe('frosted-glass')
+  })
+
+  it('拼音兜底不会让噪声查询命中', () => {
+    expect(searchEntries(ENTRY_META, 'zzzqqqxxx')).toEqual([])
+    expect(searchEntries(ENTRY_META, 'maobolizzz')).toEqual([])
+  })
+
+  it('空查询仍返回全部，分数为 0', () => {
+    expect(searchEntries(ENTRY_META, '   ')).toHaveLength(ENTRY_META.length)
+    expect(searchEntries(ENTRY_META, '   ').every((hit) => hit.score === 0)).toBe(true)
+  })
+})
+

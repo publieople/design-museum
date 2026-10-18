@@ -14,13 +14,15 @@ import { ROUTE_MODULES, type PageComponents } from './pages/routeModules'
  */
 
 export async function loadPages(): Promise<PageComponents> {
-  const [home, browse, entry, feel, cheatsheet, about, debug] = await Promise.all([
+  const [home, browse, entry, feel, cheatsheet, about, reverse, aliases, debug] = await Promise.all([
     ROUTE_MODULES.home(),
     ROUTE_MODULES.browse(),
     ROUTE_MODULES.entry(),
     ROUTE_MODULES.feel(),
     ROUTE_MODULES.cheatsheet(),
     ROUTE_MODULES.about(),
+    ROUTE_MODULES.reverse(),
+    ROUTE_MODULES.aliases(),
     ROUTE_MODULES.debug(),
   ])
   return {
@@ -30,6 +32,8 @@ export async function loadPages(): Promise<PageComponents> {
     feel: feel.default,
     cheatsheet: cheatsheet.default,
     about: about.default,
+    reverse: reverse.default,
+    aliases: aliases.default,
     debug: debug.default,
   }
 }

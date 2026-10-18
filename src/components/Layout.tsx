@@ -5,7 +5,7 @@ import { Link, useRoute } from '../lib/router'
 import { SettingsMenu } from './SettingsMenu'
 
 /** 以「看展品」为主的页面放宽外壳；以「读文字」为主的页面保持易读行宽 */
-const WIDE_ROUTES = new Set(['browse', 'feel', 'cheatsheet', 'debug'])
+const WIDE_ROUTES = new Set(['browse', 'feel', 'cheatsheet', 'reverse', 'aliases', 'debug'])
 
 export function Layout({ children }: { children: ReactNode }) {
   const t = useT()
@@ -19,6 +19,7 @@ export function Layout({ children }: { children: ReactNode }) {
 
   const nav = [
     { to: '/browse', label: t('nav.browse') },
+    { to: '/reverse', label: t('nav.reverse') },
     { to: '/feel', label: t('nav.feel') },
     { to: '/cheatsheet', label: t('nav.cheatsheet') },
     { to: '/about', label: t('nav.about') },
@@ -80,6 +81,9 @@ export function Layout({ children }: { children: ReactNode }) {
       >
         <p>{t('site.footer')}</p>
         <div className="flex flex-wrap items-center gap-x-4 gap-y-1">
+          <Link to="/aliases" className="font-mono no-underline hover:text-accent">
+            {t('nav.aliases')}
+          </Link>
           <Link to="/about" className="font-mono no-underline hover:text-accent">
             {t('site.license')}
           </Link>

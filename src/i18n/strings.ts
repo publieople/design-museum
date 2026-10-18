@@ -39,12 +39,22 @@ export const STRINGS = {
     zh: '怎么用这份词典：从找到名字、调参数，到复制成 AI 能执行的需求；页尾是许可与致谢。',
     en: 'How to use this museum: find the name, tune the parameters, copy a request AI can execute — plus licenses and credits.',
   },
+  'seo.reverse.desc': {
+    zh: '粘贴一段 CSS 或一句口语描述，反查它叫什么。{n} 条词条的关键词、CSS 属性和描述都参与匹配，结果附命中理由，可跳到词条或复制成给 AI 的需求。',
+    en: 'Paste a CSS declaration or a fuzzy description and reverse it into a name. Keywords, CSS properties and descriptions of {n} entries all count, with reasons, entry links and ready-to-copy briefs.',
+  },
+  'seo.aliases.desc': {
+    zh: '全站俗称总表：把「磨砂」「果冻」「磁吸」这些口语说法和正式术语对起来，点一下进入词条。',
+    en: 'Every nickname on one page: plain-language names such as frosted, jelly or magnetic, matched to their formal terms and entries.',
+  },
   'seo.entry.desc': {
     zh: '{name}（{code}）：{oneLiner} 含可交互演示、参数滑块与 CSS 参数，可直接复制成给 AI 的需求。',
     en: '{name} ({code}): {oneLiner} Interactive demo, parameter sliders and CSS values you can copy into a request for AI.',
   },
 
   'nav.browse': { zh: '词条库', en: 'Browse' },
+  'nav.reverse': { zh: '反查', en: 'Reverse' },
+  'nav.aliases': { zh: '俗称总表', en: 'Aliases' },
   'nav.feel': { zh: '感觉导航', en: 'Find by feel' },
   'nav.cheatsheet': { zh: '速查表', en: 'Cheat sheet' },
   'nav.about': { zh: '怎么用', en: 'How to use' },
@@ -98,6 +108,16 @@ export const STRINGS = {
     zh: '勾选这次要用的几个效果，导出一段带中英术语和参数的需求清单。',
     en: 'Tick the effects this page needs and export one brief with terms, parameters and technical requirements.',
   },
+  'home.reverseTitle': { zh: '有代码或一句描述？反查名字', en: 'Have code or a description? Reverse it' },
+  'home.reverseDesc': {
+    zh: '粘贴 backdrop-filter: blur(20px)，或写「半透明磨砂玻璃」，看看它对应哪件展品。',
+    en: 'Paste a CSS snippet or describe the effect in plain words and see which entry it maps to.',
+  },
+  'home.aliasTitle': { zh: '俗称总表 · 口语说法一页查完', en: 'Alias index · every nickname, one page' },
+  'home.aliasDesc': {
+    zh: '磨砂、果冻、磁吸、数字滚动……按俗称直接跳到词条，也能提议新别名。',
+    en: 'Frosted, jelly, magnetic, count-up — jump straight to the entry, or suggest a new alias.',
+  },
   'home.categoriesRef': { zh: '展品分类参考：', en: 'Halls:' },
 
   'browse.title': { zh: '词条库', en: 'Browse' },
@@ -112,8 +132,12 @@ export const STRINGS = {
   'browse.tryFeel': { zh: '试试按感觉找 →', en: 'Try find by feel →' },
 
   'search.placeholder': {
-    zh: '试试「毛玻璃」「磨砂」「backdrop blur」…',
-    en: 'Try “frosted glass”, “jelly”, “backdrop blur”…',
+    zh: '试试「毛玻璃」「maoboli」「backdrop blur」…',
+    en: 'Try “frosted glass”, “maoboli”, “backdrop blur”…',
+  },
+  'search.pinyinHint': {
+    zh: '支持拼音与首字母：maoboli / mbl 都能找到毛玻璃',
+    en: 'Pinyin and initials work too: maoboli or mbl finds frosted glass',
   },
   'search.aria': { zh: '搜索效果', en: 'Search effects' },
   'search.clear': { zh: '清空搜索', en: 'Clear search' },
@@ -200,6 +224,54 @@ export const STRINGS = {
   'sheet.resetTuned': { zh: '改回默认参数', en: 'Reset to defaults' },
   'sheet.toast': { zh: '需求清单已复制', en: 'Brief copied' },
 
+  'reverse.eyebrow': { zh: '反查 · REVERSE LOOKUP', en: 'REVERSE LOOKUP' },
+  'reverse.title': { zh: '反查', en: 'Reverse lookup' },
+  'reverse.lede': {
+    zh: '粘贴一段 CSS（比如 backdrop-filter: blur(20px)），或者用口语描述你看到的效果。系统会按 CSS 属性、关键词和描述相似度给词条打分。',
+    en: 'Paste a CSS snippet such as backdrop-filter: blur(20px), or describe the effect in plain language. Entries are scored by CSS properties, keywords and description similarity.',
+  },
+  'reverse.inputLabel': { zh: 'CSS 代码或描述', en: 'CSS or description' },
+  'reverse.placeholder': {
+    zh: 'backdrop-filter: blur(20px) saturate(140%);\n或者：卡片背后半透明磨砂玻璃',
+    en: 'backdrop-filter: blur(20px) saturate(140%);\nor: a frosted translucent panel behind the card',
+  },
+  'reverse.exampleCss': { zh: '示例 CSS', en: 'Example CSS' },
+  'reverse.exampleText': { zh: '示例描述', en: 'Example description' },
+  'reverse.submit': { zh: '反查', en: 'Look up' },
+  'reverse.clear': { zh: '清空', en: 'Clear' },
+  'reverse.empty': {
+    zh: '贴上代码或描述，这里会列出最可能的效果。',
+    en: 'Paste code or a description and the most likely effects will appear here.',
+  },
+  'reverse.noMatch': {
+    zh: '没找到匹配。只保留关键属性试试，或者去俗称总表按口语说法找。',
+    en: 'No match. Try just the key property, or browse the alias index by nickname.',
+  },
+  'reverse.results': { zh: '最可能的 {n} 条', en: 'Top {n} matches' },
+  'reverse.score': { zh: '匹配度 {n}%', en: '{n}% match' },
+  'reverse.detected': { zh: '识别到 {n} 个 CSS 属性', en: '{n} CSS properties recognised' },
+  'reverse.whyCss': { zh: 'CSS 属性：{x}', en: 'CSS property: {x}' },
+  'reverse.whyKeyword': { zh: '关键词：{x}', en: 'Keyword: {x}' },
+  'reverse.whyText': { zh: '描述相近：{x}', en: 'Description: {x}' },
+  'reverse.open': { zh: '打开词条', en: 'Open entry' },
+  'reverse.aliasLink': { zh: '浏览俗称总表 →', en: 'Browse the alias index →' },
+
+  'aliases.eyebrow': { zh: '俗称总表 · ALIAS INDEX', en: 'ALIAS INDEX' },
+  'aliases.title': { zh: '俗称总表', en: 'Alias index' },
+  'aliases.lede': {
+    zh: '同一个效果常有好几种叫法。这里是全站的俗称、口语说法和英文术语——按名字搜，或者直接扫一遍。',
+    en: 'One effect often has many names. Every nickname, plain-language phrase and English term on the site — search them or scan the list.',
+  },
+  'aliases.search': { zh: '搜索俗称、术语或词条', en: 'Search aliases, terms or entries' },
+  'aliases.count': { zh: '{a} 个俗称，来自 {b} 条词条', en: '{a} aliases from {b} entries' },
+  'aliases.empty': {
+    zh: '没有匹配的俗称。换个说法试试，或者去词条库搜。',
+    en: 'No aliases match. Try another phrase, or search the collection.',
+  },
+  'aliases.clear': { zh: '清空', en: 'Clear' },
+  'aliases.contribute': { zh: '发现新的俗称？去 GitHub 提一条 →', en: 'Found a new nickname? Suggest it on GitHub →' },
+  'aliases.browseLink': { zh: '去词条库 →', en: 'Browse all entries →' },
+
   'notFound.title': { zh: '这里没有展品', en: 'Nothing here' },
   'notFound.desc': { zh: '地址可能写错了。回首页重新开始。', en: 'That address looks wrong. Head back home.' },
   'notFound.home': { zh: '首页', en: 'Home' },
@@ -240,6 +312,8 @@ export const STRINGS = {
   },
 
   'titles.browse': { zh: '词条库', en: 'Browse' },
+  'titles.reverse': { zh: '反查', en: 'Reverse lookup' },
+  'titles.aliases': { zh: '俗称总表', en: 'Alias index' },
   'titles.feel': { zh: '感觉导航', en: 'Find by feel' },
   'titles.cheatsheet': { zh: '速查表', en: 'Cheat sheet' },
   'titles.about': { zh: '怎么用', en: 'How to use' },

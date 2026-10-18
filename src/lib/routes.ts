@@ -80,6 +80,8 @@ export const TITLE_KEYS: Record<string, StringKey> = {
   feel: 'titles.feel',
   cheatsheet: 'titles.cheatsheet',
   about: 'titles.about',
+  reverse: 'titles.reverse',
+  aliases: 'titles.aliases',
   entry: 'titles.entry',
   debug: 'titles.debug',
 }
@@ -104,4 +106,6 @@ export const STATIC_PAGES: readonly StaticPage[] = [
     descKey: 'seo.cheatsheet.desc',
   },
   { path: '/about', head: 'about', titleKey: TITLE_KEYS.about, descKey: 'seo.about.desc' },
+  { path: '/reverse', head: 'reverse', titleKey: TITLE_KEYS.reverse, descKey: 'seo.reverse.desc' },
+  { path: '/aliases', head: 'aliases', titleKey: TITLE_KEYS.aliases, descKey: 'seo.aliases.desc' },
 ]

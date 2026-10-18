@@ -10,6 +10,8 @@ export interface PageComponents {
   feel: PageComponent
   cheatsheet: PageComponent
   about: PageComponent
+  reverse: PageComponent
+  aliases: PageComponent
   debug: PageComponent
 }
 
@@ -27,5 +29,7 @@ export const ROUTE_MODULES = {
   feel: () => import('./FeelPage').then((m) => ({ default: m.FeelPage })),
   cheatsheet: () => import('./CheatSheetPage').then((m) => ({ default: m.CheatSheetPage })),
   about: () => import('./AboutPage').then((m) => ({ default: m.AboutPage })),
+  reverse: () => import('./ReversePage').then((m) => ({ default: m.ReversePage })),
+  aliases: () => import('./AliasesPage').then((m) => ({ default: m.AliasesPage })),
   debug: () => import('./DebugAllPage').then((m) => ({ default: m.DebugAllPage })),
 } satisfies { [K in keyof PageComponents]: () => Promise<{ default: PageComponents[K] }> }
