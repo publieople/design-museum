@@ -319,6 +319,180 @@ export const STRINGS = {
   'titles.about': { zh: '怎么用', en: 'How to use' },
   'titles.entry': { zh: '展品', en: 'Specimen' },
   'titles.debug': { zh: '冒烟测试', en: 'Smoke test' },
+  // ── INDEX 重设计新增 ─────────────────────────────────────────
+  'common.copy': { zh: '复制', en: 'Copy' },
+  'common.copied': { zh: '已复制', en: 'Copied' },
+  'common.close': { zh: '关闭', en: 'Close' },
+  'common.clear': { zh: '清空', en: 'Clear' },
+  'common.reset': { zh: '重置', en: 'Reset' },
+  'common.all': { zh: '全部', en: 'All' },
+  'common.more': { zh: '更多', en: 'More' },
+  'common.open': { zh: '打开', en: 'Open' },
+  'common.back': { zh: '返回', en: 'Back' },
+
+  'nav.search': { zh: '搜索', en: 'Search' },
+  'nav.menu': { zh: '菜单', en: 'Menu' },
+  'nav.close': { zh: '关闭菜单', en: 'Close menu' },
+  'nav.skip': { zh: '跳到正文', en: 'Skip to content' },
+  'footer.index': { zh: '索引', en: 'Index' },
+  'footer.tools': { zh: '工具', en: 'Tools' },
+  'footer.source': { zh: '源码与许可', en: 'Source & license' },
+
+  'search.dialogTitle': { zh: '搜索标本', en: 'Search specimens' },
+  'search.dialogHint': {
+    zh: '按名字、俗称、拼音或英文术语搜。↑↓ 选择，Enter 打开，Esc 关闭。',
+    en: 'Search names, nicknames, pinyin or English terms. ↑↓ to choose, Enter to open, Esc to close.',
+  },
+  'search.examples': { zh: '试试这些', en: 'Try these' },
+  'search.noResults': { zh: '没有匹配的标本', en: 'No specimens match' },
+  'search.noResultsHint': {
+    zh: '换个说法，或者从索引或感觉导航进去。',
+    en: 'Try another phrase, or go through the index or find by feel.',
+  },
+  'search.browseAll': { zh: '浏览全部 {n} 件', en: 'Browse all {n}' },
+  'search.open': { zh: '打开词条', en: 'Open entry' },
+  'search.hot': { zh: '热门搜索', en: 'Popular' },
+  'search.esc': { zh: '关闭', en: 'close' },
+
+  'home.kicker': { zh: '索引档案', en: 'Index archive' },
+  'home.hot': { zh: '热门标本', en: 'Popular specimens' },
+  'home.toolsTitle': { zh: '四件工具', en: 'Four tools' },
+  'home.browseAll': { zh: '浏览全部 {n} 件', en: 'Browse all {n}' },
+  'home.howTitle': { zh: '怎么用', en: 'How it works' },
+  'home.step1Title': { zh: '找到名字', en: 'Name it' },
+  'home.step1Desc': {
+    zh: '知道名字就搜名字；不知道就搜口语（「磨砂」「果冻」）、拼音（maoboli）或走感觉导航。',
+    en: 'Search the name if you know it; otherwise search a nickname (frosted, jelly), pinyin, or use find by feel.',
+  },
+  'home.step2Title': { zh: '调到满意', en: 'Tune it' },
+  'home.step2Desc': {
+    zh: '每条都有可交互演示和参数滑块，时长、缓动、模糊半径滑一遍就有数。',
+    en: 'Every entry has a live demo and sliders — drag once to feel duration, easing and blur radius.',
+  },
+  'home.step3Title': { zh: '交给 AI', en: 'Brief the AI' },
+  'home.step3Desc': {
+    zh: '复制带参数的中文需求句或英文术语，或去速查表把几个效果整段导出。',
+    en: 'Copy a brief with your values or the English terms, or export several effects from the cheat sheet.',
+  },
+
+  'browse.lede': {
+    zh: '全部 {n} 件标本。用展厅、用法、感觉和标签交叉筛选，也可以直接搜。',
+    en: 'All {n} specimens. Cross-filter by hall, usage, feel and tags, or just search.',
+  },
+  'browse.sort': { zh: '排序', en: 'Sort' },
+  'browse.sortCode': { zh: '按编号', en: 'By code' },
+  'browse.sortName': { zh: '按名称', en: 'By name' },
+  'browse.filters': { zh: '筛选', en: 'Filters' },
+  'browse.active': { zh: '{n} 个条件', en: '{n} active' },
+  'browse.results': { zh: '结果', en: 'Results' },
+  'browse.railHalls': { zh: '展厅', en: 'Halls' },
+  'browse.allHalls': { zh: '全部展厅', en: 'All halls' },
+  'browse.railHint': { zh: '展厅索引', en: 'Hall index' },
+
+  'aliases.jump': { zh: '跳到展厅', en: 'Jump to hall' },
+  'aliases.groupCount': { zh: '{n} 个俗称', en: '{n} aliases' },
+  'aliases.highlightHint': { zh: '朱红编号为搜索命中的词条', en: 'Red codes mark matching entries' },
+
+  'entry.output': { zh: '输出给 AI', en: 'Output for AI' },
+  'entry.tabZh': { zh: '中文需求句', en: 'Brief (Chinese)' },
+  'entry.tabEn': { zh: '英文术语', en: 'English terms' },
+  'entry.tabLink': { zh: '分享链接', en: 'Share link' },
+  'entry.copyPrompt': { zh: '复制给 AI', en: 'Copy for AI' },
+  'entry.resetParams': { zh: '恢复默认参数', en: 'Reset parameters' },
+  'entry.params': { zh: '参数', en: 'Parameters' },
+  'entry.compareTo': { zh: '容易混的', en: 'Confused with' },
+  'entry.openCompare': { zh: '去看「{x}」', en: 'Open “{x}”' },
+  'entry.metaShape': { zh: '形态', en: 'Shape' },
+  'entry.metaLoop': { zh: '播放', en: 'Playback' },
+  'entry.hallLabel': { zh: '展厅', en: 'Hall' },
+  'loop.replay': { zh: '重播', en: 'Replay' },
+  'loop.continuous': { zh: '常驻循环', en: 'Loop' },
+  'loop.manual': { zh: '手动触发', en: 'Manual' },
+  'entry.code': { zh: '编号', en: 'No.' },
+
+  'reverse.matches': { zh: '匹配 {n} 条', en: '{n} matches' },
+  'reverse.rank': { zh: '按匹配度', en: 'Ranked by match' },
+  'reverse.hint': {
+    zh: '说明：反查是启发式打分，不是语义理解。只保留关键属性通常更准。',
+    en: 'Note: this is heuristic scoring, not semantic understanding. Keeping only the key property usually helps.',
+  },
+  'reverse.tryBrowse': { zh: '去词条库翻一遍', en: 'Browse the collection' },
+  'reverse.tryFeel': { zh: '按感觉找', en: 'Find by feel' },
+
+  'sheet.export': { zh: '导出', en: 'Export' },
+  'sheet.langZh': { zh: '中文', en: 'Chinese' },
+  'sheet.langEn': { zh: '英文', en: 'English' },
+
+  'about.title': { zh: '怎么用这份词典', en: 'How to use this glossary' },
+  'about.lede': {
+    zh: '这个站不为教你写代码，为的是解决一件事：把「我想要那个……嗯……就是那个效果」变成一句 AI 一次就能做对的需求。',
+    en: 'This site is not here to teach you to code. It exists to close one gap: turning "I want that thing... you know, that effect" into a brief your AI gets right the first time.',
+  },
+  'about.stepsTitle': { zh: '三步', en: 'Three steps' },
+  'about.step1': {
+    zh: '找到它。知道名字就直接搜；不知道就按口语说法搜（「磨砂」「果冻」「卡片飘起来」），或者走感觉导航。',
+    en: 'Find it. Search the name if you know it; if you do not, search a plain-language phrase ("frosted", "jelly", "card floats up"), or use find by feel.',
+  },
+  'about.step2': {
+    zh: '调到你要的样子。每个词条都有可交互演示和参数滑块。时长、缓动、模糊半径这些数值不是玄学，滑一遍就知道差异在哪；顺带也能换背景，因为毛玻璃、发光这类效果离开背景就不成立。',
+    en: 'Tune it. Every entry has a live demo and sliders. Duration, easing and blur radius are not mysticism — drag once and the difference is obvious. You can also switch the backdrop, because glass and glow effects do not exist without one.',
+  },
+  'about.step3': {
+    zh: '复制过去。词条页给你两版：中文需求句（带当前参数）和英文关键词（AI 最容易认的术语）。一次要加好几个效果，就去速查表勾选后整段导出。',
+    en: 'Copy it. Each entry gives you two versions: a brief in Chinese with your current values, and English keywords using the terms models recognise best. Adding several effects at once? Tick them on the cheat sheet and export one block.',
+  },
+  'about.whyTitle': { zh: '为什么术语比形容词管用', en: 'Why terms beat adjectives' },
+  'about.whyBody': {
+    zh: '「高级一点的卡片」是形容词，「悬停抬升 + 12px 柔和投影 + 200ms ease-out」是名词和数值。前者要 AI 猜，后者 AI 能直接对上它训练过的实现。所以每条词条都同时给出中文名、英文术语、CSS 属性名和推荐取值——你负责挑，AI 负责落。',
+    en: '"A classier card" is an adjective. "Hover lift + 12px soft shadow + 200ms ease-out" is a noun plus numbers. The first forces a guess; the second maps straight onto implementations the model has seen. That is why every entry carries a Chinese name, an English term, the CSS properties and suggested values — you choose, the model builds.',
+  },
+  'about.mistakesTitle': { zh: '两个常见误区', en: 'Two common mistakes' },
+  'about.mistake1': {
+    zh: '把「别搞混」当废话。这一栏专门写两个容易混的效果差在哪——它通常也是 AI 最容易做错的地方。',
+    en: 'Skipping "Not to be confused with". That section exists because it is usually exactly where the model gets it wrong.',
+  },
+  'about.mistake2': {
+    zh: '只要关键词不要参数。同一个效果在 150ms 和 600ms 下是两种气质，参数才是你那次审美判断的落点。',
+    en: 'Taking the keywords but dropping the values. The same effect at 150ms and 600ms reads as two different products — the numbers are where your judgement actually lands.',
+  },
+  'about.templateTitle': { zh: '提示词模板', en: 'Prompt template' },
+  'about.catalogTitle': { zh: '让 AI 自己查', en: 'Let the AI look it up' },
+  'about.catalogBody': {
+    zh: '这个站还给机器发布了一份目录：AI 可以自己查，不用你把内容一段段复制进对话框。索引（别名、关键词、标签、控件默认值、现成需求句）在 catalog.json，逐条全文（什么时候用、别搞混、踩坑、推荐取值）在 catalog.md。',
+    en: 'This site also publishes its catalogue for machines, so an agent can search it itself instead of you pasting paragraphs into a chat. The index (aliases, keywords, tags, control defaults and ready-to-use briefs) lives in catalog.json; the full text of every entry (when to use, confusions, pitfalls, values) lives in catalog.md.',
+  },
+  'about.catalogNote': {
+    zh: '目录与页面同源，不会各说各话：这里的每条词条、别名、易混项与推荐取值，目录里都有。',
+    en: 'The catalogue is generated from the same data as these pages, so it cannot drift: every entry, alias, confusion and value you see here is in there too.',
+  },
+  'about.nextTitle': { zh: '继续走', en: 'Keep going' },
+  'about.nextBefore': { zh: '直接', en: 'Head into ' },
+  'about.nextBrowse': { zh: '进词条库', en: 'the collection' },
+  'about.nextMiddle': { zh: '，或者回到', en: 'or go back ' },
+  'about.nextHome': { zh: '首页', en: 'home' },
+  'about.nextAfter': {
+    zh: '搜一个你现在正缺的效果。',
+    en: 'and search for the effect you are missing right now.',
+  },
+  'about.licenseTitle': { zh: '许可与致谢', en: 'License and credits' },
+  'about.licenseCode': {
+    zh: '代码按 MIT 授权，文字内容按 CC BY 4.0 授权。',
+    en: 'Code is MIT, the written content is CC BY 4.0. ',
+  },
+  'about.licenseFonts': {
+    zh: '字体本地打包、不请求外部 CDN：JetBrains Mono 与 Space Grotesk，均为 SIL Open Font License 1.1。',
+    en: 'Fonts are bundled locally, no external CDN: JetBrains Mono and Space Grotesk, both under the SIL Open Font License 1.1. ',
+  },
+  'about.licenseEntries': {
+    zh: '词条正文是原创归纳，只链接到 MDN、web.dev 与 W3C 规范，那些页面的版权归各自所有者。',
+    en: 'Entries are our own summaries that link out to MDN, web.dev and the W3C specs — those pages stay with their owners.',
+  },
+  'about.licenseThirdParty': {
+    zh: '第三方组件与素材清单：',
+    en: 'Full list of third-party components: ',
+  },
+
+  'notFound.search': { zh: '去搜索', en: 'Search instead' },
 } as const
 
 export type StringKey = keyof typeof STRINGS

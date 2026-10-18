@@ -29,7 +29,8 @@
     "check": "pnpm typecheck && pnpm lint && pnpm test",
     "test": "vitest run",
     "test:watch": "vitest",
-    "validate": "vitest run src/data"
+    "validate": "vitest run src/data",
+    "screenshots": "node scripts/screenshots.mjs"
   },
   "dependencies": {
     "@fontsource-variable/jetbrains-mono": "^5.3.0",

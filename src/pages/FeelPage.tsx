@@ -1,13 +1,37 @@
 import { useMemo, useState } from 'react'
 import { ENTRY_META } from '../data/meta'
 import { FEELS, INTENTS, SCENES } from '../data/taxonomy'
-import { useT, useLocale } from '../i18n'
+import { useLocale, useT } from '../i18n'
 import { pick } from '../i18n/pick'
-import { EntryCard } from '../components/EntryCard'
-import { FilterChips } from '../components/FilterChips'
+import { buttonClass } from '../components/Button'
+import { EmptyState } from '../components/EmptyState'
+import { FilterRow, type FilterOption } from '../components/FilterRow'
+import { PageHeader } from '../components/PageHeader'
+import { SpecimenPlate } from '../components/SpecimenPlate'
 
 function toggle(list: string[], value: string): string[] {
   return list.includes(value) ? list.filter((item) => item !== value) : [...list, value]
+}
+
+function Question({
+  index,
+  title,
+  options,
+  selected,
+  onToggle,
+}: {
+  index: string
+  title: string
+  options: FilterOption[]
+  selected: string[]
+  onToggle: (value: string) => void
+}) {
+  return (
+    <div className="grid gap-3 border-b border-line pb-6 last:border-0 last:pb-0 sm:grid-cols-[2.5rem_minmax(0,1fr)]">
+      <span className="stamp w-fit">{index}</span>
+      <FilterRow legend={title} options={options} selected={selected} onToggle={onToggle} />
+    </div>
+  )
 }
 
 export function FeelPage() {
@@ -19,90 +43,93 @@ export function FeelPage() {
 
   const results = useMemo(
     () =>
-      ENTRY_META.filter(
-        (entry) =>
-          (scenes.length === 0 || entry.scenes.some((item) => scenes.includes(item))) &&
-          (feels.length === 0 || entry.feel.some((item) => feels.includes(item))) &&
-          (intents.length === 0 || entry.intent.some((item) => intents.includes(item))),
-      ),
+      ENTRY_META.filter((entry) => {
+        if (scenes.length > 0 && !entry.scenes.some((scene) => scenes.includes(scene))) return false
+        if (feels.length > 0 && !entry.feel.some((item) => feels.includes(item))) return false
+        if (intents.length > 0 && !entry.intent.some((item) => intents.includes(item))) return false
+        return true
+      }),
     [scenes, feels, intents],
   )
 
   const answered = scenes.length + feels.length + intents.length > 0
 
+  const reset = () => {
+    setScenes([])
+    setFeels([])
+    setIntents([])
+  }
+
   return (
     <div className="flex flex-col gap-8">
-      <header className="flex flex-col gap-2">
-        <h1 className="text-title font-display font-semibold enter enter-1">{t('feel.title')}</h1>
-        <p className="max-w-2xl text-muted">{t('feel.lede')}</p>
-      </header>
+      <PageHeader
+        kicker={t('footer.index')}
+        title={t('titles.feel')}
+        lede={t('feel.lede')}
+      />
 
-      <div className="flex flex-col gap-6 rounded-lg border border-line bg-raised p-5">
-        <div className="flex items-baseline gap-3">
-          <span className="font-mono text-xs text-accent">01</span>
-          <FilterChips
-            legend={t('feel.q1')}
-            options={SCENES.map((s) => ({ value: s.id, label: pick(s.label, locale) }))}
-            selected={scenes}
-            onToggle={(value) => setScenes((prev) => toggle(prev, value))}
-          />
-        </div>
-        <div className="flex items-baseline gap-3">
-          <span className="font-mono text-xs text-accent">02</span>
-          <FilterChips
-            legend={t('feel.q2')}
-            options={FEELS.map((f) => ({
-              value: f.id,
-              label: pick(f.label, locale),
-              hint: pick(f.hint, locale),
-            }))}
-            selected={feels}
-            onToggle={(value) => setFeels((prev) => toggle(prev, value))}
-          />
-        </div>
-        <div className="flex items-baseline gap-3">
-          <span className="font-mono text-xs text-accent">03</span>
-          <FilterChips
-            legend={t('feel.q3')}
-            options={INTENTS.map((i) => ({
-              value: i.id,
-              label: pick(i.label, locale),
-              hint: pick(i.hint, locale),
-            }))}
-            selected={intents}
-            onToggle={(value) => setIntents((prev) => toggle(prev, value))}
-          />
-        </div>
-        {answered ? (
-          <button
-            type="button"
-            onClick={() => {
-              setScenes([])
-              setFeels([])
-              setIntents([])
-            }}
-            className="cursor-pointer self-start font-mono text-[11px] text-muted underline decoration-dotted hover:text-accent"
-          >
-            {t('feel.reset')}
-          </button>
-        ) : null}
-      </div>
+      <section className="well flex flex-col gap-6 p-5 sm:p-6">
+        <Question
+          index="01"
+          title={t('feel.q1')}
+          options={SCENES.map((item) => ({ value: item.id, label: pick(item.label, locale) }))}
+          selected={scenes}
+          onToggle={(value) => setScenes((current) => toggle(current, value))}
+        />
+        <Question
+          index="02"
+          title={t('feel.q2')}
+          options={FEELS.map((item) => ({
+            value: item.id,
+            label: pick(item.label, locale),
+            hint: pick(item.hint, locale),
+          }))}
+          selected={feels}
+          onToggle={(value) => setFeels((current) => toggle(current, value))}
+        />
+        <Question
+          index="03"
+          title={t('feel.q3')}
+          options={INTENTS.map((item) => ({
+            value: item.id,
+            label: pick(item.label, locale),
+            hint: pick(item.hint, locale),
+          }))}
+          selected={intents}
+          onToggle={(value) => setIntents((current) => toggle(current, value))}
+        />
+      </section>
 
       <section className="flex flex-col gap-4">
-        <div className="flex items-baseline justify-between gap-4 border-b border-line pb-2">
-          <h2 className="label-mono">{answered ? t('feel.candidates') : t('feel.all')}</h2>
-          <span className="font-mono text-xs text-muted">
-            {t('home.unit', { n: results.length })}
-          </span>
+        <div className="flex flex-wrap items-baseline justify-between gap-3 border-b border-line pb-2">
+          <h2 className="label-mono text-ink">{answered ? t('feel.candidates') : t('feel.all')}</h2>
+          <div className="flex items-center gap-4">
+            <span className="font-mono text-[11px] text-muted">{t('home.unit', { n: results.length })}</span>
+            {answered ? (
+              <button
+                type="button"
+                onClick={reset}
+                className="cursor-pointer font-mono text-[11px] text-muted underline decoration-dotted underline-offset-4 transition-colors hover:text-accent"
+              >
+                {t('feel.reset')}
+              </button>
+            ) : null}
+          </div>
         </div>
+
         {results.length === 0 ? (
-          <p className="rounded-lg border border-dashed border-line p-8 text-center text-sm text-muted">
-            {t('feel.empty')}
-          </p>
+          <EmptyState
+            title={t('feel.empty')}
+            action={
+              <button type="button" onClick={reset} className={buttonClass({ variant: 'secondary', size: 'sm' })}>
+                {t('feel.reset')}
+              </button>
+            }
+          />
         ) : (
-          <ul className="grid gap-6 sm:grid-cols-2 xl:grid-cols-3">
+          <ul className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
             {results.map((entry) => (
-              <EntryCard key={entry.slug} entry={entry} />
+              <SpecimenPlate key={entry.slug} entry={entry} variant="grid" />
             ))}
           </ul>
         )}

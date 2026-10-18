@@ -22,3 +22,6 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
+
+# 视觉回归截图（scripts/screenshots.mjs）
+.screenshots

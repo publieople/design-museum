@@ -27,7 +27,7 @@ function Chip({
       aria-pressed={active}
       title={title}
       onClick={onClick}
-      className={`cursor-pointer rounded-full border px-2.5 py-1 text-xs transition-colors ${
+      className={`cursor-pointer rounded-[2px] border px-2.5 py-1 text-xs transition-colors ${
         active
           ? 'border-accent bg-accent/10 text-accent'
           : 'border-line text-muted hover:border-ink/40 hover:text-ink'
@@ -38,7 +38,14 @@ function Chip({
   )
 }
 
-export function SettingsMenu({ onOpenChange }: { onOpenChange?: (open: boolean) => void }) {
+export function SettingsMenu({
+  onOpenChange,
+  inDrawer = false,
+}: {
+  onOpenChange?: (open: boolean) => void
+  /** 放进移动端抽屉时铺满抽屉宽度，不再做浮层 */
+  inDrawer?: boolean
+}) {
   const t = useT()
   const locale = useLocale()
   const { theme, locale: currentLocale, stage, slow, loop, setPref, setPrefAnimated, resetPrefs } =
@@ -87,18 +94,24 @@ export function SettingsMenu({ onOpenChange }: { onOpenChange?: (open: boolean) 
             return !prev
           })
         }
-        className="flex cursor-pointer items-center gap-1.5 rounded-full border border-line px-2 py-1 text-sm text-muted transition-colors hover:text-ink sm:px-2.5"
+        className="flex cursor-pointer items-center gap-1.5 rounded-[2px] border border-line px-2 py-1 text-sm text-muted transition-colors hover:border-ink hover:text-ink sm:px-2.5"
       >
         <span aria-hidden="true" className="font-mono text-xs">
           ⌘
         </span>
         {/* 窄屏只留图标：粘性头部多占一行就得一直吃掉正文高度。
             文字用 sr-only 留在无障碍树里，按钮的可读名称不受影响。 */}
-        <span className="sr-only sm:not-sr-only">{t('settings.open')}</span>
+        <span className={inDrawer ? '' : 'sr-only sm:not-sr-only'}>{t('settings.open')}</span>
       </button>
 
       {open ? (
-        <div className="absolute right-0 top-full z-40 mt-2 w-80 rounded-xl border border-line bg-raised p-4 shadow-xl">
+        <div
+          className={
+            inDrawer
+              ? 'mt-2 w-full border border-line bg-raised p-4'
+              : 'absolute right-0 top-full z-40 mt-2 w-80 border border-line-strong bg-raised p-4 shadow-[var(--shadow-overlay)]'
+          }
+        >
           <div className="flex flex-col gap-4">
             <fieldset className="flex flex-col gap-2 border-0 p-0">
               <legend className="label-mono mb-1">{t('settings.theme')}</legend>

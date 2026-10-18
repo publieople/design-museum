@@ -25,8 +25,9 @@ describe('预渲染', () => {
   it('未知路径渲染成 404，而不是悄悄给首页', async () => {
     const pages = await loadPages()
     const html = renderPage('/nope', pages)
-    expect(html).toContain(`<h1 class="font-display text-2xl font-semibold">${translate('zh', 'notFound.title')}</h1>`)
-    // 首页的大标题有自己的一套字号，404 里不该出现
-    expect(html).not.toContain('text-display mt-3')
+    // 404 用自己的 h1（标题前面还有一个装饰性的大号 404，所以只断言 h1 本身）
+    expect(html).toMatch(new RegExp(`<h1 class="[^"]*font-display[^"]*">${translate('zh', 'notFound.title')}</h1>`))
+    // 首页正文的标志性说明不该跟着 404 一起出现
+    expect(html).not.toContain(translate('zh', 'home.lede'))
   })
 }, 30000)
