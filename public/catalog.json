@@ -2,9 +2,9 @@
   "version": 1,
   "site": "https://publieople.github.io/design-museum",
   "counts": {
-    "entries": 40,
+    "entries": 41,
     "perCategory": {
-      "motion": 8,
+      "motion": 9,
       "feedback": 8,
       "layout": 8,
       "visual": 8,
@@ -1127,6 +1127,109 @@
       "detail": {
         "page": "https://publieople.github.io/design-museum/entry/cursor-follower/",
         "markdown": "https://publieople.github.io/design-museum/catalog.md#cursor-follower"
+      }
+    },
+    {
+      "slug": "scroll-progress",
+      "code": "M-09",
+      "url": "https://publieople.github.io/design-museum/entry/scroll-progress/",
+      "category": "motion",
+      "nameZh": "滚动进度条",
+      "nameEn": "Scroll Progress Bar",
+      "aliases": [
+        "阅读进度条",
+        "滚动进度",
+        "进度条",
+        "阅读条",
+        "scroll progress",
+        "scroll progress bar",
+        "reading progress",
+        "reading progress bar"
+      ],
+      "oneLiner": "页面顶部一条细线，跟着阅读进度走，告诉读者还剩多少。",
+      "oneLinerEn": "A thin line at the top of the page that tracks how far the reader has got.",
+      "keywords": [
+        "scroll progress",
+        "reading progress",
+        "animation-timeline: scroll()",
+        "transform: scaleX()",
+        "document.scrollingElement",
+        "requestAnimationFrame",
+        "progress indicator"
+      ],
+      "related": [
+        "scroll-driven",
+        "scroll-reveal",
+        "sticky-header"
+      ],
+      "scenes": [
+        "page",
+        "scroll",
+        "text"
+      ],
+      "feel": [
+        "calm",
+        "crisp"
+      ],
+      "intent": [
+        "hierarchy",
+        "attention"
+      ],
+      "tags": [
+        "modern-css",
+        "js",
+        "composited",
+        "check-support"
+      ],
+      "demo": {
+        "shape": "scroll",
+        "thumb": "still"
+      },
+      "controls": [
+        {
+          "id": "height",
+          "kind": "range",
+          "label": "Bar height",
+          "def": 3,
+          "unit": "px",
+          "min": 1,
+          "max": 10
+        },
+        {
+          "id": "track",
+          "kind": "toggle",
+          "label": "Show track",
+          "def": true
+        },
+        {
+          "id": "mode",
+          "kind": "select",
+          "label": "Mechanism",
+          "def": "auto",
+          "options": [
+            {
+              "value": "auto",
+              "label": "自动（CSS + 兜底）"
+            },
+            {
+              "value": "css",
+              "label": "CSS 时间线"
+            },
+            {
+              "value": "js",
+              "label": "JS 兜底"
+            }
+          ]
+        }
+      ],
+      "loop": "manual",
+      "prompt": {
+        "zh": "在页面顶部固定一条 3px 高的阅读进度条，用 transform: scaleX() 从 0 到 1 跟随页面滚动（transform-origin: left），底槽用当前文字色 10% 透明铺满。优先用 animation-timeline: scroll(root block)，CSS.supports 检测不到时退回 requestAnimationFrame 读取滚动位置；进度条 aria-hidden，不要让读屏软件反复播报。prefers-reduced-motion 下不做平滑追赶，直接把滚动位置映射成进度。",
+        "en": "scroll progress bar, fixed to the top of the page, 3px tall, driven by transform: scaleX() from 0 to 1 with transform-origin: left, visible track at 10% currentColor. Drive it with animation-timeline: scroll(root block), falling back to requestAnimationFrame when CSS.supports() says no. Keep it aria-hidden, and under prefers-reduced-motion map the scroll position straight to scaleX without smoothing."
+      },
+      "detail": {
+        "page": "https://publieople.github.io/design-museum/entry/scroll-progress/",
+        "markdown": "https://publieople.github.io/design-museum/catalog.md#scroll-progress"
       }
     },
     {

@@ -13,7 +13,7 @@ import type { StringKey } from '../i18n/strings'
  * 注意：登记了现场页不等于词条可以依赖整页滚动。展台 demo 仍然必须自带
  * 滚动容器（见 docs/ENTRY-SPEC.md），只有 /live/ 页面允许用 window 滚动。
  */
-export type LiveGroupId = 'scroll' | 'layout' | 'pointer'
+export type LiveGroupId = 'scroll' | 'layout' | 'navigation' | 'overlay' | 'pointer'
 
 export interface LiveGroup {
   id: LiveGroupId
@@ -23,6 +23,8 @@ export interface LiveGroup {
 export const LIVE_GROUPS: readonly LiveGroup[] = [
   { id: 'scroll', titleKey: 'live.group.scroll' },
   { id: 'layout', titleKey: 'live.group.layout' },
+  { id: 'navigation', titleKey: 'live.group.navigation' },
+  { id: 'overlay', titleKey: 'live.group.overlay' },
   { id: 'pointer', titleKey: 'live.group.pointer' },
 ]
 
@@ -38,7 +40,13 @@ export const LIVE_DEMOS: readonly LiveDemo[] = [
   { slug: 'scroll-driven', group: 'scroll', noteKey: 'live.note.scroll-driven' },
   { slug: 'scroll-reveal', group: 'scroll', noteKey: 'live.note.scroll-reveal' },
   { slug: 'parallax', group: 'scroll', noteKey: 'live.note.parallax' },
+  { slug: 'virtual-scrolling', group: 'scroll', noteKey: 'live.note.virtual-scrolling' },
+  { slug: 'scroll-progress', group: 'scroll', noteKey: 'live.note.scroll-progress' },
   { slug: 'sticky-stack', group: 'layout', noteKey: 'live.note.sticky-stack' },
+  { slug: 'sticky-header', group: 'layout', noteKey: 'live.note.sticky-header' },
+  { slug: 'view-transitions', group: 'navigation', noteKey: 'live.note.view-transitions' },
+  { slug: 'command-palette', group: 'overlay', noteKey: 'live.note.command-palette' },
+  { slug: 'toast', group: 'overlay', noteKey: 'live.note.toast' },
   { slug: 'cursor-follower', group: 'pointer', noteKey: 'live.note.cursor-follower' },
 ]
 

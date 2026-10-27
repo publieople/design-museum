@@ -191,6 +191,7 @@ export default function CursorFollowerLive() {
   // 指针能力只在挂载后检测：SSR 与首帧的渲染结果保持一致
   useEffect(() => {
     if (typeof window === 'undefined' || typeof window.matchMedia !== 'function') {
+      // oxlint-disable-next-line react/set-state-in-effect -- capability detection has to happen after mount
       setMode('coarse')
       return
     }

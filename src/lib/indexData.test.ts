@@ -28,12 +28,16 @@ describe('索引数据助手', () => {
       )
     })
 
-    it('count 合计 40', () => {
-      expect(hallSummaries(ENTRY_META).reduce((sum, hall) => sum + hall.count, 0)).toBe(40)
+    it('count 合计与词条数一致', () => {
+      expect(hallSummaries(ENTRY_META).reduce((sum, hall) => sum + hall.count, 0)).toBe(
+        ENTRY_META.length,
+      )
     })
 
-    it('aliases 合计 251', () => {
-      expect(hallSummaries(ENTRY_META).reduce((sum, hall) => sum + hall.aliases, 0)).toBe(251)
+    it('aliases 合计与逐条相加一致', () => {
+      expect(hallSummaries(ENTRY_META).reduce((sum, hall) => sum + hall.aliases, 0)).toBe(
+        ENTRY_META.reduce((sum, entry) => sum + entry.aliases.length, 0),
+      )
     })
 
     it('逐厅计数与按 category 过滤的结果一致', () => {
@@ -84,8 +88,10 @@ describe('索引数据助手', () => {
   })
 
   describe('totalAliases', () => {
-    it('全站别名合计 251', () => {
-      expect(totalAliases(ENTRY_META)).toBe(251)
+    it('全站别名合计与逐条相加一致', () => {
+      expect(totalAliases(ENTRY_META)).toBe(
+        ENTRY_META.reduce((sum, entry) => sum + entry.aliases.length, 0),
+      )
     })
 
     it('与逐条累加一致，空数组为 0', () => {

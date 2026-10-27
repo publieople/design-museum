@@ -497,8 +497,8 @@ export const STRINGS = {
   // ── 现场页（/live，整页演示）────────────────────────────────
   'titles.live': { zh: '现场演示', en: 'Live demos' },
   'seo.live.desc': {
-    zh: '有些效果离开整页就不成立：滚动驱动、滚动揭示、视差、粘性堆叠、光标跟随。这里每个效果都占满整页，页面本身就是演示，共 {n} 个现场。',
-    en: 'Some effects do not survive a box: scroll-driven animation, scroll reveal, parallax, sticky stacking, cursor followers. Each effect takes over the whole page here — the page is the demo. {n} live demos.',
+    zh: '有些效果离开整页就不成立：滚动驱动、视差、虚拟滚动、粘性堆叠、页面过渡、全屏浮层、光标跟随。这里每个效果都占满整页，页面本身就是演示，共 {n} 个现场。',
+    en: 'Some effects do not survive a box: scroll-driven animation, parallax, virtual scrolling, sticky stacking, page transitions, full-screen overlays, cursor followers. Each effect takes over the whole page here — the page is the demo. {n} live demos.',
   },
   'seo.liveEntry.desc': {
     zh: '{name} 的整页现场演示：{oneLiner} 向下滚动，页面本身就是效果的一部分。',
@@ -526,6 +526,8 @@ export const STRINGS = {
   'live.group.scroll': { zh: '滚动时间线', en: 'Scroll timeline' },
   'live.group.layout': { zh: '布局与堆叠', en: 'Layout & stacking' },
   'live.group.pointer': { zh: '指针与视口', en: 'Pointer & viewport' },
+  'live.group.navigation': { zh: '页面切换', en: 'Page transitions' },
+  'live.group.overlay': { zh: '浮层与提示', en: 'Overlays & notices' },
   'live.note.scroll-driven': {
     zh: '页面滚到哪，动画就走到哪：进度条、卡片转正与入场都由滚动位置驱动，没有演示框。',
     en: 'Scroll position is the animation: the progress bar and the cards entering and straightening up are all driven by where the page is scrolled. No demo box.',
@@ -545,6 +547,30 @@ export const STRINGS = {
   'live.note.cursor-follower': {
     zh: '圆点跟着指针慢半拍。这里跟随的是整页的指针，不再局限在某个演示框里。',
     en: 'A dot trails behind the pointer. Here it follows the pointer across the entire page, not inside a demo box.',
+  },
+  'live.note.virtual-scrolling': {
+    zh: '一万行全部铺在整页里滚，只渲染视口附近那几十行。行数不够多，就看不出省掉了什么。',
+    en: 'Ten thousand rows scroll in the page while only the few dozen near the viewport are rendered. With too few rows you cannot see what is being saved.',
+  },
+  'live.note.scroll-progress': {
+    zh: '顶部那条线跟着整页的阅读进度走。放在盒子里，它只是盒子的进度。',
+    en: 'The line at the top tracks how far you have read the whole page. Inside a box it would only measure the box.',
+  },
+  'live.note.sticky-header': {
+    zh: '头部钉在视口顶部，往下滚时收起、往上滚时回来。只有整页滚动才有「往上滚」这件事。',
+    en: 'The header pins to the top of the viewport, hides as you scroll down and returns as you scroll up. Only whole-page scrolling has an “up”.',
+  },
+  'live.note.view-transitions': {
+    zh: '两块页面在同一次导航里交叉，共享元素从旧位置长到新位置。没有整页导航，过渡就没有起点和终点。',
+    en: 'Two pages cross-fade in one navigation while a shared element grows from its old place to its new one. Without a real page navigation there is no start or end to transition between.',
+  },
+  'live.note.command-palette': {
+    zh: '覆盖整个视口的搜索面板，⌘K 随时唤出，背后的页面还在。只有全屏才有那种「整个页面都被接管」的压力。',
+    en: 'A search panel over the entire viewport, summoned with ⌘K while the page stays behind it. Only full screen gives it that sense of taking over.',
+  },
+  'live.note.toast': {
+    zh: '从视口角落弹出的提示，不打断你正在做的事。位置、堆叠顺序与安全区，只有整页空间才说得清。',
+    en: 'A notice that rises from a viewport corner without interrupting what you are doing. Position, stacking order and safe areas only make sense against a whole page.',
   },
 } as const
 

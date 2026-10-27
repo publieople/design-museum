@@ -101,6 +101,7 @@ export function LivePage({ slug }: { slug?: string }) {
     <LiveShell slug={demo.slug}>
       {isClient ? (
         <Suspense fallback={cover}>
+          {/* oxlint-disable-next-line react/static-components -- lazy component is created once per slug */}
           <Demo />
         </Suspense>
       ) : (
