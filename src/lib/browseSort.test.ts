@@ -95,7 +95,7 @@ describe('词条库排序', () => {
     expect(sortEntries([], 'nameZh')).toEqual([])
   })
 
-  it('真实 40 条数据：编号排序单调不减且一条不丢', () => {
+  it('真实数据：编号排序单调不减且一条不丢', () => {
     const sorted = sortEntries(ENTRY_META, 'code')
     expect(sorted).toHaveLength(ENTRY_META.length)
     for (let index = 1; index < sorted.length; index += 1) {
@@ -104,7 +104,7 @@ describe('词条库排序', () => {
     expect(sorted.map((entry) => entry.slug).sort()).toEqual(ENTRY_META.map((entry) => entry.slug).sort())
   })
 
-  it('真实 40 条数据：中文名排序也是完整排列且前后有变化', () => {
+  it('真实数据：中文名排序也是完整排列且前后有变化', () => {
     const sorted = sortEntries(ENTRY_META, 'nameZh')
     expect(sorted).toHaveLength(ENTRY_META.length)
     expect(sorted.map((entry) => entry.slug).sort()).toEqual(ENTRY_META.map((entry) => entry.slug).sort())

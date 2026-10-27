@@ -2,7 +2,7 @@ import type { ComponentType } from 'react'
 
 /**
  * 现场页演示的唯一加载表：src/pages/LivePage.tsx 按 slug 取加载器，
- * 页面级 lazy 保证 /live/ 索引不会把五个整页演示一起下载。
+ * 页面级 lazy 保证 /live/ 索引不会把所有整页演示一起下载。
  * 注册表与 src/data/live.ts 的一致性由 src/data/live.test.ts 守着。
  */
 export type LiveDemoComponent = ComponentType
@@ -11,7 +11,13 @@ export const LIVE_MODULES: Record<string, () => Promise<{ default: LiveDemoCompo
   'scroll-driven': () => import('./scroll-driven'),
   'scroll-reveal': () => import('./scroll-reveal'),
   parallax: () => import('./parallax'),
+  'virtual-scrolling': () => import('./virtual-scrolling'),
+  'scroll-progress': () => import('./scroll-progress'),
   'sticky-stack': () => import('./sticky-stack'),
+  'sticky-header': () => import('./sticky-header'),
+  'view-transitions': () => import('./view-transitions'),
+  'command-palette': () => import('./command-palette'),
+  toast: () => import('./toast'),
   'cursor-follower': () => import('./cursor-follower'),
 }
 

@@ -1,6 +1,6 @@
 # 前端设计博物馆 Design Museum
 
-> 把说不出口的前端效果做成可交互标本：40 条中英术语对照、参数可调、一键复制成给 AI 的设计需求。
+> 把说不出口的前端效果做成可交互标本：41 条中英术语对照、参数可调、一键复制成给 AI 的设计需求。
 
 ## 数据
 
@@ -23,6 +23,7 @@
 - [滚动驱动动画 Scroll-Driven Animation](https://publieople.github.io/design-museum/entry/scroll-driven/)：滚动条就是进度条：滚到哪一帧由滚动位置决定。
 - [视图过渡 View Transitions](https://publieople.github.io/design-museum/entry/view-transitions/)：页面切换时，浏览器把新旧两屏接起来，补出中间那一下过渡。
 - [光标跟随 Cursor Follower](https://publieople.github.io/design-museum/entry/cursor-follower/)：一个圆点慢半拍地跟在指针后面，把系统鼠标指针换掉。
+- [滚动进度条 Scroll Progress Bar](https://publieople.github.io/design-museum/entry/scroll-progress/)：页面顶部一条细线，跟着阅读进度走，告诉读者还剩多少。
 - [悬停抬升 Hover Lift](https://publieople.github.io/design-museum/entry/hover-lift/)：指针移到卡片上，它轻轻上浮、阴影变大，暗示这块可以点。
 - [按压反馈 Press Feedback](https://publieople.github.io/design-museum/entry/press-feedback/)：手指按下的瞬间按钮缩小、变暗，松开立刻弹回，确认这一下点到了。
 - [磁吸按钮 Magnetic Button](https://publieople.github.io/design-museum/entry/magnetic-button/)：指针靠近时按钮被吸过去一点点，移开又弹回原位。

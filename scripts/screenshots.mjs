@@ -30,7 +30,13 @@ const ROUTES = [
   ['live-scroll', '/live/scroll-driven/'],
   ['live-reveal', '/live/scroll-reveal/'],
   ['live-parallax', '/live/parallax/'],
+  ['live-virtual', '/live/virtual-scrolling/'],
+  ['live-progress', '/live/scroll-progress/'],
   ['live-stack', '/live/sticky-stack/'],
+  ['live-sticky', '/live/sticky-header/'],
+  ['live-transitions', '/live/view-transitions/'],
+  ['live-palette', '/live/command-palette/'],
+  ['live-toast', '/live/toast/'],
   ['live-cursor', '/live/cursor-follower/'],
 ]
 const VIEWPORTS = [
