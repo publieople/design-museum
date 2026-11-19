@@ -73,7 +73,9 @@ export function LiveShell({
           {locale === 'en' ? null : (
             <span className="hidden text-muted md:inline">{entry.nameEn}</span>
           )}
-          {reduced ? <span className="text-accent">{t('live.reduced')}</span> : null}
+          {reduced ? (
+            <span className="hidden text-accent sm:inline">{t('live.reduced')}</span>
+          ) : null}
 
           <span aria-hidden="true" className="mx-1 hidden text-line-strong sm:inline">
             |

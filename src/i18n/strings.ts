@@ -47,6 +47,10 @@ export const STRINGS = {
     zh: '全站俗称总表：把「磨砂」「果冻」「磁吸」这些口语说法和正式术语对起来，点一下进入词条。',
     en: 'Every nickname on one page: plain-language names such as frosted, jelly or magnetic, matched to their formal terms and entries.',
   },
+  'seo.compare.desc': {
+    zh: '两个容易搞混的前端效果并排看：各自是什么、用在哪，以及两边各自写下的区别，共 {n} 对。',
+    en: 'Two easily confused front-end effects side by side: what each is, where it is used, and how each side describes the difference. {n} pairs.',
+  },
   'seo.entry.desc': {
     zh: '{name}（{code}）：{oneLiner} 含可交互演示、参数滑块与 CSS 参数，可直接复制成给 AI 的需求。',
     en: '{name} ({code}): {oneLiner} Interactive demo, parameter sliders and CSS values you can copy into a request for AI.',
@@ -57,6 +61,7 @@ export const STRINGS = {
   'nav.aliases': { zh: '俗称总表', en: 'Aliases' },
   'nav.feel': { zh: '感觉导航', en: 'Find by feel' },
   'nav.cheatsheet': { zh: '速查表', en: 'Cheat sheet' },
+  'nav.compare': { zh: '别搞混', en: 'Compare' },
   'nav.about': { zh: '怎么用', en: 'How to use' },
 
   'settings.open': { zh: '设置', en: 'Settings' },
@@ -272,6 +277,25 @@ export const STRINGS = {
   'aliases.contribute': { zh: '发现新的俗称？去 GitHub 提一条 →', en: 'Found a new nickname? Suggest it on GitHub →' },
   'aliases.browseLink': { zh: '去词条库 →', en: 'Browse all entries →' },
 
+  'compare.kicker': { zh: '对照档案 · COMPARISON FILE', en: 'COMPARISON FILE' },
+  'compare.lede': {
+    zh: '毛玻璃还是玻璃拟态？粘性头部还是固定头部？两个名字只差一点时，把它们并排放在一起看。',
+    en: 'Frosted glass or glassmorphism? Sticky or fixed? When two names sit close together, put them side by side.',
+  },
+  'compare.count': { zh: '{n} 对可对照', en: '{n} pairs to compare' },
+  'compare.left': { zh: '左边这个', en: 'First effect' },
+  'compare.right': { zh: '右边这个', en: 'Second effect' },
+  'compare.swap': { zh: '交换', en: 'Swap' },
+  'compare.diffTitle': { zh: '两边怎么区分', en: 'How the two differ' },
+  'compare.aSays': { zh: '{x} 的说法', en: 'What {x} says' },
+  'compare.onlyOne': { zh: '只有一边写了这条区别', en: 'Only one side describes the difference' },
+  'compare.noDiff': {
+    zh: '这两条还没有互相写区别。先看它们各自的一句话与标签，再去词条页读全文。',
+    en: 'These two do not describe each other yet. Start with their one-liners and tags, then read the full entries.',
+  },
+  'compare.allPairs': { zh: '全部对照', en: 'All comparisons' },
+  'compare.openEntry': { zh: '打开词条', en: 'Open entry' },
+
   'notFound.title': { zh: '这里没有展品', en: 'Nothing here' },
   'notFound.desc': { zh: '地址可能写错了。回首页重新开始。', en: 'That address looks wrong. Head back home.' },
   'notFound.home': { zh: '首页', en: 'Home' },
@@ -306,11 +330,18 @@ export const STRINGS = {
   'sheet.fx.params': { zh: '参数', en: 'Values' },
   'sheet.fx.tech': { zh: '技术要求', en: 'Technical requirement' },
   'sheet.fx.keywords': { zh: '关键词', en: 'Keywords' },
+  'sheet.fx.live': { zh: '现场演示', en: 'Live demo' },
+  'sheet.liveBadge': { zh: '现场', en: 'Live' },
+  'sheet.liveNote': {
+    zh: '勾中有现场页的效果时，导出清单会附上整页演示地址。',
+    en: 'Entries with a live page get the full-page demo URL in the exported brief.',
+  },
   'sheet.exportFooter': {
     zh: '共 {n} 条。如果有不理解的名字，按括号里的英文术语去查标准实现。',
     en: '{n} entries. If a name is unfamiliar, look up the English term in brackets for the standard implementation.',
   },
 
+  'titles.compare': { zh: '别搞混', en: 'Compare' },
   'titles.browse': { zh: '词条库', en: 'Browse' },
   'titles.reverse': { zh: '反查', en: 'Reverse lookup' },
   'titles.aliases': { zh: '俗称总表', en: 'Alias index' },
@@ -401,7 +432,7 @@ export const STRINGS = {
   'entry.resetParams': { zh: '恢复默认参数', en: 'Reset parameters' },
   'entry.params': { zh: '参数', en: 'Parameters' },
   'entry.compareTo': { zh: '容易混的', en: 'Confused with' },
-  'entry.openCompare': { zh: '去看「{x}」', en: 'Open “{x}”' },
+  'entry.openCompare': { zh: '并排对照「{x}」', en: 'Compare with “{x}”' },
   'entry.metaShape': { zh: '形态', en: 'Shape' },
   'entry.metaLoop': { zh: '播放', en: 'Playback' },
   'entry.hallLabel': { zh: '展厅', en: 'Hall' },

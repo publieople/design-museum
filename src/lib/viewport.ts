@@ -13,6 +13,9 @@ export function useInView<T extends Element>(options: { rootMargin?: string; onc
     const node = ref.current
     if (!node) return
     if (typeof IntersectionObserver === 'undefined') {
+      // 老浏览器没有 IntersectionObserver：一次挂载就当可见；effect 只在客户端跑，
+      // 预渲染不受影响，也不会级联渲染。
+      // oxlint-disable-next-line react/set-state-in-effect
       setInView(true)
       return
     }

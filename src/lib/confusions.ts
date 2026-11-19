@@ -11,8 +11,8 @@ import { normalizeText } from './search'
  * 命中返回词条，没命中返回 null 让页面当纯文本渲染——宁可不给链接，也不能用模糊匹配
  * 硬凑出一个错误的对照。
  *
- * 归一化复用 search.ts 的 normalizeText：小写、去掉空白（含全角空格）与标点，
- * 所以大小写、全角空格、中英文标点都不影响匹配。
+ * 归一化复用 search.ts 的 normalizeText：折全角、小写、去掉空白与标点，
+ * 所以大小写、全角字母/空格、中英文标点都不影响匹配。
  * 匹配顺序先 nameZh / nameEn 再 aliases：别名可能在不同词条之间重复，正式名优先。
  */
 export function resolveConfusionTarget(label: string, entries: EntryMeta[]): EntryMeta | null {

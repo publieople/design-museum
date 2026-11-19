@@ -40,9 +40,9 @@ pnpm dev          # http://localhost:5173
 ```bash
 pnpm check        # typecheck + lint + test 一条命令（提交门槛）
 pnpm typecheck    # tsc -b，零错误是提交门槛
-pnpm test         # vitest：内容校验 + 条目规范 + 检索 + 参数 URL + 偏好 + i18n + 提示词 + 首屏 meta 同步 + 反查/拼音/俗称/索引数据 + 页面与 demo 渲染冒烟（361 项；含现场页演示冒烟）
+pnpm test         # vitest：内容校验 + 条目规范 + 检索 + 参数 URL + 偏好 + i18n + 提示词 + 首屏 meta 同步 + 反查/拼音/俗称/对照/索引数据 + 页面与 demo 渲染冒烟（381 项；含现场页演示冒烟）
 pnpm gen:meta     # 改过词条后重新生成首屏用的 meta（src/data/entryMeta.ts）
-pnpm gen:catalog  # 重新生成给 AI 用的目录（public/catalog.json / catalog.md / llms.txt）
+pnpm gen:catalog  # 重新生成给 AI 用的目录（public/catalog.json / catalog.md / catalog/ 分片 / llms.txt）
 pnpm validate     # 只跑内容校验
 pnpm new:entry    # 生成一条新词条与 demo 的骨架（见下文「新增一条词条」）
 pnpm find:entry   # 用口语查重：打印命中条目、命中字段与命中理由
@@ -80,14 +80,14 @@ Vite 8 + React 19 + TypeScript + Tailwind CSS v4。零后端，纯静态产物�
 |---|---|
 | `/` | 首页 |
 | `/browse/`、`/feel/`、`/cheatsheet/`、`/about/` | 词条库、感觉导航、速查表、怎么用 |
-| `/reverse/`、`/aliases/` | 反查、俗称总表 |
+| `/reverse/`、`/aliases/`、`/compare/` | 反查、俗称总表、别搞混（两两并排对照） |
 | `/live/`、`/live/<slug>/` | 现场页索引与整页演示（不套站点头尾） |
 | `/entry/<slug>/` | 每条词条一个独立地址（例：<https://publieople.github.io/design-museum/entry/frosted-glass/>） |
 | `/debug/all` | 只在开发模式可达，生产构建渲染 404 |
 
-`pnpm build` 的最后一步 `scripts/prerender.mjs` 用 React 的 `renderToStaticMarkup` 把 60 个地址渲染成 `dist/<地址>/index.html`，同时生成 `dist/sitemap.xml` 与 `dist/404.html`；每页的 `<title>`、`description`、`canonical`、`og:*` 和 JSON-LD 都按页写（词条页是 `TechArticle`）。浏览器侧照常 `createRoot` 重新渲染，不做水合——localStorage 里的主题与语言可能和预渲染的默认值不一样。旧的 `#/entry/frosted-glass` 这类链接会在挂载前被 `history.replaceState` 归一化成新地址，历史分享链接不会失效。
+`pnpm build` 的最后一步 `scripts/prerender.mjs` 用 React 的 `renderToStaticMarkup` 把 61 个地址渲染成 `dist/<地址>/index.html`，同时生成 `dist/sitemap.xml` 与 `dist/404.html`；每页的 `<title>`、`description`、`canonical`、`og:*` 和 JSON-LD 都按页写（词条页是 `TechArticle`）。浏览器侧照常 `createRoot` 重新渲染，不做水合——localStorage 里的主题与语言可能和预渲染的默认值不一样。旧的 `#/entry/frosted-glass` 这类链接会在挂载前被 `history.replaceState` 归一化成新地址，历史分享链接不会失效。
 
-代价是首屏 HTML 从 2.5KB 变成约 29KB（未压缩），换来的是爬虫不执行 JS 也能读到 60 个页面的正文。
+代价是首屏 HTML 从 2.5KB 变成约 29KB（未压缩），换来的是爬虫不执行 JS 也能读到 61 个页面的正文。
 
 ### 循环重播不是无差别的
 
@@ -114,6 +114,8 @@ node /home/po/design-museum/scripts/gen-pinyin.mjs
 ```
 
 **俗称总表（`/aliases/`）** 把全站 259 个 `aliases` 摊平成一页：按展厅分组、可搜（复用同一套检索，所以拼音/错别字也能用），每条都链回词条；发现新叫法可以直接去 GitHub 提交。
+
+**并列对照（`/compare/`）** 把词条里写的「容易搞混」变成左右两张展签：从 41 条词条的 `confusions` 里解析出 **11 对**站内可对照的组合（毛玻璃 × 玻璃拟态、粘性头部 × 粘性堆叠、渐变文字 × 描边文字……），每对各自列出对方写的区别；`?a=<slug>&b=<slug>` 可分享，词条详情里的「并排对照」直接链过来。解析只认归一化后（折全角、大小写、标点）的精确名字或别名——对不上就宁可不给链接，比如「半透明」不是词条。
 
 ### 现场页：整页就是一个演示
 
@@ -147,11 +149,13 @@ node /home/po/design-museum/scripts/gen-pinyin.mjs
 - **词条详情**：左边粘性展台 + 参数工作台，右边「输出舱」（中文需求句 / 英文术语 / 分享链接）与档案分节；参数改动照旧回写 URL。
 - **动效**：只保留 View Transitions（页面进出 200/240ms）、粘性头部的滚动驱动边线，以及 demo 自己的动画；不再做逐卡错峰入场。
 
-> 想一次看完所有页面：`pnpm build && pnpm screenshots`，会在 `.screenshots/` 生成 20 个页面 × 3 个宽度的 60 张截图（含 11 个现场页），用本机 Chrome 的 `--screenshot`，不引 puppeteer/playwright。
+> 想一次看完所有页面：`pnpm build && pnpm screenshots`，会在 `.screenshots/` 生成 22 个页面 × 3 个宽度的 66 张截图（含 11 个现场页、对照页与 404）。脚本只依赖本机 Chrome，走 DevTools Protocol，不引 puppeteer/playwright；为了「同一个构建 → 同一张图」，它强制 reduced-motion、等网络与 DOM 都安静下来才截。
+>
+> 视觉回归：`pnpm screenshots:baseline` 存基线，`pnpm screenshots:diff` 逐像素比对（阈值默认 0.2%，差异图与报告在 `.screenshots/diff/`，退出码可进门禁）。基线目录已 gitignore，留在本地。
 
 ### 性能
 
-页面与 demo 都是按需加载：`src/demos/registry.ts` 用非 eager 的 `import.meta.glob`，每个 demo 各自成一个 chunk（每个 1–4KB），首页只下载真正挂出来的那几个；`src/App.tsx` 里各页面也是 `lazy`。构建产物 89 个 JS chunk（另有 1 个 CSS 与 8 个字体文件）。改之前是单包 433KB（gzip 138KB）；现在首页首屏 28 个请求、约 230KB gzip，其中主包 71.3KB、首屏词条 meta 31.6KB、i18n 14.9KB、两个字体 61KB、CSS 12KB（以上为 gzip）；词条详情与速查表还要额外拉完整词条数据，约 314KB / 302KB gzip，现场页约 218–224KB gzip。拼音表只给检索 chunk 加了约 5.4KB（gzip 约 2.6KB），换页不再重新下载所有 demo。
+页面与 demo 都是按需加载：`src/demos/registry.ts` 用非 eager 的 `import.meta.glob`，每个 demo 各自成一个 chunk（每个 1–4KB），首页只下载真正挂出来的那几个；`src/App.tsx` 里各页面也是 `lazy`。构建产物 87 个 JS chunk（另有 1 个 CSS 与 8 个字体文件，`dist` 4.0MB）。改之前是单包 433KB（gzip 138KB）；现在首页首屏 26 个请求、约 225KB gzip，其中主包 73.9KB、首屏词条 meta 33.1KB、i18n 16.3KB、两个字体 61KB、CSS 14.1KB（以上为 gzip）；词条详情与速查表还要额外拉完整词条数据，约 307KB / 299KB gzip，现场页约 214–217KB gzip。拼音表只给检索 chunk 加了约 5.4KB（gzip 约 2.6KB），换页不再重新下载所有 demo。
 
 ## 目录结构
 
@@ -200,10 +204,11 @@ src/
 └── styles/global.css         # 设计 token（纸 / 墨 / 朱红）、字阶、主题变量、切换过渡
 
 scripts/
-├── prerender.mjs             # 构建期渲染 60 个地址 + sitemap.xml + 404.html + 墓碑跳转页
+├── prerender.mjs             # 构建期渲染 61 个地址 + sitemap.xml + 404.html + 墓碑跳转页
 ├── gen-pinyin.mjs            # 生成拼音检索用的汉字读音表（需临时装 pinyin-pro，见 README）
-├── gen-catalog.mjs           # pnpm gen:catalog：生成给 AI 的目录与 llms.txt
-├── screenshots.mjs           # pnpm screenshots：用本机 Chrome 截 14 页 × 3 宽度到 .screenshots/
+├── gen-catalog.mjs           # pnpm gen:catalog：生成给 AI 的目录、分片与 llms.txt
+├── screenshots.mjs           # pnpm screenshots：用本机 Chrome（CDP）截 22 页 × 3 宽度到 .screenshots/
+├── visual-diff.mjs           # pnpm screenshots:diff：和基线逐像素比对，PNG 解码用 node:zlib 手写
 ├── load-site.mjs             # 用 vite 的 ssrLoadModule 读 TS 数据（维护者脚本共用）
 ├── new-entry.mjs             # pnpm new:entry：生成词条与 demo 骨架
 └── find-entry.mjs            # pnpm find:entry：口语查重（命中字段 + 权重）
@@ -211,7 +216,8 @@ scripts/
 public/                       # 会原样发布到站点根目录
 ├── catalog.json              # 机器可读索引 + 现成需求句（生成物）
 ├── catalog.md                # 逐条全文，每条一个 #<slug> 锚点（生成物）
-├── llms.txt                  # 给 AI 的入口：两份目录 + 全部词条地址（生成物）
+├── catalog/                  # 增量索引分片：index.json / 五个展厅 / tags.json / aliases.json（生成物）
+├── llms.txt                  # 给 AI 的入口：先读分片索引，再按需取片（生成物）
 ├── og.png  favicon.svg  robots.txt  licenses/
 skills/design-museum/SKILL.md # 配套 skill：教 AI 怎么用上面这几份目录
 docs/ENTRY-SPEC.md            # 条目规范：什么算一条、怎么增删改查（唯一真源）
@@ -248,15 +254,19 @@ docs/REDESIGN-PLAN.md         # 这次重设计的分阶段方案与验收记录
 
 ## 给 AI 用
 
-站点把同一份数据发布成两份机器可读目录，外加一份入口文件（`pnpm gen:catalog` 生成，`src/data/catalog.test.ts` 守着别过期）：
+站点把同一份数据发布成两份全量目录、一套增量分片，外加一份入口文件（`pnpm gen:catalog` 生成，`src/data/catalog.test.ts` 守着别过期）：
 
 | 地址 | 内容 |
 | --- | --- |
 | [`/llms.txt`](https://publieople.github.io/design-museum/llms.txt) | 入口：两份目录 + 全部词条地址 |
 | [`/catalog.json`](https://publieople.github.io/design-museum/catalog.json) | 索引 + 可直接交付：中英名字、口语别名、关键词、标签、演示形态、控件默认值与中英需求句 |
 | [`/catalog.md`](https://publieople.github.io/design-museum/catalog.md) | 逐条全文：什么时候用、别搞混、踩坑、推荐取值、无障碍降级、参考链接 |
+| [`/catalog/index.json`](https://publieople.github.io/design-museum/catalog/index.json) | 分片索引：41 条一句话目录 + 各分片地址 + 标签/别名索引入口 |
+| `/catalog/<展厅>.json`、`.md` | 单个展厅的分片（motion / feedback / layout / visual / type），正文同全量版 |
+| [`/catalog/tags.json`](https://publieople.github.io/design-museum/catalog/tags.json) | 标签 → 词条，用来「找同类效果」 |
+| [`/catalog/aliases.json`](https://publieople.github.io/design-museum/catalog/aliases.json) | 259 条俗称 → 词条，把口语接回正式名 |
 
-长散文刻意不进 JSON（否则会长到 160KB+）：JSON 负责「找到它并拿到需求句」，Markdown 负责「读细节」。
+长散文刻意不进 JSON（否则会长到 160KB+）：JSON 负责「找到它并拿到需求句」，Markdown 负责「读细节」。分片是给上下文有限的 AI 用的：先读 `catalog/index.json` 找到目标，再只取那一个展厅或那一个标签的分片，不必把 130KB 全量塞进上下文。
 
 仓库里还有配套 skill [`skills/design-museum/SKILL.md`](skills/design-museum/SKILL.md)，它教 AI 先查目录、再回答「这个效果叫什么、怎么做、参数给多少」，最后给出可粘贴的需求句。装到本机 harness：
 
@@ -266,7 +276,7 @@ curl -fsSL https://raw.githubusercontent.com/publieople/design-museum/main/skill
   -o ~/.dsh/skills/design-museum/SKILL.md
 ```
 
-不想装 skill 也行：把 `https://publieople.github.io/design-museum/catalog.json` 丢给 AI，让它自己查。
+不想装 skill 也行：把 `https://publieople.github.io/design-museum/catalog/index.json` 丢给 AI，让它先看索引、再按需取分片。
 
 ## 部署
 
@@ -346,8 +356,8 @@ gh api -X PATCH repos/publieople/design-museum \
 ## 已知限制
 
 - 预渲染给的是文案与结构，**动起来的效果仍然需要 JS**：爬虫读到的是正文，不是演示。
-- 构建产物里还有一个约 1.7KB 的 `DebugAllPage-*.js` 死 chunk（动态 import 被静态分析收进图谱，不产生网络请求）。
-- `pnpm lint` 目前有 21 条 warning、0 error：主要是 `react-hooks/set-state-in-effect`、`react(only-export-components)`（`src/lib/prefs.tsx`、`src/lib/router.tsx`、`src/components/Toast.tsx` 这类「一个文件里既有组件又有 hook/工具」的写法）与 1 条 `DemoRunner.tsx` 的 `static-components`。CI 会跑 lint，只拦 error，warning 不阻塞合并。
+- `pnpm lint` 是 0 warning / 0 error。`only-export-components`、`set-state-in-effect` 这类「一个文件里既有组件又有 hook/工具」「effect 里重播/重置」的写法，豁免写在 `.oxlintrc.json` 的 `allowExportNames` 或就近的 `oxlint-disable-next-line` 注释里，并写明理由。生产构建不产出调试台 chunk。
+- 视觉回归只做「像素是否变了」，不判断变好还是变坏——通过代表和基线一致，改版时先看图再更新基线。
 - 反查是启发式打分，不是语义理解：粘 CSS 命中率最高，纯口语描述不保证答案一定对；拼音表只覆盖词条名称/别名里出现过的字，表外同音字不会映射。
 
 ## 待办（按性价比排序）
@@ -355,11 +365,11 @@ gh api -X PATCH repos/publieople/design-museum \
 1. ~~反查：粘贴一段代码或别人的描述 → 说出它叫什么。~~ 已完成：`/reverse/`，CSS 属性 + 关键词 + 描述相似度打分，附命中理由。
 2. ~~拼音搜索（maoboli → 毛玻璃）与错别字容错。~~ 已完成：构建期读音表 + 有界编辑距离，原文命中优先。
 3. ~~俗称总表页：把全站 `aliases` 汇总成可搜、可贡献的一页。~~ 已完成：`/aliases/`，259 条、按展厅分组、可搜。
-4. 「别搞混」做成双向对比页（毛玻璃 ⇄ 玻璃拟态 ⇄ 半透明）。
-5. 视觉回归：`pnpm screenshots` 已能一键截 20 个页面 × 3 个宽度（含 11 个现场页，脚本 `scripts/screenshots.mjs`，只依赖本机 Chrome）；还差基线图与自动像素比对。
+4. ~~「别搞混」做成双向对比页。~~ 已完成：`/compare/`，从 `confusions` 解析出 11 对，左右展签 + 各自写的区别 + 可分享的 `?a=&b=`。
+5. ~~视觉回归：基线图 + 自动像素比对。~~ 已完成：`pnpm screenshots:baseline` / `pnpm screenshots:diff`（默认阈值 0.2%，差异图与报告在 `.screenshots/diff/`）。
 6. ~~词条扩充：现在 30 条，每厅再加 2 条。~~ 已完成：41 条（动效厅 9 条，其余每厅 8 条），界面与 SEO 文案里的计数已改成动态数字（`{n}` 占位）。
-7. 给 AI 的目录做增量索引：现在是一份 68KB 的 JSON 全量读；条目再多就该按展厅或标签分片。
-8. ~~现场页第一批~~ 已完成：`/live/` + 5 个整页演示。~~第二批~~ 也已完成：sticky-header、view-transitions、command-palette、virtual-scrolling、toast，并补上第 41 条词条 `scroll-progress`（滚动进度条）。第三批候选：再加背景/字体类整页演示，或把现场页演示接进速查表。
+7. ~~给 AI 的目录做增量索引。~~ 已完成：`public/catalog/` 按展厅 / 标签 / 别名分片，`llms.txt` 指路，全量 JSON 与 Markdown 仍保留。
+8. ~~现场页第一批~~ 已完成：`/live/` + 5 个整页演示。~~第二批~~ 也已完成：sticky-header、view-transitions、command-palette、virtual-scrolling、toast，并补上第 41 条词条 `scroll-progress`（滚动进度条）。速查表已接上现场页入口（「现场」角标 + 链接）。第三批候选：背景类（aurora / mesh / grain / spotlight）与字体类（fluid-type / gradient-text / variable-font）整页演示。
 
 ## 致谢
 

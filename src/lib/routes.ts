@@ -79,6 +79,15 @@ export function liveDemoPath(slug: string): string {
   return `/live/${slug}`
 }
 
+/** 对比页的路径：/compare?a=<slug>&b=<slug>（两个 slug 都可省略，页面会回退到默认一对） */
+export function comparePath(a?: string, b?: string): string {
+  const query = new URLSearchParams()
+  if (a) query.set('a', a)
+  if (b) query.set('b', b)
+  const suffix = query.toString()
+  return suffix ? `/compare?${suffix}` : '/compare'
+}
+
 /** 各页面的标题文案键。App 与预渲染脚本共用，避免两处各写一份 */
 export const TITLE_KEYS: Record<string, StringKey> = {
   browse: 'titles.browse',
@@ -87,6 +96,7 @@ export const TITLE_KEYS: Record<string, StringKey> = {
   about: 'titles.about',
   reverse: 'titles.reverse',
   aliases: 'titles.aliases',
+  compare: 'titles.compare',
   entry: 'titles.entry',
   live: 'titles.live',
   debug: 'titles.debug',
@@ -114,5 +124,6 @@ export const STATIC_PAGES: readonly StaticPage[] = [
   { path: '/about', head: 'about', titleKey: TITLE_KEYS.about, descKey: 'seo.about.desc' },
   { path: '/reverse', head: 'reverse', titleKey: TITLE_KEYS.reverse, descKey: 'seo.reverse.desc' },
   { path: '/aliases', head: 'aliases', titleKey: TITLE_KEYS.aliases, descKey: 'seo.aliases.desc' },
+  { path: '/compare', head: 'compare', titleKey: TITLE_KEYS.compare, descKey: 'seo.compare.desc' },
   { path: '/live', head: 'live', titleKey: TITLE_KEYS.live, descKey: 'seo.live.desc' },
 ]

@@ -44,8 +44,12 @@ export default function OptimisticUiDemo({ values, stage, replayKey, locale = 'z
   useEffect(() => {
     for (const id of timers.current) window.clearTimeout(id)
     timers.current = []
+    // 重播键驱动的重置：同步的是演示自己的计时器与三份状态
+    // oxlint-disable-next-line react/set-state-in-effect
     setLikes(initialLikes())
+    // oxlint-disable-next-line react/set-state-in-effect
     setLiked({})
+    // oxlint-disable-next-line react/set-state-in-effect
     setStatus({})
   }, [replayKey])
 

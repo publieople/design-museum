@@ -4,9 +4,23 @@
 
 ## 数据
 
-- [catalog.json](https://publieople.github.io/design-museum/catalog.json)：机器可读索引 + 现成需求句（中英名字、口语别名、关键词、标签、演示形态、控件默认值、中英需求句）
+- [catalog/index.json](https://publieople.github.io/design-museum/catalog/index.json)：分片索引（先读这份）——词表、5 个展厅、标签与别名分片的地址；按需再取小份，不必读全量
+- [catalog.json](https://publieople.github.io/design-museum/catalog.json)：全量机器可读索引 + 现成需求句（中英名字、口语别名、关键词、标签、演示形态、控件默认值、中英需求句）
 - [catalog.md](https://publieople.github.io/design-museum/catalog.md)：逐条全文（什么时候用、别搞混、踩坑、推荐取值、无障碍降级、参考链接）——上面 JSON 里没有这些长散文，每条一个 #<slug> 锚点
 - [sitemap.xml](https://publieople.github.io/design-museum/sitemap.xml)：全部页面地址
+
+## 分片（按展厅）
+
+- [动效与节奏 Motion & Timing](https://publieople.github.io/design-museum/catalog/motion.json)（9 条）· [Markdown](https://publieople.github.io/design-museum/catalog/motion.md)
+- [交互反馈 Interaction & Feedback](https://publieople.github.io/design-museum/catalog/feedback.json)（8 条）· [Markdown](https://publieople.github.io/design-museum/catalog/feedback.md)
+- [布局与结构 Layout & Structure](https://publieople.github.io/design-museum/catalog/layout.json)（8 条）· [Markdown](https://publieople.github.io/design-museum/catalog/layout.md)
+- [视觉质感 Visual & Material](https://publieople.github.io/design-museum/catalog/visual.json)（8 条）· [Markdown](https://publieople.github.io/design-museum/catalog/visual.md)
+- [排版与文字 Typography & Text](https://publieople.github.io/design-museum/catalog/type.json)（8 条）· [Markdown](https://publieople.github.io/design-museum/catalog/type.md)
+
+## 分片（标签与别名）
+
+- [catalog/tags.json](https://publieople.github.io/design-museum/catalog/tags.json)：18 个受控标签 × 词条 slug（含 facet 与计数）
+- [catalog/aliases.json](https://publieople.github.io/design-museum/catalog/aliases.json)：258 条俗称 → 词条 slug（重复 alias 已合并）
 
 ## 给 AI 的用法
 

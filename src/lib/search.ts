@@ -40,12 +40,15 @@ const PY_NAME_INITIALS = 3
 const PY_ALIAS_FULL = 5
 const PY_ALIAS_INITIALS = 2.5
 
-/** 归一化：去空白与标点、小写。中英混排查询都走这一层 */
+/** 归一化：折全角、去空白与标点、小写。中英混排查询都走这一层 */
 export function normalizeText(input: string): string {
+  // NFKC 先把全角字母与数字折成半角（ＢＥＴＡ → beta）：中文输入法下打出的
+  // 全角英文很常见，不折就等于搜不到；全角空格也顺带变成普通空格被下一行去掉。
   return input
+    .normalize('NFKC')
     .toLowerCase()
     .replace(/[\s\u3000]+/g, '')
-    .replace(/[.,，。、·・!！?？:：;；'"“”‘’`()（）\[\]【】{}<>《》/\\|+_~^*#$%@=—-]/g, '')
+    .replace(/[.,，。、·・!！?？:：;；'"“”‘’`()（）[\]【】{}<>《》/\\|+_~^*#$%@=—-]/g, '')
 }
 
 /** 拉丁词按非字母数字切分；中文整串保留 */

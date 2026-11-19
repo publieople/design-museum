@@ -30,6 +30,8 @@ export default function ToastDemo({ values, stage, replayKey, locale = 'zh' }: D
   useEffect(() => {
     for (const id of timers.current) window.clearTimeout(id)
     timers.current = []
+    // 重播键驱动的清空：同步的是演示自己的计时器与列表
+    // oxlint-disable-next-line react/set-state-in-effect
     setNotices([])
   }, [replayKey])
 

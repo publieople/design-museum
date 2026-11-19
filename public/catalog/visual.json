@@ -1,0 +1,829 @@
+{
+  "version": 1,
+  "site": "https://publieople.github.io/design-museum",
+  "hall": {
+    "id": "visual",
+    "letter": "V",
+    "nameZh": "视觉质感",
+    "nameEn": "Visual & Material",
+    "count": 8
+  },
+  "entries": [
+    {
+      "slug": "frosted-glass",
+      "code": "V-01",
+      "url": "https://publieople.github.io/design-museum/entry/frosted-glass/",
+      "category": "visual",
+      "nameZh": "毛玻璃",
+      "nameEn": "Frosted Glass",
+      "aliases": [
+        "磨砂玻璃",
+        "磨砂",
+        "毛玻璃效果",
+        "backdrop blur",
+        "backdrop-filter",
+        "glass blur"
+      ],
+      "oneLiner": "面板背后的内容被真的模糊掉，像隔着一层磨砂玻璃看过去。",
+      "oneLinerEn": "A panel blurs the content behind it, like looking through ground glass.",
+      "keywords": [
+        "backdrop-filter",
+        "blur()",
+        "saturate()",
+        "frosted glass",
+        "backdrop blur",
+        "translucent panel"
+      ],
+      "related": [
+        "glassmorphism",
+        "gradient-border",
+        "grain-noise"
+      ],
+      "scenes": [
+        "card",
+        "nav",
+        "page"
+      ],
+      "feel": [
+        "soft",
+        "calm"
+      ],
+      "intent": [
+        "hierarchy"
+      ],
+      "tags": [
+        "css-only",
+        "modern-css",
+        "filter-blend",
+        "paint-heavy",
+        "stable"
+      ],
+      "demo": {
+        "shape": "stage"
+      },
+      "controls": [
+        {
+          "id": "blur",
+          "kind": "range",
+          "label": "Blur radius",
+          "def": 12,
+          "unit": "px",
+          "min": 0,
+          "max": 30
+        },
+        {
+          "id": "saturate",
+          "kind": "range",
+          "label": "Saturation",
+          "def": 115,
+          "unit": "%",
+          "min": 100,
+          "max": 250
+        },
+        {
+          "id": "alpha",
+          "kind": "range",
+          "label": "Panel background opacity",
+          "def": 8,
+          "unit": "%",
+          "min": 0,
+          "max": 40
+        },
+        {
+          "id": "radius",
+          "kind": "range",
+          "label": "Corner radius",
+          "def": 14,
+          "unit": "px",
+          "min": 0,
+          "max": 28
+        }
+      ],
+      "loop": "continuous",
+      "prompt": {
+        "zh": "做一个毛玻璃（Frosted Glass）面板：用 backdrop-filter: blur(12px) saturate(115%) 把面板背后的内容模糊掉，面板底色 rgba(255,255,255,0.08)，圆角 14px，1px rgba(255,255,255,0.18) 描边勾出玻璃边缘。面板必须叠在有内容的背景上（照片或彩色渐变），不要用半透明纯色糊弄，那不是毛玻璃。",
+        "en": "frosted glass panel, backdrop-filter: blur(12px) saturate(115%), -webkit-backdrop-filter fallback, background: rgba(255,255,255,0.08), border: 1px solid rgba(255,255,255,0.18), border-radius: 14px, must sit over visible content behind"
+      },
+      "detail": {
+        "page": "https://publieople.github.io/design-museum/entry/frosted-glass/",
+        "markdown": "https://publieople.github.io/design-museum/catalog.md#frosted-glass"
+      }
+    },
+    {
+      "slug": "glassmorphism",
+      "code": "V-02",
+      "url": "https://publieople.github.io/design-museum/entry/glassmorphism/",
+      "category": "visual",
+      "nameZh": "玻璃拟态",
+      "nameEn": "Glassmorphism",
+      "aliases": [
+        "玻璃态",
+        "玻璃质感",
+        "玻璃卡片",
+        "glass UI",
+        "glass card",
+        "glassmorphic"
+      ],
+      "oneLiner": "半透明面板 + 亮边 + 柔影叠在彩色背景上，像一块玻璃浮在画面里。",
+      "oneLinerEn": "A translucent panel with a bright edge and soft shadow, floating over a colorful background.",
+      "keywords": [
+        "glassmorphism",
+        "backdrop-filter",
+        "translucent panel",
+        "1px highlight border",
+        "inset box-shadow",
+        "saturate(180%)"
+      ],
+      "related": [
+        "frosted-glass",
+        "gradient-border",
+        "spotlight-glow"
+      ],
+      "scenes": [
+        "card",
+        "page",
+        "nav"
+      ],
+      "feel": [
+        "soft",
+        "playful"
+      ],
+      "intent": [
+        "hierarchy",
+        "attention"
+      ],
+      "tags": [
+        "css-only",
+        "modern-css",
+        "filter-blend",
+        "paint-heavy",
+        "stable"
+      ],
+      "demo": {
+        "shape": "stage"
+      },
+      "controls": [
+        {
+          "id": "blur",
+          "kind": "range",
+          "label": "Blur radius",
+          "def": 16,
+          "unit": "px",
+          "min": 0,
+          "max": 30
+        },
+        {
+          "id": "border",
+          "kind": "range",
+          "label": "Border opacity",
+          "def": 30,
+          "unit": "%",
+          "min": 0,
+          "max": 60
+        },
+        {
+          "id": "shadow",
+          "kind": "range",
+          "label": "Shadow strength",
+          "def": 30,
+          "unit": "%",
+          "min": 0,
+          "max": 60
+        },
+        {
+          "id": "radius",
+          "kind": "range",
+          "label": "Corner radius",
+          "def": 18,
+          "unit": "px",
+          "min": 0,
+          "max": 28
+        }
+      ],
+      "loop": "continuous",
+      "prompt": {
+        "zh": "做一块玻璃拟态（Glassmorphism）卡片：backdrop-filter: blur(16px) saturate(160%)，面板底色 linear-gradient(160deg, rgba(255,255,255,0.16), rgba(255,255,255,0.06))，1px 描边 rgba(255,255,255,0.30)，外投影 0 8px 32px rgba(0,0,0,0.30)，再补 inset 0 1px 0 rgba(255,255,255,0.5) 当顶部高光，圆角 18px。卡片必须压在彩色渐变或照片上，并写 -webkit-backdrop-filter 和够不透明的兜底色。",
+        "en": "glassmorphism card, backdrop-filter: blur(16px) saturate(160%), -webkit-backdrop-filter, background: linear-gradient(160deg, rgba(255,255,255,0.16), rgba(255,255,255,0.06)), border: 1px solid rgba(255,255,255,0.30), box-shadow: 0 8px 32px rgba(0,0,0,0.30) and inset 0 1px 0 rgba(255,255,255,0.5), border-radius: 18px, translucent frosted panel over colorful gradient, fallback background for unsupported browsers"
+      },
+      "detail": {
+        "page": "https://publieople.github.io/design-museum/entry/glassmorphism/",
+        "markdown": "https://publieople.github.io/design-museum/catalog.md#glassmorphism"
+      }
+    },
+    {
+      "slug": "mesh-gradient",
+      "code": "V-03",
+      "url": "https://publieople.github.io/design-museum/entry/mesh-gradient/",
+      "category": "visual",
+      "nameZh": "渐变网格",
+      "nameEn": "Mesh Gradient",
+      "aliases": [
+        "网格渐变",
+        "弥散渐变",
+        "多色渐变背景",
+        "mesh gradient",
+        "diffuse gradient",
+        "aurora background"
+      ],
+      "oneLiner": "多个径向渐变叠在一起，颜色朝任意方向过渡，没有一条直线的渐变轴。",
+      "oneLinerEn": "Several radial gradients stacked so color flows in any direction, with no single gradient axis.",
+      "keywords": [
+        "radial-gradient",
+        "layered backgrounds",
+        "transparent color stops",
+        "filter: blur()",
+        "hue-rotate()",
+        "mesh gradient",
+        "diffuse gradient"
+      ],
+      "related": [
+        "grain-noise",
+        "gradient-border",
+        "frosted-glass"
+      ],
+      "scenes": [
+        "page",
+        "card"
+      ],
+      "feel": [
+        "soft",
+        "playful"
+      ],
+      "intent": [
+        "attention",
+        "hierarchy"
+      ],
+      "tags": [
+        "css-only",
+        "gradient",
+        "filter-blend",
+        "paint-heavy",
+        "stable"
+      ],
+      "demo": {
+        "shape": "stage"
+      },
+      "controls": [
+        {
+          "id": "spread",
+          "kind": "range",
+          "label": "Blob spread",
+          "def": 55,
+          "unit": "%",
+          "min": 10,
+          "max": 80
+        },
+        {
+          "id": "softness",
+          "kind": "range",
+          "label": "Diffuse blur",
+          "def": 0,
+          "unit": "px",
+          "min": 0,
+          "max": 60
+        },
+        {
+          "id": "hue",
+          "kind": "range",
+          "label": "Hue rotation",
+          "def": 0,
+          "unit": "deg",
+          "min": 0,
+          "max": 360
+        },
+        {
+          "id": "drift",
+          "kind": "toggle",
+          "label": "Slow blob drift",
+          "def": true
+        }
+      ],
+      "loop": "continuous",
+      "prompt": {
+        "zh": "铺一块渐变网格（Mesh Gradient）背景：用 5 层 radial-gradient(circle at ...) 叠出来，每层色标在 55% 处提前淡出，透明端写成同色的 rgba(...,0)；底色 #101018。整层加 filter: blur(0px) hue-rotate(0deg)，再 scale(1.3) 放大避免模糊露边。让色斑用 18s ease-in-out 无限缓慢缩放旋转，注意 CSS 没有 mesh-gradient 属性，只能这样叠。",
+        "en": "mesh gradient background, 5 layered radial-gradient() color blobs, transparent color stops at 55% using rgba(r,g,b,0), base color #101018, filter: blur(0px) hue-rotate(0deg), transform: scale(1.3) to hide blur edges, 18s ease-in-out infinite drift animation, no native mesh-gradient property in CSS"
+      },
+      "detail": {
+        "page": "https://publieople.github.io/design-museum/entry/mesh-gradient/",
+        "markdown": "https://publieople.github.io/design-museum/catalog.md#mesh-gradient"
+      }
+    },
+    {
+      "slug": "grain-noise",
+      "code": "V-04",
+      "url": "https://publieople.github.io/design-museum/entry/grain-noise/",
+      "category": "visual",
+      "nameZh": "颗粒噪点",
+      "nameEn": "Grain Noise",
+      "aliases": [
+        "噪点",
+        "颗粒感",
+        "胶片颗粒",
+        "杂色",
+        "film grain",
+        "noise texture",
+        "grain overlay"
+      ],
+      "oneLiner": "在画面上撒一层随机像素，给纯色和渐变加质感，顺手压掉色带。",
+      "oneLinerEn": "A layer of random pixels over the surface that adds texture and hides banding in gradients.",
+      "keywords": [
+        "feTurbulence",
+        "fractalNoise",
+        "baseFrequency",
+        "stitchTiles",
+        "mix-blend-mode",
+        "SVG filter",
+        "data URI"
+      ],
+      "related": [
+        "mesh-gradient",
+        "frosted-glass",
+        "gradient-border"
+      ],
+      "scenes": [
+        "page",
+        "card"
+      ],
+      "feel": [
+        "calm",
+        "soft"
+      ],
+      "intent": [
+        "hierarchy"
+      ],
+      "tags": [
+        "css-only",
+        "filter-blend",
+        "paint-heavy",
+        "stable"
+      ],
+      "demo": {
+        "shape": "stage"
+      },
+      "controls": [
+        {
+          "id": "grain",
+          "kind": "range",
+          "label": "Grain size",
+          "def": 1.5,
+          "unit": "px",
+          "min": 1,
+          "max": 6
+        },
+        {
+          "id": "opacity",
+          "kind": "range",
+          "label": "Noise opacity",
+          "def": 10,
+          "unit": "%",
+          "min": 0,
+          "max": 24
+        },
+        {
+          "id": "blend",
+          "kind": "select",
+          "label": "Blend mode",
+          "def": "overlay",
+          "options": [
+            {
+              "value": "overlay",
+              "label": "overlay（对比最强）"
+            },
+            {
+              "value": "soft-light",
+              "label": "soft-light（柔和）"
+            },
+            {
+              "value": "normal",
+              "label": "normal（直接盖上去）"
+            }
+          ]
+        },
+        {
+          "id": "flicker",
+          "kind": "toggle",
+          "label": "Grain jitter",
+          "def": true
+        }
+      ],
+      "loop": "continuous",
+      "prompt": {
+        "zh": "给这块深色渐变面板加一层颗粒噪点（grain noise）：把一张 160x160 的 SVG feTurbulence data URI 当 background-image 平铺，baseFrequency=\"0.67\"（约 1.5px 颗粒）、type=\"fractalNoise\"、numOctaves=\"3\"、stitchTiles=\"stitch\"；噪点层 opacity: 10%、mix-blend-mode: overlay、pointer-events: none；再补一个 <feColorMatrix type=\"saturate\" values=\"0\"/> 把噪声转成中性灰（feTurbulence 连 alpha 都是随机的，不转灰叠上去会发彩）。再用 steps() 的 transform 位移做胶片跳动，目的是压住渐变色带，不是把画面搞脏。",
+        "en": "film grain noise overlay, SVG feTurbulence fractalNoise baseFrequency=\"0.67\" numOctaves=\"3\" stitchTiles=\"stitch\", data URI background-image repeated 160px tile, opacity: 10%, mix-blend-mode: overlay, pointer-events: none, feColorMatrix saturate 0 to keep the grain neutral, steps(6) transform jitter keyframes, dithering to hide gradient banding"
+      },
+      "detail": {
+        "page": "https://publieople.github.io/design-museum/entry/grain-noise/",
+        "markdown": "https://publieople.github.io/design-museum/catalog.md#grain-noise"
+      }
+    },
+    {
+      "slug": "spotlight-glow",
+      "code": "V-05",
+      "url": "https://publieople.github.io/design-museum/entry/spotlight-glow/",
+      "category": "visual",
+      "nameZh": "光晕聚光",
+      "nameEn": "Spotlight Glow",
+      "aliases": [
+        "聚光灯",
+        "鼠标光晕",
+        "光标跟随光",
+        "spotlight card",
+        "cursor glow",
+        "radial highlight"
+      ],
+      "oneLiner": "一块柔光跟着指针在卡片表面移动，像有人拿手电照上去。",
+      "oneLinerEn": "A soft pool of light that follows the pointer across a card, like a flashlight held to it.",
+      "keywords": [
+        "radial-gradient",
+        "pointermove",
+        "CSS custom properties",
+        "transform: translate3d",
+        "mix-blend-mode: screen",
+        "overflow: hidden",
+        "spotlight card"
+      ],
+      "related": [
+        "glassmorphism",
+        "gradient-border",
+        "hover-lift"
+      ],
+      "scenes": [
+        "card",
+        "button",
+        "page"
+      ],
+      "feel": [
+        "playful",
+        "crisp"
+      ],
+      "intent": [
+        "attention",
+        "affordance"
+      ],
+      "tags": [
+        "js",
+        "browser-api",
+        "gradient",
+        "filter-blend",
+        "main-thread",
+        "pointer-dependent"
+      ],
+      "demo": {
+        "shape": "interactive",
+        "thumb": "still"
+      },
+      "controls": [
+        {
+          "id": "radius",
+          "kind": "range",
+          "label": "Glow radius",
+          "def": 220,
+          "unit": "px",
+          "min": 80,
+          "max": 360
+        },
+        {
+          "id": "intensity",
+          "kind": "range",
+          "label": "Peak opacity",
+          "def": 22,
+          "unit": "%",
+          "min": 0,
+          "max": 60
+        },
+        {
+          "id": "hue",
+          "kind": "range",
+          "label": "Glow hue",
+          "def": 40,
+          "unit": "deg",
+          "min": 0,
+          "max": 360
+        },
+        {
+          "id": "follow",
+          "kind": "toggle",
+          "label": "Follow pointer",
+          "def": true
+        }
+      ],
+      "loop": "manual",
+      "prompt": {
+        "zh": "做卡片聚光（spotlight glow）：卡片 overflow: hidden，里面放一个 440px 的圆形光斑，背景 radial-gradient(circle, hsla(40, 95%, 70%, 0.22) 0%, hsla(40, 95%, 70%, 0) 70%)，mix-blend-mode: screen，pointer-events: none。用 pointermove 把指针坐标换算成光斑的 transform: translate3d()，直接改元素 style 不要 setState，并加 120ms 的 transform 过渡；指针移出回到卡片中心。默认位置就要好看，因为触屏没有 hover。",
+        "en": "spotlight card glow, 440px circle, radial-gradient(circle, hsla(40, 95%, 70%, 0.22), transparent 70%), mix-blend-mode: screen, pointer-events: none, overflow: hidden, follow cursor with pointermove, write transform: translate3d directly to the element (no React state), 120ms ease-out transition on transform, recenter on pointerleave, static fallback for touch devices"
+      },
+      "detail": {
+        "page": "https://publieople.github.io/design-museum/entry/spotlight-glow/",
+        "markdown": "https://publieople.github.io/design-museum/catalog.md#spotlight-glow"
+      }
+    },
+    {
+      "slug": "gradient-border",
+      "code": "V-06",
+      "url": "https://publieople.github.io/design-museum/entry/gradient-border/",
+      "category": "visual",
+      "nameZh": "渐变描边",
+      "nameEn": "Gradient Border",
+      "aliases": [
+        "渐变边框",
+        "彩色描边",
+        "渐变边",
+        "border gradient",
+        "gradient stroke",
+        "rainbow border"
+      ],
+      "oneLiner": "描边不是一种颜色，而是一条渐变沿着元素轮廓走一圈。",
+      "oneLinerEn": "The border is not one color but a gradient running once around the element outline.",
+      "keywords": [
+        "background-clip: padding-box",
+        "background-clip: border-box",
+        "border: transparent",
+        "linear-gradient",
+        "conic-gradient",
+        "@property",
+        "border-image"
+      ],
+      "related": [
+        "glassmorphism",
+        "mesh-gradient",
+        "spotlight-glow"
+      ],
+      "scenes": [
+        "card",
+        "button",
+        "form"
+      ],
+      "feel": [
+        "crisp",
+        "playful"
+      ],
+      "intent": [
+        "attention",
+        "hierarchy"
+      ],
+      "tags": [
+        "css-only",
+        "gradient",
+        "modern-css",
+        "check-support"
+      ],
+      "demo": {
+        "shape": "stage"
+      },
+      "controls": [
+        {
+          "id": "width",
+          "kind": "range",
+          "label": "Border width",
+          "def": 2,
+          "unit": "px",
+          "min": 1,
+          "max": 6
+        },
+        {
+          "id": "angle",
+          "kind": "range",
+          "label": "Gradient angle",
+          "def": 135,
+          "unit": "deg",
+          "min": 0,
+          "max": 360
+        },
+        {
+          "id": "hue",
+          "kind": "range",
+          "label": "Start hue",
+          "def": 14,
+          "unit": "deg",
+          "min": 0,
+          "max": 360
+        },
+        {
+          "id": "radius",
+          "kind": "range",
+          "label": "Corner radius",
+          "def": 14,
+          "unit": "px",
+          "min": 0,
+          "max": 28
+        }
+      ],
+      "loop": "continuous",
+      "prompt": {
+        "zh": "给卡片做渐变描边（gradient border）：不要用 border-image，它不支持圆角。写成 border: 2px solid transparent，再叠两层背景——padding-box 一层实底盖住内部，border-box 一层 linear-gradient(135deg, hsl(14, 82%, 70%), hsl(104, 84%, 64%), hsl(194, 80%, 68%))，配 border-radius: 14px。再用 @property 注册一个角度变量，让描边 6s 线性无限慢慢转。",
+        "en": "gradient border, border: 2px solid transparent, background: linear-gradient(...) padding-box, linear-gradient(135deg, hsl(14, 82%, 70%), hsl(104, 84%, 64%), hsl(194, 80%, 68%)) border-box, background-clip: padding-box / border-box, border-radius: 14px, @property registered angle, 6s linear infinite rotation, avoid border-image since it ignores border-radius"
+      },
+      "detail": {
+        "page": "https://publieople.github.io/design-museum/entry/gradient-border/",
+        "markdown": "https://publieople.github.io/design-museum/catalog.md#gradient-border"
+      }
+    },
+    {
+      "slug": "aurora-gradient",
+      "code": "V-07",
+      "url": "https://publieople.github.io/design-museum/entry/aurora-gradient/",
+      "category": "visual",
+      "nameZh": "极光渐变",
+      "nameEn": "Aurora Gradient",
+      "aliases": [
+        "极光背景",
+        "流动渐变",
+        "光晕背景",
+        "aurora background",
+        "aurora gradient",
+        "animated gradient background"
+      ],
+      "oneLiner": "几团彩色光斑在底色上慢慢游动，像极光一样铺满整屏。",
+      "oneLinerEn": "A few coloured blobs drift slowly across the background, like an aurora spread over the screen.",
+      "keywords": [
+        "aurora gradient",
+        "animated gradient",
+        "radial-gradient",
+        "filter: blur()",
+        "mix-blend-mode: screen",
+        "transform: translate3d",
+        "hue-rotate()",
+        "saturate()"
+      ],
+      "related": [
+        "mesh-gradient",
+        "spotlight-glow"
+      ],
+      "scenes": [
+        "page",
+        "card"
+      ],
+      "feel": [
+        "soft",
+        "playful"
+      ],
+      "intent": [
+        "attention",
+        "hierarchy"
+      ],
+      "tags": [
+        "css-only",
+        "gradient",
+        "filter-blend",
+        "paint-heavy",
+        "motion-heavy",
+        "stable"
+      ],
+      "demo": {
+        "shape": "stage",
+        "minHeight": 320
+      },
+      "controls": [
+        {
+          "id": "blobs",
+          "kind": "range",
+          "label": "Blob count",
+          "def": 4,
+          "min": 2,
+          "max": 6
+        },
+        {
+          "id": "blur",
+          "kind": "range",
+          "label": "Blur radius",
+          "def": 80,
+          "unit": "px",
+          "min": 40,
+          "max": 120
+        },
+        {
+          "id": "duration",
+          "kind": "range",
+          "label": "Loop length",
+          "def": 30,
+          "unit": "s",
+          "min": 10,
+          "max": 60
+        },
+        {
+          "id": "palette",
+          "kind": "select",
+          "label": "Palette",
+          "def": "aurora",
+          "options": [
+            {
+              "value": "aurora",
+              "label": "极光（绿紫）"
+            },
+            {
+              "value": "sunset",
+              "label": "晚霞（橙粉）"
+            }
+          ]
+        }
+      ],
+      "loop": "continuous",
+      "prompt": {
+        "zh": "做一个极光渐变背景（aurora gradient）：深色底上放 4 团大的 radial-gradient 光斑（配色 aurora），每团 filter: blur(80px)、mix-blend-mode: screen，用 transform: translate3d 让它们以各自不同的速度慢慢漂移，一轮约 30s、linear 循环。光斑放独立图层，不要每帧改 background-position；正文压在上面时留暗罩保证对比度。prefers-reduced-motion 下停住动画，只留静态渐变。",
+        "en": "aurora gradient background, 4 large radial-gradient blobs (aurora palette) on a dark base, each with filter: blur(80px) and mix-blend-mode: screen, drifting at slightly different speeds with transform: translate3d in a 30s linear loop, kept on their own layers instead of animating background-position, dark scrim behind body text for contrast, animation paused under prefers-reduced-motion"
+      },
+      "detail": {
+        "page": "https://publieople.github.io/design-museum/entry/aurora-gradient/",
+        "markdown": "https://publieople.github.io/design-museum/catalog.md#aurora-gradient"
+      }
+    },
+    {
+      "slug": "mask-fade",
+      "code": "V-08",
+      "url": "https://publieople.github.io/design-museum/entry/mask-fade/",
+      "category": "visual",
+      "nameZh": "边缘渐隐",
+      "nameEn": "Mask Fade",
+      "aliases": [
+        "渐隐遮罩",
+        "边缘淡出",
+        "两端渐隐",
+        "mask fade",
+        "fade mask",
+        "gradient mask",
+        "edge fade"
+      ],
+      "oneLiner": "内容在边缘渐渐淡掉，暗示这一头还能继续滑。",
+      "oneLinerEn": "Content fades out at the edges, hinting that there is more to scroll.",
+      "keywords": [
+        "mask-image",
+        "-webkit-mask-image",
+        "linear-gradient mask",
+        "mask-composite",
+        "edge fade",
+        "fade mask",
+        "scroll hint",
+        "CSS masking"
+      ],
+      "related": [
+        "marquee",
+        "scroll-snap"
+      ],
+      "scenes": [
+        "list",
+        "scroll",
+        "page"
+      ],
+      "feel": [
+        "calm",
+        "crisp"
+      ],
+      "intent": [
+        "affordance",
+        "hierarchy"
+      ],
+      "tags": [
+        "css-only",
+        "modern-css",
+        "gradient",
+        "paint-heavy",
+        "stable"
+      ],
+      "demo": {
+        "shape": "stage"
+      },
+      "controls": [
+        {
+          "id": "fade",
+          "kind": "range",
+          "label": "Fade length",
+          "def": 12,
+          "unit": "%",
+          "min": 4,
+          "max": 30
+        },
+        {
+          "id": "axis",
+          "kind": "select",
+          "label": "Axis",
+          "def": "x",
+          "options": [
+            {
+              "value": "x",
+              "label": "横向"
+            },
+            {
+              "value": "y",
+              "label": "纵向"
+            }
+          ]
+        },
+        {
+          "id": "hardEdge",
+          "kind": "toggle",
+          "label": "Compare: hard clip",
+          "def": false
+        }
+      ],
+      "loop": "continuous",
+      "prompt": {
+        "zh": "给这个横向可滚动区域加边缘渐隐：linear-gradient(90deg, transparent, #000 12%, #000 88%, transparent)，同时写 -webkit-mask-image 兼容旧版 Safari，让内容在两端渐渐淡掉、暗示还能继续滑。渐隐长度占容器 12%，两端对称；注意 mask 会让被遮住的部分真的看不见（但仍然可以点击），也不要和 backdrop-filter 用在同一元素上。",
+        "en": "fade the edges of this scrollable area with mask-image: linear-gradient(90deg, transparent, #000 12%, #000 88%, transparent) (plus -webkit-mask-image), so 12% of each end fades out and hints that there is more to scroll, applied symmetrically on both ends, not combined with backdrop-filter on the same element"
+      },
+      "detail": {
+        "page": "https://publieople.github.io/design-museum/entry/mask-fade/",
+        "markdown": "https://publieople.github.io/design-museum/catalog.md#mask-fade"
+      }
+    }
+  ]
+}
