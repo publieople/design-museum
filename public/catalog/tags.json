@@ -1,0 +1,350 @@
+{
+  "version": 1,
+  "tags": [
+    {
+      "id": "css-only",
+      "nameZh": "纯 CSS",
+      "nameEn": "CSS only",
+      "facet": "tech",
+      "count": 23,
+      "slugs": [
+        "stagger",
+        "easing",
+        "hover-lift",
+        "press-feedback",
+        "skeleton-shimmer",
+        "sticky-stack",
+        "masonry",
+        "bento-grid",
+        "scroll-snap",
+        "accordion",
+        "frosted-glass",
+        "glassmorphism",
+        "mesh-gradient",
+        "grain-noise",
+        "gradient-border",
+        "aurora-gradient",
+        "mask-fade",
+        "fluid-type",
+        "text-balance",
+        "gradient-text",
+        "variable-font",
+        "text-stroke",
+        "tabular-numbers"
+      ]
+    },
+    {
+      "id": "js",
+      "nameZh": "需要 JS",
+      "nameEn": "Needs JS",
+      "facet": "tech",
+      "count": 17,
+      "slugs": [
+        "spring",
+        "scroll-reveal",
+        "parallax",
+        "view-transitions",
+        "cursor-follower",
+        "scroll-progress",
+        "magnetic-button",
+        "optimistic-ui",
+        "toast",
+        "ripple",
+        "command-palette",
+        "sticky-header",
+        "virtual-scrolling",
+        "marquee",
+        "spotlight-glow",
+        "char-reveal",
+        "count-up"
+      ]
+    },
+    {
+      "id": "browser-api",
+      "nameZh": "浏览器 API",
+      "nameEn": "Browser API",
+      "facet": "tech",
+      "count": 7,
+      "slugs": [
+        "scroll-reveal",
+        "view-transitions",
+        "cursor-follower",
+        "magnetic-button",
+        "virtual-scrolling",
+        "spotlight-glow",
+        "count-up"
+      ]
+    },
+    {
+      "id": "modern-css",
+      "nameZh": "新 CSS 特性",
+      "nameEn": "Modern CSS",
+      "facet": "tech",
+      "count": 12,
+      "slugs": [
+        "easing",
+        "spring",
+        "parallax",
+        "scroll-driven",
+        "scroll-progress",
+        "frosted-glass",
+        "glassmorphism",
+        "gradient-border",
+        "mask-fade",
+        "fluid-type",
+        "text-balance",
+        "text-stroke"
+      ]
+    },
+    {
+      "id": "filter-blend",
+      "nameZh": "滤镜与混合",
+      "nameEn": "Filter & blend",
+      "facet": "tech",
+      "count": 6,
+      "slugs": [
+        "frosted-glass",
+        "glassmorphism",
+        "mesh-gradient",
+        "grain-noise",
+        "spotlight-glow",
+        "aurora-gradient"
+      ]
+    },
+    {
+      "id": "gradient",
+      "nameZh": "渐变",
+      "nameEn": "Gradient",
+      "facet": "tech",
+      "count": 9,
+      "slugs": [
+        "skeleton-shimmer",
+        "ripple",
+        "marquee",
+        "mesh-gradient",
+        "spotlight-glow",
+        "gradient-border",
+        "aurora-gradient",
+        "mask-fade",
+        "gradient-text"
+      ]
+    },
+    {
+      "id": "font-feature",
+      "nameZh": "字体特性",
+      "nameEn": "Font feature",
+      "facet": "tech",
+      "count": 3,
+      "slugs": [
+        "variable-font",
+        "count-up",
+        "tabular-numbers"
+      ]
+    },
+    {
+      "id": "scroll-linked",
+      "nameZh": "随滚动变化",
+      "nameEn": "Scroll-linked",
+      "facet": "tech",
+      "count": 6,
+      "slugs": [
+        "scroll-reveal",
+        "parallax",
+        "scroll-driven",
+        "sticky-header",
+        "sticky-stack",
+        "scroll-snap"
+      ]
+    },
+    {
+      "id": "stateful",
+      "nameZh": "有状态",
+      "nameEn": "Stateful",
+      "facet": "tech",
+      "count": 4,
+      "slugs": [
+        "optimistic-ui",
+        "toast",
+        "command-palette",
+        "accordion"
+      ]
+    },
+    {
+      "id": "composited",
+      "nameZh": "合成层动画",
+      "nameEn": "Composited",
+      "facet": "cost",
+      "count": 17,
+      "slugs": [
+        "stagger",
+        "easing",
+        "spring",
+        "scroll-reveal",
+        "scroll-driven",
+        "view-transitions",
+        "cursor-follower",
+        "scroll-progress",
+        "hover-lift",
+        "press-feedback",
+        "toast",
+        "ripple",
+        "sticky-header",
+        "sticky-stack",
+        "virtual-scrolling",
+        "marquee",
+        "char-reveal"
+      ]
+    },
+    {
+      "id": "paint-heavy",
+      "nameZh": "重绘开销",
+      "nameEn": "Paint heavy",
+      "facet": "cost",
+      "count": 9,
+      "slugs": [
+        "parallax",
+        "skeleton-shimmer",
+        "frosted-glass",
+        "glassmorphism",
+        "mesh-gradient",
+        "grain-noise",
+        "aurora-gradient",
+        "mask-fade",
+        "gradient-text"
+      ]
+    },
+    {
+      "id": "layout-triggering",
+      "nameZh": "会引发重排",
+      "nameEn": "Triggers layout",
+      "facet": "cost",
+      "count": 5,
+      "slugs": [
+        "command-palette",
+        "accordion",
+        "virtual-scrolling",
+        "fluid-type",
+        "text-balance"
+      ]
+    },
+    {
+      "id": "main-thread",
+      "nameZh": "主线程每帧",
+      "nameEn": "Main-thread per frame",
+      "facet": "cost",
+      "count": 6,
+      "slugs": [
+        "spring",
+        "cursor-follower",
+        "magnetic-button",
+        "virtual-scrolling",
+        "spotlight-glow",
+        "count-up"
+      ]
+    },
+    {
+      "id": "motion-heavy",
+      "nameZh": "动效较多",
+      "nameEn": "Motion heavy",
+      "facet": "a11y",
+      "count": 11,
+      "slugs": [
+        "stagger",
+        "spring",
+        "scroll-reveal",
+        "parallax",
+        "scroll-driven",
+        "view-transitions",
+        "skeleton-shimmer",
+        "sticky-stack",
+        "marquee",
+        "aurora-gradient",
+        "char-reveal"
+      ]
+    },
+    {
+      "id": "keyboard-operable",
+      "nameZh": "键盘可用",
+      "nameEn": "Keyboard operable",
+      "facet": "a11y",
+      "count": 5,
+      "slugs": [
+        "press-feedback",
+        "optimistic-ui",
+        "ripple",
+        "command-palette",
+        "accordion"
+      ]
+    },
+    {
+      "id": "pointer-dependent",
+      "nameZh": "只能指针操作",
+      "nameEn": "Pointer only",
+      "facet": "a11y",
+      "count": 4,
+      "slugs": [
+        "cursor-follower",
+        "hover-lift",
+        "magnetic-button",
+        "spotlight-glow"
+      ]
+    },
+    {
+      "id": "stable",
+      "nameZh": "可以直接用",
+      "nameEn": "Safe to ship",
+      "facet": "support",
+      "count": 32,
+      "slugs": [
+        "stagger",
+        "spring",
+        "scroll-reveal",
+        "parallax",
+        "hover-lift",
+        "press-feedback",
+        "magnetic-button",
+        "skeleton-shimmer",
+        "optimistic-ui",
+        "toast",
+        "ripple",
+        "command-palette",
+        "sticky-header",
+        "sticky-stack",
+        "masonry",
+        "bento-grid",
+        "scroll-snap",
+        "accordion",
+        "virtual-scrolling",
+        "marquee",
+        "frosted-glass",
+        "glassmorphism",
+        "mesh-gradient",
+        "grain-noise",
+        "aurora-gradient",
+        "mask-fade",
+        "gradient-text",
+        "char-reveal",
+        "variable-font",
+        "count-up",
+        "text-stroke",
+        "tabular-numbers"
+      ]
+    },
+    {
+      "id": "check-support",
+      "nameZh": "先查兼容",
+      "nameEn": "Check support",
+      "facet": "support",
+      "count": 7,
+      "slugs": [
+        "easing",
+        "scroll-driven",
+        "view-transitions",
+        "scroll-progress",
+        "gradient-border",
+        "fluid-type",
+        "text-balance"
+      ]
+    }
+  ]
+}

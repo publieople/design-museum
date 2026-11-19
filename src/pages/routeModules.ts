@@ -1,4 +1,5 @@
 import type { ComponentType } from 'react'
+import { NotFound } from '../components/NotFound'
 
 /** 页面组件在这两处被用到：浏览器的懒加载、预渲染的同步渲染 */
 export type PageComponent = ComponentType<{ slug?: string }>
@@ -12,6 +13,7 @@ export interface PageComponents {
   about: PageComponent
   reverse: PageComponent
   aliases: PageComponent
+  compare: PageComponent
   liveIndex: PageComponent
   liveDetail: PageComponent
   debug: PageComponent
@@ -33,7 +35,13 @@ export const ROUTE_MODULES = {
   about: () => import('./AboutPage').then((m) => ({ default: m.AboutPage })),
   reverse: () => import('./ReversePage').then((m) => ({ default: m.ReversePage })),
   aliases: () => import('./AliasesPage').then((m) => ({ default: m.AliasesPage })),
+  compare: () => import('./ComparePage').then((m) => ({ default: m.ComparePage })),
   liveIndex: () => import('./LiveIndexPage').then((m) => ({ default: m.LiveIndexPage })),
   liveDetail: () => import('./LivePage').then((m) => ({ default: m.LivePage })),
-  debug: () => import('./DebugAllPage').then((m) => ({ default: m.DebugAllPage })),
+  // 调试台只在开发构建里存在：生产构建把这条动态 import 摇掉，不再产出死 chunk。
+  // 预渲染时 loadPages 仍需要一个 debug 占位组件，给 NotFound 即可（NotFound 本来就在主包里，
+  // 这里再用动态 import 只会让打包器报 INEFFECTIVE_DYNAMIC_IMPORT）。
+  debug: import.meta.env.DEV
+    ? () => import('./DebugAllPage').then((m) => ({ default: m.DebugAllPage }))
+    : () => Promise.resolve({ default: NotFound }),
 } satisfies { [K in keyof PageComponents]: () => Promise<{ default: PageComponents[K] }> }

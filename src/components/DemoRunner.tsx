@@ -136,6 +136,7 @@ export function DemoRunner({
     >
       <Suspense fallback={<DemoSkeleton stage={stage} />}>
         {fit ? <FitReporter onMount={measure} /> : null}
+        {/* oxlint-disable-next-line react/static-components -- 组件来自静态注册表，slug 不变即同一引用 */}
         <Demo
           values={values}
           stage={stage}

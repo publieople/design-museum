@@ -1,4 +1,6 @@
 import { CATEGORIES, categoryOf, sceneLabel } from '../data/taxonomy'
+import { hasLiveDemo } from '../data/live'
+import { absoluteUrl, liveDemoPath } from './routes'
 import { boolValue, numberValue, stringValue } from './controls'
 import { translate } from '../i18n'
 import { pick } from '../i18n/pick'
@@ -73,6 +75,9 @@ export function buildCheatSheet(items: CheatSheetItem[], locale: Locale): string
       lines.push(`   - ${t('sheet.fx.params')}：${formatValues(entry, values).join('；')}`)
       lines.push(`   - ${t('sheet.fx.tech')}：${prompt.zh}`)
       lines.push(`   - ${t('sheet.fx.keywords')}：${entry.keywords.join(', ')}`)
+      if (hasLiveDemo(entry.slug)) {
+        lines.push(`   - ${t('sheet.fx.live')}：${absoluteUrl(liveDemoPath(entry.slug))}`)
+      }
       lines.push('')
     })
   }

@@ -1,0 +1,777 @@
+{
+  "version": 1,
+  "site": "https://publieople.github.io/design-museum",
+  "hall": {
+    "id": "feedback",
+    "letter": "F",
+    "nameZh": "交互反馈",
+    "nameEn": "Interaction & Feedback",
+    "count": 8
+  },
+  "entries": [
+    {
+      "slug": "hover-lift",
+      "code": "F-01",
+      "url": "https://publieople.github.io/design-museum/entry/hover-lift/",
+      "category": "feedback",
+      "nameZh": "悬停抬升",
+      "nameEn": "Hover Lift",
+      "aliases": [
+        "悬停浮起",
+        "鼠标移上去抬起来",
+        "卡片上浮",
+        "hover 抬高",
+        "hover lift",
+        "card hover elevation"
+      ],
+      "oneLiner": "指针移到卡片上，它轻轻上浮、阴影变大，暗示这块可以点。",
+      "oneLinerEn": "When the pointer moves onto a card, it rises slightly and the shadow deepens, hinting that it is clickable.",
+      "keywords": [
+        "transform: translateY",
+        "box-shadow",
+        "transition",
+        ":hover",
+        "elevation",
+        "will-change: transform"
+      ],
+      "related": [
+        "press-feedback",
+        "magnetic-button",
+        "spotlight-glow"
+      ],
+      "scenes": [
+        "card",
+        "list",
+        "button"
+      ],
+      "feel": [
+        "soft",
+        "crisp"
+      ],
+      "intent": [
+        "affordance",
+        "attention"
+      ],
+      "tags": [
+        "css-only",
+        "composited",
+        "pointer-dependent",
+        "stable"
+      ],
+      "demo": {
+        "shape": "stage"
+      },
+      "controls": [
+        {
+          "id": "lift",
+          "kind": "range",
+          "label": "Lift distance",
+          "def": 6,
+          "unit": "px",
+          "min": 0,
+          "max": 16
+        },
+        {
+          "id": "duration",
+          "kind": "range",
+          "label": "Transition duration",
+          "def": 200,
+          "unit": "ms",
+          "min": 100,
+          "max": 500
+        },
+        {
+          "id": "shadow",
+          "kind": "range",
+          "label": "Shadow strength",
+          "def": 45,
+          "unit": "%",
+          "min": 0,
+          "max": 100
+        },
+        {
+          "id": "easing",
+          "kind": "select",
+          "label": "Easing",
+          "def": "cubic-bezier(0.22, 1, 0.36, 1)",
+          "options": [
+            {
+              "value": "linear",
+              "label": "linear（匀速）"
+            },
+            {
+              "value": "ease-out",
+              "label": "ease-out"
+            },
+            {
+              "value": "cubic-bezier(0.22, 1, 0.36, 1)",
+              "label": "ease-out-expo（推荐）"
+            },
+            {
+              "value": "cubic-bezier(0.34, 1.56, 0.64, 1)",
+              "label": "轻微回弹"
+            }
+          ]
+        }
+      ],
+      "loop": "manual",
+      "prompt": {
+        "zh": "给卡片加悬停抬升（hover lift）：指针移上去时用 transform: translateY(-6px) scale(1.02) 抬起，阴影加深到约 45% 的强度（如 0 10px 28px rgba(0,0,0,0.10)），过渡 200ms、缓动 cubic-bezier(0.22, 1, 0.36, 1)；指针移开立刻回到原位。位移只用 transform，不要改 top 或 margin。触摸设备没有 hover，静止态必须完整可读。",
+        "en": "hover lift micro-interaction, :hover { transform: translateY(-6px) scale(1.02); box-shadow: 0 10px 28px rgba(0,0,0,0.10); transition: transform 200ms cubic-bezier(0.22, 1, 0.36, 1) }, transform-only, no top/margin, reset on pointer leave, touch devices keep a static readable state"
+      },
+      "detail": {
+        "page": "https://publieople.github.io/design-museum/entry/hover-lift/",
+        "markdown": "https://publieople.github.io/design-museum/catalog.md#hover-lift"
+      }
+    },
+    {
+      "slug": "press-feedback",
+      "code": "F-02",
+      "url": "https://publieople.github.io/design-museum/entry/press-feedback/",
+      "category": "feedback",
+      "nameZh": "按压反馈",
+      "nameEn": "Press Feedback",
+      "aliases": [
+        "按下缩放",
+        "点击回弹",
+        "按压态",
+        "按下反馈",
+        "button press effect",
+        "active state scale"
+      ],
+      "oneLiner": "手指按下的瞬间按钮缩小、变暗，松开立刻弹回，确认这一下点到了。",
+      "oneLinerEn": "The moment a finger presses down the button shrinks and darkens, then snaps back on release to confirm the tap.",
+      "keywords": [
+        ":active",
+        "transform: scale()",
+        "transition",
+        "touch-action",
+        "press state",
+        ":focus-visible"
+      ],
+      "related": [
+        "hover-lift",
+        "spring",
+        "magnetic-button"
+      ],
+      "scenes": [
+        "button",
+        "form",
+        "nav"
+      ],
+      "feel": [
+        "crisp",
+        "playful"
+      ],
+      "intent": [
+        "affordance",
+        "attention"
+      ],
+      "tags": [
+        "css-only",
+        "composited",
+        "keyboard-operable",
+        "stable"
+      ],
+      "demo": {
+        "shape": "stage"
+      },
+      "controls": [
+        {
+          "id": "scale",
+          "kind": "range",
+          "label": "Pressed scale",
+          "def": 0.96,
+          "unit": "x",
+          "min": 0.85,
+          "max": 1
+        },
+        {
+          "id": "duration",
+          "kind": "range",
+          "label": "Press / release duration",
+          "def": 110,
+          "unit": "ms",
+          "min": 60,
+          "max": 300
+        },
+        {
+          "id": "spring",
+          "kind": "toggle",
+          "label": "Bounce on release",
+          "def": true
+        }
+      ],
+      "loop": "manual",
+      "prompt": {
+        "zh": "给按钮加按压反馈（press feedback）：按住时用 transform: scale(0.96) 缩小，过渡 110ms；松开回到 scale(1)，缓动 cubic-bezier(0.34, 1.56, 0.64, 1)。回弹可以轻微过冲，但别超过 1.0 太多。按下用 :active 或 pointerdown，同时给键盘用户保留 :focus-visible 描边。按钮不能因此改变尺寸。",
+        "en": "button press feedback, :active { transform: scale(0.96); transition: transform 110ms }, release back to scale(1) with cubic-bezier(0.34, 1.56, 0.64, 1), slight overshoot spring, transform-only, keep :focus-visible ring, touch-action: manipulation"
+      },
+      "detail": {
+        "page": "https://publieople.github.io/design-museum/entry/press-feedback/",
+        "markdown": "https://publieople.github.io/design-museum/catalog.md#press-feedback"
+      }
+    },
+    {
+      "slug": "magnetic-button",
+      "code": "F-03",
+      "url": "https://publieople.github.io/design-museum/entry/magnetic-button/",
+      "category": "feedback",
+      "nameZh": "磁吸按钮",
+      "nameEn": "Magnetic Button",
+      "aliases": [
+        "磁力按钮",
+        "跟随鼠标的按钮",
+        "吸附光标",
+        "magnetic hover",
+        "cursor-following button",
+        "magnetic pull"
+      ],
+      "oneLiner": "指针靠近时按钮被吸过去一点点，移开又弹回原位。",
+      "oneLinerEn": "The button drifts a little toward the pointer as it approaches, then springs back to its resting spot.",
+      "keywords": [
+        "pointermove",
+        "transform: translate3d",
+        "getBoundingClientRect",
+        "CSS custom property",
+        "requestAnimationFrame",
+        "magnetic hover"
+      ],
+      "related": [
+        "hover-lift",
+        "press-feedback",
+        "spotlight-glow"
+      ],
+      "scenes": [
+        "button",
+        "nav",
+        "page"
+      ],
+      "feel": [
+        "playful",
+        "crisp"
+      ],
+      "intent": [
+        "attention",
+        "affordance"
+      ],
+      "tags": [
+        "js",
+        "browser-api",
+        "main-thread",
+        "pointer-dependent",
+        "stable"
+      ],
+      "demo": {
+        "shape": "interactive",
+        "thumb": "still"
+      },
+      "controls": [
+        {
+          "id": "strength",
+          "kind": "range",
+          "label": "Follow strength",
+          "def": 0.3,
+          "min": 0,
+          "max": 0.6
+        },
+        {
+          "id": "maxDistance",
+          "kind": "range",
+          "label": "Max offset",
+          "def": 12,
+          "unit": "px",
+          "min": 0,
+          "max": 24
+        },
+        {
+          "id": "radius",
+          "kind": "range",
+          "label": "Trigger radius",
+          "def": 1.6,
+          "unit": "倍",
+          "min": 1,
+          "max": 3
+        },
+        {
+          "id": "duration",
+          "kind": "range",
+          "label": "Return duration",
+          "def": 350,
+          "unit": "ms",
+          "min": 150,
+          "max": 600
+        }
+      ],
+      "loop": "manual",
+      "prompt": {
+        "zh": "做一个磁吸按钮（magnetic button）：监听容器的 pointermove，用 getBoundingClientRect 算出按钮中心，指针进入按钮宽高 1.6 倍范围内时，让按钮朝指针方向偏移，偏移量 = 指针到中心的距离 × 0.30，并限制在 12px 以内；指针离开就复位，复位过渡 350ms cubic-bezier(0.22, 1, 0.36, 1)。用 transform: translate3d 移动，pointermove 里用 requestAnimationFrame 节流。系统减少动态效果时完全不跟随。",
+        "en": "magnetic button, pointermove + getBoundingClientRect, offset = (pointer - center) * 0.30, clamp to 12px, activation radius 1.6x button size, return with transition 350ms cubic-bezier(0.22, 1, 0.36, 1), transform: translate3d, throttle with requestAnimationFrame, disable under prefers-reduced-motion"
+      },
+      "detail": {
+        "page": "https://publieople.github.io/design-museum/entry/magnetic-button/",
+        "markdown": "https://publieople.github.io/design-museum/catalog.md#magnetic-button"
+      }
+    },
+    {
+      "slug": "skeleton-shimmer",
+      "code": "F-04",
+      "url": "https://publieople.github.io/design-museum/entry/skeleton-shimmer/",
+      "category": "feedback",
+      "nameZh": "骨架屏微光",
+      "nameEn": "Skeleton Shimmer",
+      "aliases": [
+        "骨架屏",
+        "微光扫过",
+        "加载占位",
+        "shimmer loading",
+        "skeleton screen",
+        "content placeholder"
+      ],
+      "oneLiner": "灰色占位块上有一道亮光反复扫过，表示内容还在加载。",
+      "oneLinerEn": "A grey placeholder block with a light band sweeping across it, showing that the content is still loading.",
+      "keywords": [
+        "skeleton screen",
+        "@keyframes shimmer",
+        "linear-gradient",
+        "transform: translateX",
+        "content placeholder",
+        "CLS"
+      ],
+      "related": [
+        "optimistic-ui",
+        "toast",
+        "stagger"
+      ],
+      "scenes": [
+        "list",
+        "card",
+        "page"
+      ],
+      "feel": [
+        "calm",
+        "soft"
+      ],
+      "intent": [
+        "waiting"
+      ],
+      "tags": [
+        "css-only",
+        "gradient",
+        "paint-heavy",
+        "motion-heavy",
+        "stable"
+      ],
+      "demo": {
+        "shape": "stage"
+      },
+      "controls": [
+        {
+          "id": "duration",
+          "kind": "range",
+          "label": "Sweep duration",
+          "def": 1400,
+          "unit": "ms",
+          "min": 800,
+          "max": 2600
+        },
+        {
+          "id": "highlight",
+          "kind": "range",
+          "label": "Highlight width",
+          "def": 32,
+          "unit": "%",
+          "min": 10,
+          "max": 60
+        },
+        {
+          "id": "rows",
+          "kind": "range",
+          "label": "Text placeholder rows",
+          "def": 3,
+          "unit": "条",
+          "min": 2,
+          "max": 6
+        }
+      ],
+      "loop": "continuous",
+      "prompt": {
+        "zh": "做一个骨架屏微光（skeleton shimmer）：按最终布局摆好占位块，灰色底用 color-mix(in srgb, currentColor 12%, transparent)。再加一层覆盖的 linear-gradient 高光带，宽度约 32%，用 transform: translateX 从 -100% 平移到 100%，1400ms linear infinite 循环，不要动 width 或 background-position。头像圆加 3 行文本占位。系统减少动态效果时去掉扫光，只留静态占位。",
+        "en": "skeleton screen with shimmer, placeholder blocks at currentColor 8-12%, overlay linear-gradient highlight band 32% wide, @keyframes shimmer { from { transform: translateX(-100%) } to { transform: translateX(100%) } }, 1400ms linear infinite, 3 text rows + avatar circle, animate transform only (never width/background-position), static under prefers-reduced-motion"
+      },
+      "detail": {
+        "page": "https://publieople.github.io/design-museum/entry/skeleton-shimmer/",
+        "markdown": "https://publieople.github.io/design-museum/catalog.md#skeleton-shimmer"
+      }
+    },
+    {
+      "slug": "optimistic-ui",
+      "code": "F-05",
+      "url": "https://publieople.github.io/design-museum/entry/optimistic-ui/",
+      "category": "feedback",
+      "nameZh": "乐观更新",
+      "nameEn": "Optimistic UI",
+      "aliases": [
+        "乐观更新",
+        "先改后存",
+        "点了立刻变",
+        "optimistic update",
+        "rollback on failure",
+        "immediate UI"
+      ],
+      "oneLiner": "点下去界面立刻变成成功的样子，请求在后台跑，失败了再退回去。",
+      "oneLinerEn": "The UI flips to the success state the moment you click, while the request runs and rolls back on failure.",
+      "keywords": [
+        "optimistic UI",
+        "rollback",
+        "useOptimistic",
+        "race condition",
+        "pending state",
+        "reconcile"
+      ],
+      "related": [
+        "toast",
+        "press-feedback",
+        "skeleton-shimmer"
+      ],
+      "scenes": [
+        "list",
+        "button",
+        "form"
+      ],
+      "feel": [
+        "crisp",
+        "calm"
+      ],
+      "intent": [
+        "affordance",
+        "waiting"
+      ],
+      "tags": [
+        "js",
+        "stateful",
+        "keyboard-operable",
+        "stable"
+      ],
+      "demo": {
+        "shape": "stage"
+      },
+      "controls": [
+        {
+          "id": "latency",
+          "kind": "range",
+          "label": "Simulated server latency",
+          "def": 1200,
+          "unit": "ms",
+          "min": 300,
+          "max": 3000
+        },
+        {
+          "id": "failureRate",
+          "kind": "range",
+          "label": "Failure rate",
+          "def": 30,
+          "unit": "%",
+          "min": 0,
+          "max": 100
+        },
+        {
+          "id": "optimistic",
+          "kind": "toggle",
+          "label": "Optimistic update",
+          "def": true
+        }
+      ],
+      "loop": "manual",
+      "prompt": {
+        "zh": "做一个乐观更新（optimistic UI）的点赞列表：点击后立刻把这一条改成已赞、计数 +1，同时标记 pending，不等接口返回。模拟请求延迟 1200ms，失败概率 30%，失败时按 id 回滚到原状态并在那一条上显示「失败，已撤销」的提示。用 useOptimistic 或本地 state 实现，注意快速连点的竞态。",
+        "en": "optimistic UI like button, update state immediately on click and mark pending, no await, simulated latency 1200ms, failure rate 30%, rollback by id on error with an inline error message, handle race conditions (last write wins), useOptimistic, aria-live polite for the error"
+      },
+      "detail": {
+        "page": "https://publieople.github.io/design-museum/entry/optimistic-ui/",
+        "markdown": "https://publieople.github.io/design-museum/catalog.md#optimistic-ui"
+      }
+    },
+    {
+      "slug": "toast",
+      "code": "F-06",
+      "url": "https://publieople.github.io/design-museum/entry/toast/",
+      "category": "feedback",
+      "nameZh": "轻提示",
+      "nameEn": "Toast",
+      "aliases": [
+        "轻提示",
+        "消息提示条",
+        "浮层提示",
+        "自动消失的提示",
+        "toast notification",
+        "snackbar"
+      ],
+      "oneLiner": "一条短消息从屏幕边缘滑进来，几秒后自己消失，不打断当前操作。",
+      "oneLinerEn": "A short message slides in from the screen edge and dismisses itself after a few seconds, without blocking.",
+      "keywords": [
+        "toast",
+        "snackbar",
+        "aria-live",
+        "role=\"status\"",
+        "auto-dismiss",
+        "transform: translateY"
+      ],
+      "related": [
+        "optimistic-ui",
+        "skeleton-shimmer",
+        "sticky-header"
+      ],
+      "scenes": [
+        "button",
+        "form",
+        "page"
+      ],
+      "feel": [
+        "calm",
+        "soft"
+      ],
+      "intent": [
+        "waiting",
+        "affordance"
+      ],
+      "tags": [
+        "js",
+        "stateful",
+        "composited",
+        "stable"
+      ],
+      "demo": {
+        "shape": "stage"
+      },
+      "controls": [
+        {
+          "id": "duration",
+          "kind": "range",
+          "label": "Dwell time",
+          "def": 3000,
+          "unit": "ms",
+          "min": 1500,
+          "max": 6000
+        },
+        {
+          "id": "position",
+          "kind": "select",
+          "label": "Position",
+          "def": "bottom",
+          "options": [
+            {
+              "value": "bottom",
+              "label": "底部居中"
+            },
+            {
+              "value": "top",
+              "label": "顶部居中"
+            },
+            {
+              "value": "corner",
+              "label": "右上角"
+            }
+          ]
+        },
+        {
+          "id": "distance",
+          "kind": "range",
+          "label": "Slide-in distance",
+          "def": 12,
+          "unit": "px",
+          "min": 0,
+          "max": 24
+        }
+      ],
+      "loop": "manual",
+      "prompt": {
+        "zh": "做一个轻提示（toast）组件：触发后从底部居中滑入，滑入距离 12px，入场 220ms ease-out，停留 3000ms 后自动消失。容器用 role=\"status\" 和 aria-live=\"polite\"，多条时纵向堆叠、最多同时 3 条。动画只用 transform: translateY 和 opacity，禁用状态别遮挡页面操作。系统减少动态效果时直接出现和消失。",
+        "en": "toast / snackbar component, slides in from 底部居中, translateY(12px) with 220ms ease-out, auto-dismiss after 3000ms, role=\"status\" aria-live=\"polite\", stack up to 3 toasts, animate transform + opacity only, non-blocking, no entry/exit animation under prefers-reduced-motion"
+      },
+      "detail": {
+        "page": "https://publieople.github.io/design-museum/entry/toast/",
+        "markdown": "https://publieople.github.io/design-museum/catalog.md#toast"
+      }
+    },
+    {
+      "slug": "ripple",
+      "code": "F-07",
+      "url": "https://publieople.github.io/design-museum/entry/ripple/",
+      "category": "feedback",
+      "nameZh": "涟漪反馈",
+      "nameEn": "Ripple",
+      "aliases": [
+        "水波纹",
+        "点击涟漪",
+        "波纹扩散",
+        "ripple effect",
+        "material ripple",
+        "touch ripple"
+      ],
+      "oneLiner": "点下去的地方荡开一圈水波，告诉用户这一下收到了。",
+      "oneLinerEn": "A ripple spreads from where you pressed, confirming that the tap registered.",
+      "keywords": [
+        "ripple effect",
+        "Material ripple",
+        "pointerdown",
+        "radial-gradient",
+        "transform: scale()",
+        "overflow: hidden",
+        "animation-play-state",
+        "::after"
+      ],
+      "related": [
+        "press-feedback",
+        "spotlight-glow"
+      ],
+      "scenes": [
+        "button",
+        "list",
+        "card"
+      ],
+      "feel": [
+        "crisp",
+        "playful"
+      ],
+      "intent": [
+        "affordance",
+        "attention"
+      ],
+      "tags": [
+        "js",
+        "gradient",
+        "composited",
+        "keyboard-operable",
+        "stable"
+      ],
+      "demo": {
+        "shape": "stage"
+      },
+      "controls": [
+        {
+          "id": "duration",
+          "kind": "range",
+          "label": "Spread duration",
+          "def": 450,
+          "unit": "ms",
+          "min": 200,
+          "max": 800
+        },
+        {
+          "id": "opacity",
+          "kind": "range",
+          "label": "Start opacity",
+          "def": 30,
+          "unit": "%",
+          "min": 10,
+          "max": 50
+        },
+        {
+          "id": "fromPoint",
+          "kind": "toggle",
+          "label": "Spread from press point",
+          "def": true
+        }
+      ],
+      "loop": "replay",
+      "prompt": {
+        "zh": "做点击涟漪反馈（ripple）：在按钮 pointerdown 时按落点坐标生成一个圆形波纹，直径覆盖整块按钮，用 transform: scale(0) → scale(1) 扩散、不透明度 30% 渐隐到 0，时长 450ms、ease-out，按钮 overflow: hidden 裁出边界，动画结束后把波纹节点移除。键盘 Enter/Space 触发时从中心扩散；prefers-reduced-motion 下改成短促的底色变化。",
+        "en": "material ripple feedback, circle spawned at the pointerdown coordinates, scaled from 0 to 1 with opacity fading from 30% to 0 over 450ms ease-out, button has overflow: hidden, remove the ripple node on animationend, centered ripple for Enter/Space, short background-color change under prefers-reduced-motion"
+      },
+      "detail": {
+        "page": "https://publieople.github.io/design-museum/entry/ripple/",
+        "markdown": "https://publieople.github.io/design-museum/catalog.md#ripple"
+      }
+    },
+    {
+      "slug": "command-palette",
+      "code": "F-08",
+      "url": "https://publieople.github.io/design-museum/entry/command-palette/",
+      "category": "feedback",
+      "nameZh": "命令面板",
+      "nameEn": "Command Palette",
+      "aliases": [
+        "命令面板",
+        "快捷搜索框",
+        "⌘K 面板",
+        "command palette",
+        "command menu",
+        "quick switcher",
+        "spotlight search"
+      ],
+      "oneLiner": "按一个快捷键弹出一个搜索框，敲几个字就能跳到任何功能。",
+      "oneLinerEn": "One shortcut opens a search box where a few keystrokes reach any command.",
+      "keywords": [
+        "command palette",
+        "command menu",
+        "role=\"listbox\"",
+        "aria-activedescendant",
+        "meta+k",
+        "fuzzy filter",
+        "focus trap",
+        "z-index overlay"
+      ],
+      "related": [
+        "accordion",
+        "toast"
+      ],
+      "scenes": [
+        "nav",
+        "page",
+        "form"
+      ],
+      "feel": [
+        "crisp",
+        "calm"
+      ],
+      "intent": [
+        "affordance",
+        "hierarchy"
+      ],
+      "tags": [
+        "js",
+        "stateful",
+        "layout-triggering",
+        "keyboard-operable",
+        "stable"
+      ],
+      "demo": {
+        "shape": "interactive",
+        "minHeight": 320,
+        "thumb": "still"
+      },
+      "controls": [
+        {
+          "id": "results",
+          "kind": "range",
+          "label": "Max results",
+          "def": 6,
+          "min": 3,
+          "max": 12
+        },
+        {
+          "id": "withShortcut",
+          "kind": "toggle",
+          "label": "Show the shortcut",
+          "def": true
+        },
+        {
+          "id": "fuzzy",
+          "kind": "toggle",
+          "label": "Fuzzy filter",
+          "def": true
+        }
+      ],
+      "loop": "manual",
+      "prompt": {
+        "zh": "做一个命令面板（command palette）：按 ⌘K / Ctrl+K（同时支持 /）打开浮层搜索框，输入时做模糊过滤，最多显示 6 条，上下键移动高亮、回车确认并执行、Esc 关闭，打开时焦点进输入框、关闭后还给触发按钮；当前项用 aria-selected 或 aria-activedescendant 标出，进出场 150ms 缩放加淡入；prefers-reduced-motion 下只做透明度切换。",
+        "en": "command palette overlay, meta+k / ctrl+k plus / shortcut, live fuzzy filter over commands, top 6 results, arrow keys move the highlight, Enter runs the command, Escape closes, focus moves into the input on open and back to the trigger on close, aria-selected / aria-activedescendant on the active row, 150ms scale and fade in and out, opacity only under prefers-reduced-motion"
+      },
+      "detail": {
+        "page": "https://publieople.github.io/design-museum/entry/command-palette/",
+        "markdown": "https://publieople.github.io/design-museum/catalog.md#command-palette"
+      }
+    }
+  ]
+}

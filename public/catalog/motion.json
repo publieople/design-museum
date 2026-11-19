@@ -1,0 +1,947 @@
+{
+  "version": 1,
+  "site": "https://publieople.github.io/design-museum",
+  "hall": {
+    "id": "motion",
+    "letter": "M",
+    "nameZh": "动效与节奏",
+    "nameEn": "Motion & Timing",
+    "count": 9
+  },
+  "entries": [
+    {
+      "slug": "stagger",
+      "code": "M-01",
+      "url": "https://publieople.github.io/design-museum/entry/stagger/",
+      "category": "motion",
+      "nameZh": "交错进场",
+      "nameEn": "Stagger",
+      "aliases": [
+        "错峰动画",
+        "依次出现",
+        "级联出现",
+        "逐条入场",
+        "cascading entrance",
+        "staggered animation"
+      ],
+      "oneLiner": "一组元素不是同时出现，而是按顺序一个接一个进来。",
+      "oneLinerEn": "A group of elements enters one after another on a fixed interval, not all at once.",
+      "keywords": [
+        "stagger",
+        "animation-delay",
+        "transition-delay",
+        "transform: translateY",
+        "cascading entrance"
+      ],
+      "related": [
+        "scroll-reveal",
+        "easing",
+        "spring"
+      ],
+      "scenes": [
+        "list",
+        "page",
+        "nav"
+      ],
+      "feel": [
+        "crisp",
+        "playful"
+      ],
+      "intent": [
+        "hierarchy",
+        "attention"
+      ],
+      "tags": [
+        "css-only",
+        "composited",
+        "motion-heavy",
+        "stable"
+      ],
+      "demo": {
+        "shape": "stage"
+      },
+      "controls": [
+        {
+          "id": "duration",
+          "kind": "range",
+          "label": "Per-item duration",
+          "def": 420,
+          "unit": "ms",
+          "min": 120,
+          "max": 900
+        },
+        {
+          "id": "stagger",
+          "kind": "range",
+          "label": "Item interval",
+          "def": 80,
+          "unit": "ms",
+          "min": 0,
+          "max": 240
+        },
+        {
+          "id": "distance",
+          "kind": "range",
+          "label": "Travel distance",
+          "def": 16,
+          "unit": "px",
+          "min": 0,
+          "max": 48
+        },
+        {
+          "id": "easing",
+          "kind": "select",
+          "label": "Easing",
+          "def": "cubic-bezier(0.22, 1, 0.36, 1)",
+          "options": [
+            {
+              "value": "linear",
+              "label": "linear（匀速）"
+            },
+            {
+              "value": "ease-out",
+              "label": "ease-out"
+            },
+            {
+              "value": "cubic-bezier(0.22, 1, 0.36, 1)",
+              "label": "ease-out-expo（推荐）"
+            },
+            {
+              "value": "cubic-bezier(0.34, 1.56, 0.64, 1)",
+              "label": "轻微回弹"
+            }
+          ]
+        }
+      ],
+      "loop": "replay",
+      "prompt": {
+        "zh": "给这组列表项做交错进场（stagger）动画：每项从下方 16px、opacity 0 进入最终位置，单项时长 420ms，缓动 cubic-bezier(0.22, 1, 0.36, 1)，相邻两项间隔 80ms。只在首次出现时播放一次，用 transform 和 opacity 实现。系统开启「减少动态效果」时直接显示最终状态。",
+        "en": "staggered entrance, animation-delay: index * 80ms, each item fades in with opacity 0 → 1 and translateY(16px) → 0, duration 420ms, easing cubic-bezier(0.22, 1, 0.36, 1), play once on first view, animate transform/opacity only, respect prefers-reduced-motion"
+      },
+      "detail": {
+        "page": "https://publieople.github.io/design-museum/entry/stagger/",
+        "markdown": "https://publieople.github.io/design-museum/catalog.md#stagger"
+      }
+    },
+    {
+      "slug": "easing",
+      "code": "M-02",
+      "url": "https://publieople.github.io/design-museum/entry/easing/",
+      "category": "motion",
+      "nameZh": "缓动曲线",
+      "nameEn": "Easing",
+      "aliases": [
+        "缓动函数",
+        "时间曲线",
+        "速度曲线",
+        "贝塞尔曲线",
+        "timing function",
+        "easing curve",
+        "cubic-bezier"
+      ],
+      "oneLiner": "决定动画快慢怎么分配：起步快还是收尾慢，全在这条曲线上。",
+      "oneLinerEn": "How an animation spends its time: fast off the line or soft on arrival, all in one curve.",
+      "keywords": [
+        "animation-timing-function",
+        "cubic-bezier()",
+        "transition-timing-function",
+        "linear()",
+        "steps()",
+        "easing curve"
+      ],
+      "related": [
+        "spring",
+        "stagger",
+        "scroll-driven"
+      ],
+      "scenes": [
+        "button",
+        "card",
+        "page"
+      ],
+      "feel": [
+        "crisp",
+        "playful"
+      ],
+      "intent": [
+        "affordance",
+        "hierarchy"
+      ],
+      "tags": [
+        "css-only",
+        "modern-css",
+        "composited",
+        "check-support"
+      ],
+      "demo": {
+        "shape": "stage"
+      },
+      "controls": [
+        {
+          "id": "duration",
+          "kind": "range",
+          "label": "Animation duration",
+          "def": 900,
+          "unit": "ms",
+          "min": 200,
+          "max": 1600
+        },
+        {
+          "id": "distance",
+          "kind": "range",
+          "label": "Travel distance",
+          "def": 100,
+          "unit": "%",
+          "min": 20,
+          "max": 100
+        },
+        {
+          "id": "delay",
+          "kind": "range",
+          "label": "Pause between rounds",
+          "def": 300,
+          "unit": "ms",
+          "min": 0,
+          "max": 1200
+        },
+        {
+          "id": "easing",
+          "kind": "select",
+          "label": "Curves to compare",
+          "def": "cubic-bezier(0.22, 1, 0.36, 1)",
+          "options": [
+            {
+              "value": "cubic-bezier(0.22, 1, 0.36, 1)",
+              "label": "ease-out-quint（进场推荐）"
+            },
+            {
+              "value": "linear",
+              "label": "linear（匀速）"
+            },
+            {
+              "value": "ease-in",
+              "label": "ease-in（渐快）"
+            },
+            {
+              "value": "cubic-bezier(0.34, 1.56, 0.64, 1)",
+              "label": "back-out（轻微回弹）"
+            }
+          ]
+        }
+      ],
+      "loop": "continuous",
+      "prompt": {
+        "zh": "帮我调一下动效的缓动曲线：入场用 cubic-bezier(0.22, 1, 0.36, 1)，动画时长 900ms，每轮结束后停 300ms。位移幅度大概 100% 的可用宽度，用 transform 走，不要动 left/top。同一批元素（按钮、卡片）必须用同一条曲线，手感才统一；缓动只改时间分配，不要顺手把路径也改了。",
+        "en": "animation-timing-function: cubic-bezier(0.22, 1, 0.36, 1), transition-timing-function, cubic-bezier() easing curve, duration 900ms, delay 300ms, travel 100%, animate transform only (no left/top), keep one shared easing across buttons and cards, respect prefers-reduced-motion"
+      },
+      "detail": {
+        "page": "https://publieople.github.io/design-museum/entry/easing/",
+        "markdown": "https://publieople.github.io/design-museum/catalog.md#easing"
+      }
+    },
+    {
+      "slug": "spring",
+      "code": "M-03",
+      "url": "https://publieople.github.io/design-museum/entry/spring/",
+      "category": "motion",
+      "nameZh": "弹簧动画",
+      "nameEn": "Spring Physics",
+      "aliases": [
+        "弹性动画",
+        "回弹",
+        "物理动画",
+        "弹性缓动",
+        "spring animation",
+        "overshoot",
+        "bouncy"
+      ],
+      "oneLiner": "元素像挂了弹簧一样冲向目标：可能冲过头，再弹回来停住。",
+      "oneLinerEn": "An element driven at its target like it is on a spring, overshooting and settling back.",
+      "keywords": [
+        "spring physics",
+        "stiffness",
+        "damping",
+        "mass",
+        "overshoot",
+        "requestAnimationFrame",
+        "linear() easing approximation"
+      ],
+      "related": [
+        "easing",
+        "hover-lift",
+        "press-feedback"
+      ],
+      "scenes": [
+        "button",
+        "card",
+        "page"
+      ],
+      "feel": [
+        "playful",
+        "soft"
+      ],
+      "intent": [
+        "affordance",
+        "attention"
+      ],
+      "tags": [
+        "js",
+        "modern-css",
+        "composited",
+        "main-thread",
+        "motion-heavy",
+        "stable"
+      ],
+      "demo": {
+        "shape": "stage"
+      },
+      "controls": [
+        {
+          "id": "stiffness",
+          "kind": "range",
+          "label": "Stiffness",
+          "def": 260,
+          "unit": "",
+          "min": 60,
+          "max": 600
+        },
+        {
+          "id": "damping",
+          "kind": "range",
+          "label": "Damping",
+          "def": 18,
+          "unit": "",
+          "min": 4,
+          "max": 60
+        },
+        {
+          "id": "mass",
+          "kind": "range",
+          "label": "Mass",
+          "def": 1,
+          "unit": "x",
+          "min": 0.5,
+          "max": 4
+        }
+      ],
+      "loop": "replay",
+      "prompt": {
+        "zh": "给这个元素做弹簧动画（spring physics）：用 stiffness 260、damping 18、mass 1 三个参数驱动，目标位置是右侧终点，允许轻微超调但不能晃超过两下，300ms 内停稳。只动 transform，用 requestAnimationFrame 或动画库的 spring 实现，不要每帧改 width/height。prefers-reduced-motion 下直接落到终点。",
+        "en": "spring animation, stiffness 260, damping 18, mass 1, overshoot allowed but settle within ~300ms, animate transform: translateX only, driven by requestAnimationFrame or a spring library (Framer Motion / react-spring), no layout-thrashing properties, respect prefers-reduced-motion"
+      },
+      "detail": {
+        "page": "https://publieople.github.io/design-museum/entry/spring/",
+        "markdown": "https://publieople.github.io/design-museum/catalog.md#spring"
+      }
+    },
+    {
+      "slug": "scroll-reveal",
+      "code": "M-04",
+      "url": "https://publieople.github.io/design-museum/entry/scroll-reveal/",
+      "category": "motion",
+      "nameZh": "滚动揭示",
+      "nameEn": "Scroll Reveal",
+      "aliases": [
+        "滚动出现",
+        "滚动淡入",
+        "进入视口出现",
+        "滚动加载动画",
+        "reveal on scroll",
+        "fade in on scroll",
+        "view enter"
+      ],
+      "oneLiner": "内容滚进视口时才淡入上移，没滚到的先藏着。",
+      "oneLinerEn": "Content fades in and slides up only once it scrolls into view; off-screen items stay hidden.",
+      "keywords": [
+        "IntersectionObserver",
+        "threshold",
+        "rootMargin",
+        "reveal on scroll",
+        "fade in on scroll",
+        "unobserve",
+        "translateY + opacity"
+      ],
+      "related": [
+        "scroll-driven",
+        "stagger",
+        "parallax"
+      ],
+      "scenes": [
+        "scroll",
+        "page",
+        "list"
+      ],
+      "feel": [
+        "calm",
+        "soft"
+      ],
+      "intent": [
+        "attention",
+        "hierarchy"
+      ],
+      "tags": [
+        "js",
+        "browser-api",
+        "scroll-linked",
+        "composited",
+        "motion-heavy",
+        "stable"
+      ],
+      "demo": {
+        "shape": "scroll",
+        "thumb": "still"
+      },
+      "controls": [
+        {
+          "id": "distance",
+          "kind": "range",
+          "label": "Rise distance",
+          "def": 24,
+          "unit": "px",
+          "min": 0,
+          "max": 64
+        },
+        {
+          "id": "duration",
+          "kind": "range",
+          "label": "Fade duration",
+          "def": 550,
+          "unit": "ms",
+          "min": 150,
+          "max": 1200
+        },
+        {
+          "id": "threshold",
+          "kind": "range",
+          "label": "Trigger threshold",
+          "def": 20,
+          "unit": "%",
+          "min": 0,
+          "max": 90
+        },
+        {
+          "id": "delay",
+          "kind": "range",
+          "label": "Item interval",
+          "def": 60,
+          "unit": "ms",
+          "min": 0,
+          "max": 200
+        }
+      ],
+      "loop": "manual",
+      "prompt": {
+        "zh": "给这些内容块加滚动揭示（reveal on scroll）：用 IntersectionObserver 监听，threshold 0.2，元素露出后播放 opacity 0 → 1、translateY(24px) → 0 的过渡，时长 550ms、cubic-bezier(0.22, 1, 0.36, 1)，相邻块错开 60ms，播完立刻 unobserve。只动 transform 和 opacity。prefers-reduced-motion 下不要观察，内容直接显示。",
+        "en": "reveal on scroll, IntersectionObserver with threshold 0.2, add class when isIntersecting, transition: opacity 550ms cubic-bezier(0.22, 1, 0.36, 1), transform translateY(24px) to 0, stagger 60ms, unobserve after first intersection, opacity + transform only, respect prefers-reduced-motion"
+      },
+      "detail": {
+        "page": "https://publieople.github.io/design-museum/entry/scroll-reveal/",
+        "markdown": "https://publieople.github.io/design-museum/catalog.md#scroll-reveal"
+      }
+    },
+    {
+      "slug": "parallax",
+      "code": "M-05",
+      "url": "https://publieople.github.io/design-museum/entry/parallax/",
+      "category": "motion",
+      "nameZh": "视差滚动",
+      "nameEn": "Parallax",
+      "aliases": [
+        "视差",
+        "层叠滚动",
+        "分层滚动",
+        "视差效果",
+        "parallax scrolling",
+        "multi-layer scroll",
+        "scroll depth"
+      ],
+      "oneLiner": "滚动时前景和后景走不同速度，画面因此有了纵深。",
+      "oneLinerEn": "Foreground and background move at different speeds as you scroll, which gives the scene depth.",
+      "keywords": [
+        "parallax scrolling",
+        "transform: translate3d",
+        "will-change: transform",
+        "animation-timeline: scroll()",
+        "background-attachment: fixed",
+        "scroll-linked"
+      ],
+      "related": [
+        "scroll-driven",
+        "scroll-reveal",
+        "frosted-glass"
+      ],
+      "scenes": [
+        "scroll",
+        "page",
+        "card"
+      ],
+      "feel": [
+        "calm",
+        "soft"
+      ],
+      "intent": [
+        "attention",
+        "hierarchy"
+      ],
+      "tags": [
+        "js",
+        "modern-css",
+        "scroll-linked",
+        "paint-heavy",
+        "motion-heavy",
+        "stable"
+      ],
+      "demo": {
+        "shape": "scroll",
+        "thumb": "still"
+      },
+      "controls": [
+        {
+          "id": "speed",
+          "kind": "range",
+          "label": "Parallax strength",
+          "def": 0.45,
+          "unit": "x",
+          "min": 0,
+          "max": 1
+        },
+        {
+          "id": "distance",
+          "kind": "range",
+          "label": "Base offset",
+          "def": 60,
+          "unit": "px",
+          "min": 0,
+          "max": 120
+        },
+        {
+          "id": "reverse",
+          "kind": "toggle",
+          "label": "Reverse direction",
+          "def": false
+        }
+      ],
+      "loop": "manual",
+      "prompt": {
+        "zh": "给这个滚动容器做视差滚动（parallax）：背景层按滚动距离乘 0.45 偏移，中景和前景各按不同系数偏移，基准位移 60px。用 transform: translate3d 实现，scroll 里用 requestAnimationFrame 节流，只在滚动期间加 will-change: transform。prefers-reduced-motion 下把系数归零。",
+        "en": "parallax scrolling, multi-layer scroll depth, each layer translate3d(0, scrollY * 0.45 + 60px, 0), background slower than foreground, driven by requestAnimationFrame inside a passive scroll listener, will-change: transform only while scrolling, respect prefers-reduced-motion"
+      },
+      "detail": {
+        "page": "https://publieople.github.io/design-museum/entry/parallax/",
+        "markdown": "https://publieople.github.io/design-museum/catalog.md#parallax"
+      }
+    },
+    {
+      "slug": "scroll-driven",
+      "code": "M-06",
+      "url": "https://publieople.github.io/design-museum/entry/scroll-driven/",
+      "category": "motion",
+      "nameZh": "滚动驱动动画",
+      "nameEn": "Scroll-Driven Animation",
+      "aliases": [
+        "滚动时间线",
+        "滚动进度动画",
+        "滚动联动动画",
+        "scroll timeline",
+        "scroll-driven animations",
+        "animation-timeline"
+      ],
+      "oneLiner": "滚动条就是进度条：滚到哪一帧由滚动位置决定。",
+      "oneLinerEn": "The scrollbar is the timeline: the scroll position decides exactly which frame is shown.",
+      "keywords": [
+        "animation-timeline",
+        "scroll()",
+        "view()",
+        "animation-range",
+        "scroll-driven animations",
+        "scroll progress",
+        "requestAnimationFrame fallback"
+      ],
+      "related": [
+        "scroll-reveal",
+        "parallax",
+        "sticky-header"
+      ],
+      "scenes": [
+        "scroll",
+        "page",
+        "nav"
+      ],
+      "feel": [
+        "crisp",
+        "calm"
+      ],
+      "intent": [
+        "attention",
+        "affordance"
+      ],
+      "tags": [
+        "modern-css",
+        "scroll-linked",
+        "composited",
+        "motion-heavy",
+        "check-support"
+      ],
+      "demo": {
+        "shape": "scroll",
+        "thumb": "still"
+      },
+      "controls": [
+        {
+          "id": "rotate",
+          "kind": "range",
+          "label": "Max rotation",
+          "def": 30,
+          "unit": "deg",
+          "min": 0,
+          "max": 90
+        },
+        {
+          "id": "range",
+          "kind": "range",
+          "label": "Animation range",
+          "def": 60,
+          "unit": "%",
+          "min": 20,
+          "max": 100
+        },
+        {
+          "id": "duration",
+          "kind": "range",
+          "label": "Fallback duration",
+          "def": 600,
+          "unit": "ms",
+          "min": 200,
+          "max": 1200
+        }
+      ],
+      "loop": "manual",
+      "prompt": {
+        "zh": "用 CSS 滚动驱动动画（scroll-driven animations）做这个效果：卡片用 animation-timeline: view()、animation-range: entry 0% cover 60%，把滚动进度映射到 rotateZ(30deg) 和 opacity 上；顶部进度条用 animation-timeline: scroll() 配 transform: scaleX()。滚动事件里不要写 JS。Safari / Firefox 不支持时，用 intersection 触发一段 600ms 的普通动画兜底，并给出「不支持」的提示。",
+        "en": "scroll-driven animations, animation-timeline: view(), animation-range: entry 0% cover 60%, keyframes on rotateZ(30deg) and opacity, scroll progress bar via animation-timeline: scroll() with transform: scaleX(), no scroll event listeners, feature-detect with CSS.supports('animation-timeline: scroll()'), fallback to a 600ms reveal with IntersectionObserver, respect prefers-reduced-motion"
+      },
+      "detail": {
+        "page": "https://publieople.github.io/design-museum/entry/scroll-driven/",
+        "markdown": "https://publieople.github.io/design-museum/catalog.md#scroll-driven"
+      }
+    },
+    {
+      "slug": "view-transitions",
+      "code": "M-07",
+      "url": "https://publieople.github.io/design-museum/entry/view-transitions/",
+      "category": "motion",
+      "nameZh": "视图过渡",
+      "nameEn": "View Transitions",
+      "aliases": [
+        "页面转场",
+        "跨页面过渡",
+        "共享元素过渡",
+        "view transition",
+        "view-transition",
+        "page transition"
+      ],
+      "oneLiner": "页面切换时，浏览器把新旧两屏接起来，补出中间那一下过渡。",
+      "oneLinerEn": "When the view changes, the browser stitches the old and new screens together and animates the gap between them.",
+      "keywords": [
+        "View Transition API",
+        "document.startViewTransition",
+        "view-transition-name",
+        "::view-transition-old",
+        "::view-transition-new",
+        "shared element transition",
+        "cross-document view transition"
+      ],
+      "related": [
+        "stagger",
+        "sticky-header"
+      ],
+      "scenes": [
+        "page",
+        "card",
+        "nav"
+      ],
+      "feel": [
+        "crisp",
+        "calm"
+      ],
+      "intent": [
+        "hierarchy",
+        "attention"
+      ],
+      "tags": [
+        "browser-api",
+        "js",
+        "composited",
+        "motion-heavy",
+        "check-support"
+      ],
+      "demo": {
+        "shape": "page",
+        "minHeight": 320,
+        "thumb": "still"
+      },
+      "controls": [
+        {
+          "id": "duration",
+          "kind": "range",
+          "label": "Transition duration",
+          "def": 300,
+          "unit": "ms",
+          "min": 120,
+          "max": 800
+        },
+        {
+          "id": "easing",
+          "kind": "select",
+          "label": "Easing",
+          "def": "cubic-bezier(0.22, 1, 0.36, 1)",
+          "options": [
+            {
+              "value": "cubic-bezier(0.22, 1, 0.36, 1)",
+              "label": "减速到位"
+            },
+            {
+              "value": "ease-in-out",
+              "label": "两端缓"
+            },
+            {
+              "value": "linear",
+              "label": "匀速"
+            }
+          ]
+        },
+        {
+          "id": "shared",
+          "kind": "toggle",
+          "label": "Shared element transition",
+          "def": true
+        }
+      ],
+      "loop": "manual",
+      "prompt": {
+        "zh": "做一个视图过渡（view transition）：点击列表卡片时用 document.startViewTransition 包住 DOM 更新，给被点的那张卡片加 view-transition-name，让它在详情页放大成头图，过渡 300ms、缓动 cubic-bezier(0.22, 1, 0.36, 1)。同一时刻 view-transition-name 只能有一个；不支持这个 API 的浏览器直接切换，不要留空白。",
+        "en": "view transition, document.startViewTransition wrapping the DOM update, view-transition-name on the shared element so it morphs into the detail header, ::view-transition-old / ::view-transition-new pseudo elements, 300ms cubic-bezier(0.22, 1, 0.36, 1), instant fallback when unsupported"
+      },
+      "detail": {
+        "page": "https://publieople.github.io/design-museum/entry/view-transitions/",
+        "markdown": "https://publieople.github.io/design-museum/catalog.md#view-transitions"
+      }
+    },
+    {
+      "slug": "cursor-follower",
+      "code": "M-08",
+      "url": "https://publieople.github.io/design-museum/entry/cursor-follower/",
+      "category": "motion",
+      "nameZh": "光标跟随",
+      "nameEn": "Cursor Follower",
+      "aliases": [
+        "跟随鼠标",
+        "指针跟随",
+        "鼠标尾巴",
+        "custom cursor",
+        "cursor follower",
+        "mouse follower",
+        "pointer follower"
+      ],
+      "oneLiner": "一个圆点慢半拍地跟在指针后面，把系统鼠标指针换掉。",
+      "oneLinerEn": "A dot trails the pointer with a slight delay, replacing the system cursor.",
+      "keywords": [
+        "cursor follower",
+        "custom cursor",
+        "pointermove",
+        "transform: translate3d",
+        "requestAnimationFrame",
+        "mix-blend-mode: difference",
+        "pointer-events: none",
+        "cursor: none"
+      ],
+      "related": [
+        "magnetic-button",
+        "spotlight-glow"
+      ],
+      "scenes": [
+        "page",
+        "button",
+        "card"
+      ],
+      "feel": [
+        "playful",
+        "crisp"
+      ],
+      "intent": [
+        "attention",
+        "affordance"
+      ],
+      "tags": [
+        "js",
+        "browser-api",
+        "composited",
+        "main-thread",
+        "pointer-dependent"
+      ],
+      "demo": {
+        "shape": "interactive",
+        "minHeight": 320,
+        "thumb": "still"
+      },
+      "controls": [
+        {
+          "id": "lag",
+          "kind": "range",
+          "label": "Follow lag",
+          "def": 90,
+          "unit": "ms",
+          "min": 0,
+          "max": 300
+        },
+        {
+          "id": "size",
+          "kind": "range",
+          "label": "Dot size",
+          "def": 20,
+          "unit": "px",
+          "min": 8,
+          "max": 48
+        },
+        {
+          "id": "blend",
+          "kind": "select",
+          "label": "Blend mode",
+          "def": "difference",
+          "options": [
+            {
+              "value": "difference",
+              "label": "差值（深浅都可见）"
+            },
+            {
+              "value": "screen",
+              "label": "滤色（只适合深色底）"
+            },
+            {
+              "value": "normal",
+              "label": "正常"
+            }
+          ]
+        },
+        {
+          "id": "hideNative",
+          "kind": "toggle",
+          "label": "Hide the native cursor",
+          "def": true
+        }
+      ],
+      "loop": "manual",
+      "prompt": {
+        "zh": "做一个光标跟随（cursor follower）：用一个 20px 的圆点代替鼠标指针，在容器上设 cursor: none 把系统光标藏掉，圆点用 requestAnimationFrame 平滑追向 pointermove 的位置，延迟约 90ms，mix-blend-mode: difference，pointer-events: none；指针移出容器就淡出。触屏和 prefers-reduced-motion 下关掉跟随，保留系统光标，并保证键盘焦点可见。",
+        "en": "custom cursor follower, 20px dot, cursor: none on the container, pointermove + requestAnimationFrame smooth follow with 90ms lag, transform: translate3d, mix-blend-mode: difference, pointer-events: none, fade out on pointer leave, disabled on touch and under prefers-reduced-motion, keep focus-visible styles"
+      },
+      "detail": {
+        "page": "https://publieople.github.io/design-museum/entry/cursor-follower/",
+        "markdown": "https://publieople.github.io/design-museum/catalog.md#cursor-follower"
+      }
+    },
+    {
+      "slug": "scroll-progress",
+      "code": "M-09",
+      "url": "https://publieople.github.io/design-museum/entry/scroll-progress/",
+      "category": "motion",
+      "nameZh": "滚动进度条",
+      "nameEn": "Scroll Progress Bar",
+      "aliases": [
+        "阅读进度条",
+        "滚动进度",
+        "进度条",
+        "阅读条",
+        "scroll progress",
+        "scroll progress bar",
+        "reading progress",
+        "reading progress bar"
+      ],
+      "oneLiner": "页面顶部一条细线，跟着阅读进度走，告诉读者还剩多少。",
+      "oneLinerEn": "A thin line at the top of the page that tracks how far the reader has got.",
+      "keywords": [
+        "scroll progress",
+        "reading progress",
+        "animation-timeline: scroll()",
+        "transform: scaleX()",
+        "document.scrollingElement",
+        "requestAnimationFrame",
+        "progress indicator"
+      ],
+      "related": [
+        "scroll-driven",
+        "scroll-reveal",
+        "sticky-header"
+      ],
+      "scenes": [
+        "page",
+        "scroll",
+        "text"
+      ],
+      "feel": [
+        "calm",
+        "crisp"
+      ],
+      "intent": [
+        "hierarchy",
+        "attention"
+      ],
+      "tags": [
+        "modern-css",
+        "js",
+        "composited",
+        "check-support"
+      ],
+      "demo": {
+        "shape": "scroll",
+        "thumb": "still"
+      },
+      "controls": [
+        {
+          "id": "height",
+          "kind": "range",
+          "label": "Bar height",
+          "def": 3,
+          "unit": "px",
+          "min": 1,
+          "max": 10
+        },
+        {
+          "id": "track",
+          "kind": "toggle",
+          "label": "Show track",
+          "def": true
+        },
+        {
+          "id": "mode",
+          "kind": "select",
+          "label": "Mechanism",
+          "def": "auto",
+          "options": [
+            {
+              "value": "auto",
+              "label": "自动（CSS + 兜底）"
+            },
+            {
+              "value": "css",
+              "label": "CSS 时间线"
+            },
+            {
+              "value": "js",
+              "label": "JS 兜底"
+            }
+          ]
+        }
+      ],
+      "loop": "manual",
+      "prompt": {
+        "zh": "在页面顶部固定一条 3px 高的阅读进度条，用 transform: scaleX() 从 0 到 1 跟随页面滚动（transform-origin: left），底槽用当前文字色 10% 透明铺满。优先用 animation-timeline: scroll(root block)，CSS.supports 检测不到时退回 requestAnimationFrame 读取滚动位置；进度条 aria-hidden，不要让读屏软件反复播报。prefers-reduced-motion 下不做平滑追赶，直接把滚动位置映射成进度。",
+        "en": "scroll progress bar, fixed to the top of the page, 3px tall, driven by transform: scaleX() from 0 to 1 with transform-origin: left, visible track at 10% currentColor. Drive it with animation-timeline: scroll(root block), falling back to requestAnimationFrame when CSS.supports() says no. Keep it aria-hidden, and under prefers-reduced-motion map the scroll position straight to scaleX without smoothing."
+      },
+      "detail": {
+        "page": "https://publieople.github.io/design-museum/entry/scroll-progress/",
+        "markdown": "https://publieople.github.io/design-museum/catalog.md#scroll-progress"
+      }
+    }
+  ]
+}

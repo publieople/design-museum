@@ -1,0 +1,821 @@
+{
+  "version": 1,
+  "site": "https://publieople.github.io/design-museum",
+  "hall": {
+    "id": "layout",
+    "letter": "L",
+    "nameZh": "布局与结构",
+    "nameEn": "Layout & Structure",
+    "count": 8
+  },
+  "entries": [
+    {
+      "slug": "sticky-header",
+      "code": "L-01",
+      "url": "https://publieople.github.io/design-museum/entry/sticky-header/",
+      "category": "layout",
+      "nameZh": "粘性头部",
+      "nameEn": "Sticky Header",
+      "aliases": [
+        "吸顶导航",
+        "固定顶栏",
+        "滚动吸顶",
+        "sticky nav",
+        "fixed header",
+        "hide on scroll"
+      ],
+      "oneLiner": "页面滚动时头部留在顶部，常配合「下滑隐藏、上滑出现」。",
+      "oneLinerEn": "A page header that stays pinned on scroll and often hides on the way down.",
+      "keywords": [
+        "position: sticky",
+        "scroll direction",
+        "hide on scroll down",
+        "sticky nav",
+        "will-change: transform"
+      ],
+      "related": [
+        "sticky-stack",
+        "frosted-glass",
+        "scroll-snap"
+      ],
+      "scenes": [
+        "nav",
+        "page",
+        "scroll"
+      ],
+      "feel": [
+        "calm",
+        "crisp"
+      ],
+      "intent": [
+        "affordance"
+      ],
+      "tags": [
+        "js",
+        "scroll-linked",
+        "composited",
+        "stable"
+      ],
+      "demo": {
+        "shape": "scroll",
+        "thumb": "still"
+      },
+      "controls": [
+        {
+          "id": "threshold",
+          "kind": "range",
+          "label": "Stick threshold",
+          "def": 60,
+          "unit": "px",
+          "min": 0,
+          "max": 200
+        },
+        {
+          "id": "hide",
+          "kind": "toggle",
+          "label": "Hide on scroll down",
+          "def": true
+        },
+        {
+          "id": "blur",
+          "kind": "range",
+          "label": "Background blur after sticking",
+          "def": 8,
+          "unit": "px",
+          "min": 0,
+          "max": 20
+        }
+      ],
+      "loop": "manual",
+      "prompt": {
+        "zh": "做粘性头部（sticky header）：用 position: sticky; top: 0 吸顶，滚动超过 60px 后给头部加半透明底色和 backdrop-filter: blur(8px) 与一条下边框。向下滚动时用 transform: translateY(-100%) 收起头部，向上滚动立刻显示，判定用当前 scrollY 与上一次 scrollY 比较，动画 250ms ease-out。",
+        "en": "sticky header, position: sticky; top: 0, add backdrop-filter: blur(8px) and border-bottom after 60px scroll, hide on scroll down / reveal on scroll up via transform: translateY(-100%) with 250ms ease-out, compare current vs previous scrollY, animate transform only, throttle scroll handler with requestAnimationFrame"
+      },
+      "detail": {
+        "page": "https://publieople.github.io/design-museum/entry/sticky-header/",
+        "markdown": "https://publieople.github.io/design-museum/catalog.md#sticky-header"
+      }
+    },
+    {
+      "slug": "sticky-stack",
+      "code": "L-02",
+      "url": "https://publieople.github.io/design-museum/entry/sticky-stack/",
+      "category": "layout",
+      "nameZh": "粘性堆叠卡片",
+      "nameEn": "Sticky Stacking Cards",
+      "aliases": [
+        "卡片堆叠",
+        "叠卡片",
+        "滚动叠卡",
+        "sticky stacking cards",
+        "stacking cards",
+        "card stack on scroll"
+      ],
+      "oneLiner": "滚动时后面的卡片一张张压上来，前一张缩小留在底下。",
+      "oneLinerEn": "Cards scroll up one by one and stack on top of each other as the earlier ones shrink behind.",
+      "keywords": [
+        "position: sticky",
+        "stacking cards",
+        "z-index",
+        "transform: scale()",
+        "sticky offset",
+        "scroll container"
+      ],
+      "related": [
+        "sticky-header",
+        "scroll-driven",
+        "parallax"
+      ],
+      "scenes": [
+        "scroll",
+        "page",
+        "card"
+      ],
+      "feel": [
+        "calm",
+        "crisp"
+      ],
+      "intent": [
+        "hierarchy",
+        "attention"
+      ],
+      "tags": [
+        "css-only",
+        "scroll-linked",
+        "composited",
+        "motion-heavy",
+        "stable"
+      ],
+      "demo": {
+        "shape": "scroll",
+        "thumb": "still"
+      },
+      "controls": [
+        {
+          "id": "offset",
+          "kind": "range",
+          "label": "Peek height",
+          "def": 18,
+          "unit": "px",
+          "min": 0,
+          "max": 44
+        },
+        {
+          "id": "count",
+          "kind": "range",
+          "label": "Card count",
+          "def": 6,
+          "unit": "张",
+          "min": 3,
+          "max": 6
+        },
+        {
+          "id": "shrink",
+          "kind": "range",
+          "label": "Stacked scale",
+          "def": 5,
+          "unit": "%",
+          "min": 0,
+          "max": 12
+        },
+        {
+          "id": "radius",
+          "kind": "range",
+          "label": "Radius",
+          "def": 14,
+          "unit": "px",
+          "min": 0,
+          "max": 24
+        }
+      ],
+      "loop": "manual",
+      "prompt": {
+        "zh": "做一组滚动堆叠卡片（sticky stacking cards）：共 6 张，每张用 position: sticky，top 依次是「索引 × 18px」，后面的卡片 z-index 更高、滚上来时盖住前一张；被压住的卡片用 transform: scale() 缩到 95%，transform-origin 设 top center，圆角 14px。整组放在一个 overflow-y: auto 的容器里，容器外面的祖先不要加 overflow: hidden。系统开启「减少动态效果」时取消缩放。",
+        "en": "sticky stacking cards, position: sticky with top: index * 18px, 6 cards, increasing z-index 1 2 3, previous card scales down to 95% via transform: scale() with transform-origin: top center, border-radius: 14px, inside an overflow-y: auto scroll container, no overflow: hidden on ancestors, disable the scale under prefers-reduced-motion"
+      },
+      "detail": {
+        "page": "https://publieople.github.io/design-museum/entry/sticky-stack/",
+        "markdown": "https://publieople.github.io/design-museum/catalog.md#sticky-stack"
+      }
+    },
+    {
+      "slug": "masonry",
+      "code": "L-03",
+      "url": "https://publieople.github.io/design-museum/entry/masonry/",
+      "category": "layout",
+      "nameZh": "瀑布流",
+      "nameEn": "Masonry",
+      "aliases": [
+        "瀑布流布局",
+        "瀑布流排版",
+        "长短卡片错落",
+        "masonry layout",
+        "pinterest layout",
+        "waterfall layout"
+      ],
+      "oneLiner": "卡片高度不齐，自动落进最短的那一列，底部不留大洞。",
+      "oneLinerEn": "Cards of uneven height drop into the shortest column, so no large gaps open at the bottom.",
+      "keywords": [
+        "CSS multi-column",
+        "column-count",
+        "break-inside: avoid",
+        "masonry layout",
+        "shortest column",
+        "grid-auto-rows"
+      ],
+      "related": [
+        "bento-grid",
+        "scroll-reveal",
+        "skeleton-shimmer"
+      ],
+      "scenes": [
+        "list",
+        "card",
+        "page"
+      ],
+      "feel": [
+        "calm",
+        "soft"
+      ],
+      "intent": [
+        "hierarchy",
+        "attention"
+      ],
+      "tags": [
+        "css-only",
+        "stable"
+      ],
+      "demo": {
+        "shape": "stage"
+      },
+      "controls": [
+        {
+          "id": "columns",
+          "kind": "range",
+          "label": "Columns",
+          "def": 3,
+          "unit": "列",
+          "min": 2,
+          "max": 4
+        },
+        {
+          "id": "gap",
+          "kind": "range",
+          "label": "Gap",
+          "def": 10,
+          "unit": "px",
+          "min": 0,
+          "max": 20
+        },
+        {
+          "id": "base",
+          "kind": "range",
+          "label": "Card base height",
+          "def": 64,
+          "unit": "px",
+          "min": 44,
+          "max": 120
+        },
+        {
+          "id": "mode",
+          "kind": "select",
+          "label": "Layout mode",
+          "def": "masonry",
+          "options": [
+            {
+              "value": "masonry",
+              "label": "瀑布流（按列填充）"
+            },
+            {
+              "value": "grid",
+              "label": "普通网格（按行对齐）"
+            }
+          ]
+        }
+      ],
+      "loop": "manual",
+      "prompt": {
+        "zh": "做一个瀑布流（masonry）列表：3 列，列间距 10px，条目高度围绕 64px 参差排布，每个条目加 break-inside: avoid，别让卡片被从中间劈开跨列；顺序按列从上往下填，窄屏自动降到 2 列。不要用固定高度把每格拉齐，那就不是瀑布流了。",
+        "en": "masonry layout, CSS multi-column with column-count: 3, column-gap: 10px, items of varying height around 64px with break-inside: avoid, fill columns top-to-bottom, collapse to 2 columns on narrow screens, do not equalize item heights"
+      },
+      "detail": {
+        "page": "https://publieople.github.io/design-museum/entry/masonry/",
+        "markdown": "https://publieople.github.io/design-museum/catalog.md#masonry"
+      }
+    },
+    {
+      "slug": "bento-grid",
+      "code": "L-04",
+      "url": "https://publieople.github.io/design-museum/entry/bento-grid/",
+      "category": "layout",
+      "nameZh": "Bento 网格",
+      "nameEn": "Bento Grid",
+      "aliases": [
+        "便当盒布局",
+        "便当网格",
+        "大小格拼贴",
+        "bento layout",
+        "bento box grid",
+        "feature grid"
+      ],
+      "oneLiner": "大小不一的方块拼成一整块，边线对齐，主次一眼分得清。",
+      "oneLinerEn": "Tiles of different sizes lock into one block with aligned edges, so the hierarchy reads at a glance.",
+      "keywords": [
+        "CSS grid",
+        "grid-column: span",
+        "grid-row: span",
+        "grid-auto-rows",
+        "grid-template-areas",
+        "dashboard layout"
+      ],
+      "related": [
+        "masonry",
+        "gradient-border",
+        "spotlight-glow"
+      ],
+      "scenes": [
+        "page",
+        "card"
+      ],
+      "feel": [
+        "crisp",
+        "calm"
+      ],
+      "intent": [
+        "hierarchy",
+        "attention"
+      ],
+      "tags": [
+        "css-only",
+        "stable"
+      ],
+      "demo": {
+        "shape": "stage"
+      },
+      "controls": [
+        {
+          "id": "columns",
+          "kind": "range",
+          "label": "Columns",
+          "def": 4,
+          "unit": "列",
+          "min": 3,
+          "max": 5
+        },
+        {
+          "id": "gap",
+          "kind": "range",
+          "label": "Tile gap",
+          "def": 8,
+          "unit": "px",
+          "min": 0,
+          "max": 16
+        },
+        {
+          "id": "rowHeight",
+          "kind": "range",
+          "label": "Row height",
+          "def": 46,
+          "unit": "px",
+          "min": 40,
+          "max": 64
+        },
+        {
+          "id": "radius",
+          "kind": "range",
+          "label": "Radius",
+          "def": 14,
+          "unit": "px",
+          "min": 0,
+          "max": 24
+        }
+      ],
+      "loop": "manual",
+      "prompt": {
+        "zh": "做一个 Bento 网格首页：CSS grid，4 列，grid-auto-rows: 46px，gap: 8px，格子圆角 14px。用 grid-column: span 与 grid-row: span 混排 1×1、2×1、2×2 三种尺寸，让主图占 2×2、指标和快捷入口占小格，所有边缘对齐同一条列线。窄屏降到 2 列，跨格跟着重算，别留空边。",
+        "en": "bento grid layout, CSS grid, grid-template-columns: repeat(4, minmax(0, 1fr)), grid-auto-rows: 46px, gap: 8px, tiles with grid-column: span / grid-row: span mixing 1x1 2x1 2x2 sizes, border-radius: 14px, all edges aligned to the same column lines, collapse to 2 columns on mobile"
+      },
+      "detail": {
+        "page": "https://publieople.github.io/design-museum/entry/bento-grid/",
+        "markdown": "https://publieople.github.io/design-museum/catalog.md#bento-grid"
+      }
+    },
+    {
+      "slug": "scroll-snap",
+      "code": "L-05",
+      "url": "https://publieople.github.io/design-museum/entry/scroll-snap/",
+      "category": "layout",
+      "nameZh": "滚动捕捉",
+      "nameEn": "Scroll Snap",
+      "aliases": [
+        "滚动吸附",
+        "滑动吸附",
+        "对齐滚动",
+        "scroll snapping",
+        "snap scrolling",
+        "scroll-snap-type"
+      ],
+      "oneLiner": "滚动停下来时自动对齐到某一张卡片，不会卡在半路上。",
+      "oneLinerEn": "Scrolling comes to rest on a card instead of stopping halfway between two of them.",
+      "keywords": [
+        "scroll-snap-type",
+        "scroll-snap-align",
+        "scroll-snap-stop",
+        "scroll-padding",
+        "overscroll-behavior",
+        "mandatory vs proximity"
+      ],
+      "related": [
+        "scroll-driven",
+        "sticky-header",
+        "masonry"
+      ],
+      "scenes": [
+        "scroll",
+        "nav",
+        "card"
+      ],
+      "feel": [
+        "crisp",
+        "calm"
+      ],
+      "intent": [
+        "affordance",
+        "hierarchy"
+      ],
+      "tags": [
+        "css-only",
+        "scroll-linked",
+        "stable"
+      ],
+      "demo": {
+        "shape": "scroll",
+        "thumb": "still"
+      },
+      "controls": [
+        {
+          "id": "snap",
+          "kind": "select",
+          "label": "Snap strength",
+          "def": "x mandatory",
+          "options": [
+            {
+              "value": "x mandatory",
+              "label": "x mandatory（强制对齐）"
+            },
+            {
+              "value": "x proximity",
+              "label": "x proximity（靠近才吸）"
+            },
+            {
+              "value": "none",
+              "label": "none（普通滚动）"
+            }
+          ]
+        },
+        {
+          "id": "padding",
+          "kind": "range",
+          "label": "Snap padding",
+          "def": 12,
+          "unit": "px",
+          "min": 0,
+          "max": 32
+        },
+        {
+          "id": "align",
+          "kind": "select",
+          "label": "Alignment",
+          "def": "start",
+          "options": [
+            {
+              "value": "start",
+              "label": "start（对齐容器开头）"
+            },
+            {
+              "value": "center",
+              "label": "center（居中）"
+            },
+            {
+              "value": "end",
+              "label": "end（对齐容器末尾）"
+            }
+          ]
+        },
+        {
+          "id": "stop",
+          "kind": "toggle",
+          "label": "Prevent skipping multiple items",
+          "def": true
+        }
+      ],
+      "loop": "manual",
+      "prompt": {
+        "zh": "做一个横向滚动的卡片选择器：滚动容器用 scroll-snap-type: x mandatory，子项用 scroll-snap-align: start，容器加 scroll-padding: 12px，子项加 scroll-snap-stop: always，防止一次滑动跳过好几张。容器自身要有固定高度和 overflow-x: auto，让原生惯性和键盘滚动都可用。系统开启「减少动态效果」时 scroll-behavior 用 auto。",
+        "en": "horizontal snap slider, scroll container with scroll-snap-type: x mandatory, items with scroll-snap-align: start, scroll-padding: 12px, scroll-snap-stop: always to prevent skipping multiple slides, overflow-x: auto container with fixed height, native momentum scrolling and keyboard support, scroll-behavior: auto under prefers-reduced-motion"
+      },
+      "detail": {
+        "page": "https://publieople.github.io/design-museum/entry/scroll-snap/",
+        "markdown": "https://publieople.github.io/design-museum/catalog.md#scroll-snap"
+      }
+    },
+    {
+      "slug": "accordion",
+      "code": "L-06",
+      "url": "https://publieople.github.io/design-museum/entry/accordion/",
+      "category": "layout",
+      "nameZh": "折叠面板",
+      "nameEn": "Accordion",
+      "aliases": [
+        "手风琴",
+        "展开收起",
+        "折叠展开",
+        "collapsible panel",
+        "collapse",
+        "disclosure"
+      ],
+      "oneLiner": "点标题展开内容，同一组里通常只开一个，标题一直在。",
+      "oneLinerEn": "Clicking a heading reveals its panel, usually one at a time, and the headings never move.",
+      "keywords": [
+        "accordion",
+        "collapsible",
+        "aria-expanded",
+        "details/summary",
+        "grid-template-rows: 0fr",
+        "disclosure pattern"
+      ],
+      "related": [
+        "scroll-reveal",
+        "stagger",
+        "easing"
+      ],
+      "scenes": [
+        "form",
+        "page",
+        "list"
+      ],
+      "feel": [
+        "calm",
+        "crisp"
+      ],
+      "intent": [
+        "affordance",
+        "hierarchy"
+      ],
+      "tags": [
+        "css-only",
+        "stateful",
+        "layout-triggering",
+        "keyboard-operable",
+        "stable"
+      ],
+      "demo": {
+        "shape": "stage"
+      },
+      "controls": [
+        {
+          "id": "mode",
+          "kind": "select",
+          "label": "Open mode",
+          "def": "single",
+          "options": [
+            {
+              "value": "single",
+              "label": "单开（同时只展开一项）"
+            },
+            {
+              "value": "multi",
+              "label": "多开（可同时展开）"
+            }
+          ]
+        },
+        {
+          "id": "duration",
+          "kind": "range",
+          "label": "Expand duration",
+          "def": 260,
+          "unit": "ms",
+          "min": 120,
+          "max": 600
+        },
+        {
+          "id": "easing",
+          "kind": "select",
+          "label": "Easing",
+          "def": "cubic-bezier(0.22, 1, 0.36, 1)",
+          "options": [
+            {
+              "value": "ease-out",
+              "label": "ease-out"
+            },
+            {
+              "value": "ease-in-out",
+              "label": "ease-in-out"
+            },
+            {
+              "value": "cubic-bezier(0.22, 1, 0.36, 1)",
+              "label": "ease-out-expo（推荐）"
+            }
+          ]
+        },
+        {
+          "id": "rotate",
+          "kind": "toggle",
+          "label": "Rotate chevron 180deg",
+          "def": true
+        }
+      ],
+      "loop": "manual",
+      "prompt": {
+        "zh": "做一个折叠面板（accordion）：同一组里同时只展开一项（单开手风琴），展开和收起时长 260ms，缓动 cubic-bezier(0.22, 1, 0.36, 1)；标题用真正的 <button> 并带 aria-expanded，箭头图标展开时旋转 180°。动画不要碰 height: auto（浏览器不会过渡），用 grid-template-rows: 0fr → 1fr 配一层 overflow: hidden。系统开启「减少动态效果」时时长设成 0。",
+        "en": "accordion disclosure pattern, single-open, only one panel expanded at a time, expand and collapse duration 260ms with easing cubic-bezier(0.22, 1, 0.36, 1), header is a real button with aria-expanded and a chevron that rotates 180deg when open, animate grid-template-rows: 0fr → 1fr inside overflow: hidden instead of height: auto, set duration to 0 under prefers-reduced-motion"
+      },
+      "detail": {
+        "page": "https://publieople.github.io/design-museum/entry/accordion/",
+        "markdown": "https://publieople.github.io/design-museum/catalog.md#accordion"
+      }
+    },
+    {
+      "slug": "virtual-scrolling",
+      "code": "L-07",
+      "url": "https://publieople.github.io/design-museum/entry/virtual-scrolling/",
+      "category": "layout",
+      "nameZh": "虚拟滚动",
+      "nameEn": "Virtual Scrolling",
+      "aliases": [
+        "虚拟列表",
+        "长列表优化",
+        "窗口化渲染",
+        "virtual list",
+        "windowing",
+        "virtualized list"
+      ],
+      "oneLiner": "列表只渲染看得见的那几行，一万条也能滚得顺。",
+      "oneLinerEn": "Only the rows you can see are rendered, so ten thousand items still scroll smoothly.",
+      "keywords": [
+        "virtual scrolling",
+        "windowing",
+        "virtual list",
+        "overscan",
+        "item height",
+        "scrollTop",
+        "transform: translateY",
+        "aria-setsize"
+      ],
+      "related": [
+        "marquee",
+        "masonry"
+      ],
+      "scenes": [
+        "list",
+        "scroll",
+        "page"
+      ],
+      "feel": [
+        "crisp",
+        "calm"
+      ],
+      "intent": [
+        "affordance",
+        "hierarchy"
+      ],
+      "tags": [
+        "js",
+        "browser-api",
+        "composited",
+        "layout-triggering",
+        "main-thread",
+        "stable"
+      ],
+      "demo": {
+        "shape": "scroll",
+        "minHeight": 320,
+        "thumb": "still"
+      },
+      "controls": [
+        {
+          "id": "itemHeight",
+          "kind": "range",
+          "label": "Row height",
+          "def": 44,
+          "unit": "px",
+          "min": 32,
+          "max": 80
+        },
+        {
+          "id": "total",
+          "kind": "range",
+          "label": "Total rows",
+          "def": 10000,
+          "min": 1000,
+          "max": 50000
+        },
+        {
+          "id": "overscan",
+          "kind": "range",
+          "label": "Overscan rows",
+          "def": 4,
+          "min": 0,
+          "max": 8
+        }
+      ],
+      "loop": "manual",
+      "prompt": {
+        "zh": "做一个虚拟滚动列表（virtual scrolling）：总条数 10000，每行固定 44px，容器内放一个 10000 × 44px 的占位撑出滚动条，只渲染可视区行数加上前后各 4 行，用 transform: translateY 把渲染块定位到对应位置。scroll 里用 requestAnimationFrame 节流，只在可视区间变化时才更新；行用 aria-setsize / aria-posinset 报出总数与序号。",
+        "en": "virtual scrolling list, 10000 rows of 44px fixed height, spacer of total x itemHeight to keep the scrollbar honest, render only the visible window plus 4 overscan rows, position the window with transform: translateY, throttle scroll with requestAnimationFrame and only re-render when the window changes, aria-setsize / aria-posinset on rows"
+      },
+      "detail": {
+        "page": "https://publieople.github.io/design-museum/entry/virtual-scrolling/",
+        "markdown": "https://publieople.github.io/design-museum/catalog.md#virtual-scrolling"
+      }
+    },
+    {
+      "slug": "marquee",
+      "code": "L-08",
+      "url": "https://publieople.github.io/design-museum/entry/marquee/",
+      "category": "layout",
+      "nameZh": "跑马灯",
+      "nameEn": "Marquee",
+      "aliases": [
+        "无缝滚动",
+        "横向滚动条",
+        "循环滚动",
+        "marquee",
+        "infinite marquee",
+        "ticker",
+        "scrolling text"
+      ],
+      "oneLiner": "一排内容不停地横向滑过，首尾相接，看不出接缝。",
+      "oneLinerEn": "A row of content slides sideways forever, joined end to end with no visible seam.",
+      "keywords": [
+        "marquee",
+        "infinite marquee",
+        "ticker",
+        "@keyframes translateX",
+        "transform: translate3d",
+        "animation-play-state",
+        "mask-image",
+        "aria-hidden duplicate"
+      ],
+      "related": [
+        "scroll-snap",
+        "parallax"
+      ],
+      "scenes": [
+        "list",
+        "page",
+        "scroll"
+      ],
+      "feel": [
+        "calm",
+        "playful"
+      ],
+      "intent": [
+        "attention",
+        "hierarchy"
+      ],
+      "tags": [
+        "js",
+        "gradient",
+        "composited",
+        "motion-heavy",
+        "stable"
+      ],
+      "demo": {
+        "shape": "stage"
+      },
+      "controls": [
+        {
+          "id": "speed",
+          "kind": "range",
+          "label": "Speed",
+          "def": 40,
+          "unit": "px/s",
+          "min": 10,
+          "max": 80
+        },
+        {
+          "id": "pauseOnHover",
+          "kind": "toggle",
+          "label": "Pause on hover",
+          "def": true
+        },
+        {
+          "id": "edgeMask",
+          "kind": "toggle",
+          "label": "Faded edges",
+          "def": true
+        }
+      ],
+      "loop": "continuous",
+      "prompt": {
+        "zh": "做一个无缝跑马灯（marquee）：内容复制一份首尾相接，用 transform: translate3d 横向匀速平移 50% 循环，速度约 40px/s、linear 匀速；指针悬停或键盘聚焦时暂停，两端加渐隐遮罩（mask-image）避免硬切，复制的那一份设 aria-hidden 免得读屏念两遍；内容比容器短时要先复制到足够长。prefers-reduced-motion 下停住，改成静态换行展示。",
+        "en": "seamless horizontal marquee, content duplicated and translated 50% in a linear infinite loop with transform: translate3d, about 40px/s, pauses on hover and keyboard focus, faded edges via mask-image, duplicate marked aria-hidden, duplicated until the track is longer than the container, animation stops under prefers-reduced-motion"
+      },
+      "detail": {
+        "page": "https://publieople.github.io/design-museum/entry/marquee/",
+        "markdown": "https://publieople.github.io/design-museum/catalog.md#marquee"
+      }
+    }
+  ]
+}

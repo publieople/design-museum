@@ -30,7 +30,9 @@
     "test": "vitest run",
     "test:watch": "vitest",
     "validate": "vitest run src/data",
-    "screenshots": "node scripts/screenshots.mjs"
+    "screenshots": "node scripts/screenshots.mjs",
+    "screenshots:baseline": "node scripts/screenshots.mjs --out .screenshots/baseline",
+    "screenshots:diff": "node scripts/visual-diff.mjs"
   },
   "dependencies": {
     "@fontsource-variable/jetbrains-mono": "^5.3.0",

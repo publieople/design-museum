@@ -1,0 +1,225 @@
+{
+  "version": 1,
+  "site": "https://publieople.github.io/design-museum",
+  "counts": {
+    "entries": 41,
+    "perCategory": {
+      "motion": 9,
+      "feedback": 8,
+      "layout": 8,
+      "visual": 8,
+      "type": 8
+    },
+    "tags": 18
+  },
+  "vocab": {
+    "categories": [
+      {
+        "id": "motion",
+        "letter": "M",
+        "zh": "动效与节奏",
+        "en": "Motion & Timing"
+      },
+      {
+        "id": "feedback",
+        "letter": "F",
+        "zh": "交互反馈",
+        "en": "Interaction & Feedback"
+      },
+      {
+        "id": "layout",
+        "letter": "L",
+        "zh": "布局与结构",
+        "en": "Layout & Structure"
+      },
+      {
+        "id": "visual",
+        "letter": "V",
+        "zh": "视觉质感",
+        "en": "Visual & Material"
+      },
+      {
+        "id": "type",
+        "letter": "T",
+        "zh": "排版与文字",
+        "en": "Typography & Text"
+      }
+    ],
+    "scenes": [
+      {
+        "id": "button",
+        "zh": "按钮",
+        "en": "Button"
+      },
+      {
+        "id": "card",
+        "zh": "卡片",
+        "en": "Card"
+      },
+      {
+        "id": "list",
+        "zh": "列表",
+        "en": "List"
+      },
+      {
+        "id": "page",
+        "zh": "页面",
+        "en": "Page"
+      },
+      {
+        "id": "scroll",
+        "zh": "滚动",
+        "en": "Scroll"
+      },
+      {
+        "id": "text",
+        "zh": "文字",
+        "en": "Text"
+      },
+      {
+        "id": "form",
+        "zh": "表单",
+        "en": "Form"
+      },
+      {
+        "id": "nav",
+        "zh": "导航",
+        "en": "Nav"
+      }
+    ],
+    "feel": [
+      {
+        "id": "crisp",
+        "zh": "利落",
+        "en": "Crisp"
+      },
+      {
+        "id": "calm",
+        "zh": "沉稳",
+        "en": "Calm"
+      },
+      {
+        "id": "playful",
+        "zh": "活泼",
+        "en": "Playful"
+      },
+      {
+        "id": "soft",
+        "zh": "柔和",
+        "en": "Soft"
+      }
+    ],
+    "intent": [
+      {
+        "id": "attention",
+        "zh": "吸引注意",
+        "en": "Draw attention"
+      },
+      {
+        "id": "hierarchy",
+        "zh": "表达层级",
+        "en": "Show hierarchy"
+      },
+      {
+        "id": "affordance",
+        "zh": "暗示可操作",
+        "en": "Signal affordance"
+      },
+      {
+        "id": "waiting",
+        "zh": "缓解等待",
+        "en": "Ease waiting"
+      }
+    ],
+    "demoShapes": [
+      {
+        "id": "stage",
+        "zh": "固定舞台",
+        "en": "Stage",
+        "hintZh": "默认：居中舞台就装得下",
+        "hintEn": "Default: a centered stage is enough"
+      },
+      {
+        "id": "interactive",
+        "zh": "指针交互",
+        "en": "Pointer",
+        "hintZh": "要在大范围里移动指针或拖动，小舞台做不出来",
+        "hintEn": "Needs pointer movement or dragging over a large area"
+      },
+      {
+        "id": "scroll",
+        "zh": "自带滚动",
+        "en": "Scrollable",
+        "hintZh": "自带滚动容器，不依赖整页滚动",
+        "hintEn": "Ships its own scroll container — never the page scroll"
+      },
+      {
+        "id": "sequence",
+        "zh": "分步推进",
+        "en": "Sequence",
+        "hintZh": "多阶段状态，要一步步推进才看得懂",
+        "hintEn": "Multi-stage states that need stepping through"
+      },
+      {
+        "id": "page",
+        "zh": "整页对比",
+        "en": "Page pair",
+        "hintZh": "需要两块「页面」才演示得出来",
+        "hintEn": "Needs two page-like surfaces"
+      }
+    ]
+  },
+  "halls": [
+    {
+      "id": "motion",
+      "letter": "M",
+      "nameZh": "动效与节奏",
+      "nameEn": "Motion & Timing",
+      "count": 9,
+      "json": "catalog/motion.json",
+      "markdown": "catalog/motion.md"
+    },
+    {
+      "id": "feedback",
+      "letter": "F",
+      "nameZh": "交互反馈",
+      "nameEn": "Interaction & Feedback",
+      "count": 8,
+      "json": "catalog/feedback.json",
+      "markdown": "catalog/feedback.md"
+    },
+    {
+      "id": "layout",
+      "letter": "L",
+      "nameZh": "布局与结构",
+      "nameEn": "Layout & Structure",
+      "count": 8,
+      "json": "catalog/layout.json",
+      "markdown": "catalog/layout.md"
+    },
+    {
+      "id": "visual",
+      "letter": "V",
+      "nameZh": "视觉质感",
+      "nameEn": "Visual & Material",
+      "count": 8,
+      "json": "catalog/visual.json",
+      "markdown": "catalog/visual.md"
+    },
+    {
+      "id": "type",
+      "letter": "T",
+      "nameZh": "排版与文字",
+      "nameEn": "Typography & Text",
+      "count": 8,
+      "json": "catalog/type.json",
+      "markdown": "catalog/type.md"
+    }
+  ],
+  "tags": "catalog/tags.json",
+  "aliases": "catalog/aliases.json",
+  "full": {
+    "json": "catalog.json",
+    "markdown": "catalog.md"
+  }
+}

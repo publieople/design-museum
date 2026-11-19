@@ -3,6 +3,7 @@ import {
   STATIC_PAGES,
   TITLE_KEYS,
   absoluteUrl,
+  comparePath,
   entryPath,
   hrefFor,
   normalizePath,
@@ -50,8 +51,13 @@ describe('URL 规则', () => {
     expect(splitTarget('')).toEqual({ path: '/', query: '' })
   })
 
-  it('entryPath 与固定页面表的形状', () => {
+  it('entryPath、comparePath 与固定页面表的形状', () => {
     expect(entryPath('frosted-glass')).toBe('/entry/frosted-glass')
+    expect(comparePath('frosted-glass', 'glassmorphism')).toBe(
+      '/compare?a=frosted-glass&b=glassmorphism',
+    )
+    expect(comparePath('frosted-glass')).toBe('/compare?a=frosted-glass')
+    expect(comparePath()).toBe('/compare')
     expect(STATIC_PAGES.map((page) => page.path)).toEqual([
       '/',
       '/browse',
@@ -60,6 +66,7 @@ describe('URL 规则', () => {
       '/about',
       '/reverse',
       '/aliases',
+      '/compare',
       '/live',
     ])
     for (const page of STATIC_PAGES) {

@@ -45,7 +45,10 @@ export default function SpringDemo({ values, replayKey, locale = 'zh' }: DemoPro
 
   useEffect(() => {
     if (reduced) return
+    // 重播键驱动的动画重置：同步的是动画播放状态，不是从 props 派生 state
+    // oxlint-disable-next-line react/set-state-in-effect
     setProgress(0)
+    // oxlint-disable-next-line react/set-state-in-effect
     setRun({ peak: 1, ms: 0 })
     let frame = 0
     let last = 0

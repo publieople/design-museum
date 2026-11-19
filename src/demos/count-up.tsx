@@ -22,6 +22,8 @@ export default function CountUpDemo({ values, stage, replayKey, locale = 'zh' }:
 
   useEffect(() => {
     if (reduced) {
+      // 减少动态时直接把终值放上去：一次性赋值，后续不再更新
+      // oxlint-disable-next-line react/set-state-in-effect
       setDisplay(target)
       return
     }

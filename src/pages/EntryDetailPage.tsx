@@ -11,7 +11,7 @@ import { resolveEntry, resolveMeta } from '../lib/localize'
 import { interactionHintKey, loopPolicy, shouldAutoLoop, type LoopPolicy } from '../lib/loop'
 import { usePrefs } from '../lib/prefs'
 import { Link, navigate, useRoute } from '../lib/router'
-import { entryPath, liveDemoPath } from '../lib/routes'
+import { comparePath, entryPath, liveDemoPath } from '../lib/routes'
 import { buttonClass } from '../components/Button'
 import { ControlPanel } from '../components/ControlPanel'
 import { DemoRunner } from '../components/DemoRunner'
@@ -266,7 +266,7 @@ export function EntryDetailPage({ slug }: { slug?: string }) {
                         <p className="flex flex-wrap items-baseline gap-2">
                           <span className="label-mono">{t('entry.compareTo')}</span>
                           <Link
-                            to={entryPath(targetMeta.slug)}
+                            to={comparePath(entry.slug, targetMeta.slug)}
                             className="text-link font-mono text-[11px] text-accent no-underline"
                           >
                             {t('entry.openCompare', {

@@ -37,15 +37,17 @@ export function Layout({ children }: { children: ReactNode }) {
     { to: '/browse', label: t('nav.browse') },
     { to: '/reverse', label: t('nav.reverse') },
     { to: '/aliases', label: t('nav.aliases') },
+    { to: '/compare', label: t('nav.compare') },
     { to: '/feel', label: t('nav.feel') },
     { to: '/cheatsheet', label: t('nav.cheatsheet') },
   ]
 
   // 路由一变就把覆盖层收掉，别让抽屉跨页留着。
   // 这是同步外部系统（路由），不是从 props 派生 state，故显式豁免该规则。
-  // oxlint-disable-next-line react/set-state-in-effect
   useEffect(() => {
+    // oxlint-disable-next-line react/set-state-in-effect
     setDrawerOpen(false)
+    // oxlint-disable-next-line react/set-state-in-effect
     setSearchOpen(false)
   }, [route.path])
 
@@ -238,6 +240,9 @@ export function Layout({ children }: { children: ReactNode }) {
             </Link>
             <Link to="/aliases" className="text-caption text-ink-2 no-underline hover:text-accent">
               {t('nav.aliases')}
+            </Link>
+            <Link to="/compare" className="text-caption text-ink-2 no-underline hover:text-accent">
+              {t('nav.compare')}
             </Link>
           </div>
 

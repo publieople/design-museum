@@ -21,6 +21,7 @@ const PAGES = {
   about: lazyWithRetry(ROUTE_MODULES.about),
   reverse: lazyWithRetry(ROUTE_MODULES.reverse),
   aliases: lazyWithRetry(ROUTE_MODULES.aliases),
+  compare: lazyWithRetry(ROUTE_MODULES.compare),
   liveIndex: lazyWithRetry(ROUTE_MODULES.liveIndex),
   liveDetail: lazyWithRetry(ROUTE_MODULES.liveDetail),
   debug: lazyWithRetry(ROUTE_MODULES.debug),

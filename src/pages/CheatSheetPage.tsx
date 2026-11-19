@@ -1,5 +1,6 @@
 import { useEffect, useMemo, useState } from 'react'
 import { ENTRIES } from '../data'
+import { hasLiveDemo } from '../data/live'
 import { CATEGORIES } from '../data/taxonomy'
 import { useT, useLocale } from '../i18n'
 import { defaultValues } from '../lib/controls'
@@ -133,6 +134,11 @@ export function CheatSheetPage() {
                           <span className="truncate font-mono text-[10px] text-muted">
                             {entry.nameEn}
                           </span>
+                          {hasLiveDemo(entry.slug) ? (
+                            <span className="shrink-0 border border-accent/40 px-1 font-mono text-[9px] uppercase tracking-[0.08em] text-accent">
+                              {t('sheet.liveBadge')}
+                            </span>
+                          ) : null}
                           {checked ? (
                             <IconCheck size={12} className="ml-auto shrink-0 text-accent" />
                           ) : null}
@@ -169,6 +175,10 @@ export function CheatSheetPage() {
               ))}
             </div>
           </div>
+
+          {selected.some((slug) => hasLiveDemo(slug)) ? (
+            <p className="text-[11px] text-muted">{t('sheet.liveNote')}</p>
+          ) : null}
 
           <div className="flex items-center justify-between gap-3">
             <span className="label-mono">{t('sheet.preview')}</span>

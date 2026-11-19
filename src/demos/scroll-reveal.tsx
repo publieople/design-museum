@@ -37,11 +37,17 @@ export default function ScrollRevealDemo({ values, replayKey, locale = 'zh' }: D
   useEffect(() => {
     const nodes = itemRefs.current
     if (!animated) {
+      // 降级/减少动态：一次性把所有段落标成已揭示
+      // oxlint-disable-next-line react/set-state-in-effect
       setRevealed(PARAGRAPHS.map(() => true))
+      // oxlint-disable-next-line react/set-state-in-effect
       setSeen(PARAGRAPHS.length)
       return
     }
+    // 重播键驱动的归位：动画从零开始
+    // oxlint-disable-next-line react/set-state-in-effect
     setRevealed(PARAGRAPHS.map(() => false))
+    // oxlint-disable-next-line react/set-state-in-effect
     setSeen(0)
     const ratio = Math.min(0.9, Math.max(0.05, threshold / 100))
     const observer = new IntersectionObserver(

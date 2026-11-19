@@ -1,0 +1,1555 @@
+{
+  "version": 1,
+  "count": 258,
+  "aliases": [
+    {
+      "alias": "active state scale",
+      "slugs": [
+        "press-feedback"
+      ]
+    },
+    {
+      "alias": "animated counter",
+      "slugs": [
+        "count-up"
+      ]
+    },
+    {
+      "alias": "animated gradient background",
+      "slugs": [
+        "aurora-gradient"
+      ]
+    },
+    {
+      "alias": "animation-timeline",
+      "slugs": [
+        "scroll-driven"
+      ]
+    },
+    {
+      "alias": "aurora background",
+      "slugs": [
+        "mesh-gradient",
+        "aurora-gradient"
+      ]
+    },
+    {
+      "alias": "aurora gradient",
+      "slugs": [
+        "aurora-gradient"
+      ]
+    },
+    {
+      "alias": "backdrop blur",
+      "slugs": [
+        "frosted-glass"
+      ]
+    },
+    {
+      "alias": "backdrop-filter",
+      "slugs": [
+        "frosted-glass"
+      ]
+    },
+    {
+      "alias": "background-clip text",
+      "slugs": [
+        "gradient-text"
+      ]
+    },
+    {
+      "alias": "balanced headline",
+      "slugs": [
+        "text-balance"
+      ]
+    },
+    {
+      "alias": "balanced text wrapping",
+      "slugs": [
+        "text-balance"
+      ]
+    },
+    {
+      "alias": "bento box grid",
+      "slugs": [
+        "bento-grid"
+      ]
+    },
+    {
+      "alias": "bento layout",
+      "slugs": [
+        "bento-grid"
+      ]
+    },
+    {
+      "alias": "border gradient",
+      "slugs": [
+        "gradient-border"
+      ]
+    },
+    {
+      "alias": "bouncy",
+      "slugs": [
+        "spring"
+      ]
+    },
+    {
+      "alias": "button press effect",
+      "slugs": [
+        "press-feedback"
+      ]
+    },
+    {
+      "alias": "card hover elevation",
+      "slugs": [
+        "hover-lift"
+      ]
+    },
+    {
+      "alias": "card stack on scroll",
+      "slugs": [
+        "sticky-stack"
+      ]
+    },
+    {
+      "alias": "cascading entrance",
+      "slugs": [
+        "stagger"
+      ]
+    },
+    {
+      "alias": "character reveal",
+      "slugs": [
+        "char-reveal"
+      ]
+    },
+    {
+      "alias": "collapse",
+      "slugs": [
+        "accordion"
+      ]
+    },
+    {
+      "alias": "collapsible panel",
+      "slugs": [
+        "accordion"
+      ]
+    },
+    {
+      "alias": "command menu",
+      "slugs": [
+        "command-palette"
+      ]
+    },
+    {
+      "alias": "command palette",
+      "slugs": [
+        "command-palette"
+      ]
+    },
+    {
+      "alias": "content placeholder",
+      "slugs": [
+        "skeleton-shimmer"
+      ]
+    },
+    {
+      "alias": "count up",
+      "slugs": [
+        "count-up"
+      ]
+    },
+    {
+      "alias": "cubic-bezier",
+      "slugs": [
+        "easing"
+      ]
+    },
+    {
+      "alias": "cursor follower",
+      "slugs": [
+        "cursor-follower"
+      ]
+    },
+    {
+      "alias": "cursor glow",
+      "slugs": [
+        "spotlight-glow"
+      ]
+    },
+    {
+      "alias": "cursor-following button",
+      "slugs": [
+        "magnetic-button"
+      ]
+    },
+    {
+      "alias": "custom cursor",
+      "slugs": [
+        "cursor-follower"
+      ]
+    },
+    {
+      "alias": "diffuse gradient",
+      "slugs": [
+        "mesh-gradient"
+      ]
+    },
+    {
+      "alias": "disclosure",
+      "slugs": [
+        "accordion"
+      ]
+    },
+    {
+      "alias": "easing curve",
+      "slugs": [
+        "easing"
+      ]
+    },
+    {
+      "alias": "edge fade",
+      "slugs": [
+        "mask-fade"
+      ]
+    },
+    {
+      "alias": "fade in on scroll",
+      "slugs": [
+        "scroll-reveal"
+      ]
+    },
+    {
+      "alias": "fade mask",
+      "slugs": [
+        "mask-fade"
+      ]
+    },
+    {
+      "alias": "feature grid",
+      "slugs": [
+        "bento-grid"
+      ]
+    },
+    {
+      "alias": "film grain",
+      "slugs": [
+        "grain-noise"
+      ]
+    },
+    {
+      "alias": "fixed header",
+      "slugs": [
+        "sticky-header"
+      ]
+    },
+    {
+      "alias": "fluid type scale",
+      "slugs": [
+        "fluid-type"
+      ]
+    },
+    {
+      "alias": "fluid typography",
+      "slugs": [
+        "fluid-type"
+      ]
+    },
+    {
+      "alias": "font-variation-settings",
+      "slugs": [
+        "variable-font"
+      ]
+    },
+    {
+      "alias": "glass UI",
+      "slugs": [
+        "glassmorphism"
+      ]
+    },
+    {
+      "alias": "glass blur",
+      "slugs": [
+        "frosted-glass"
+      ]
+    },
+    {
+      "alias": "glass card",
+      "slugs": [
+        "glassmorphism"
+      ]
+    },
+    {
+      "alias": "glassmorphic",
+      "slugs": [
+        "glassmorphism"
+      ]
+    },
+    {
+      "alias": "gradient mask",
+      "slugs": [
+        "mask-fade"
+      ]
+    },
+    {
+      "alias": "gradient stroke",
+      "slugs": [
+        "gradient-border"
+      ]
+    },
+    {
+      "alias": "gradient text",
+      "slugs": [
+        "gradient-text"
+      ]
+    },
+    {
+      "alias": "grain overlay",
+      "slugs": [
+        "grain-noise"
+      ]
+    },
+    {
+      "alias": "hide on scroll",
+      "slugs": [
+        "sticky-header"
+      ]
+    },
+    {
+      "alias": "hollow text",
+      "slugs": [
+        "text-stroke"
+      ]
+    },
+    {
+      "alias": "hover lift",
+      "slugs": [
+        "hover-lift"
+      ]
+    },
+    {
+      "alias": "hover 抬高",
+      "slugs": [
+        "hover-lift"
+      ]
+    },
+    {
+      "alias": "immediate UI",
+      "slugs": [
+        "optimistic-ui"
+      ]
+    },
+    {
+      "alias": "infinite marquee",
+      "slugs": [
+        "marquee"
+      ]
+    },
+    {
+      "alias": "lining figures",
+      "slugs": [
+        "tabular-numbers"
+      ]
+    },
+    {
+      "alias": "magnetic hover",
+      "slugs": [
+        "magnetic-button"
+      ]
+    },
+    {
+      "alias": "magnetic pull",
+      "slugs": [
+        "magnetic-button"
+      ]
+    },
+    {
+      "alias": "marquee",
+      "slugs": [
+        "marquee"
+      ]
+    },
+    {
+      "alias": "mask fade",
+      "slugs": [
+        "mask-fade"
+      ]
+    },
+    {
+      "alias": "masonry layout",
+      "slugs": [
+        "masonry"
+      ]
+    },
+    {
+      "alias": "material ripple",
+      "slugs": [
+        "ripple"
+      ]
+    },
+    {
+      "alias": "mesh gradient",
+      "slugs": [
+        "mesh-gradient"
+      ]
+    },
+    {
+      "alias": "monospaced digits",
+      "slugs": [
+        "tabular-numbers"
+      ]
+    },
+    {
+      "alias": "mouse follower",
+      "slugs": [
+        "cursor-follower"
+      ]
+    },
+    {
+      "alias": "multi-layer scroll",
+      "slugs": [
+        "parallax"
+      ]
+    },
+    {
+      "alias": "noise texture",
+      "slugs": [
+        "grain-noise"
+      ]
+    },
+    {
+      "alias": "number counter",
+      "slugs": [
+        "count-up"
+      ]
+    },
+    {
+      "alias": "optimistic update",
+      "slugs": [
+        "optimistic-ui"
+      ]
+    },
+    {
+      "alias": "outlined text",
+      "slugs": [
+        "text-stroke"
+      ]
+    },
+    {
+      "alias": "overshoot",
+      "slugs": [
+        "spring"
+      ]
+    },
+    {
+      "alias": "page transition",
+      "slugs": [
+        "view-transitions"
+      ]
+    },
+    {
+      "alias": "parallax scrolling",
+      "slugs": [
+        "parallax"
+      ]
+    },
+    {
+      "alias": "per-character animation",
+      "slugs": [
+        "char-reveal"
+      ]
+    },
+    {
+      "alias": "pinterest layout",
+      "slugs": [
+        "masonry"
+      ]
+    },
+    {
+      "alias": "pointer follower",
+      "slugs": [
+        "cursor-follower"
+      ]
+    },
+    {
+      "alias": "quick switcher",
+      "slugs": [
+        "command-palette"
+      ]
+    },
+    {
+      "alias": "radial highlight",
+      "slugs": [
+        "spotlight-glow"
+      ]
+    },
+    {
+      "alias": "rainbow border",
+      "slugs": [
+        "gradient-border"
+      ]
+    },
+    {
+      "alias": "reading progress",
+      "slugs": [
+        "scroll-progress"
+      ]
+    },
+    {
+      "alias": "reading progress bar",
+      "slugs": [
+        "scroll-progress"
+      ]
+    },
+    {
+      "alias": "responsive font-size",
+      "slugs": [
+        "fluid-type"
+      ]
+    },
+    {
+      "alias": "reveal on scroll",
+      "slugs": [
+        "scroll-reveal"
+      ]
+    },
+    {
+      "alias": "ripple effect",
+      "slugs": [
+        "ripple"
+      ]
+    },
+    {
+      "alias": "rollback on failure",
+      "slugs": [
+        "optimistic-ui"
+      ]
+    },
+    {
+      "alias": "scroll depth",
+      "slugs": [
+        "parallax"
+      ]
+    },
+    {
+      "alias": "scroll progress",
+      "slugs": [
+        "scroll-progress"
+      ]
+    },
+    {
+      "alias": "scroll progress bar",
+      "slugs": [
+        "scroll-progress"
+      ]
+    },
+    {
+      "alias": "scroll snapping",
+      "slugs": [
+        "scroll-snap"
+      ]
+    },
+    {
+      "alias": "scroll timeline",
+      "slugs": [
+        "scroll-driven"
+      ]
+    },
+    {
+      "alias": "scroll-driven animations",
+      "slugs": [
+        "scroll-driven"
+      ]
+    },
+    {
+      "alias": "scroll-snap-type",
+      "slugs": [
+        "scroll-snap"
+      ]
+    },
+    {
+      "alias": "scrolling text",
+      "slugs": [
+        "marquee"
+      ]
+    },
+    {
+      "alias": "shimmer loading",
+      "slugs": [
+        "skeleton-shimmer"
+      ]
+    },
+    {
+      "alias": "skeleton screen",
+      "slugs": [
+        "skeleton-shimmer"
+      ]
+    },
+    {
+      "alias": "snackbar",
+      "slugs": [
+        "toast"
+      ]
+    },
+    {
+      "alias": "snap scrolling",
+      "slugs": [
+        "scroll-snap"
+      ]
+    },
+    {
+      "alias": "split text animation",
+      "slugs": [
+        "char-reveal"
+      ]
+    },
+    {
+      "alias": "spotlight card",
+      "slugs": [
+        "spotlight-glow"
+      ]
+    },
+    {
+      "alias": "spotlight search",
+      "slugs": [
+        "command-palette"
+      ]
+    },
+    {
+      "alias": "spring animation",
+      "slugs": [
+        "spring"
+      ]
+    },
+    {
+      "alias": "stacking cards",
+      "slugs": [
+        "sticky-stack"
+      ]
+    },
+    {
+      "alias": "staggered animation",
+      "slugs": [
+        "stagger"
+      ]
+    },
+    {
+      "alias": "sticky nav",
+      "slugs": [
+        "sticky-header"
+      ]
+    },
+    {
+      "alias": "sticky stacking cards",
+      "slugs": [
+        "sticky-stack"
+      ]
+    },
+    {
+      "alias": "tabular figures",
+      "slugs": [
+        "tabular-numbers"
+      ]
+    },
+    {
+      "alias": "tabular-nums",
+      "slugs": [
+        "tabular-numbers"
+      ]
+    },
+    {
+      "alias": "text gradient",
+      "slugs": [
+        "gradient-text"
+      ]
+    },
+    {
+      "alias": "text outline",
+      "slugs": [
+        "text-stroke"
+      ]
+    },
+    {
+      "alias": "text stroke",
+      "slugs": [
+        "text-stroke"
+      ]
+    },
+    {
+      "alias": "text-wrap balance",
+      "slugs": [
+        "text-balance"
+      ]
+    },
+    {
+      "alias": "ticker",
+      "slugs": [
+        "marquee"
+      ]
+    },
+    {
+      "alias": "timing function",
+      "slugs": [
+        "easing"
+      ]
+    },
+    {
+      "alias": "toast notification",
+      "slugs": [
+        "toast"
+      ]
+    },
+    {
+      "alias": "touch ripple",
+      "slugs": [
+        "ripple"
+      ]
+    },
+    {
+      "alias": "variable font",
+      "slugs": [
+        "variable-font"
+      ]
+    },
+    {
+      "alias": "view enter",
+      "slugs": [
+        "scroll-reveal"
+      ]
+    },
+    {
+      "alias": "view transition",
+      "slugs": [
+        "view-transitions"
+      ]
+    },
+    {
+      "alias": "view-transition",
+      "slugs": [
+        "view-transitions"
+      ]
+    },
+    {
+      "alias": "virtual list",
+      "slugs": [
+        "virtual-scrolling"
+      ]
+    },
+    {
+      "alias": "virtualized list",
+      "slugs": [
+        "virtual-scrolling"
+      ]
+    },
+    {
+      "alias": "waterfall layout",
+      "slugs": [
+        "masonry"
+      ]
+    },
+    {
+      "alias": "weight axis",
+      "slugs": [
+        "variable-font"
+      ]
+    },
+    {
+      "alias": "windowing",
+      "slugs": [
+        "virtual-scrolling"
+      ]
+    },
+    {
+      "alias": "⌘K 面板",
+      "slugs": [
+        "command-palette"
+      ]
+    },
+    {
+      "alias": "两端渐隐",
+      "slugs": [
+        "mask-fade"
+      ]
+    },
+    {
+      "alias": "乐观更新",
+      "slugs": [
+        "optimistic-ui"
+      ]
+    },
+    {
+      "alias": "依次出现",
+      "slugs": [
+        "stagger"
+      ]
+    },
+    {
+      "alias": "便当盒布局",
+      "slugs": [
+        "bento-grid"
+      ]
+    },
+    {
+      "alias": "便当网格",
+      "slugs": [
+        "bento-grid"
+      ]
+    },
+    {
+      "alias": "先改后存",
+      "slugs": [
+        "optimistic-ui"
+      ]
+    },
+    {
+      "alias": "光晕背景",
+      "slugs": [
+        "aurora-gradient"
+      ]
+    },
+    {
+      "alias": "光标跟随光",
+      "slugs": [
+        "spotlight-glow"
+      ]
+    },
+    {
+      "alias": "共享元素过渡",
+      "slugs": [
+        "view-transitions"
+      ]
+    },
+    {
+      "alias": "分层滚动",
+      "slugs": [
+        "parallax"
+      ]
+    },
+    {
+      "alias": "加载占位",
+      "slugs": [
+        "skeleton-shimmer"
+      ]
+    },
+    {
+      "alias": "卡片上浮",
+      "slugs": [
+        "hover-lift"
+      ]
+    },
+    {
+      "alias": "卡片堆叠",
+      "slugs": [
+        "sticky-stack"
+      ]
+    },
+    {
+      "alias": "叠卡片",
+      "slugs": [
+        "sticky-stack"
+      ]
+    },
+    {
+      "alias": "可变字体动画",
+      "slugs": [
+        "variable-font"
+      ]
+    },
+    {
+      "alias": "可变字重",
+      "slugs": [
+        "variable-font"
+      ]
+    },
+    {
+      "alias": "吸附光标",
+      "slugs": [
+        "magnetic-button"
+      ]
+    },
+    {
+      "alias": "吸顶导航",
+      "slugs": [
+        "sticky-header"
+      ]
+    },
+    {
+      "alias": "命令面板",
+      "slugs": [
+        "command-palette"
+      ]
+    },
+    {
+      "alias": "噪点",
+      "slugs": [
+        "grain-noise"
+      ]
+    },
+    {
+      "alias": "回弹",
+      "slugs": [
+        "spring"
+      ]
+    },
+    {
+      "alias": "固定顶栏",
+      "slugs": [
+        "sticky-header"
+      ]
+    },
+    {
+      "alias": "多色渐变背景",
+      "slugs": [
+        "mesh-gradient"
+      ]
+    },
+    {
+      "alias": "大小格拼贴",
+      "slugs": [
+        "bento-grid"
+      ]
+    },
+    {
+      "alias": "字符入场",
+      "slugs": [
+        "char-reveal"
+      ]
+    },
+    {
+      "alias": "对齐滚动",
+      "slugs": [
+        "scroll-snap"
+      ]
+    },
+    {
+      "alias": "层叠滚动",
+      "slugs": [
+        "parallax"
+      ]
+    },
+    {
+      "alias": "展开收起",
+      "slugs": [
+        "accordion"
+      ]
+    },
+    {
+      "alias": "平衡换行",
+      "slugs": [
+        "text-balance"
+      ]
+    },
+    {
+      "alias": "弥散渐变",
+      "slugs": [
+        "mesh-gradient"
+      ]
+    },
+    {
+      "alias": "弹性动画",
+      "slugs": [
+        "spring"
+      ]
+    },
+    {
+      "alias": "弹性排版",
+      "slugs": [
+        "fluid-type"
+      ]
+    },
+    {
+      "alias": "弹性缓动",
+      "slugs": [
+        "spring"
+      ]
+    },
+    {
+      "alias": "彩色描边",
+      "slugs": [
+        "gradient-border"
+      ]
+    },
+    {
+      "alias": "彩色文字",
+      "slugs": [
+        "gradient-text"
+      ]
+    },
+    {
+      "alias": "循环滚动",
+      "slugs": [
+        "marquee"
+      ]
+    },
+    {
+      "alias": "微光扫过",
+      "slugs": [
+        "skeleton-shimmer"
+      ]
+    },
+    {
+      "alias": "快捷搜索框",
+      "slugs": [
+        "command-palette"
+      ]
+    },
+    {
+      "alias": "悬停浮起",
+      "slugs": [
+        "hover-lift"
+      ]
+    },
+    {
+      "alias": "手风琴",
+      "slugs": [
+        "accordion"
+      ]
+    },
+    {
+      "alias": "折叠展开",
+      "slugs": [
+        "accordion"
+      ]
+    },
+    {
+      "alias": "折行平衡",
+      "slugs": [
+        "text-balance"
+      ]
+    },
+    {
+      "alias": "指针跟随",
+      "slugs": [
+        "cursor-follower"
+      ]
+    },
+    {
+      "alias": "按下反馈",
+      "slugs": [
+        "press-feedback"
+      ]
+    },
+    {
+      "alias": "按下缩放",
+      "slugs": [
+        "press-feedback"
+      ]
+    },
+    {
+      "alias": "按压态",
+      "slugs": [
+        "press-feedback"
+      ]
+    },
+    {
+      "alias": "描边字",
+      "slugs": [
+        "text-stroke"
+      ]
+    },
+    {
+      "alias": "数值动画",
+      "slugs": [
+        "count-up"
+      ]
+    },
+    {
+      "alias": "数字不跳",
+      "slugs": [
+        "tabular-numbers"
+      ]
+    },
+    {
+      "alias": "数字递增",
+      "slugs": [
+        "count-up"
+      ]
+    },
+    {
+      "alias": "文字渐变",
+      "slugs": [
+        "gradient-text"
+      ]
+    },
+    {
+      "alias": "无缝滚动",
+      "slugs": [
+        "marquee"
+      ]
+    },
+    {
+      "alias": "时间曲线",
+      "slugs": [
+        "easing"
+      ]
+    },
+    {
+      "alias": "杂色",
+      "slugs": [
+        "grain-noise"
+      ]
+    },
+    {
+      "alias": "极光背景",
+      "slugs": [
+        "aurora-gradient"
+      ]
+    },
+    {
+      "alias": "标题不孤字",
+      "slugs": [
+        "text-balance"
+      ]
+    },
+    {
+      "alias": "横向滚动条",
+      "slugs": [
+        "marquee"
+      ]
+    },
+    {
+      "alias": "毛玻璃效果",
+      "slugs": [
+        "frosted-glass"
+      ]
+    },
+    {
+      "alias": "水波纹",
+      "slugs": [
+        "ripple"
+      ]
+    },
+    {
+      "alias": "波纹扩散",
+      "slugs": [
+        "ripple"
+      ]
+    },
+    {
+      "alias": "流动渐变",
+      "slugs": [
+        "aurora-gradient"
+      ]
+    },
+    {
+      "alias": "流式字号",
+      "slugs": [
+        "fluid-type"
+      ]
+    },
+    {
+      "alias": "浮层提示",
+      "slugs": [
+        "toast"
+      ]
+    },
+    {
+      "alias": "消息提示条",
+      "slugs": [
+        "toast"
+      ]
+    },
+    {
+      "alias": "渐变字体",
+      "slugs": [
+        "gradient-text"
+      ]
+    },
+    {
+      "alias": "渐变边",
+      "slugs": [
+        "gradient-border"
+      ]
+    },
+    {
+      "alias": "渐变边框",
+      "slugs": [
+        "gradient-border"
+      ]
+    },
+    {
+      "alias": "渐隐遮罩",
+      "slugs": [
+        "mask-fade"
+      ]
+    },
+    {
+      "alias": "滑动吸附",
+      "slugs": [
+        "scroll-snap"
+      ]
+    },
+    {
+      "alias": "滚动出现",
+      "slugs": [
+        "scroll-reveal"
+      ]
+    },
+    {
+      "alias": "滚动加载动画",
+      "slugs": [
+        "scroll-reveal"
+      ]
+    },
+    {
+      "alias": "滚动叠卡",
+      "slugs": [
+        "sticky-stack"
+      ]
+    },
+    {
+      "alias": "滚动吸附",
+      "slugs": [
+        "scroll-snap"
+      ]
+    },
+    {
+      "alias": "滚动吸顶",
+      "slugs": [
+        "sticky-header"
+      ]
+    },
+    {
+      "alias": "滚动时间线",
+      "slugs": [
+        "scroll-driven"
+      ]
+    },
+    {
+      "alias": "滚动淡入",
+      "slugs": [
+        "scroll-reveal"
+      ]
+    },
+    {
+      "alias": "滚动联动动画",
+      "slugs": [
+        "scroll-driven"
+      ]
+    },
+    {
+      "alias": "滚动进度",
+      "slugs": [
+        "scroll-progress"
+      ]
+    },
+    {
+      "alias": "滚动进度动画",
+      "slugs": [
+        "scroll-driven"
+      ]
+    },
+    {
+      "alias": "瀑布流布局",
+      "slugs": [
+        "masonry"
+      ]
+    },
+    {
+      "alias": "瀑布流排版",
+      "slugs": [
+        "masonry"
+      ]
+    },
+    {
+      "alias": "点了立刻变",
+      "slugs": [
+        "optimistic-ui"
+      ]
+    },
+    {
+      "alias": "点击回弹",
+      "slugs": [
+        "press-feedback"
+      ]
+    },
+    {
+      "alias": "点击涟漪",
+      "slugs": [
+        "ripple"
+      ]
+    },
+    {
+      "alias": "物理动画",
+      "slugs": [
+        "spring"
+      ]
+    },
+    {
+      "alias": "玻璃卡片",
+      "slugs": [
+        "glassmorphism"
+      ]
+    },
+    {
+      "alias": "玻璃态",
+      "slugs": [
+        "glassmorphism"
+      ]
+    },
+    {
+      "alias": "玻璃质感",
+      "slugs": [
+        "glassmorphism"
+      ]
+    },
+    {
+      "alias": "磁力按钮",
+      "slugs": [
+        "magnetic-button"
+      ]
+    },
+    {
+      "alias": "磨砂",
+      "slugs": [
+        "frosted-glass"
+      ]
+    },
+    {
+      "alias": "磨砂玻璃",
+      "slugs": [
+        "frosted-glass"
+      ]
+    },
+    {
+      "alias": "空心字",
+      "slugs": [
+        "text-stroke"
+      ]
+    },
+    {
+      "alias": "窗口化渲染",
+      "slugs": [
+        "virtual-scrolling"
+      ]
+    },
+    {
+      "alias": "等宽数字",
+      "slugs": [
+        "tabular-numbers"
+      ]
+    },
+    {
+      "alias": "级联出现",
+      "slugs": [
+        "stagger"
+      ]
+    },
+    {
+      "alias": "缓动函数",
+      "slugs": [
+        "easing"
+      ]
+    },
+    {
+      "alias": "网格渐变",
+      "slugs": [
+        "mesh-gradient"
+      ]
+    },
+    {
+      "alias": "聚光灯",
+      "slugs": [
+        "spotlight-glow"
+      ]
+    },
+    {
+      "alias": "胶片颗粒",
+      "slugs": [
+        "grain-noise"
+      ]
+    },
+    {
+      "alias": "自动消失的提示",
+      "slugs": [
+        "toast"
+      ]
+    },
+    {
+      "alias": "自适应字号",
+      "slugs": [
+        "fluid-type"
+      ]
+    },
+    {
+      "alias": "虚拟列表",
+      "slugs": [
+        "virtual-scrolling"
+      ]
+    },
+    {
+      "alias": "表格数字",
+      "slugs": [
+        "tabular-numbers"
+      ]
+    },
+    {
+      "alias": "视差",
+      "slugs": [
+        "parallax"
+      ]
+    },
+    {
+      "alias": "视差效果",
+      "slugs": [
+        "parallax"
+      ]
+    },
+    {
+      "alias": "计数动画",
+      "slugs": [
+        "count-up"
+      ]
+    },
+    {
+      "alias": "贝塞尔曲线",
+      "slugs": [
+        "easing"
+      ]
+    },
+    {
+      "alias": "跟随鼠标",
+      "slugs": [
+        "cursor-follower"
+      ]
+    },
+    {
+      "alias": "跟随鼠标的按钮",
+      "slugs": [
+        "magnetic-button"
+      ]
+    },
+    {
+      "alias": "跨页面过渡",
+      "slugs": [
+        "view-transitions"
+      ]
+    },
+    {
+      "alias": "轮廓文字",
+      "slugs": [
+        "text-stroke"
+      ]
+    },
+    {
+      "alias": "轴字体",
+      "slugs": [
+        "variable-font"
+      ]
+    },
+    {
+      "alias": "轻提示",
+      "slugs": [
+        "toast"
+      ]
+    },
+    {
+      "alias": "边缘淡出",
+      "slugs": [
+        "mask-fade"
+      ]
+    },
+    {
+      "alias": "进入视口出现",
+      "slugs": [
+        "scroll-reveal"
+      ]
+    },
+    {
+      "alias": "进度条",
+      "slugs": [
+        "scroll-progress"
+      ]
+    },
+    {
+      "alias": "逐字出现",
+      "slugs": [
+        "char-reveal"
+      ]
+    },
+    {
+      "alias": "逐字动画",
+      "slugs": [
+        "char-reveal"
+      ]
+    },
+    {
+      "alias": "逐条入场",
+      "slugs": [
+        "stagger"
+      ]
+    },
+    {
+      "alias": "速度曲线",
+      "slugs": [
+        "easing"
+      ]
+    },
+    {
+      "alias": "错峰动画",
+      "slugs": [
+        "stagger"
+      ]
+    },
+    {
+      "alias": "长列表优化",
+      "slugs": [
+        "virtual-scrolling"
+      ]
+    },
+    {
+      "alias": "长短卡片错落",
+      "slugs": [
+        "masonry"
+      ]
+    },
+    {
+      "alias": "阅读条",
+      "slugs": [
+        "scroll-progress"
+      ]
+    },
+    {
+      "alias": "阅读进度条",
+      "slugs": [
+        "scroll-progress"
+      ]
+    },
+    {
+      "alias": "页面转场",
+      "slugs": [
+        "view-transitions"
+      ]
+    },
+    {
+      "alias": "颗粒感",
+      "slugs": [
+        "grain-noise"
+      ]
+    },
+    {
+      "alias": "骨架屏",
+      "slugs": [
+        "skeleton-shimmer"
+      ]
+    },
+    {
+      "alias": "鼠标光晕",
+      "slugs": [
+        "spotlight-glow"
+      ]
+    },
+    {
+      "alias": "鼠标尾巴",
+      "slugs": [
+        "cursor-follower"
+      ]
+    },
+    {
+      "alias": "鼠标移上去抬起来",
+      "slugs": [
+        "hover-lift"
+      ]
+    }
+  ]
+}

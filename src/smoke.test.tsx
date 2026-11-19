@@ -17,6 +17,7 @@ import { FeelPage } from './pages/FeelPage'
 import { HomePage } from './pages/HomePage'
 import { ReversePage } from './pages/ReversePage'
 import { AliasesPage } from './pages/AliasesPage'
+import { ComparePage } from './pages/ComparePage'
 import { LiveIndexPage } from './pages/LiveIndexPage'
 import { LivePage } from './pages/LivePage'
 import { LIVE_MODULES } from './livedemos/registry'
@@ -63,6 +64,18 @@ describe('页面渲染冒烟', () => {
     expect(render(<AliasesPage />)).toContain('俗称总表')
     expect(render(<ReversePage />, { locale: 'en' })).toContain('Reverse lookup')
     expect(render(<AliasesPage />, { locale: 'en' })).toContain('Alias index')
+  })
+
+  it('对照页（别搞混）能渲染左右展签与区别', () => {
+    const html = render(<ComparePage />)
+    expect(html).toContain('别搞混')
+    expect(html).toContain('两边怎么区分')
+    expect(html).toContain('全部对照')
+    // 默认落到档案里的第一对，左右两张展签都带词条入口
+    expect(html).toContain('打开词条')
+    const en = render(<ComparePage />, { locale: 'en' })
+    expect(en).toContain('Compare')
+    expect(en).toContain('How the two differ')
   })
 
   it('英文界面下「怎么用」页不残留中文', () => {
