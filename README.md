@@ -360,7 +360,49 @@ gh api -X PATCH repos/publieople/design-museum \
 - 视觉回归只做「像素是否变了」，不判断变好还是变坏——通过代表和基线一致，改版时先看图再更新基线。
 - 反查是启发式打分，不是语义理解：粘 CSS 命中率最高，纯口语描述不保证答案一定对；拼音表只覆盖词条名称/别名里出现过的字，表外同音字不会映射。
 
-## 待办（按性价比排序）
+## 路线图
+
+定位不变：**帮人把「我想要那种效果」翻译成一个准确的名字 + 一句 AI 能执行的需求**。零后端、零外部请求、不新增运行时依赖。
+
+当前状态（2026-11-20）：41 条词条（动效 9，其余每厅 8）、61 个预渲染页面、11 个现场页（`/live/<slug>/`）、11 对「别搞混」、259 条俗称、381 项测试、87 个 JS chunk；`pnpm check && pnpm build` 全绿，截图矩阵与像素回归可用。
+
+### 三条主线
+
+1. **内容厚度**：词条是唯一的护城河。最缺的是「一整页才成立」的现场演示，其次是英文正文。
+2. **工具纵深**：人来是为了「搜名字、反查、对照、抄需求」。每个工具都要有明确的下一步动作（复制、下载、对比、跳转）。
+3. **工程质量**：在零新增依赖的前提下，把 a11y、首屏体积、数据新鲜度变成可自动检查的门槛。
+
+### 阶段 G：现场页第三批 + 对照页补全（建议下一步）
+
+- **G1 背景类现场页 4 个**：`aurora-gradient`、`mesh-gradient`、`grain-noise`、`spotlight-glow`——整页常驻氛围，正是展台小盒子演不出来的。
+- **G2 文字类现场页 4 个**：`fluid-type`、`gradient-text`、`text-stroke`、`variable-font`——整页排版标本。
+- **G3 动效类现场页 5 个**：`marquee`、`count-up`、`char-reveal`、`skeleton-shimmer`、`scroll-snap`——整页更好，但不是非整页不可。
+- **G4 对照页补全**：`confusions` 从 11 对补到 24 对以上，尽量两边都写 `diff`；`/compare/` 增加筛选与「两边都说」的并列展示。
+- **验收**：`pnpm check && pnpm build` 全绿；74 页预渲染、54 条词条；1280 / 768 / 375 × 明暗 × 中英截图人眼过；`pnpm screenshots:diff` 通过；线上 `/live/` 新增页 200。
+- **分工**：每批 2 名队友（各自独立页面文件 + 测试），Lead 负责注册表、i18n、路由、文档与集成。
+
+### 阶段 H：英文正文与教学闭环
+
+- **H1 英文正文**：`en` 覆盖层从 `oneLiner` 扩到 `whenToUse` / `confusions` / `pitfalls` / `spec` / `reducedMotion`（41 条，按展厅分 5 批；术语表统一；英文冒烟从「无中文」扩到「关键段非空」）。
+- **H2 需求清单可下载**：`/cheatsheet/` 复制之外导出 `.md`，并允许填一段项目语境（框架、风格、禁用项）拼进清单。
+- **H3 互链与推荐**：`related` / `confusions` 交叉校验、孤儿词条清零；详情页加「相似条目」（tags + scene 打分）。
+- **H4 搜索覆盖**：搜索历史（localStorage）；`/live/` 页面纳入搜索或被明确标注。
+
+### 阶段 I：工程质量（可随时插入）
+
+- **I1 零依赖 a11y 自检**：对比度、焦点顺序、可访问名、reduced-motion 覆盖，挂进 `pnpm check`。
+- **I2 首屏与 chunk**：生产构建剔除 DebugAllPage；`i18n` / `entryMeta` 按页面按需加载。
+- **I3 数据新鲜度**：CI 检查 `catalog/`、`entryMeta.ts`、截图基线与源码一致。
+- **I4 CONTRIBUTING**：补「加一条词条」的自动校验命令清单。
+
+### 明确不做
+
+- 后端、账号、评论、云端收藏：零后端是定位，本地偏好已够用。
+- 任何新增运行时依赖（路由 / 检索 / 状态 / UI 组件库）、外部字体 CDN、埋点。
+- 整篇机器翻译：术语密度高，校对成本高于直接写，H1 人工分批。
+- 逐词条 OG 图：需要图像依赖或构建期浏览器，与「不新增依赖、构建简单」冲突。
+
+### 已完成（历史清单，按性价比排序）
 
 1. ~~反查：粘贴一段代码或别人的描述 → 说出它叫什么。~~ 已完成：`/reverse/`，CSS 属性 + 关键词 + 描述相似度打分，附命中理由。
 2. ~~拼音搜索（maoboli → 毛玻璃）与错别字容错。~~ 已完成：构建期读音表 + 有界编辑距离，原文命中优先。
@@ -369,7 +411,7 @@ gh api -X PATCH repos/publieople/design-museum \
 5. ~~视觉回归：基线图 + 自动像素比对。~~ 已完成：`pnpm screenshots:baseline` / `pnpm screenshots:diff`（默认阈值 0.2%，差异图与报告在 `.screenshots/diff/`）。
 6. ~~词条扩充：现在 30 条，每厅再加 2 条。~~ 已完成：41 条（动效厅 9 条，其余每厅 8 条），界面与 SEO 文案里的计数已改成动态数字（`{n}` 占位）。
 7. ~~给 AI 的目录做增量索引。~~ 已完成：`public/catalog/` 按展厅 / 标签 / 别名分片，`llms.txt` 指路，全量 JSON 与 Markdown 仍保留。
-8. ~~现场页第一批~~ 已完成：`/live/` + 5 个整页演示。~~第二批~~ 也已完成：sticky-header、view-transitions、command-palette、virtual-scrolling、toast，并补上第 41 条词条 `scroll-progress`（滚动进度条）。速查表已接上现场页入口（「现场」角标 + 链接）。第三批候选：背景类（aurora / mesh / grain / spotlight）与字体类（fluid-type / gradient-text / variable-font）整页演示。
+8. ~~现场页第一批~~ 已完成：`/live/` + 5 个整页演示。~~第二批~~ 也已完成：sticky-header、view-transitions、command-palette、virtual-scrolling、toast，并补上第 41 条词条 `scroll-progress`（滚动进度条）。速查表已接上现场页入口（「现场」角标 + 链接）。
 
 ## 致谢
 
