@@ -15,12 +15,16 @@ const entry: Entry = {
   ],
   confusions: [
     {
-      with: '悬停抬升（hover lift）',
+      with: '悬停抬升',
       diff: '抬升的方向是固定的，永远垂直向上；磁吸会朝指针方向做二维偏移，指针在左下方就往左下方走。',
     },
     {
       with: '指针视差（pointer parallax）',
       diff: '视差是整个容器跟着指针大范围移动，几十像素起步；磁吸只在按钮附近的小范围内移动几像素到十几像素。',
+    },
+    {
+      with: '光标跟随',
+      diff: '光标跟随替换的是指针本身：一个元素追着指针满屏跑，指针的可见性由它接管；磁吸按钮仍用原生指针，只是按钮朝指针方向偏移几像素，指针一离开按钮就回弹。',
     },
   ],
   pitfalls: [
@@ -76,6 +80,10 @@ const entry: Entry = {
     confusions: [
       { with: 'Hover lift', diff: 'Lift moves in one fixed direction, always straight up; magnetic pull offsets in two dimensions toward the pointer, so a cursor at the lower left moves the button down and to the left.' },
       { with: 'Pointer parallax', diff: 'Parallax moves a whole container a long way with the pointer, usually tens of pixels; magnetic pull moves just the button a few pixels to about a dozen inside a small range around it.' },
+      {
+        with: 'Cursor Follower',
+        diff: 'A cursor follower replaces the pointer itself, with an element chasing it across the screen. A magnetic button keeps the native pointer and only offsets the button a few pixels toward it, snapping back when the pointer leaves.',
+      },
     ],
     pitfalls: [
       'A trigger radius much larger than the button, over twice its size, sends it drifting across the screen; 1-1.5x the button width and height is enough',

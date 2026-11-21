@@ -22,6 +22,10 @@ const entry: Entry = {
       with: '进度条（progress bar）',
       diff: '进度条表示可量化的进度（比如 30%）；骨架屏表示时长未知的等待，只能靠反复扫光暗示还在动。',
     },
+    {
+      with: '乐观更新',
+      diff: '乐观更新渲染的是真实数据（只是尚未确认），失败要撤回并提示；骨架屏渲染的是没有内容的灰块，数据一到就整体替换，不存在回滚。',
+    },
   ],
   pitfalls: [
     '扫光用 background-position 或 width 动画会不停重绘，用覆盖层做 transform: translateX 更省',
@@ -74,6 +78,10 @@ const entry: Entry = {
     confusions: [
       { with: 'Spinner', diff: 'A spinner says nothing about the shape of the content, only that something is busy; a skeleton lays out placeholder blocks in the final layout, so nothing jumps when the content swaps in.' },
       { with: 'Progress bar', diff: 'A progress bar shows a measurable amount, such as 30 percent; a skeleton stands for a wait of unknown length and can only suggest that work continues by sweeping again and again.' },
+      {
+        with: 'Optimistic UI',
+        diff: 'Optimistic UI renders real data that is merely unconfirmed and must retract and report on failure. A skeleton renders contentless grey blocks and is replaced wholesale when data arrives; there is nothing to roll back.',
+      },
     ],
     pitfalls: [
       'Animating the shimmer with background-position or width repaints constantly; an overlay moving with transform: translateX is cheaper',

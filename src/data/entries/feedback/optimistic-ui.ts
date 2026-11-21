@@ -22,6 +22,10 @@ const entry: Entry = {
       with: '本地缓存（local cache）',
       diff: '乐观更新只改当前这一次的界面状态，刷新就没了；缓存是真正存下来的数据，下次打开还在。',
     },
+    {
+      with: '骨架屏微光',
+      diff: '骨架屏出现在数据还没回来时，用占位块撑住布局、明示「正在加载」；乐观更新是数据还没确认就先按成功渲染真实内容，失败再回滚，等待被藏起来而不是画出来。',
+    },
   ],
   pitfalls: [
     '支付、下单、删除账号这类不能重放的操作不能乐观，必须等服务器确认',
@@ -72,6 +76,10 @@ const entry: Entry = {
     confusions: [
       { with: 'Loading / disabled', diff: 'Loading says plainly that the form is submitting and locks the button; optimistic UI does the opposite, showing the result first and hiding the wait, and only on failure does it report and roll back.' },
       { with: 'Local cache', diff: 'An optimistic update changes only the interface state for this one action and is gone on refresh; a cache is data that is really stored and is still there next time you open the page.' },
+      {
+        with: 'Skeleton Shimmer',
+        diff: 'A skeleton appears while data is missing, holding the layout with placeholder blocks and admitting the wait. Optimistic UI renders the real content as if it succeeded before confirmation and rolls back on failure, hiding the wait instead of drawing it.',
+      },
     ],
     pitfalls: [
       'Irreversible actions such as payments, orders, and account deletion cannot be optimistic; they have to wait for the server to confirm',

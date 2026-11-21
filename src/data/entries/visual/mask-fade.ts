@@ -22,6 +22,10 @@ const entry: Entry = {
       with: '渐变色盖层',
       diff: '盖一层同色渐变只是「看起来像」，一旦底色不是纯色（图片、渐变、深色模式）就露馅；mask 直接改内容的可见性，跟底色无关。',
     },
+    {
+      with: '渐变描边',
+      diff: '渐变描边只画边框那一圈，内容到边仍是硬边、不被淡化；边缘渐隐不画线，靠 mask 把内容本身在边缘变透明。想让内容化开用 mask，想画一圈线用 border。',
+    },
   ],
   pitfalls: [
     '渐隐长度要够（约容器宽度的 8–15%），太短看起来像脏边',
@@ -105,6 +109,10 @@ const entry: Entry = {
       {
         with: 'gradient overlay',
         diff: 'A same-colour overlay only looks right on a flat background and gives up on images, gradients or dark mode. A mask changes visibility itself, independent of what is behind it.',
+      },
+      {
+        with: 'Gradient Border',
+        diff: 'A gradient border paints only the ring and leaves content hard-edged and undimmed at the boundary. Mask fade draws no line; it makes the content itself transparent toward the edge. Use a mask to dissolve content, a border to draw a ring.',
       },
     ],
     pitfalls: [

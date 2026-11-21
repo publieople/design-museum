@@ -23,6 +23,14 @@ const entry: Entry = {
       with: 'text-shadow 外发光',
       diff: 'text-shadow 只在字形外面加一层光，字身仍然是单色；渐变文字是把背景裁进字形里面，颜色出现在字的内部。',
     },
+    {
+      with: '描边文字',
+      diff: '描边文字只画字形的轮廓线（-webkit-text-stroke），字内部通常是透明或单色；渐变文字是把渐变背景裁进字形填充（background-clip: text），颜色在字内部，轮廓本身不加线。',
+    },
+    {
+      with: '渐变描边',
+      diff: '渐变描边只出现在容器边缘，元素内部的背景不受影响；渐变文字要求文字本身透明、把背景裁进字形，渐变贯穿的是笔画内部。',
+    },
   ],
   pitfalls: [
     '一定要同时写 background-clip: text（配 -webkit- 前缀）和 color: transparent，否则会看到文字后面压着一整块背景色。',
@@ -109,6 +117,14 @@ const entry: Entry = {
       {
         with: 'text-shadow glow',
         diff: 'text-shadow adds a glow around the glyph while the glyph itself stays one solid color. Gradient text clips the background into the glyph, so the color sits inside the letters.',
+      },
+      {
+        with: 'Text Stroke',
+        diff: 'Text stroke draws only the glyph outline with -webkit-text-stroke, leaving the inside transparent or a solid fill. Gradient text clips a gradient into the glyph as fill with background-clip: text, so color lives inside the letter and no outline is drawn.',
+      },
+      {
+        with: 'Gradient Border',
+        diff: 'A gradient border appears only at the container edge and leaves the inner background untouched. Gradient text needs transparent glyphs and clips the background into the letterforms, so the gradient runs through the strokes.',
       },
     ],
     pitfalls: [

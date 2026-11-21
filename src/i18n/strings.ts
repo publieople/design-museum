@@ -295,6 +295,12 @@ export const STRINGS = {
   },
   'compare.allPairs': { zh: '全部对照', en: 'All comparisons' },
   'compare.openEntry': { zh: '打开词条', en: 'Open entry' },
+  'compare.filter': { zh: '筛选对照', en: 'Filter comparisons' },
+  'compare.filterPlaceholder': { zh: '名字、别名或编号', en: 'Name, alias or code' },
+  'compare.filterEmpty': { zh: '没有符合条件的对照', en: 'No comparisons match' },
+  'compare.hallFilter': { zh: '按展厅', en: 'By hall' },
+  'compare.clearFilter': { zh: '清空筛选', en: 'Clear filter' },
+  'compare.showing': { zh: '显示 {a} / {b} 对', en: 'Showing {a} of {b} pairs' },
 
   'notFound.title': { zh: '这里没有展品', en: 'Nothing here' },
   'notFound.desc': { zh: '地址可能写错了。回首页重新开始。', en: 'That address looks wrong. Head back home.' },
@@ -559,6 +565,9 @@ export const STRINGS = {
   'live.group.pointer': { zh: '指针与视口', en: 'Pointer & viewport' },
   'live.group.navigation': { zh: '页面切换', en: 'Page transitions' },
   'live.group.overlay': { zh: '浮层与提示', en: 'Overlays & notices' },
+  'live.group.surface': { zh: '背景与质感', en: 'Surfaces & texture' },
+  'live.group.type': { zh: '文字与排版', en: 'Type & text' },
+  'live.group.motion': { zh: '时间与节奏', en: 'Time & rhythm' },
   'live.note.scroll-driven': {
     zh: '页面滚到哪，动画就走到哪：进度条、卡片转正与入场都由滚动位置驱动，没有演示框。',
     en: 'Scroll position is the animation: the progress bar and the cards entering and straightening up are all driven by where the page is scrolled. No demo box.',
@@ -602,6 +611,58 @@ export const STRINGS = {
   'live.note.toast': {
     zh: '从视口角落弹出的提示，不打断你正在做的事。位置、堆叠顺序与安全区，只有整页空间才说得清。',
     en: 'A notice that rises from a viewport corner without interrupting what you are doing. Position, stacking order and safe areas only make sense against a whole page.',
+  },
+  'live.note.aurora-gradient': {
+    zh: '极光渐变铺满整块背景，颜色缓慢游走。只有在整页尺度上它才像天空，放进盒子就只是一块渐变。',
+    en: 'An aurora gradient fills the whole background as its colours drift. Only at page scale does it read as sky; inside a box it is just a gradient.',
+  },
+  'live.note.mesh-gradient': {
+    zh: '多团径向渐变互相咬合。要整个视口才看得清网格怎么流动、边缘怎么融合。',
+    en: 'Several radial gradients interlock. You need the whole viewport to see how the mesh flows and how the edges blend.',
+  },
+  'live.note.grain-noise': {
+    zh: '颗粒噪点盖住整页，密度与对比度要在真实内容上才判断得准。盒子里只剩一块脏底。',
+    en: 'Grain covers the whole page; its density and contrast can only be judged against real content. In a box it is just a dirty patch.',
+  },
+  'live.note.spotlight-glow': {
+    zh: '光斑跟随指针照亮整页内容。整页才知道光落在哪里，盒子里的光斑只是装饰。',
+    en: 'A spotlight follows the pointer across the whole page. Page scale shows where the light lands; in a box it is only decoration.',
+  },
+  'live.note.fluid-type': {
+    zh: '字号随视口连续缩放。整页的标题、正文与边距一起变，才看得出比例有没有散。',
+    en: 'Type scales continuously with the viewport. Only when headings, body and margins all move together can you tell whether the ratio holds.',
+  },
+  'live.note.gradient-text': {
+    zh: '渐变色填进整段文字。断行、字号与渐变角度要在整页排版里一起看。',
+    en: 'A gradient fills whole passages of text. Line breaks, size and gradient angle have to be judged against page typography together.',
+  },
+  'live.note.text-stroke': {
+    zh: '描边字撑起整屏标题。细笔画与粗描边的平衡，只有在大字上才暴露问题。',
+    en: 'Outlined type carries a full-screen heading. The balance between thin strokes and a heavy outline only shows up at large sizes.',
+  },
+  'live.note.variable-font': {
+    zh: '一个字重轴连着整页标题与正文。整页排版的层级，才说明这条轴该怎么用。',
+    en: 'One weight axis connects headings and body across the page. Page-scale hierarchy is what shows how the axis should be used.',
+  },
+  'live.note.marquee': {
+    zh: '跑马灯横穿整页。速度、间距与留白要和视口宽度一起判断，盒子里只是条滚动的带子。',
+    en: 'A marquee runs across the whole page. Speed, spacing and whitespace have to be judged against viewport width; in a box it is just a moving strip.',
+  },
+  'live.note.count-up': {
+    zh: '数字滚动强调关键指标。只有整页版式能说明它该出现在哪、字号该多大。',
+    en: 'A count-up stresses a key number. Only page layout shows where it belongs and how large it should be.',
+  },
+  'live.note.char-reveal': {
+    zh: '逐字出现撑住整页开场。节奏和整屏文案一起才有意义，盒子里像字幕机。',
+    en: 'A character reveal carries a full-page opening. It only works with the whole screen of copy; in a box it looks like a caption roller.',
+  },
+  'live.note.skeleton-shimmer': {
+    zh: '骨架屏占住真实内容的版位。整页布局里才看得出它替了什么、闪得对不对。',
+    en: 'A skeleton holds the place of real content. Only page layout shows what it stands in for and whether the shimmer is right.',
+  },
+  'live.note.scroll-snap': {
+    zh: '滚动吸附按整页分节停靠。整页才有真正的「一节一屏」，盒子里只是盒子在停。',
+    en: 'Scroll snapping parks one section per screen. Only a whole page gives real one-section-per-screen stops; in a box it is just the box stopping.',
   },
 } as const
 

@@ -27,7 +27,7 @@ pnpm check        # 下面三项一条命令（typecheck + lint + test）
 pnpm typecheck    # tsc -b，零错误
 pnpm lint         # oxlint，零 error（目前也是零 warning）
 pnpm test         # vitest 全绿
-pnpm build        # 产物进 dist/（最后一步跑 scripts/prerender.mjs：61 个静态页 + sitemap）
+pnpm build        # 产物进 dist/（最后一步跑 scripts/prerender.mjs：74 个静态页 + sitemap）
 ```
 
 `pnpm validate` 只跑内容校验，改词条时可以先跑它快速回归。

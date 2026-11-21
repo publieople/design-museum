@@ -13,7 +13,15 @@ import type { StringKey } from '../i18n/strings'
  * 注意：登记了现场页不等于词条可以依赖整页滚动。展台 demo 仍然必须自带
  * 滚动容器（见 docs/ENTRY-SPEC.md），只有 /live/ 页面允许用 window 滚动。
  */
-export type LiveGroupId = 'scroll' | 'layout' | 'navigation' | 'overlay' | 'pointer'
+export type LiveGroupId =
+  | 'scroll'
+  | 'surface'
+  | 'type'
+  | 'layout'
+  | 'motion'
+  | 'navigation'
+  | 'overlay'
+  | 'pointer'
 
 export interface LiveGroup {
   id: LiveGroupId
@@ -22,7 +30,10 @@ export interface LiveGroup {
 
 export const LIVE_GROUPS: readonly LiveGroup[] = [
   { id: 'scroll', titleKey: 'live.group.scroll' },
+  { id: 'surface', titleKey: 'live.group.surface' },
+  { id: 'type', titleKey: 'live.group.type' },
   { id: 'layout', titleKey: 'live.group.layout' },
+  { id: 'motion', titleKey: 'live.group.motion' },
   { id: 'navigation', titleKey: 'live.group.navigation' },
   { id: 'overlay', titleKey: 'live.group.overlay' },
   { id: 'pointer', titleKey: 'live.group.pointer' },
@@ -40,10 +51,23 @@ export const LIVE_DEMOS: readonly LiveDemo[] = [
   { slug: 'scroll-driven', group: 'scroll', noteKey: 'live.note.scroll-driven' },
   { slug: 'scroll-reveal', group: 'scroll', noteKey: 'live.note.scroll-reveal' },
   { slug: 'parallax', group: 'scroll', noteKey: 'live.note.parallax' },
+  { slug: 'scroll-snap', group: 'scroll', noteKey: 'live.note.scroll-snap' },
   { slug: 'virtual-scrolling', group: 'scroll', noteKey: 'live.note.virtual-scrolling' },
   { slug: 'scroll-progress', group: 'scroll', noteKey: 'live.note.scroll-progress' },
+  { slug: 'aurora-gradient', group: 'surface', noteKey: 'live.note.aurora-gradient' },
+  { slug: 'mesh-gradient', group: 'surface', noteKey: 'live.note.mesh-gradient' },
+  { slug: 'grain-noise', group: 'surface', noteKey: 'live.note.grain-noise' },
+  { slug: 'spotlight-glow', group: 'surface', noteKey: 'live.note.spotlight-glow' },
+  { slug: 'fluid-type', group: 'type', noteKey: 'live.note.fluid-type' },
+  { slug: 'gradient-text', group: 'type', noteKey: 'live.note.gradient-text' },
+  { slug: 'text-stroke', group: 'type', noteKey: 'live.note.text-stroke' },
+  { slug: 'variable-font', group: 'type', noteKey: 'live.note.variable-font' },
   { slug: 'sticky-stack', group: 'layout', noteKey: 'live.note.sticky-stack' },
   { slug: 'sticky-header', group: 'layout', noteKey: 'live.note.sticky-header' },
+  { slug: 'marquee', group: 'motion', noteKey: 'live.note.marquee' },
+  { slug: 'count-up', group: 'motion', noteKey: 'live.note.count-up' },
+  { slug: 'char-reveal', group: 'motion', noteKey: 'live.note.char-reveal' },
+  { slug: 'skeleton-shimmer', group: 'motion', noteKey: 'live.note.skeleton-shimmer' },
   { slug: 'view-transitions', group: 'navigation', noteKey: 'live.note.view-transitions' },
   { slug: 'command-palette', group: 'overlay', noteKey: 'live.note.command-palette' },
   { slug: 'toast', group: 'overlay', noteKey: 'live.note.toast' },

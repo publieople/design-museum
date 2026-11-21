@@ -22,6 +22,10 @@ const entry: Entry = {
       with: '逐个播放的轮播',
       diff: '轮播会一直循环；交错进场通常只在首次出现时播放一次，之后不再重复。',
     },
+    {
+      with: '逐字显现',
+      diff: '交错进场作用在本来独立的元素上（列表项、卡片），每个元素整块出现；逐字显现要先把一句话拆成单个字符或词，再对拆出来的片段套错峰延迟，还要处理读屏和文本选中。',
+    },
   ],
   pitfalls: [
     '间隔超过 120ms、元素又多，最后一项要等很久，页面像卡住',
@@ -100,6 +104,10 @@ const entry: Entry = {
       {
         with: 'a carousel that plays one item at a time',
         diff: 'A carousel keeps looping. A stagger usually runs once on first appearance and never repeats.',
+      },
+      {
+        with: 'Character Reveal',
+        diff: 'Stagger works on elements that are already separate, such as list items or cards, each appearing as a whole. Character reveal first splits a sentence into characters or words, applies staggered delays to those fragments, and has to handle screen readers and text selection.',
       },
     ],
     pitfalls: [

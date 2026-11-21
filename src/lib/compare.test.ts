@@ -2,7 +2,14 @@ import { describe, expect, it } from 'vitest'
 import { ENTRY_META } from '../data/meta'
 import { codeOrder } from '../data/taxonomy'
 import type { EntryMeta } from '../data/types'
-import { comparePair, comparePairs, confusionDiff, pairKey } from './compare'
+import {
+  comparePair,
+  comparePairs,
+  confusionDiff,
+  filterPairs,
+  pairKey,
+  type ComparePair,
+} from './compare'
 
 type Confusion = EntryMeta['confusions'][number]
 
@@ -178,10 +185,61 @@ describe('confusionDiff', () => {
     expect(diff).toContain('模糊')
   })
 
-  it('真实数据：版本号里的「半透明」解析不到词条，返回 null 而不是乱配', () => {
+  it('真实数据：毛玻璃与玻璃拟态两侧都写了区别', () => {
     const frosted = bySlug('frosted-glass')
     const glass = bySlug('glassmorphism')
-    // 毛玻璃一侧写的是「半透明」与「模糊滤镜 blur()」，都不是词条
-    expect(confusionDiff(frosted, glass, ENTRY_META)).toBeNull()
+    expect(confusionDiff(frosted, glass, ENTRY_META)).not.toBeNull()
+    expect(confusionDiff(glass, frosted, ENTRY_META)).not.toBeNull()
+  })
+
+  it('真实数据：每一对两侧都有 diff，不留单边档案', () => {
+    const pairs = comparePairs(ENTRY_META)
+    for (const pair of pairs) {
+      expect(confusionDiff(pair.a, pair.b, ENTRY_META), pair.key).not.toBeNull()
+      expect(confusionDiff(pair.b, pair.a, ENTRY_META), pair.key).not.toBeNull()
+    }
+  })
+})
+
+describe('filterPairs', () => {
+  function fixture(): ComparePair[] {
+    const alpha = makeEntry('alpha', 'M-01', [{ with: '乙效果', diff: 'a 看 b' }], {
+      nameEn: 'Alpha Effect',
+      nameZh: '甲效果',
+      aliases: ['第一种', 'the first one'],
+    })
+    const beta = {
+      ...makeEntry('beta', 'V-02', [], { nameEn: 'Beta Effect', nameZh: '乙效果' }),
+      category: 'visual' as const,
+    }
+    return comparePairs([alpha, beta])
+  }
+
+  it('空查询与空展厅返回全部，不过滤', () => {
+    const pairs = fixture()
+    expect(filterPairs(pairs, '')).toHaveLength(1)
+    expect(filterPairs(pairs, '   ')).toHaveLength(1)
+    expect(filterPairs(pairs, '', 'all')).toHaveLength(1)
+  })
+
+  it('查询命中中文名、英文名、别名与编号，大小写与空白不敏感', () => {
+    const pairs = fixture()
+    expect(filterPairs(pairs, '甲效果')).toHaveLength(1)
+    expect(filterPairs(pairs, 'ALPHA')).toHaveLength(1)
+    expect(filterPairs(pairs, '第一种')).toHaveLength(1)
+    expect(filterPairs(pairs, 'thefirstone')).toHaveLength(1)
+    expect(filterPairs(pairs, 'v-02')).toHaveLength(1)
+    expect(filterPairs(pairs, 'm 01')).toHaveLength(1)
+  })
+
+  it('查不到时返回空数组', () => {
+    expect(filterPairs(fixture(), 'zzz')).toEqual([])
+  })
+
+  it('展厅按「左边那条」的 category 过滤', () => {
+    const pairs = fixture()
+    expect(filterPairs(pairs, '', 'motion')).toHaveLength(1)
+    // 右边那条属于 visual，但分组口径看左边（alpha 在 motion），所以被筛掉
+    expect(filterPairs(pairs, '', 'visual')).toEqual([])
   })
 })

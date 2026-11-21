@@ -40,7 +40,7 @@ pnpm dev          # http://localhost:5173
 ```bash
 pnpm check        # typecheck + lint + test 一条命令（提交门槛）
 pnpm typecheck    # tsc -b，零错误是提交门槛
-pnpm test         # vitest：内容校验 + 条目规范 + 检索 + 参数 URL + 偏好 + i18n + 提示词 + 首屏 meta 同步 + 反查/拼音/俗称/对照/索引数据 + 页面与 demo 渲染冒烟（381 项；含现场页演示冒烟）
+pnpm test         # vitest：内容校验 + 条目规范 + 检索 + 参数 URL + 偏好 + i18n + 提示词 + 首屏 meta 同步 + 反查/拼音/俗称/对照/索引数据 + 页面与 demo 渲染冒烟（399 项；含现场页演示冒烟）
 pnpm gen:meta     # 改过词条后重新生成首屏用的 meta（src/data/entryMeta.ts）
 pnpm gen:catalog  # 重新生成给 AI 用的目录（public/catalog.json / catalog.md / catalog/ 分片 / llms.txt）
 pnpm validate     # 只跑内容校验
@@ -85,9 +85,9 @@ Vite 8 + React 19 + TypeScript + Tailwind CSS v4。零后端，纯静态产物�
 | `/entry/<slug>/` | 每条词条一个独立地址（例：<https://publieople.github.io/design-museum/entry/frosted-glass/>） |
 | `/debug/all` | 只在开发模式可达，生产构建渲染 404 |
 
-`pnpm build` 的最后一步 `scripts/prerender.mjs` 用 React 的 `renderToStaticMarkup` 把 61 个地址渲染成 `dist/<地址>/index.html`，同时生成 `dist/sitemap.xml` 与 `dist/404.html`；每页的 `<title>`、`description`、`canonical`、`og:*` 和 JSON-LD 都按页写（词条页是 `TechArticle`）。浏览器侧照常 `createRoot` 重新渲染，不做水合——localStorage 里的主题与语言可能和预渲染的默认值不一样。旧的 `#/entry/frosted-glass` 这类链接会在挂载前被 `history.replaceState` 归一化成新地址，历史分享链接不会失效。
+`pnpm build` 的最后一步 `scripts/prerender.mjs` 用 React 的 `renderToStaticMarkup` 把 74 个地址渲染成 `dist/<地址>/index.html`，同时生成 `dist/sitemap.xml` 与 `dist/404.html`；每页的 `<title>`、`description`、`canonical`、`og:*` 和 JSON-LD 都按页写（词条页是 `TechArticle`）。浏览器侧照常 `createRoot` 重新渲染，不做水合——localStorage 里的主题与语言可能和预渲染的默认值不一样。旧的 `#/entry/frosted-glass` 这类链接会在挂载前被 `history.replaceState` 归一化成新地址，历史分享链接不会失效。
 
-代价是首屏 HTML 从 2.5KB 变成约 29KB（未压缩），换来的是爬虫不执行 JS 也能读到 61 个页面的正文。
+代价是首屏 HTML 从 2.5KB 变成约 29KB（未压缩），换来的是爬虫不执行 JS 也能读到 74 个页面的正文。
 
 ### 循环重播不是无差别的
 
@@ -115,13 +115,13 @@ node /home/po/design-museum/scripts/gen-pinyin.mjs
 
 **俗称总表（`/aliases/`）** 把全站 259 个 `aliases` 摊平成一页：按展厅分组、可搜（复用同一套检索，所以拼音/错别字也能用），每条都链回词条；发现新叫法可以直接去 GitHub 提交。
 
-**并列对照（`/compare/`）** 把词条里写的「容易搞混」变成左右两张展签：从 41 条词条的 `confusions` 里解析出 **11 对**站内可对照的组合（毛玻璃 × 玻璃拟态、粘性头部 × 粘性堆叠、渐变文字 × 描边文字……），每对各自列出对方写的区别；`?a=<slug>&b=<slug>` 可分享，词条详情里的「并排对照」直接链过来。解析只认归一化后（折全角、大小写、标点）的精确名字或别名——对不上就宁可不给链接，比如「半透明」不是词条。
+**并列对照（`/compare/`）** 把词条里写的「容易搞混」变成左右两张展签：从 41 条词条的 `confusions` 里解析出 **26 对**站内可对照的组合（毛玻璃 × 玻璃拟态、粘性头部 × 粘性堆叠、渐变文字 × 描边文字……），不再只有一边说话——每对两边都写了区别；`/compare/` 支持按名字、别名、编号搜索与按展厅筛选，`?a=<slug>&b=<slug>` 可分享，词条详情里的「并排对照」直接链过来。解析只认归一化后（折全角、大小写、标点）的精确名字或别名——对不上就宁可不给链接，比如「半透明」不是词条。
 
 ### 现场页：整页就是一个演示
 
 有些效果塞进展台就失真：滚动驱动的进度条需要整页的滚动距离，视差需要真实景深，光标跟随需要整个视口。参考 Magic UI 的做法，这些效果有第二种呈现方式——**现场页 `/live/<slug>/`**：不套站点头尾，页面本身就是演示场，只留一条浮动导航（返回词条 / 上一个 / 下一个 / Esc）。索引在 `/live/`。
 
-第一、二批搬进去的 11 个：
+三批搬进去的 24 个：
 
 | 现场页 | 为什么必须整页 |
 |---|---|
@@ -136,6 +136,19 @@ node /home/po/design-museum/scripts/gen-pinyin.mjs
 | `/live/view-transitions/` | 同一文档的两份状态之间做共享元素过渡 |
 | `/live/command-palette/` | 面板要接管整个视口、锁住背后的页面 |
 | `/live/toast/` | 提示固定在视口底部，不属于文档流 |
+| `/live/scroll-snap/` | 吸附以整屏分节为节拍，盒子里的滚动看不到停靠手感 |
+| `/live/aurora-gradient/` | 极光要铺满视口、还要在文字后面呼吸，盒子会露出硬边 |
+| `/live/mesh-gradient/` | 网格渐变靠多层色斑在整屏上分布，缩到卡片里只剩一团 |
+| `/live/grain-noise/` | 颗粒必须平铺到整页才看不出瓦片，盒子里会显重复 |
+| `/live/spotlight-glow/` | 光斑跟的是整页指针位置，盒子里的「跟随」是假的 |
+| `/live/fluid-type/` | 流体字号要跨真实视口宽度才看得出 clamp 的三段 |
+| `/live/gradient-text/` | 渐变跨整行、跨段落才成立，盒子里只能看到一小段色 |
+| `/live/text-stroke/` | 描边的可读性取决于整页字号与底色关系 |
+| `/live/variable-font/` | 字重轴要在整页排版里滑动对比，单行样本看不出差别 |
+| `/live/marquee/` | 跑马灯要从视口一侧进、另一侧出，盒子只能截一段 |
+| `/live/count-up/` | 数字增长要等读者滚到它面前才开始，整页才有「进入视口」 |
+| `/live/char-reveal/` | 逐字出现是整段文字的节奏，盒子里会变成闪烁 |
+| `/live/skeleton-shimmer/` | 骨架屏要和真实内容同尺寸，整页才看得出「不跳动」 |
 
 实现上，注册表在 `src/data/live.ts`（`{ slug, group, noteKey }`，不往 `Entry` 加字段），演示组件在 `src/livedemos/<slug>.tsx`，经 `src/livedemos/registry.ts` 按路由懒加载。现场页的静态 HTML 只渲染「封面」（名字、一句话、为什么需要整页、返回链接），整页演示在客户端挂载——爬虫读到的信息不依赖 JS。只有现场页允许依赖 `window` 滚动；展台 demo 仍必须自带滚动容器（`docs/ENTRY-SPEC.md` 的唯一例外写在现场页这一层）。
 
@@ -149,13 +162,13 @@ node /home/po/design-museum/scripts/gen-pinyin.mjs
 - **词条详情**：左边粘性展台 + 参数工作台，右边「输出舱」（中文需求句 / 英文术语 / 分享链接）与档案分节；参数改动照旧回写 URL。
 - **动效**：只保留 View Transitions（页面进出 200/240ms）、粘性头部的滚动驱动边线，以及 demo 自己的动画；不再做逐卡错峰入场。
 
-> 想一次看完所有页面：`pnpm build && pnpm screenshots`，会在 `.screenshots/` 生成 22 个页面 × 3 个宽度的 66 张截图（含 11 个现场页、对照页与 404）。脚本只依赖本机 Chrome，走 DevTools Protocol，不引 puppeteer/playwright；为了「同一个构建 → 同一张图」，它强制 reduced-motion、等网络与 DOM 都安静下来才截。
+> 想一次看完所有页面：`pnpm build && pnpm screenshots`，会在 `.screenshots/` 生成 35 个页面 × 3 个宽度的 105 张截图（含 24 个现场页、对照页与 404）。脚本只依赖本机 Chrome，走 DevTools Protocol，不引 puppeteer/playwright；为了「同一个构建 → 同一张图」，它强制 reduced-motion、等网络与 DOM 都安静下来才截。
 >
 > 视觉回归：`pnpm screenshots:baseline` 存基线，`pnpm screenshots:diff` 逐像素比对（阈值默认 0.2%，差异图与报告在 `.screenshots/diff/`，退出码可进门禁）。基线目录已 gitignore，留在本地。
 
 ### 性能
 
-页面与 demo 都是按需加载：`src/demos/registry.ts` 用非 eager 的 `import.meta.glob`，每个 demo 各自成一个 chunk（每个 1–4KB），首页只下载真正挂出来的那几个；`src/App.tsx` 里各页面也是 `lazy`。构建产物 87 个 JS chunk（另有 1 个 CSS 与 8 个字体文件，`dist` 4.0MB）。改之前是单包 433KB（gzip 138KB）；现在首页首屏 26 个请求、约 225KB gzip，其中主包 73.9KB、首屏词条 meta 33.1KB、i18n 16.3KB、两个字体 61KB、CSS 14.1KB（以上为 gzip）；词条详情与速查表还要额外拉完整词条数据，约 307KB / 299KB gzip，现场页约 214–217KB gzip。拼音表只给检索 chunk 加了约 5.4KB（gzip 约 2.6KB），换页不再重新下载所有 demo。
+页面与 demo 都是按需加载：`src/demos/registry.ts` 用非 eager 的 `import.meta.glob`，每个 demo 各自成一个 chunk（每个 1–4KB），首页只下载真正挂出来的那几个；`src/App.tsx` 里各页面也是 `lazy`。构建产物 101 个 JS chunk（另有 1 个 CSS 与 8 个字体文件，`dist` 4.4MB）。改之前是单包 433KB（gzip 138KB）；现在首页首屏 26 个请求、约 235KB gzip，其中主包 73.9KB、首屏词条 meta 35.8KB、i18n 18KB、两个字体 61KB、CSS 14.4KB（以上为 gzip）；词条详情与速查表还要额外拉完整词条数据，约 323KB / 313KB gzip，对照页 226KB，现场页索引 225KB、单个演示 226–229KB gzip。拼音表只给检索 chunk 加了约 5.4KB（gzip 约 2.6KB），换页不再重新下载所有 demo。
 
 ## 目录结构
 
@@ -204,7 +217,7 @@ src/
 └── styles/global.css         # 设计 token（纸 / 墨 / 朱红）、字阶、主题变量、切换过渡
 
 scripts/
-├── prerender.mjs             # 构建期渲染 61 个地址 + sitemap.xml + 404.html + 墓碑跳转页
+├── prerender.mjs             # 构建期渲染 74 个地址 + sitemap.xml + 404.html + 墓碑跳转页
 ├── gen-pinyin.mjs            # 生成拼音检索用的汉字读音表（需临时装 pinyin-pro，见 README）
 ├── gen-catalog.mjs           # pnpm gen:catalog：生成给 AI 的目录、分片与 llms.txt
 ├── screenshots.mjs           # pnpm screenshots：用本机 Chrome（CDP）截 22 页 × 3 宽度到 .screenshots/
@@ -364,7 +377,7 @@ gh api -X PATCH repos/publieople/design-museum \
 
 定位不变：**帮人把「我想要那种效果」翻译成一个准确的名字 + 一句 AI 能执行的需求**。零后端、零外部请求、不新增运行时依赖。
 
-当前状态（2026-11-20）：41 条词条（动效 9，其余每厅 8）、61 个预渲染页面、11 个现场页（`/live/<slug>/`）、11 对「别搞混」、259 条俗称、381 项测试、87 个 JS chunk；`pnpm check && pnpm build` 全绿，截图矩阵与像素回归可用。
+当前状态（2026-11-21）：41 条词条（动效 9，其余每厅 8）、74 个预渲染页面、24 个现场页（`/live/<slug>/`）、26 对「别搞混」、259 条俗称、399 项测试、101 个 JS chunk；`pnpm check && pnpm build` 全绿，截图矩阵与像素回归可用。
 
 ### 三条主线
 
@@ -372,13 +385,13 @@ gh api -X PATCH repos/publieople/design-museum \
 2. **工具纵深**：人来是为了「搜名字、反查、对照、抄需求」。每个工具都要有明确的下一步动作（复制、下载、对比、跳转）。
 3. **工程质量**：在零新增依赖的前提下，把 a11y、首屏体积、数据新鲜度变成可自动检查的门槛。
 
-### 阶段 G：现场页第三批 + 对照页补全（建议下一步）
+### 阶段 G：现场页第三批 + 对照页补全（已完成）
 
 - **G1 背景类现场页 4 个**：`aurora-gradient`、`mesh-gradient`、`grain-noise`、`spotlight-glow`——整页常驻氛围，正是展台小盒子演不出来的。
 - **G2 文字类现场页 4 个**：`fluid-type`、`gradient-text`、`text-stroke`、`variable-font`——整页排版标本。
 - **G3 动效类现场页 5 个**：`marquee`、`count-up`、`char-reveal`、`skeleton-shimmer`、`scroll-snap`——整页更好，但不是非整页不可。
-- **G4 对照页补全**：`confusions` 从 11 对补到 24 对以上，尽量两边都写 `diff`；`/compare/` 增加筛选与「两边都说」的并列展示。
-- **验收**：`pnpm check && pnpm build` 全绿；74 页预渲染、54 条词条；1280 / 768 / 375 × 明暗 × 中英截图人眼过；`pnpm screenshots:diff` 通过；线上 `/live/` 新增页 200。
+- **G4 对照页补全**：`confusions` 补到 26 对、每对两边都写 `diff`；`/compare/` 增加搜索与展厅筛选。
+- **验收结果**：`pnpm check && pnpm build` 全绿；74 页预渲染；24 个现场页；1280 / 768 / 375 截图人眼过；线上 `/live/` 新增页 200。
 - **分工**：每批 2 名队友（各自独立页面文件 + 测试），Lead 负责注册表、i18n、路由、文档与集成。
 
 ### 阶段 H：英文正文与教学闭环
@@ -407,11 +420,11 @@ gh api -X PATCH repos/publieople/design-museum \
 1. ~~反查：粘贴一段代码或别人的描述 → 说出它叫什么。~~ 已完成：`/reverse/`，CSS 属性 + 关键词 + 描述相似度打分，附命中理由。
 2. ~~拼音搜索（maoboli → 毛玻璃）与错别字容错。~~ 已完成：构建期读音表 + 有界编辑距离，原文命中优先。
 3. ~~俗称总表页：把全站 `aliases` 汇总成可搜、可贡献的一页。~~ 已完成：`/aliases/`，259 条、按展厅分组、可搜。
-4. ~~「别搞混」做成双向对比页。~~ 已完成：`/compare/`，从 `confusions` 解析出 11 对，左右展签 + 各自写的区别 + 可分享的 `?a=&b=`。
+4. ~~「别搞混」做成双向对比页。~~ 已完成：`/compare/`，从 `confusions` 解析出 26 对，左右展签 + 各自写的区别 + 可分享的 `?a=&b=`。
 5. ~~视觉回归：基线图 + 自动像素比对。~~ 已完成：`pnpm screenshots:baseline` / `pnpm screenshots:diff`（默认阈值 0.2%，差异图与报告在 `.screenshots/diff/`）。
 6. ~~词条扩充：现在 30 条，每厅再加 2 条。~~ 已完成：41 条（动效厅 9 条，其余每厅 8 条），界面与 SEO 文案里的计数已改成动态数字（`{n}` 占位）。
 7. ~~给 AI 的目录做增量索引。~~ 已完成：`public/catalog/` 按展厅 / 标签 / 别名分片，`llms.txt` 指路，全量 JSON 与 Markdown 仍保留。
-8. ~~现场页第一批~~ 已完成：`/live/` + 5 个整页演示。~~第二批~~ 也已完成：sticky-header、view-transitions、command-palette、virtual-scrolling、toast，并补上第 41 条词条 `scroll-progress`（滚动进度条）。速查表已接上现场页入口（「现场」角标 + 链接）。
+8. ~~现场页第一批~~ 已完成：`/live/` + 5 个整页演示。~~第二批~~ 也已完成：sticky-header、view-transitions、command-palette、virtual-scrolling、toast，并补上第 41 条词条 `scroll-progress`（滚动进度条）。速查表已接上现场页入口（「现场」角标 + 链接）。~~第三批~~ 也已完成：背景 4 页、文字 4 页、动效 5 页，现场页总数 24；对照档案补到 26 对并支持筛选。
 
 ## 致谢
 

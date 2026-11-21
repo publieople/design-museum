@@ -22,6 +22,10 @@ const entry: Entry = {
       with: '悬浮按钮',
       diff: '悬浮按钮一直在同一个位置，和滚动无关；粘性头部是「先跟着文档走，到阈值才停住」。',
     },
+    {
+      with: '粘性堆叠卡片',
+      diff: '粘性头部是单条栏吸顶，后面的内容从它下方滑过；粘性堆叠是一叠卡片共用一个吸附位置，每张滚到时接管该位置并盖住前一张，是一组元素在轮替。',
+    },
   ],
   pitfalls: [
     '父级任意一层有 overflow: hidden/auto，sticky 就会失效或只在那个容器里吸附',
@@ -77,6 +81,10 @@ const entry: Entry = {
       {
         with: 'floating action button',
         diff: 'A floating button stays in one spot no matter what the scroll is doing. A sticky header travels with the document first and only stops at the threshold.',
+      },
+      {
+        with: 'Sticky Stacking Cards',
+        diff: 'A sticky header is one bar pinned at the top while content scrolls beneath it. Stacking cards share a single sticky offset: each card arriving takes that spot and covers the previous one, so a set of elements takes turns.',
       },
     ],
     pitfalls: [

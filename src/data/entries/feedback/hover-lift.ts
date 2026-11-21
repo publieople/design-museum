@@ -15,12 +15,16 @@ const entry: Entry = {
   ],
   confusions: [
     {
-      with: '按压反馈（press feedback）',
+      with: '按压反馈',
       diff: '悬停抬升是指针停留在上面期间持续存在的状态，用 :hover；按压反馈是按下和松开那一瞬的反馈，用 :active。两者经常叠着用，但触发时机完全不同。',
     },
     {
       with: '滚动视差（parallax）',
       diff: '悬停抬升只由指针驱动，鼠标进出才动；视差由滚动驱动，鼠标不动、只滚页面它也会移动。',
+    },
+    {
+      with: '磁吸按钮',
+      diff: '悬停抬升只沿固定方向（通常 translateY(-4px)）位移，指针位置不影响方向；磁吸按钮把指针相对按钮中心的偏移乘一个系数，方向跟着指针走，指针离开才弹回。',
     },
   ],
   pitfalls: [
@@ -98,6 +102,10 @@ const entry: Entry = {
     confusions: [
       { with: 'Press feedback', diff: 'Hover lift is a state that lasts the whole time the pointer rests on the element, driven by :hover; press feedback answers the press and the release, driven by :active. They are often stacked, but they fire at completely different moments.' },
       { with: 'Scroll parallax', diff: 'Hover lift is driven only by the pointer, so it moves as the cursor enters and leaves; parallax is driven by scroll, so it moves when you scroll the page even with the mouse still.' },
+      {
+        with: 'Magnetic Button',
+        diff: 'Hover lift moves in one fixed direction, usually translateY(-4px), regardless of where the pointer is. A magnetic button multiplies the pointer offset from the button center by a factor, so the direction follows the pointer and snaps back only when it leaves.',
+      },
     ],
     pitfalls: [
       'Shifting the element without deepening the shadow makes it float like a sticker with no weight; offset and shadow have to change together',

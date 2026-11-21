@@ -47,7 +47,7 @@ export function LiveShell({
       </a>
 
       <h1 className="sr-only">
-        {entry.nameZh} · {t('live.badge')}
+        {locale === 'en' ? entry.nameEn : entry.nameZh} · {t('live.badge')}
       </h1>
 
       <main id="live-main">{children}</main>

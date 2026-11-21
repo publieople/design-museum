@@ -19,8 +19,12 @@ const entry: Entry = {
       diff: 'background-attachment: fixed 是背景相对视口钉住不动，只有一层；视差是每一层用各自的 transform 速度移动，可以有三四层，而且能被 JS 控制。',
     },
     {
-      with: '滚动驱动动画 scroll-driven',
+      with: '滚动驱动动画',
       diff: '视差只管「位移随滚动线性变化」；滚动驱动动画可以把滚动进度映射到任意属性（旋转、缩放、颜色），还能用 animation-range 控制起止区间。',
+    },
+    {
+      with: '粘性堆叠卡片',
+      diff: '视差里各层一直以不同速度移动，没有任何一层真正停住；粘性堆叠的卡片会吸附在同一个位置不动，只靠后一张覆盖前一张来推进，是「停住 + 覆盖」而不是「连续位移」。',
     },
   ],
   pitfalls: [
@@ -95,6 +99,10 @@ const entry: Entry = {
       {
         with: 'scroll-driven animation',
         diff: 'Parallax only shifts position as a function of scroll. Scroll-driven animation can map progress onto any property (rotation, scale, color) and bound it with animation-range.',
+      },
+      {
+        with: 'Sticky Stacking Cards',
+        diff: 'In parallax every layer keeps moving at its own speed and nothing truly stops. Stacked cards stick at one fixed offset and advance only by each new card covering the previous one: stop and cover, not continuous displacement.',
       },
     ],
     pitfalls: [
