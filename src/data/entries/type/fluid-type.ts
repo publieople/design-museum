@@ -22,6 +22,10 @@ const entry: Entry = {
       with: 'rem 固定字号',
       diff: 'rem 只跟根元素字号走，和屏幕宽度无关；rem 仍然要用，但想让文字跟着屏幕流起来，必须把 rem 和 vw 或 cqw 混进同一个 clamp() 里。',
     },
+    {
+      with: '平衡折行',
+      diff: '平衡折行不改字号，只在当前宽度下重新分配每行放几个词，让各行长度接近；流体排版改的是字号本身，随视口宽度连续缩放。一个管「行怎么分」，一个管「字多大」。',
+    },
   ],
   pitfalls: [
     '纯 vw 字号不跟浏览器的默认字号设置走：用户在浏览器里调大文字，vw 那一段不会跟着变大，而无障碍要求文字能放大到 200%。中间值要掺 rem，写成 clamp(1rem, 1rem + 2vw, 2.5rem)。',
@@ -79,6 +83,10 @@ const entry: Entry = {
       {
         with: 'fixed rem sizes',
         diff: 'rem tracks the root font size only and has no relation to the screen width. Keep using rem, but to make text flow with the screen you have to mix rem and vw or cqw into the same clamp().',
+      },
+      {
+        with: 'Text Balance',
+        diff: 'Text balance keeps the font size and only redistributes words across lines at the current width, evening out line lengths. Fluid type changes the size itself, scaling continuously with viewport width. One decides how lines break; the other decides how big the type is.',
       },
     ],
     pitfalls: [

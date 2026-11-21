@@ -26,6 +26,10 @@ const entry: Entry = {
       with: '手写 br',
       diff: 'br 把换行位置写死，换个容器宽度就错位；balance 由浏览器按当前宽度重新计算，宽度变了它会重排。',
     },
+    {
+      with: '流体排版',
+      diff: '流体排版让字号随视口连续变化，折行位置只是结果；平衡折行完全不碰字号，只调整换行点。标题在窄屏缩小该用 clamp()，而不是靠 balance。',
+    },
   ],
   pitfalls: [
     '只对短文本有意义：Chromium 最多平衡 6 行，超了就静默退回普通折行，正文段落加它没有效果还多花排版时间。',
@@ -112,6 +116,10 @@ const entry: Entry = {
       {
         with: 'hard-coded <br>',
         diff: 'A <br> pins the break to one spot and lands in the wrong place at another width. balance recalculates against the current width, so it reflows whenever the width changes.',
+      },
+      {
+        with: 'Fluid Type',
+        diff: 'Fluid type scales the font size continuously with the viewport; where lines break is only a consequence. Text balance never touches size and only adjusts break points. Shrinking a headline on narrow screens calls for clamp(), not balance.',
       },
     ],
     pitfalls: [

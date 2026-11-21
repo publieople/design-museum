@@ -22,6 +22,10 @@ const entry: Entry = {
       with: '兜底动画 keyframes',
       diff: '关键帧是写死的路径，改速度就得重写一堆关键帧；弹簧是每次运行现算，被拖拽打断（中断后也说得通）也能接着算下去。',
     },
+    {
+      with: '缓动曲线',
+      diff: '缓动曲线只是把 0 到 1 的时间重新映射，输入是时间、输出是进度，永远单调走完；弹簧是物理模拟，位置可能冲过终点再振荡几次，停下时间由参数决定而不是写死。',
+    },
   ],
   pitfalls: [
     '参数调软了（刚度低、阻尼小）会左右晃好几秒，用户只想点一下却要等它停下来',
@@ -107,6 +111,10 @@ const entry: Entry = {
       {
         with: 'keyframe animations',
         diff: 'Keyframes bake the path in, so changing the speed means rewriting the frames. A spring solves its position every frame, keeps its state, and stays coherent when a drag interrupts it.',
+      },
+      {
+        with: 'Easing',
+        diff: 'Easing only remaps time onto progress from 0 to 1; it is a pure function of time and always finishes. A spring simulates physics, can overshoot the target and oscillate, and settles when its parameters say so rather than at a written duration.',
       },
     ],
     pitfalls: [

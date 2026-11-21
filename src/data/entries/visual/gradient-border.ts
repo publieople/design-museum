@@ -28,6 +28,14 @@ const entry: Entry = {
       with: '渐变背景',
       diff: '渐变背景铺满整个面，渐变描边只画那一圈线；同一个渐变值，一个当底一个当边。',
     },
+    {
+      with: '渐变文字',
+      diff: '渐变描边画的是盒子边界那一圈，内部留空或另填底色；渐变文字是把渐变裁进字形（background-clip: text），渐变铺满的是文字笔画而不是边框。两者都用 background，但裁切目标不同。',
+    },
+    {
+      with: '边缘渐隐',
+      diff: '边缘渐隐是用 mask 让内容的透明度在边缘衰减到 0，内容本身逐渐消失；渐变描边是沿边界画一条实线，线的颜色变、透明度不变，内容在边界内完整可见。',
+    },
   ],
   pitfalls: [
     'border 必须设成 transparent 且有宽度，否则渐变没有地方画',
@@ -143,6 +151,14 @@ const entry: Entry = {
       {
         with: 'gradient background',
         diff: 'A gradient background fills the whole surface; a gradient border paints only that ring. The same gradient value does two different jobs depending on which one you use.',
+      },
+      {
+        with: 'Gradient Text',
+        diff: 'A gradient border paints only the ring along the box edge and leaves the inside empty or separately filled. Gradient text clips a gradient into the glyphs with background-clip: text, so the paint fills the strokes, not a border. Both use background, but clip different targets.',
+      },
+      {
+        with: 'Mask Fade',
+        diff: 'Mask fade lowers content opacity to zero toward the edge, so the content itself dissolves. A gradient border draws a solid line along the boundary whose color changes while opacity stays 1, and the content inside remains fully visible.',
       },
     ],
     pitfalls: [

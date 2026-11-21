@@ -27,6 +27,14 @@ const entry: Entry = {
       with: '跟随指针的拖尾',
       diff: '拖尾装饰的是鼠标本身，跟着指针满屏幕跑；聚光被裁在元素内部（overflow: hidden 或 mask），是打在表面的一层。',
     },
+    {
+      with: '极光渐变',
+      diff: '极光渐变是整片背景自己缓慢漂移，和指针无关；聚光光晕有一个跟随指针的圆心，被裁在元素内部，指针不动它就停住。',
+    },
+    {
+      with: '光标跟随',
+      diff: '光标跟随的元素在元素外部跟着指针满屏移动，是独立的光标替代品；聚光光晕被 overflow: hidden 或 mask 裁在卡片内部，只是卡片表面的一层光，不能跑出边界。',
+    },
   ],
   pitfalls: [
     '别在 pointermove 里 setState，一帧多次重渲染会卡；把坐标直接写进元素的 style.transform 或 CSS 变量',
@@ -131,6 +139,14 @@ const entry: Entry = {
       {
         with: 'cursor trail',
         diff: 'A trail decorates the cursor itself and follows the pointer across the whole screen. A spotlight is clipped inside the element (overflow: hidden or a mask), a layer of light laid on the surface.',
+      },
+      {
+        with: 'Aurora Gradient',
+        diff: 'An aurora gradient drifts across the whole background on its own, independent of the pointer. A spotlight glow has a center that follows the pointer and is clipped inside the element; stop the pointer and it stops.',
+      },
+      {
+        with: 'Cursor Follower',
+        diff: 'A cursor follower moves an element across the whole viewport with the pointer, a standalone cursor replacement. A spotlight glow is clipped inside the card by overflow: hidden or a mask, a layer of light on the surface that cannot leave the bounds.',
       },
     ],
     pitfalls: [

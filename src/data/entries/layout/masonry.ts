@@ -22,6 +22,10 @@ const entry: Entry = {
       with: '等高等宽卡片墙',
       diff: '那种是规则网格，看上去整整齐齐；瀑布流的看点恰恰是高度参差、按列填充。',
     },
+    {
+      with: 'Bento 网格',
+      diff: 'Bento 网格有明确的行列轨道，每块跨几格，所有边线对齐，块少而大；瀑布流没有行轨道，每列独立向下堆，卡片高度自由、边缘不对齐，适合数量多的内容流。',
+    },
   ],
   pitfalls: [
     'CSS 多列（column-count）是列优先填充：内容先填满第一列再进第二列，做无限滚动时新内容会全挤在最后一列，需要改成用 JS 每次插入当前最短的那一列',
@@ -99,6 +103,10 @@ const entry: Entry = {
       {
         with: 'a uniform card wall',
         diff: 'That is a plain grid and looks perfectly even. Masonry is interesting exactly because the heights vary and each column fills at its own pace.',
+      },
+      {
+        with: 'Bento Grid',
+        diff: 'A bento grid has explicit row and column tracks; each tile spans a few cells and every edge aligns, typically with few large tiles. Masonry has no row tracks: each column stacks independently with free heights and unaligned edges, built for a long feed.',
       },
     ],
     pitfalls: [

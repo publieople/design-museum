@@ -27,6 +27,10 @@ const entry: Entry = {
       with: '毛玻璃',
       diff: '毛玻璃是把背后已有的内容糊掉；渐变网格是自己画出一片颜色。两者常一起用（网格背景 + 玻璃面板），但一个负责背景，一个负责面板。',
     },
+    {
+      with: '极光渐变',
+      diff: '渐变网格的色标本身不动，色团只有单独加动画才会移；极光渐变的核心是持续漂移（translate 加色相或饱和度变化），同样几团颜色在慢慢游动。静态截图看不出差别，要看动起来。',
+    },
   ],
   pitfalls: [
     'radial-gradient 的透明端直接写 transparent，在部分浏览器会和黑混出灰边，要写同一个颜色的 rgba(...,0)',
@@ -130,6 +134,10 @@ const entry: Entry = {
       {
         with: 'frosted glass',
         diff: 'Frosted glass blurs content that already exists behind it; a mesh gradient paints its own field of color. They often appear together (mesh background, glass panel), but one is the background and the other is the panel.',
+      },
+      {
+        with: 'Aurora Gradient',
+        diff: 'A mesh gradient keeps its color stops still; the blobs move only if you animate them separately. An aurora gradient is defined by continuous drift (translate plus hue or saturation shifts), the same few blobs slowly traveling. A still screenshot cannot tell them apart; the motion can.',
       },
     ],
     pitfalls: [

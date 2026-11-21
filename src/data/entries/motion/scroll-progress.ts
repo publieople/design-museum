@@ -20,12 +20,16 @@ const entry: Entry = {
   ],
   confusions: [
     {
-      with: '滚动驱动动画 scroll-driven',
+      with: '滚动驱动动画',
       diff: '进度条只是把滚动位置压成 0–100% 的一条指示物；滚动驱动动画是把任意属性（旋转、透明度、颜色）绑到滚动上的时间线机制。进度条可以用 scroll-driven 实现，但前者是 UI 部件，后者是机制，不能互相替代。',
     },
     {
       with: '浏览器自带的滚动条',
       diff: '原生滚动条贴着滚动容器、每个系统长得不一样，还会随滚动消失；进度条固定在视口顶部、只有几像素高、全站统一，是设计选择而不是系统 UI。',
+    },
+    {
+      with: '涟漪反馈',
+      diff: '涟漪是按下时从落点扩散的一次性反馈，几百毫秒就消失，和页面滚到哪无关；滚动进度条的长度始终等于已滚比例，滚到底才满，往回滚会缩短。',
     },
   ],
   pitfalls: [
@@ -107,6 +111,10 @@ const entry: Entry = {
       {
         with: 'the native scrollbar',
         diff: 'The native scrollbar hugs its scroll container, looks different on every platform and fades away; a progress bar is fixed to the viewport, a few pixels tall, and consistent site-wide — a design decision, not system UI.',
+      },
+      {
+        with: 'Ripple',
+        diff: 'A ripple is a one-off burst from the press point and is gone in a few hundred milliseconds, with no relation to scroll. A progress bar length always equals the fraction scrolled: full only at the bottom, shorter when you scroll back.',
       },
     ],
     pitfalls: [

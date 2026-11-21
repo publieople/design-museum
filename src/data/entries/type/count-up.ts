@@ -22,6 +22,10 @@ const entry: Entry = {
       with: 'CSS @property 数值动画',
       diff: '@property 可以注册一个整数自定义属性再交给 counter() 渲染，纯 CSS 就能跑，但插值交给浏览器，格式和缓动不好控；要精确控制格式、缓动和重播，用 requestAnimationFrame 手写更稳。',
     },
+    {
+      with: '等宽数字',
+      diff: '等宽数字只是把每个数字字形固定成同一宽度（font-variant-numeric: tabular-nums），数值本身不变；数字滚动是数值在时间上从旧值增长到新值，通常还要配合等宽数字防止宽度抖动。',
+    },
   ],
   pitfalls: [
     '位数变化会撑动布局（9 变 10、99 变 100），给容器预留宽度，并用 font-variant-numeric: tabular-nums 让每位数字等宽。',
@@ -111,6 +115,10 @@ const entry: Entry = {
       {
         with: '@property number animation',
         diff: '@property can register an integer custom property that counter() renders, all in CSS, but the browser owns the interpolation and both formatting and easing are hard to control. When format, easing, and replay all matter, a hand-written requestAnimationFrame loop is more reliable.',
+      },
+      {
+        with: 'Tabular Numbers',
+        diff: 'Tabular numbers only give every digit the same advance width with font-variant-numeric: tabular-nums; the value never changes. Count up animates the value from old to new over time and usually pairs with tabular figures to stop the width from jittering.',
       },
     ],
     pitfalls: [

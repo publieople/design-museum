@@ -1,16 +1,23 @@
-import { useMemo } from 'react'
+import { useMemo, useState } from 'react'
 import { ENTRY_META } from '../data/meta'
 import { CATEGORIES } from '../data/taxonomy'
 import type { EntryMeta } from '../data/types'
 import { useT } from '../i18n'
-import { comparePair, comparePairs, confusionDiff, type ComparePair } from '../lib/compare'
+import {
+  comparePair,
+  comparePairs,
+  confusionDiff,
+  filterPairs,
+  type ComparePair,
+} from '../lib/compare'
 import { groupRowsByHall } from '../lib/indexData'
 import { Link, navigate, useRoute } from '../lib/router'
 import { comparePath, entryPath } from '../lib/routes'
 import { PageHeader } from '../components/PageHeader'
 import { buttonClass } from '../components/Button'
 import { EmptyState } from '../components/EmptyState'
-import { IconArrowUpRight } from '../components/icons'
+import { FilterRow } from '../components/FilterRow'
+import { IconArrowUpRight, IconClose, IconSearch } from '../components/icons'
 
 /** 左边或右边的一张展签：编号、中英名、一句话、别名与词条入口 */
 function PairPanel({ entry, slot }: { entry: EntryMeta; slot: string }) {
@@ -75,7 +82,34 @@ export function ComparePage() {
   const t = useT()
   const route = useRoute()
   const pairs = useMemo(() => comparePairs(ENTRY_META), [])
-  const hallById = useMemo(() => new Map(CATEGORIES.map((hall) => [hall.id, hall])), [])
+  const hallById = useMemo(() => new Map(CATEGORIES.map((item) => [item.id, item])), [])
+
+  // 筛选只作用于下方「全部对照」：纯本地状态，不进 URL，也不影响上方由 ?a=&b= 决定的当前对
+  const [query, setQuery] = useState('')
+  const [hall, setHall] = useState('')
+  const filtered = useMemo(() => filterPairs(pairs, query, hall), [pairs, query, hall])
+  const filtering = query.trim() !== '' || hall !== ''
+
+  const hallOptions = useMemo(
+    () => [
+      { value: 'all', label: t('common.all') },
+      ...CATEGORIES.map((item) => ({ value: item.id, label: `${item.letter} · ${item.nameZh}` })),
+    ],
+    [t],
+  )
+
+  const toggleHall = (value: string) => {
+    if (value === 'all') {
+      setHall('')
+      return
+    }
+    setHall((current) => (current === value ? '' : value))
+  }
+
+  const clearFilter = () => {
+    setQuery('')
+    setHall('')
+  }
 
   // query 里给了有效的两个 slug 就照着渲染，否则回退到档案里的第一对
   const requested = useMemo(
@@ -88,8 +122,8 @@ export function ComparePage() {
 
   // 全站对照按「左边那条」所属展厅分组，与词条库的展厅动线一致
   const grouped = useMemo(
-    () => groupRowsByHall(pairs.map((item) => ({ entry: item.a, pair: item }))),
-    [pairs],
+    () => groupRowsByHall(filtered.map((item) => ({ entry: item.a, pair: item }))),
+    [filtered],
   )
 
   return (
@@ -155,15 +189,87 @@ export function ComparePage() {
             {t('compare.count', { n: pairs.length })}
           </span>
         </div>
+
+        <div className="flex flex-col gap-4">
+          <div className="flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
+            <div className="flex min-w-0 flex-col gap-1.5">
+              <label htmlFor="compare-filter" className="label-mono">
+                {t('compare.filter')}
+              </label>
+              <div className="well flex items-center gap-2 rounded-[3px] px-3 py-1.5 transition-colors focus-within:border-ink focus-within:ring-2 focus-within:ring-accent/25">
+                <span className="text-muted">
+                  <IconSearch size={16} />
+                </span>
+                <input
+                  id="compare-filter"
+                  type="search"
+                  value={query}
+                  onChange={(event) => setQuery(event.target.value)}
+                  placeholder={t('compare.filterPlaceholder')}
+                  aria-label={t('compare.filter')}
+                  className="min-w-0 flex-1 bg-transparent py-1.5 text-body text-ink outline-none placeholder:text-muted [&::-webkit-search-cancel-button]:hidden"
+                />
+                {query ? (
+                  <button
+                    type="button"
+                    onClick={() => setQuery('')}
+                    aria-label={t('compare.clearFilter')}
+                    className="flex cursor-pointer items-center gap-1 rounded-[2px] p-1 text-muted transition-colors hover:text-accent"
+                  >
+                    <IconClose size={14} />
+                  </button>
+                ) : null}
+              </div>
+            </div>
+            <FilterRow
+              legend={t('compare.hallFilter')}
+              options={hallOptions}
+              selected={hall ? [hall] : ['all']}
+              onToggle={toggleHall}
+              className="shrink-0"
+            />
+          </div>
+          <div
+            aria-live="polite"
+            className="flex flex-wrap items-baseline gap-3 font-mono text-[11px] text-muted"
+          >
+            <span>{t('compare.showing', { a: filtered.length, b: pairs.length })}</span>
+            {filtering ? (
+              <button
+                type="button"
+                onClick={clearFilter}
+                className="cursor-pointer text-muted underline decoration-dotted underline-offset-4 transition-colors hover:text-accent"
+              >
+                {t('compare.clearFilter')}
+              </button>
+            ) : null}
+          </div>
+        </div>
+
+        {filtered.length === 0 ? (
+          <EmptyState
+            title={t('compare.filterEmpty')}
+            action={
+              <button
+                type="button"
+                onClick={clearFilter}
+                className={buttonClass({ variant: 'secondary', size: 'sm' })}
+              >
+                {t('compare.clearFilter')}
+              </button>
+            }
+          />
+        ) : null}
+
         {grouped.map((group) => {
-          const hall = hallById.get(group.hall)
-          if (!hall) return null
+          const hallMeta = hallById.get(group.hall)
+          if (!hallMeta) return null
           return (
             <div key={group.hall} className="flex flex-col gap-2">
               <div className="flex items-baseline gap-3">
-                <span className="stamp">{hall.letter}</span>
-                <h3 className="font-display text-h3 text-ink">{hall.nameZh}</h3>
-                <span className="font-mono text-micro text-muted">{hall.nameEn}</span>
+                <span className="stamp">{hallMeta.letter}</span>
+                <h3 className="font-display text-h3 text-ink">{hallMeta.nameZh}</h3>
+                <span className="font-mono text-micro text-muted">{hallMeta.nameEn}</span>
                 <span className="ml-auto font-mono text-[11px] text-muted">{group.rows.length}</span>
               </div>
               <ul className="grid gap-x-8 sm:grid-cols-2">

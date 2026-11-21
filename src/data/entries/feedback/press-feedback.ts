@@ -15,12 +15,16 @@ const entry: Entry = {
   ],
   confusions: [
     {
-      with: '悬停抬升（hover lift）',
+      with: '悬停抬升',
       diff: '悬停是移入之后一直保持的状态，用 :hover；按压只在按住那一瞬出现、松开就结束，用 :active。按住不放时两者会同时成立。',
     },
     {
       with: '加载状态（loading）',
       diff: '按压反馈是几十毫秒内的即时回应，请求还没发出去；loading 要持续到请求返回。正确的顺序是先按压、再 loading，而不是同时出现。',
+    },
+    {
+      with: '涟漪反馈',
+      diff: '涟漪从按下的坐标点向外扩散，能看出「点在哪」；按压反馈作用于整个控件，按键整体缩小或变暗，和落点无关。按住不放时两者常同时存在。',
     },
   ],
   pitfalls: [
@@ -85,6 +89,10 @@ const entry: Entry = {
     confusions: [
       { with: 'Hover lift', diff: 'Hover is a state that stays as long as the pointer is over the element and uses :hover; press feedback exists only while the button is held down and ends on release, using :active. Hold the button down and both are true at once.' },
       { with: 'Loading state', diff: 'Press feedback is an immediate response within tens of milliseconds and fires before the request is even sent; loading lasts until the request comes back. The right order is press first, then loading, not both at once.' },
+      {
+        with: 'Ripple',
+        diff: 'A ripple spreads from the exact press coordinates, so you can see where the finger landed. Press feedback acts on the whole control, scaling or dimming it regardless of the point. Hold the button and both are usually visible.',
+      },
     ],
     pitfalls: [
       ':active applies only while the button is held down; keyboard activation with Space or Enter fires click and never :active, so do not treat the press state as keyboard feedback',

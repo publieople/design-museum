@@ -55,6 +55,36 @@ export function comparePairs(entries: EntryMeta[]): ComparePair[] {
   return [...found.values()].sort((x, y) => compareEntries(x.a, y.a) || compareEntries(x.b, y.b))
 }
 
+/** 归一化检索串：小写并去掉空白与连字符，大小写、空格、M-01 与 m01 都能对上 */
+function fold(text: string): string {
+  return text.toLowerCase().replace(/[\s-]+/g, '')
+}
+
+/** 这一对里只要有一边（中文名、英文名、别名或编号）包含查询串就算命中 */
+function pairMatches(pair: ComparePair, needle: string): boolean {
+  return [pair.a, pair.b].some((entry) =>
+    [entry.nameZh, entry.nameEn, entry.code, ...entry.aliases].some((field) =>
+      fold(field).includes(needle),
+    ),
+  )
+}
+
+/**
+ * 对照列表的本地筛选：查询串 + 展厅。
+ *
+ * hallId 为空或 'all' 表示不按展厅过滤，否则只看「左边那条」(a) 所属展厅——
+ * 与下方列表的分组口径一致，一对只出现一次。query 匹配两边任一条目的
+ * 中文名、英文名、别名与编号，大小写和空白不敏感；空查询不筛。
+ */
+export function filterPairs(pairs: ComparePair[], query: string, hallId = ''): ComparePair[] {
+  const needle = fold(query)
+  const hall = hallId && hallId !== 'all' ? hallId : ''
+  return pairs.filter(
+    (pair) =>
+      (!hall || pair.a.category === hall) && (needle === '' || pairMatches(pair, needle)),
+  )
+}
+
 /**
  * 取指定两个 slug 的对照，query 里 a/b 谁先谁后都能命中。
  * 返回的 a/b 保留调用方给的左右顺序（页面「交换」按钮依赖这一点）；

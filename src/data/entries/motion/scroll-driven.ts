@@ -15,12 +15,24 @@ const entry: Entry = {
   ],
   confusions: [
     {
-      with: '滚动揭示 scroll reveal',
+      with: '滚动揭示',
       diff: '揭示是进视口触发一次就播完，之后和滚动位置无关；滚动驱动动画的每一帧都绑在滚动位置，同一个位置永远是同一帧，往回滚会倒着播。',
     },
     {
       with: '用 scroll 事件写 JS 动画',
       diff: 'scroll 事件在合成线程之外触发，滚快了会掉帧；animation-timeline 由合成器驱动，不占主线程，但要现代浏览器（Chrome 115+）才支持。',
+    },
+    {
+      with: '视差滚动',
+      diff: '视差滚动只把位移映射成滚动位置的函数，通常还是多层不同速度；滚动驱动动画能把任意属性（opacity、rotate、color）绑到时间线，还能用 animation-range 限定只在某段滚动区间内生效。',
+    },
+    {
+      with: '滚动进度条',
+      diff: '进度条是一个成品 UI 部件：固定在视口顶部的一条，宽度等于已滚距离除以可滚总距离；滚动驱动动画是底层机制，同一个条既可以用它实现，也可以监听 scroll 事件直接改宽度。',
+    },
+    {
+      with: '滚动捕捉',
+      diff: '滚动捕捉是滚动容器的一种停靠规则（scroll-snap-type 加 snap-align），只影响停在哪个位置；滚动驱动动画是时间线，读滚动进度去驱动动画，两者可以同时存在但管的不是一件事。',
     },
   ],
   pitfalls: [
@@ -96,6 +108,18 @@ const entry: Entry = {
       {
         with: 'driving the animation from a scroll event',
         diff: 'Scroll events fire off the compositor thread and drop frames when you scroll fast. animation-timeline runs on the compositor and keeps the main thread free, but needs a modern browser (Chrome 115+).',
+      },
+      {
+        with: 'Parallax',
+        diff: 'Parallax maps position to scroll offset, usually with several layers at different speeds. Scroll-driven animation binds any property (opacity, rotate, color) to a timeline and can limit it to a scroll range with animation-range.',
+      },
+      {
+        with: 'Scroll Progress Bar',
+        diff: 'A progress bar is a finished UI widget: one strip fixed to the viewport whose width equals the scrolled distance divided by the total scrollable distance. Scroll-driven animation is the mechanism underneath; the same bar can use it or a plain scroll listener.',
+      },
+      {
+        with: 'Scroll Snap',
+        diff: 'Scroll snap is a resting rule on the scroll container (scroll-snap-type plus snap-align) and only affects where it stops. Scroll-driven animation is a timeline that reads scroll progress to drive animation. They can coexist but govern different things.',
       },
     ],
     pitfalls: [

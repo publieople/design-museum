@@ -22,6 +22,10 @@ const entry: Entry = {
       with: '过渡 transition 本身',
       diff: 'transition 只是声明「哪个属性要动、动多久」；缓动是其中的 timing-function 参数。transition 写了 ease 不等于做了缓动，ease 只是默认曲线而已。',
     },
+    {
+      with: '弹簧动画',
+      diff: '缓动曲线是预设的时间函数，同一条曲线每次播放的轨迹完全一样，也不会因外部输入改变；弹簧由刚度、阻尼、质量实时求解，被拖拽或打断后从当前速度继续，时长不固定。',
+    },
   ],
   pitfalls: [
     '一整套界面全用默认 ease：什么都在慢慢爬，界面显得没精神',
@@ -109,6 +113,10 @@ const entry: Entry = {
       {
         with: 'the transition property itself',
         diff: 'transition only declares which property moves and for how long; easing is its timing-function argument. Writing ease into a transition is not a design choice - ease is just the default curve.',
+      },
+      {
+        with: 'Spring Physics',
+        diff: 'An easing curve is a fixed function of time: the same curve replays identically and cannot react to input. A spring is solved from stiffness, damping and mass in real time, continues from its current velocity after a drag or interruption, and has no fixed duration.',
       },
     ],
     pitfalls: [

@@ -22,6 +22,14 @@ const entry: Entry = {
       with: 'scroll-behavior: smooth',
       diff: 'smooth 管的是「跳转过程怎么滑过去」；snap 管的是「滑完最终停在哪里」，两者互不替代。',
     },
+    {
+      with: '跑马灯',
+      diff: '跑马灯自己以固定速度循环走，用户不滑它也在动；scroll-snap 完全由用户滚动驱动，停下时吸附到某一项，用户不动它就不动。',
+    },
+    {
+      with: '滚动驱动动画',
+      diff: 'scroll-snap 只决定滚动「停在哪」，不改变任何属性值，滚动过程仍是浏览器原生的；滚动驱动动画把滚动进度连续映射到动画进度，滚动每一帧都在改属性，即使没有吸附点也在动。',
+    },
   ],
   pitfalls: [
     'scroll-snap-type 要写在滚动容器上，scroll-snap-align 写在子项上，写反了完全没反应',
@@ -103,6 +111,14 @@ const entry: Entry = {
       {
         with: 'scroll-behavior: smooth',
         diff: 'smooth controls how a jump travels to its target; snap controls where the scroll finally rests. Neither one replaces the other.',
+      },
+      {
+        with: 'Marquee',
+        diff: 'A marquee loops on its own at a fixed speed, moving even when the user does nothing. Scroll snap is driven entirely by the user and settles on an item; no input, no movement.',
+      },
+      {
+        with: 'Scroll-Driven Animation',
+        diff: 'Scroll snap only decides where scrolling stops and changes no property values; the scroll itself stays native. Scroll-driven animation maps scroll progress continuously onto animation progress, changing properties every frame even between snap points.',
       },
     ],
     pitfalls: [

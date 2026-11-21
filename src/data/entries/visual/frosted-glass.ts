@@ -22,6 +22,14 @@ const entry: Entry = {
       with: '模糊滤镜 blur()',
       diff: 'filter: blur() 模糊的是元素自己（连它的文字一起糊）；backdrop-filter: blur() 模糊的是它背后的东西，元素自身内容保持清晰。',
     },
+    {
+      with: '玻璃拟态',
+      diff: '毛玻璃只做一件事：把背后内容模糊掉（backdrop-filter: blur），面板本身可以完全透明；玻璃拟态是在这层模糊上再叠半透明白渐变、1px 亮描边、inset 高光和投影，是一整套面板外观。',
+    },
+    {
+      with: '渐变网格',
+      diff: '渐变网格是自己用多层 radial-gradient 画出的彩色背景，不依赖背后有什么；毛玻璃是消费背后已有内容的面板材质。正确用法是网格当背景、毛玻璃当面板，反过来没有东西可模糊。',
+    },
   ],
   pitfalls: [
     '背后必须有内容：纯色背景上加 backdrop-filter 看不出任何变化',
@@ -100,6 +108,14 @@ const entry: Entry = {
       {
         with: 'filter: blur()',
         diff: 'filter: blur() blurs the element itself, text included. backdrop-filter: blur() blurs whatever sits behind the element while the panel content stays sharp.',
+      },
+      {
+        with: 'Glassmorphism',
+        diff: 'Frosted glass does one thing: blur the backdrop with backdrop-filter: blur, while the panel itself can stay fully transparent. Glassmorphism layers a translucent white gradient, a 1px bright border, an inset highlight and a shadow on top of that blur.',
+      },
+      {
+        with: 'Mesh Gradient',
+        diff: 'A mesh gradient paints its own color field from stacked radial gradients and needs nothing behind it. Frosted glass is a panel material that consumes whatever is behind it. Use mesh as the background and frost as the panel; the reverse has nothing to blur.',
       },
     ],
     pitfalls: [
