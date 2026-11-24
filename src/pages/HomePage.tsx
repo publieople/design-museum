@@ -86,12 +86,8 @@ export function HomePage() {
           <p className="max-w-[58ch] text-body text-ink-2">{t('home.lede')}</p>
         </div>
 
-        <div className="flex max-w-3xl flex-col gap-2">
+        <div className="max-w-3xl">
           <SearchBox value={query} onChange={setQuery} />
-          <div className="flex flex-wrap items-baseline justify-between gap-x-4 gap-y-1 font-mono text-[11px] text-muted">
-            <p>{t('search.pinyinHint')}</p>
-            <MoreLink to="/browse">{t('home.browseAll', { n: ENTRY_META.length })}</MoreLink>
-          </div>
         </div>
 
         {query && hits.length > 0 ? (
