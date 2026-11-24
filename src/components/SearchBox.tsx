@@ -185,9 +185,11 @@ export function SearchBox({
         ) : null}
       </div>
 
-      {open && value.length === 0 ? (
-        <p className="mt-2 pl-1 font-mono text-[11px] text-muted">{t('search.hint')}</p>
-      ) : null}
+      {/* 常驻提示行：拼音提示在左，键盘操作在右。聚焦时不再插入新的一行，页面不会跳动。 */}
+      <p className="mt-2 flex min-h-5 flex-wrap items-baseline justify-between gap-x-4 gap-y-1 pl-1 font-mono text-[11px] text-muted">
+        <span>{t('search.pinyinHint')}</span>
+        <span className="hidden shrink-0 sm:inline">{t('search.hint')}</span>
+      </p>
     </div>
   )
 }
