@@ -63,7 +63,7 @@
 | `controls` | 控件数组 | 是 | 只允许 range / select / toggle 三种 |
 | `prompt` | `(values) => {zh, en}` | 是 | 这个项目的出口：可粘贴给 AI 的需求句 |
 | `loop` | `replay` / `continuous` / `manual` | 否 | 自动重播策略，缺省 `replay` |
-| `en` | 覆盖层 | 否 | 英文散文，逐字段可选，缺哪项回退中文 |
+| `en` | 覆盖层 | 是（完整） | 英文散文，与中文逐字段对齐；缺字段仍逐字段回退，但 `entryTranslation.test.ts` 会拦下不完整的条目 |
 
 首屏只用 `EntryMeta`（`src/data/entryMeta.ts`，由 `npm run gen:meta` 生成），
 全文只进详情页那条懒加载 chunk。**改完任何词条字段都要跑 `npm run gen:meta`**，
@@ -136,6 +136,10 @@
 ## 5. 增删改查
 
 ### 增
+
+完整的「发现 → 拆解 → 立项 → 实现 → 验收」流程见 [ENTRY-PIPELINE.md](ENTRY-PIPELINE.md)；
+候选效果池在 `docs/entry-backlog.json`，用 `pnpm backlog` 查看与校验。
+
 ```fish
 pnpm new:entry marquee --hall layout --shape scroll
 ```
@@ -146,7 +150,8 @@ pnpm new:entry marquee --hall layout --shape scroll
 2. 填 4 条判据与 `confusions` 互指
 3. 写 demo，标 `demo.shape`，接 `reducedMotion`
 4. 填 `spec` / `refs` / `prompt`
-5. `pnpm gen:meta`，然后 `pnpm check`（typecheck + lint + test 一条命令），最后 `pnpm dev` 打开
+5. 写完整 `en` 覆盖层：`oneLiner` / `whenToUse` / `confusions` / `pitfalls` / `spec` / `reducedMotion` / `controls` 与中文条数一一对应，`entryTranslation.test.ts` 会拦下缺项
+6. `pnpm gen:meta`，然后 `pnpm check`（typecheck + lint + test 一条命令），最后 `pnpm dev` 打开
    `/entry/<slug>/` 四个舞台人眼验收
 
 ### 删
@@ -177,6 +182,7 @@ GitHub Pages 做不了 301，这是能做到的最接近的东西——已经被
 | --- | --- |
 | `src/data/content.test.ts` | 每厅至少 6 件、编号从 01 连续、related 无死链、每厅被引用 |
 | `src/data/entries.test.ts` | 逐条字段完整性与取值合法性、控件合法、code/slug 唯一、每条有 demo 且无孤儿 demo、英文覆盖层对齐 |
+| `src/data/entryTranslation.test.ts` | 英文覆盖层完整性：字段齐全、条数与中文一致、无中文字符残留、覆盖率 100% |
 | `src/data/meta.test.ts` | 生成物与源数据逐条一致（过期就红）、meta 不夹带详情页字段 |
 | `src/data/entrySpec.test.ts` | **本规范**：文件路径 = `<category>/<slug>.ts`、标签闭集与数量、孤儿标签、词表规模与双语、形态合法与 thumb 规则、自带滚动的 loop 策略 |
 | `src/data/retired.test.ts` | 墓碑：slug/code 不与在册冲突、`replacedBy` 必须指向在册条目、在册条目的 `related` 不许指向墓碑、跳转目标 |
@@ -191,7 +197,7 @@ GitHub Pages 做不了 301，这是能做到的最接近的东西——已经被
 
 ## 7. 预算（加内容前先看这里）
 
-- **首屏传输 ≤ 260KB（gzip）**（当前约 230KB gzip；解码后约 563KB）。`entryMeta.ts` 随条目数线性长：30 条 77.5KB，40 条 103.6KB，41 条 103.9KB，100 条约 250KB。
+- **首屏传输 ≤ 260KB（gzip）**（当前约 241KB gzip；解码后约 580KB）。`entryMeta.ts` 随条目数线性长：30 条 77.5KB，40 条 103.6KB，41 条 103.9KB，44 条 126KB，100 条约 280KB。
   超过预算就把首屏 meta 瘦成索引字段（slug / 名称 / 别名 / 一句话 / 厅 / 标签 / 默认值），完整 meta 走按需 chunk。
 - **CLS ≤ 0.05**（当前 0.0303）。
 - 每加一条词条，`gen:meta` 的字节数要记一笔，涨得离谱就是字段挑多了。

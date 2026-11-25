@@ -6,7 +6,7 @@
     "letter": "F",
     "nameZh": "交互反馈",
     "nameEn": "Interaction & Feedback",
-    "count": 8
+    "count": 9
   },
   "entries": [
     {
@@ -520,7 +520,8 @@
       "related": [
         "optimistic-ui",
         "skeleton-shimmer",
-        "sticky-header"
+        "sticky-header",
+        "command-palette"
       ],
       "scenes": [
         "button",
@@ -771,6 +772,96 @@
       "detail": {
         "page": "https://publieople.github.io/design-museum/entry/command-palette/",
         "markdown": "https://publieople.github.io/design-museum/catalog.md#command-palette"
+      }
+    },
+    {
+      "slug": "dock-magnify",
+      "code": "F-09",
+      "url": "https://publieople.github.io/design-museum/entry/dock-magnify/",
+      "category": "feedback",
+      "nameZh": "停靠栏放大",
+      "nameEn": "Dock Magnification",
+      "aliases": [
+        "Dock 放大",
+        "图标放大",
+        "靠近放大",
+        "dock magnification",
+        "icon magnification",
+        "proximity scale",
+        "magnify on hover"
+      ],
+      "oneLiner": "指针越靠近图标，图标放得越大，像 macOS 的 Dock。",
+      "oneLinerEn": "Icons grow as the pointer gets closer, the way a macOS Dock does.",
+      "keywords": [
+        "dock magnification",
+        "pointer distance",
+        "scale()",
+        "transform-origin",
+        "pointermove",
+        "getBoundingClientRect",
+        "falloff"
+      ],
+      "related": [
+        "magnetic-button",
+        "hover-lift",
+        "cursor-follower"
+      ],
+      "scenes": [
+        "nav",
+        "button"
+      ],
+      "feel": [
+        "playful",
+        "soft"
+      ],
+      "intent": [
+        "affordance",
+        "attention"
+      ],
+      "tags": [
+        "js",
+        "composited",
+        "pointer-dependent",
+        "motion-heavy"
+      ],
+      "demo": {
+        "shape": "stage",
+        "minHeight": 240
+      },
+      "controls": [
+        {
+          "id": "maxScale",
+          "kind": "range",
+          "label": "Maximum scale",
+          "def": 1.55,
+          "unit": "x",
+          "min": 1.2,
+          "max": 2.2
+        },
+        {
+          "id": "radius",
+          "kind": "range",
+          "label": "Influence radius",
+          "def": 120,
+          "unit": "px",
+          "min": 40,
+          "max": 220
+        },
+        {
+          "id": "labels",
+          "kind": "toggle",
+          "label": "Show labels",
+          "def": true
+        }
+      ],
+      "loop": "manual",
+      "prompt": {
+        "zh": "做一个停靠栏放大（dock magnification）的图标条：一排同尺寸图标，监听 pointermove，用 getBoundingClientRect 算出指针到每个图标中心的水平距离 d，缩放 = 1 + (1.55 - 1) × max(0, 1 - d / 120)²，transform-origin 设为 bottom center，过渡 80ms 线性，只动 transform；指针离开后回到 1 倍。图标下方保留名称标签。prefers-reduced-motion 时不做缩放，粗指针设备保持原始大小。",
+        "en": "dock magnification icon bar: a row of equally sized icons, listen to pointermove, measure the horizontal distance d from the pointer to each icon centre with getBoundingClientRect, scale = 1 + (1.55 - 1) * max(0, 1 - d / 120) squared, transform-origin bottom center, transition transform 80ms linear, animate transform only, reset to 1x on pointer leave. Keep a visible label under each icon. Keep icons at their natural size under prefers-reduced-motion and on coarse pointers."
+      },
+      "detail": {
+        "page": "https://publieople.github.io/design-museum/entry/dock-magnify/",
+        "markdown": "https://publieople.github.io/design-museum/catalog.md#dock-magnify"
       }
     }
   ]

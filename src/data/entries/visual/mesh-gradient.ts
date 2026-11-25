@@ -132,7 +132,7 @@ const entry: Entry = {
         diff: 'A grid background is a repeating set of evenly spaced lines, a regular pattern. A mesh gradient is a color field with no lines, blending continuously between colors. The mesh in the name refers to the control points, not to drawn squares.',
       },
       {
-        with: 'frosted glass',
+        with: 'Frosted Glass',
         diff: 'Frosted glass blurs content that already exists behind it; a mesh gradient paints its own field of color. They often appear together (mesh background, glass panel), but one is the background and the other is the panel.',
       },
       {

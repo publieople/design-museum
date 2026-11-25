@@ -103,7 +103,7 @@ const entry: Entry = {
       },
     ],
     pitfalls: [
-      'Do not transition height: auto; browsers cannot interpolate auto. Use grid-template-rows: 0fr to 1fr, or measure the content height and animate a pixel value.',
+      'Do not transition height: auto; browsers cannot interpolate auto. Use grid-template-rows: 0fr to 1fr, or measure the content height and animate a pixel value',
       'Wrap the collapsing part in overflow: hidden, or the text stays visible while the panel is closed',
       'The heading must be a real button (or details/summary) with aria-expanded, or keyboard and screen reader users cannot operate it',
       'Once several panels can be open at the same time the page turns into a long list, and that is a case for tabs or pagination instead',

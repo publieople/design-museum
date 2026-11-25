@@ -77,7 +77,7 @@ const entry: Entry = {
     ],
     confusions: [
       { with: 'Spinner', diff: 'A spinner says nothing about the shape of the content, only that something is busy; a skeleton lays out placeholder blocks in the final layout, so nothing jumps when the content swaps in.' },
-      { with: 'Progress bar', diff: 'A progress bar shows a measurable amount, such as 30 percent; a skeleton stands for a wait of unknown length and can only suggest that work continues by sweeping again and again.' },
+      { with: 'Progress bar', diff: 'A progress bar shows a measurable amount, such as 30%; a skeleton stands for a wait of unknown length and can only suggest that work continues by sweeping again and again.' },
       {
         with: 'Optimistic UI',
         diff: 'Optimistic UI renders real data that is merely unconfirmed and must retract and report on failure. A skeleton renders contentless grey blocks and is replaced wholesale when data arrives; there is nothing to roll back.',

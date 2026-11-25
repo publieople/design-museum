@@ -35,6 +35,10 @@ const entry: Entry = {
       with: '光标跟随',
       diff: '光标跟随的元素在元素外部跟着指针满屏移动，是独立的光标替代品；聚光光晕被 overflow: hidden 或 mask 裁在卡片内部，只是卡片表面的一层光，不能跑出边界。',
     },
+    {
+      with: '流星雨',
+      diff: '聚光光晕只有一个圆心，位置由指针决定，通常裁在卡片内部；流星雨是许多条独立的拖尾，按时间和倾角自己划过，和指针无关。',
+    },
   ],
   pitfalls: [
     '别在 pointermove 里 setState，一帧多次重渲染会卡；把坐标直接写进元素的 style.transform 或 CSS 变量',
@@ -147,6 +151,10 @@ const entry: Entry = {
       {
         with: 'Cursor Follower',
         diff: 'A cursor follower moves an element across the whole viewport with the pointer, a standalone cursor replacement. A spotlight glow is clipped inside the card by overflow: hidden or a mask, a layer of light on the surface that cannot leave the bounds.',
+      },
+      {
+        with: 'Meteor Shower',
+        diff: 'A spotlight glow is a single center set by the pointer and usually clipped inside a card. A meteor shower is many independent trails that cross on their own schedule and angle, with no pointer involved.',
       },
     ],
     pitfalls: [

@@ -102,6 +102,19 @@ describe('页面渲染冒烟', () => {
     expect(html).toContain('Not to be confused with')
   })
 
+  it('每条词条的英文详情页用英文正文，而不是回退中文', () => {
+    for (const entry of ENTRIES) {
+      const en = entry.en
+      expect(en, entry.slug + ' 缺 en 覆盖层').toBeTruthy()
+      if (!en?.oneLiner || !en.whenToUse?.[0]) continue
+      const html = render(<EntryDetailPage slug={entry.slug} />, { locale: 'en' })
+      expect(html, entry.slug + ' 的英文一句话没渲染').toContain(en.oneLiner)
+      expect(html, entry.slug + ' 的英文适用场景没渲染').toContain(en.whenToUse[0])
+      expect(html, entry.slug + ' 的英文详情页仍显示中文一句话（回退了）').not.toContain(entry.oneLiner)
+      expect(html, entry.slug + ' 缺英文小节标题').toContain('When to use it')
+    }
+  })
+
   it('词条库里非固定舞台的缩略图是定格的，角标提示点开', () => {
     const html = render(<BrowsePage />)
     const expected = ENTRY_META.filter((entry) => entry.demo.shape !== 'stage').length

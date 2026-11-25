@@ -110,7 +110,7 @@ const entry: Entry = {
       },
     ],
     pitfalls: [
-      'CSS multi-column fills column by column: content fills the first column before moving to the second, so with infinite scroll every new item piles into the last column. Switch to JS and append each item to the currently shortest column.',
+      'CSS multi-column fills column by column: content fills the first column before moving to the second, so with infinite scroll every new item piles into the last column. Switch to JS and append each item to the currently shortest column',
       'Every item needs break-inside: avoid, or a card gets split across two columns',
       'Do not fix item heights to line things up; that turns the layout back into a plain grid',
       'Change the column count only at breakpoints, not continuously with the container width, or cards jump around while the window is resized',

@@ -130,7 +130,7 @@
 - 无障碍降级：吸附本身不是动画，不用关；但用 scroll-behavior: smooth 滚到某一张时，prefers-reduced-motion: reduce 下应改回 auto，直接跳过去。
 - 提给 AI（中文）：做一个横向滚动的卡片选择器：滚动容器用 scroll-snap-type: x mandatory，子项用 scroll-snap-align: start，容器加 scroll-padding: 12px，子项加 scroll-snap-stop: always，防止一次滑动跳过好几张。容器自身要有固定高度和 overflow-x: auto，让原生惯性和键盘滚动都可用。系统开启「减少动态效果」时 scroll-behavior 用 auto。
 - Ask for it (English keywords): horizontal snap slider, scroll container with scroll-snap-type: x mandatory, items with scroll-snap-align: start, scroll-padding: 12px, scroll-snap-stop: always to prevent skipping multiple slides, overflow-x: auto container with fixed height, native momentum scrolling and keyboard support, scroll-behavior: auto under prefers-reduced-motion
-- 相关：scroll-driven, sticky-header, masonry
+- 相关：scroll-driven, sticky-header, masonry, virtual-scrolling
 - 参考：[MDN · CSS scroll snap](https://developer.mozilla.org/docs/Web/CSS/CSS_scroll_snap) · [MDN · scroll-snap-type](https://developer.mozilla.org/docs/Web/CSS/scroll-snap-type)
 
 <a id="accordion"></a>
@@ -195,6 +195,7 @@
 - 什么时候用：客户 logo 墙、合作方列表这类「多到放不下但每条都很短」的内容 / 公告、注意事项这类要一直提醒但不值得占一整屏的信息 / 标签流、作品缩略图做背景装饰，让画面一直在动
 - 别搞混 · 自动轮播：轮播是分页的：一屏一屏地翻，还有指示点；跑马灯是匀速连续滚动，没有「第几屏」的概念。
 - 别搞混 · 滚动捕捉：滚动捕捉是用户自己滑、停下时吸附到某一项；跑马灯是自己走、用户只读，停下来只是因为悬停。
+- 别搞混 · 打字机效果：跑马灯把一整条内容横向平移，文字本身一次就全部存在；打字机是在原地逐个增加字符，宽度随字数增长，还带一个闪烁光标。
 - 坑：无缝要复制一份内容并整体平移 50%（或正好一整份的宽度），否则会看到「唰」地跳回起点
 - 坑：用 transform: translate3d 做位移，别用 margin-left / left，后者每帧都要重排
 - 坑：悬停或聚焦时暂停是惯例，最好再给一个暂停按钮，否则读屏和慢读的用户永远读不完

@@ -8,7 +8,7 @@
 
 ## 这个站里有什么
 
-- **41 条词条**，分五个展厅：动效与节奏、交互反馈、布局与结构、视觉质感、排版与文字。每条**中英双语**。
+- **44 条词条**，分五个展厅：动效与节奏、交互反馈、布局与结构、视觉质感、排版与文字。每条**中英双语**。
 - **每条词条**：一句话是什么、什么时候用、最容易混的两个概念差在哪、真实踩坑、推荐取值、无障碍降级写法、参考链接，以及——
 - **一个活的演示**：参数滑块实时生效，舞台背景可切浅色/深色/彩色/照片感（毛玻璃、发光这类效果离开背景就不成立），可重播、可**循环重播**、可**慢放**。词条库里的缩略图会等比放大到填满卡片，**该循环的才循环**（见下）。
 - **一键复制的提示词**：中文需求句（带当前参数）和英文关键词（AI 最容易认的术语），随滑块实时更新；外加一个**分享链接**，把你调好的那组参数一起带走。
@@ -40,11 +40,12 @@ pnpm dev          # http://localhost:5173
 ```bash
 pnpm check        # typecheck + lint + test 一条命令（提交门槛）
 pnpm typecheck    # tsc -b，零错误是提交门槛
-pnpm test         # vitest：内容校验 + 条目规范 + 检索 + 参数 URL + 偏好 + i18n + 提示词 + 首屏 meta 同步 + 反查/拼音/俗称/对照/索引数据 + 页面与 demo 渲染冒烟（399 项；含现场页演示冒烟）
+pnpm test         # vitest：内容校验 + 条目规范 + 检索 + 参数 URL + 偏好 + i18n + 提示词 + 首屏 meta 同步 + 反查/拼音/俗称/对照/索引数据 + 页面与 demo 渲染冒烟（457 项；含现场页演示冒烟、英文正文覆盖与 a11y 自检）
 pnpm gen:meta     # 改过词条后重新生成首屏用的 meta（src/data/entryMeta.ts）
 pnpm gen:catalog  # 重新生成给 AI 用的目录（public/catalog.json / catalog.md / catalog/ 分片 / llms.txt）
 pnpm validate     # 只跑内容校验
 pnpm new:entry    # 生成一条新词条与 demo 的骨架（见下文「新增一条词条」）
+pnpm backlog      # 候选池：按展厅/状态过滤，并校验 backlog 与在册词条一致
 pnpm find:entry   # 用口语查重：打印命中条目、命中字段与命中理由
 pnpm build        # tsc -b + vite build + 预渲染静态页（产物在 dist/）
 pnpm prerender    # 只补跑预渲染，需要已有 dist/（改完内容想单独重跑时用）
@@ -85,9 +86,9 @@ Vite 8 + React 19 + TypeScript + Tailwind CSS v4。零后端，纯静态产物�
 | `/entry/<slug>/` | 每条词条一个独立地址（例：<https://publieople.github.io/design-museum/entry/frosted-glass/>） |
 | `/debug/all` | 只在开发模式可达，生产构建渲染 404 |
 
-`pnpm build` 的最后一步 `scripts/prerender.mjs` 用 React 的 `renderToStaticMarkup` 把 74 个地址渲染成 `dist/<地址>/index.html`，同时生成 `dist/sitemap.xml` 与 `dist/404.html`；每页的 `<title>`、`description`、`canonical`、`og:*` 和 JSON-LD 都按页写（词条页是 `TechArticle`）。浏览器侧照常 `createRoot` 重新渲染，不做水合——localStorage 里的主题与语言可能和预渲染的默认值不一样。旧的 `#/entry/frosted-glass` 这类链接会在挂载前被 `history.replaceState` 归一化成新地址，历史分享链接不会失效。
+`pnpm build` 的最后一步 `scripts/prerender.mjs` 用 React 的 `renderToStaticMarkup` 把 77 个地址渲染成 `dist/<地址>/index.html`，同时生成 `dist/sitemap.xml` 与 `dist/404.html`；每页的 `<title>`、`description`、`canonical`、`og:*` 和 JSON-LD 都按页写（词条页是 `TechArticle`）。浏览器侧照常 `createRoot` 重新渲染，不做水合——localStorage 里的主题与语言可能和预渲染的默认值不一样。旧的 `#/entry/frosted-glass` 这类链接会在挂载前被 `history.replaceState` 归一化成新地址，历史分享链接不会失效。
 
-代价是首屏 HTML 从 2.5KB 变成约 29KB（未压缩），换来的是爬虫不执行 JS 也能读到 74 个页面的正文。
+代价是首屏 HTML 从 2.5KB 变成约 29KB（未压缩），换来的是爬虫不执行 JS 也能读到 77 个页面的正文。
 
 ### 循环重播不是无差别的
 
@@ -115,7 +116,7 @@ node /home/po/design-museum/scripts/gen-pinyin.mjs
 
 **俗称总表（`/aliases/`）** 把全站 259 个 `aliases` 摊平成一页：按展厅分组、可搜（复用同一套检索，所以拼音/错别字也能用），每条都链回词条；发现新叫法可以直接去 GitHub 提交。
 
-**并列对照（`/compare/`）** 把词条里写的「容易搞混」变成左右两张展签：从 41 条词条的 `confusions` 里解析出 **26 对**站内可对照的组合（毛玻璃 × 玻璃拟态、粘性头部 × 粘性堆叠、渐变文字 × 描边文字……），不再只有一边说话——每对两边都写了区别；`/compare/` 支持按名字、别名、编号搜索与按展厅筛选，`?a=<slug>&b=<slug>` 可分享，词条详情里的「并排对照」直接链过来。解析只认归一化后（折全角、大小写、标点）的精确名字或别名——对不上就宁可不给链接，比如「半透明」不是词条。
+**并列对照（`/compare/`）** 把词条里写的「容易搞混」变成左右两张展签：从 44 条词条的 `confusions` 里解析出 **26 对**站内可对照的组合（毛玻璃 × 玻璃拟态、粘性头部 × 粘性堆叠、渐变文字 × 描边文字……），不再只有一边说话——每对两边都写了区别；`/compare/` 支持按名字、别名、编号搜索与按展厅筛选，`?a=<slug>&b=<slug>` 可分享，词条详情里的「并排对照」直接链过来。解析只认归一化后（折全角、大小写、标点）的精确名字或别名——对不上就宁可不给链接，比如「半透明」不是词条。
 
 ### 现场页：整页就是一个演示
 
@@ -168,7 +169,7 @@ node /home/po/design-museum/scripts/gen-pinyin.mjs
 
 ### 性能
 
-页面与 demo 都是按需加载：`src/demos/registry.ts` 用非 eager 的 `import.meta.glob`，每个 demo 各自成一个 chunk（每个 1–4KB），首页只下载真正挂出来的那几个；`src/App.tsx` 里各页面也是 `lazy`。构建产物 101 个 JS chunk（另有 1 个 CSS 与 8 个字体文件，`dist` 4.4MB）。改之前是单包 433KB（gzip 138KB）；现在首页首屏 26 个请求、约 235KB gzip，其中主包 73.9KB、首屏词条 meta 35.8KB、i18n 18KB、两个字体 61KB、CSS 14.4KB（以上为 gzip）；词条详情与速查表还要额外拉完整词条数据，约 323KB / 313KB gzip，对照页 226KB，现场页索引 225KB、单个演示 226–229KB gzip。拼音表只给检索 chunk 加了约 5.4KB（gzip 约 2.6KB），换页不再重新下载所有 demo。
+页面与 demo 都是按需加载：`src/demos/registry.ts` 用非 eager 的 `import.meta.glob`，每个 demo 各自成一个 chunk（每个 1–4KB），首页只下载真正挂出来的那几个；`src/App.tsx` 里各页面也是 `lazy`。构建产物 104 个 JS chunk（另有 1 个 CSS 与 8 个字体文件，`dist` 4.7MB）。改之前是单包 433KB（gzip 138KB）；现在首页首屏 26 个请求、约 241KB gzip，其中主包 73.8KB、首屏词条 meta 39.1KB、i18n 18.1KB、两个字体 61KB、CSS 14.4KB（以上为 gzip）；词条详情与速查表还要额外拉完整词条数据，约 338KB / 328KB gzip，对照页 232KB，现场页索引 230KB、单个演示 234KB gzip。拼音表只给检索 chunk 加了约 5.4KB（gzip 约 2.6KB），换页不再重新下载所有 demo。
 
 ## 目录结构
 
@@ -206,7 +207,7 @@ src/
 │   ├── routes.ts             # 地址工具：withBase / hrefFor / absoluteUrl / STATIC_PAGES
 │   ├── router.tsx            # 手写路由：pushState + popstate，Link / navigate / useRoute
 │   ├── pageFor.tsx           # 由路径段挑页面，App 与预渲染共用这一份路由表
-│   ├── search.ts  pinyin.ts  pinyinTable.ts  reverseLookup.ts  aliasIndex.ts  indexData.ts  confusions.ts  browseSort.ts  prompt.ts  copy.ts  controls.ts  motion.ts  viewport.ts
+│   ├── search.ts  pinyin.ts  pinyinTable.ts  reverseLookup.ts  aliasIndex.ts  indexData.ts  confusions.ts  similar.ts  browseSort.ts  prompt.ts  copy.ts  controls.ts  motion.ts  viewport.ts
 │   ├── timeScale.ts          # 慢放：给子树里的 Web Animations 设 playbackRate
 │   ├── loop.ts               # 循环策略：哪些演示该被自动重播
 │   ├── useModal.ts           # 弹层共用行为：焦点陷阱 / 滚动锁 / Esc
@@ -217,13 +218,14 @@ src/
 └── styles/global.css         # 设计 token（纸 / 墨 / 朱红）、字阶、主题变量、切换过渡
 
 scripts/
-├── prerender.mjs             # 构建期渲染 74 个地址 + sitemap.xml + 404.html + 墓碑跳转页
+├── prerender.mjs             # 构建期渲染 77 个地址 + sitemap.xml + 404.html + 墓碑跳转页
 ├── gen-pinyin.mjs            # 生成拼音检索用的汉字读音表（需临时装 pinyin-pro，见 README）
 ├── gen-catalog.mjs           # pnpm gen:catalog：生成给 AI 的目录、分片与 llms.txt
-├── screenshots.mjs           # pnpm screenshots：用本机 Chrome（CDP）截 22 页 × 3 宽度到 .screenshots/
+├── screenshots.mjs           # pnpm screenshots：用本机 Chrome（CDP）截 35 页 × 3 宽度（105 张）到 .screenshots/
 ├── visual-diff.mjs           # pnpm screenshots:diff：和基线逐像素比对，PNG 解码用 node:zlib 手写
 ├── load-site.mjs             # 用 vite 的 ssrLoadModule 读 TS 数据（维护者脚本共用）
 ├── new-entry.mjs             # pnpm new:entry：生成词条与 demo 骨架
+├── backlog.mjs               # pnpm backlog：候选池总览 / 过滤 / 与在册词条的一致性校验
 └── find-entry.mjs            # pnpm find:entry：口语查重（命中字段 + 权重）
 
 public/                       # 会原样发布到站点根目录
@@ -234,6 +236,9 @@ public/                       # 会原样发布到站点根目录
 ├── og.png  favicon.svg  robots.txt  licenses/
 skills/design-museum/SKILL.md # 配套 skill：教 AI 怎么用上面这几份目录
 docs/ENTRY-SPEC.md            # 条目规范：什么算一条、怎么增删改查（唯一真源）
+docs/ENTRY-PIPELINE.md        # 词条生产流水线：去哪里找、怎么拆、什么算、怎么验收
+docs/ENTRY-SOURCES.md         # 参考站点分级：可逐组件拆解 / 只取原理与取值 / 仅作灵感
+docs/entry-backlog.json       # 候选池：状态、展厅、来源、备注（pnpm backlog 读写校验）
 docs/DESIGN.md                # 重设计后的设计系统：token、字阶、组件、页面原型、加页面步骤
 docs/REDESIGN-PLAN.md         # 这次重设计的分阶段方案与验收记录
 ```
@@ -242,7 +247,7 @@ docs/REDESIGN-PLAN.md         # 这次重设计的分阶段方案与验收记录
 
 界面文案走 `src/i18n/strings.ts`，一条 key 一份 `{ zh, en }`，测试会检查两版都非空。
 
-词条正文不走文案表：每个词条文件里有一个**可选的 `en` 覆盖层**，只放需要翻译的散文（`oneLiner` / `whenToUse` / `confusions` / `pitfalls` / `spec.label` / `reducedMotion` / `controls` 的 label 与 hint）。`src/lib/localize.ts` **逐字段回退**：没翻的字段自动显示中文，所以英文可以一条条慢慢补，不会因为缺一两句就露出空白。术语、别名、关键词本来就有英文，不参与翻译。
+词条正文不走文案表：每个词条文件里有一个**完整的 `en` 覆盖层**，放需要翻译的散文（`oneLiner` / `whenToUse` / `confusions` / `pitfalls` / `spec.label` / `reducedMotion` / `controls` 的 label 与 hint）。`src/lib/localize.ts` 仍然**逐字段回退**，机制上允许某条缺译而不露出空白；但 `entries.test.ts` 对齐条数、`entryTranslation.test.ts` 要求 100% 覆盖，所以新增词条必须一次写全。术语、别名、关键词本来就有英文，不参与翻译。
 
 ## 新增一条词条（5 步）
 
@@ -250,6 +255,8 @@ docs/REDESIGN-PLAN.md         # 这次重设计的分阶段方案与验收记录
 
 1. 想清楚它有没有公认的名字（没有名字的效果先别加——这个站的价值全在「有名字」），
    再用 `pnpm find:entry "口语说法"` 查一遍：它打印命中条目与命中理由，把最像的那几条看一遍。
+   候选效果池与「从别人的站点拆效果」的标准流程见 [docs/ENTRY-PIPELINE.md](docs/ENTRY-PIPELINE.md)，
+   翻候选池用 `pnpm backlog`（可按展厅 / 状态过滤，也会校验 backlog 与在册词条是否一致）。
 2. 跑 `pnpm new:entry <slug> --hall <厅> --shape <形态>` 生成词条文件与 demo 骨架（编号自动接在该厅后面；
    重名、未知厅、未知形态、非 kebab 的 slug 会直接报错）。骨架里字段都是 TODO，所以 `pnpm check` 必然红，这是故意的。
 3. 填内容。几条硬规矩：
@@ -259,11 +266,21 @@ docs/REDESIGN-PLAN.md         # 这次重设计的分阶段方案与验收记录
    - `oneLiner` 一句话说清「它是什么」，不写「它能带来什么价值」；
    - `loop` 要按 demo 的**实际行为**选，别按名字猜——选的依据见上面那张表；
    - `tags` 只准用 `src/data/taxonomy.ts` 的闭集 id（2–6 个，至少 1 个 tech），口语俗称进 `aliases` 而不是自造标签；
-   - `demo.shape` 按容器需求选：滚动类 `scroll`（自带滚动容器）、指针类 `interactive`、整页对比 `page`，其余 `stage`；非 `stage` 要给 `thumb: 'still'`。
+   - `demo.shape` 按容器需求选：滚动类 `scroll`（自带滚动容器）、指针类 `interactive`、整页对比 `page`，其余 `stage`；非 `stage` 要给 `thumb: 'still'`；
+   - `en` 覆盖层要一次写全（与中文逐字段对齐），`entryTranslation.test.ts` 会拦下缺项。
 4. 写 `src/demos/<slug>.tsx`，默认导出组件，接收 `{ values, stage, replayKey, timeScale, locale }`。控件一动画面就要变；会动的记得走 `usePrefersReducedMotion()`；配色用 `var(--stage-ink)` 而不是写死颜色；需要一块不透明的底（进度条轨道、卡片面）时用 `color-mix(in srgb, var(--stage-ink) 10%, var(--stage-bg, transparent))`，`--stage-bg` 是当前舞台的实底近似色；**组件里的示例文案也要按 `locale` 切换**——测试会检查英文模式下渲染结果里没有任何中文字符。
 5. 跑 `pnpm gen:meta`，再跑 `pnpm check`（typecheck + lint + test）。绿了就完事——缺 demo、字段空、
    编号不连续、`related` 有死链、`en` 块条数对不齐、首屏 meta 没重新生成都会被拦下来。最后 `pnpm dev`
    打开 `/entry/<slug>/` 把四个舞台人眼验收一遍。
+
+### 词条从哪来
+
+「找一条新词条」不再靠灵光一闪，而是走一条可复查的流水线（全文见 [docs/ENTRY-PIPELINE.md](docs/ENTRY-PIPELINE.md)）：
+
+1. **侦察**：按 [docs/ENTRY-SOURCES.md](docs/ENTRY-SOURCES.md) 的来源分级扫站点 / 组件库（MagicUI、Aceternity、React Bits、Codrops 等）；只记来源 URL 与效果名，不存源码与截图。
+2. **拆解**：用六格拆解法记录「命名、触发、时间、空间、参数、降级」，在 `/live/` 里先看整页行为再决定展台盒子够不够。
+3. **定级**：站内没有、有公认名字、能用现有控件表达、英文术语稳定——四条都过才进 `docs/entry-backlog.json`；只抄视觉、说不出机制的，宁可不收。
+4. **实现**：`pnpm new:entry` 起骨架 → 写 demo → 写中英正文 → `pnpm gen:meta` → `pnpm check`；完成后再跑 `pnpm backlog` 把状态推到 `shipped`，一致性校验会拦下漏登记的词条。
 
 ## 给 AI 用
 
@@ -274,10 +291,10 @@ docs/REDESIGN-PLAN.md         # 这次重设计的分阶段方案与验收记录
 | [`/llms.txt`](https://publieople.github.io/design-museum/llms.txt) | 入口：两份目录 + 全部词条地址 |
 | [`/catalog.json`](https://publieople.github.io/design-museum/catalog.json) | 索引 + 可直接交付：中英名字、口语别名、关键词、标签、演示形态、控件默认值与中英需求句 |
 | [`/catalog.md`](https://publieople.github.io/design-museum/catalog.md) | 逐条全文：什么时候用、别搞混、踩坑、推荐取值、无障碍降级、参考链接 |
-| [`/catalog/index.json`](https://publieople.github.io/design-museum/catalog/index.json) | 分片索引：41 条一句话目录 + 各分片地址 + 标签/别名索引入口 |
+| [`/catalog/index.json`](https://publieople.github.io/design-museum/catalog/index.json) | 分片索引：44 条一句话目录 + 各分片地址 + 标签/别名索引入口 |
 | `/catalog/<展厅>.json`、`.md` | 单个展厅的分片（motion / feedback / layout / visual / type），正文同全量版 |
 | [`/catalog/tags.json`](https://publieople.github.io/design-museum/catalog/tags.json) | 标签 → 词条，用来「找同类效果」 |
-| [`/catalog/aliases.json`](https://publieople.github.io/design-museum/catalog/aliases.json) | 259 条俗称 → 词条，把口语接回正式名 |
+| [`/catalog/aliases.json`](https://publieople.github.io/design-museum/catalog/aliases.json) | 280 条俗称 → 词条，把口语接回正式名 |
 
 长散文刻意不进 JSON（否则会长到 160KB+）：JSON 负责「找到它并拿到需求句」，Markdown 负责「读细节」。分片是给上下文有限的 AI 用的：先读 `catalog/index.json` 找到目标，再只取那一个展厅或那一个标签的分片，不必把 130KB 全量塞进上下文。
 
@@ -372,12 +389,14 @@ gh api -X PATCH repos/publieople/design-museum \
 - `pnpm lint` 是 0 warning / 0 error。`only-export-components`、`set-state-in-effect` 这类「一个文件里既有组件又有 hook/工具」「effect 里重播/重置」的写法，豁免写在 `.oxlintrc.json` 的 `allowExportNames` 或就近的 `oxlint-disable-next-line` 注释里，并写明理由。生产构建不产出调试台 chunk。
 - 视觉回归只做「像素是否变了」，不判断变好还是变坏——通过代表和基线一致，改版时先看图再更新基线。
 - 反查是启发式打分，不是语义理解：粘 CSS 命中率最高，纯口语描述不保证答案一定对；拼音表只覆盖词条名称/别名里出现过的字，表外同音字不会映射。
+- 英文模式的 `spec.value` 与 select 选项标签仍显示中文：`EntryTranslation` 目前只允许翻 `spec.label` 与控件的 `label`/`hint`，要治本需要扩类型、`metaOf.ts` 与 `ControlPanel`。
+- a11y 自检是「静态 token 对比度 + SSR 结构调整」，不替代真实读屏与键盘走查；对比度按 token 计算，页面里若临时覆盖颜色不在检查范围。
 
 ## 路线图
 
 定位不变：**帮人把「我想要那种效果」翻译成一个准确的名字 + 一句 AI 能执行的需求**。零后端、零外部请求、不新增运行时依赖。
 
-当前状态（2026-11-21）：41 条词条（动效 9，其余每厅 8）、74 个预渲染页面、24 个现场页（`/live/<slug>/`）、26 对「别搞混」、259 条俗称、399 项测试、101 个 JS chunk；`pnpm check && pnpm build` 全绿，截图矩阵与像素回归可用。
+当前状态（2026-11-25）：44 条词条（动效 / 交互 / 排版 / 视觉各 9，布局 8）、77 个预渲染页面、24 个现场页（`/live/<slug>/`）、26 对「别搞混」、280 条俗称、457 项测试、104 个 JS chunk；`pnpm check && pnpm build` 全绿，截图矩阵、像素回归、英文正文覆盖与 a11y 自检都挂在测试里。
 
 ### 三条主线
 
@@ -391,19 +410,19 @@ gh api -X PATCH repos/publieople/design-museum \
 - **G2 文字类现场页 4 个**：`fluid-type`、`gradient-text`、`text-stroke`、`variable-font`——整页排版标本。
 - **G3 动效类现场页 5 个**：`marquee`、`count-up`、`char-reveal`、`skeleton-shimmer`、`scroll-snap`——整页更好，但不是非整页不可。
 - **G4 对照页补全**：`confusions` 补到 26 对、每对两边都写 `diff`；`/compare/` 增加搜索与展厅筛选。
-- **验收结果**：`pnpm check && pnpm build` 全绿；74 页预渲染；24 个现场页；1280 / 768 / 375 截图人眼过；线上 `/live/` 新增页 200。
+- **验收结果**：`pnpm check && pnpm build` 全绿；77 页预渲染；24 个现场页；1280 / 768 / 375 截图人眼过；线上 `/live/` 新增页 200。
 - **分工**：每批 2 名队友（各自独立页面文件 + 测试），Lead 负责注册表、i18n、路由、文档与集成。
 
 ### 阶段 H：英文正文与教学闭环
 
-- **H1 英文正文**：`en` 覆盖层从 `oneLiner` 扩到 `whenToUse` / `confusions` / `pitfalls` / `spec` / `reducedMotion`（41 条，按展厅分 5 批；术语表统一；英文冒烟从「无中文」扩到「关键段非空」）。
+- ✅ **H1 英文正文**：`en` 覆盖层已覆盖全部 44 条（`oneLiner` / `whenToUse` / `confusions` / `pitfalls` / `spec` / `reducedMotion`）；本轮按展厅逐条审计术语与大小写，并新增两道闸门——`entryTranslation.test.ts` 校验字段齐全、数组等长、无 CJK、每条 `en.confusions[].diff` 有实质内容，冒烟测试逐条渲染英文详情页确认正文不回退中文。剩余已知限制：`spec.value` 与 select 选项标签仍是中文（类型层只允许翻 `label`）。
 - **H2 需求清单可下载**：`/cheatsheet/` 复制之外导出 `.md`，并允许填一段项目语境（框架、风格、禁用项）拼进清单。
-- **H3 互链与推荐**：`related` / `confusions` 交叉校验、孤儿词条清零；详情页加「相似条目」（tags + scene 打分）。
+- ✅ **H3 互链与推荐**：详情页新增「相似展品」（同厅 + 共享标签 / 场景 / 感觉 / 目的地 + 易混邻居打分，取前 4）；`graph.test.ts` 校验 `related` 不死链、`confusions` 两侧 `diff` 都非空、孤儿与单边对照清零；本轮新增 8 组双向易混与 4 条 `related`，26 对对照全部双边。
 - **H4 搜索覆盖**：搜索历史（localStorage）；`/live/` 页面纳入搜索或被明确标注。
 
 ### 阶段 I：工程质量（可随时插入）
 
-- **I1 零依赖 a11y 自检**：对比度、焦点顺序、可访问名、reduced-motion 覆盖，挂进 `pnpm check`。
+- ✅ **I1 零依赖 a11y 自检**：新增 `src/a11y.test.tsx`（29 项）——从 `global.css` 现读 token 算浅/暗两套对比度，对 13 个页面做 h1 唯一性、标题层级、链接与控件可访问名、id 唯一、skip link 审计，并静态检查 `:focus-visible`、reduced-motion 分支与 `index.html` 的 lang/theme-color；审计器自带 8 条自测，防止「永远绿」。
 - **I2 首屏与 chunk**：生产构建剔除 DebugAllPage；`i18n` / `entryMeta` 按页面按需加载。
 - **I3 数据新鲜度**：CI 检查 `catalog/`、`entryMeta.ts`、截图基线与源码一致。
 - **I4 CONTRIBUTING**：补「加一条词条」的自动校验命令清单。
@@ -419,12 +438,13 @@ gh api -X PATCH repos/publieople/design-museum \
 
 1. ~~反查：粘贴一段代码或别人的描述 → 说出它叫什么。~~ 已完成：`/reverse/`，CSS 属性 + 关键词 + 描述相似度打分，附命中理由。
 2. ~~拼音搜索（maoboli → 毛玻璃）与错别字容错。~~ 已完成：构建期读音表 + 有界编辑距离，原文命中优先。
-3. ~~俗称总表页：把全站 `aliases` 汇总成可搜、可贡献的一页。~~ 已完成：`/aliases/`，259 条、按展厅分组、可搜。
+3. ~~俗称总表页：把全站 `aliases` 汇总成可搜、可贡献的一页。~~ 已完成：`/aliases/`，280 条、按展厅分组、可搜。
 4. ~~「别搞混」做成双向对比页。~~ 已完成：`/compare/`，从 `confusions` 解析出 26 对，左右展签 + 各自写的区别 + 可分享的 `?a=&b=`。
 5. ~~视觉回归：基线图 + 自动像素比对。~~ 已完成：`pnpm screenshots:baseline` / `pnpm screenshots:diff`（默认阈值 0.2%，差异图与报告在 `.screenshots/diff/`）。
-6. ~~词条扩充：现在 30 条，每厅再加 2 条。~~ 已完成：41 条（动效厅 9 条，其余每厅 8 条），界面与 SEO 文案里的计数已改成动态数字（`{n}` 占位）。
+6. ~~词条扩充：现在 30 条，每厅再加 2 条。~~ 已完成：44 条（动效 / 交互 / 排版 / 视觉各 9 条，布局 8 条），界面与 SEO 文案里的计数已改成动态数字（`{n}` 占位）。
 7. ~~给 AI 的目录做增量索引。~~ 已完成：`public/catalog/` 按展厅 / 标签 / 别名分片，`llms.txt` 指路，全量 JSON 与 Markdown 仍保留。
 8. ~~现场页第一批~~ 已完成：`/live/` + 5 个整页演示。~~第二批~~ 也已完成：sticky-header、view-transitions、command-palette、virtual-scrolling、toast，并补上第 41 条词条 `scroll-progress`（滚动进度条）。速查表已接上现场页入口（「现场」角标 + 链接）。~~第三批~~ 也已完成：背景 4 页、文字 4 页、动效 5 页，现场页总数 24；对照档案补到 26 对并支持筛选。
+9. ~~词条生产流程标准化~~ 已完成：`docs/ENTRY-PIPELINE.md`（侦察 → 拆解 → 定级 → 实现 → 校验 → 发布）、`docs/ENTRY-SOURCES.md`（来源分级）、`docs/entry-backlog.json` + `pnpm backlog`（候选池与一致性校验）；并照此流程新增 F-09 停靠栏放大、T-09 打字机效果、V-09 流星雨。
 
 ## 致谢
 

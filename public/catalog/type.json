@@ -6,7 +6,7 @@
     "letter": "T",
     "nameZh": "排版与文字",
     "nameEn": "Typography & Text",
-    "count": 8
+    "count": 9
   },
   "entries": [
     {
@@ -831,6 +831,94 @@
       "detail": {
         "page": "https://publieople.github.io/design-museum/entry/tabular-numbers/",
         "markdown": "https://publieople.github.io/design-museum/catalog.md#tabular-numbers"
+      }
+    },
+    {
+      "slug": "typewriter",
+      "code": "T-09",
+      "url": "https://publieople.github.io/design-museum/entry/typewriter/",
+      "category": "type",
+      "nameZh": "打字机效果",
+      "nameEn": "Typewriter",
+      "aliases": [
+        "打字效果",
+        "逐字打字",
+        "打字机",
+        "typewriter effect",
+        "typing effect",
+        "type-on text",
+        "caret blink"
+      ],
+      "oneLiner": "文字像被键盘一个字一个字敲出来，末尾光标一直闪。",
+      "oneLinerEn": "Text is knocked out one character at a time, with a blinking caret at the end.",
+      "keywords": [
+        "typewriter effect",
+        "steps()",
+        "caret-color",
+        "setTimeout",
+        "Array.from",
+        "aria-live",
+        "prefers-reduced-motion"
+      ],
+      "related": [
+        "char-reveal",
+        "count-up",
+        "marquee"
+      ],
+      "scenes": [
+        "text",
+        "page"
+      ],
+      "feel": [
+        "crisp",
+        "playful"
+      ],
+      "intent": [
+        "attention"
+      ],
+      "tags": [
+        "js",
+        "main-thread",
+        "motion-heavy",
+        "stable"
+      ],
+      "demo": {
+        "shape": "stage"
+      },
+      "controls": [
+        {
+          "id": "speed",
+          "kind": "range",
+          "label": "Per-character interval",
+          "def": 70,
+          "unit": "ms",
+          "min": 20,
+          "max": 160
+        },
+        {
+          "id": "hold",
+          "kind": "range",
+          "label": "Hold before looping",
+          "def": 1600,
+          "unit": "ms",
+          "min": 400,
+          "max": 3000
+        },
+        {
+          "id": "caret",
+          "kind": "toggle",
+          "label": "Blinking caret",
+          "def": true
+        }
+      ],
+      "loop": "replay",
+      "prompt": {
+        "zh": "做一个打字机效果（typewriter）：把「把想法一个字一个字敲进屏幕里。」逐字打进容器，每字间隔 70ms，逗号句号后多停 180ms，整句打完后停留 1600ms 再清空重打。末尾放一个 1ch 宽的光标，用 steps(2) 每 1s 硬切闪烁。文本用 Array.from 按字素切分，容器预留最终宽度避免重排跳动；正在打的部分 aria-hidden，另放完整句子给读屏；prefers-reduced-motion 时整句一次显示且不循环。",
+        "en": "typewriter effect: type the sentence one character at a time with 70ms per character, add a 180ms pause after punctuation, hold the finished line for 1600ms, then clear and retype. Show a 1ch caret at the end that blinks with steps(2) every 1s. Split text by grapheme with Array.from, reserve the final width so the layout does not reflow, mark the typing part aria-hidden and expose the full sentence to screen readers, and show the whole line at once under prefers-reduced-motion with no loop."
+      },
+      "detail": {
+        "page": "https://publieople.github.io/design-museum/entry/typewriter/",
+        "markdown": "https://publieople.github.io/design-museum/catalog.md#typewriter"
       }
     }
   ]

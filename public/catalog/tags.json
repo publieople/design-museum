@@ -6,7 +6,7 @@
       "nameZh": "纯 CSS",
       "nameEn": "CSS only",
       "facet": "tech",
-      "count": 23,
+      "count": 24,
       "slugs": [
         "stagger",
         "easing",
@@ -25,6 +25,7 @@
         "gradient-border",
         "aurora-gradient",
         "mask-fade",
+        "meteor-shower",
         "fluid-type",
         "text-balance",
         "gradient-text",
@@ -38,7 +39,7 @@
       "nameZh": "需要 JS",
       "nameEn": "Needs JS",
       "facet": "tech",
-      "count": 17,
+      "count": 19,
       "slugs": [
         "spring",
         "scroll-reveal",
@@ -51,12 +52,14 @@
         "toast",
         "ripple",
         "command-palette",
+        "dock-magnify",
         "sticky-header",
         "virtual-scrolling",
         "marquee",
         "spotlight-glow",
         "char-reveal",
-        "count-up"
+        "count-up",
+        "typewriter"
       ]
     },
     {
@@ -174,7 +177,7 @@
       "nameZh": "合成层动画",
       "nameEn": "Composited",
       "facet": "cost",
-      "count": 17,
+      "count": 19,
       "slugs": [
         "stagger",
         "easing",
@@ -188,10 +191,12 @@
         "press-feedback",
         "toast",
         "ripple",
+        "dock-magnify",
         "sticky-header",
         "sticky-stack",
         "virtual-scrolling",
         "marquee",
+        "meteor-shower",
         "char-reveal"
       ]
     },
@@ -232,14 +237,15 @@
       "nameZh": "主线程每帧",
       "nameEn": "Main-thread per frame",
       "facet": "cost",
-      "count": 6,
+      "count": 7,
       "slugs": [
         "spring",
         "cursor-follower",
         "magnetic-button",
         "virtual-scrolling",
         "spotlight-glow",
-        "count-up"
+        "count-up",
+        "typewriter"
       ]
     },
     {
@@ -247,7 +253,7 @@
       "nameZh": "动效较多",
       "nameEn": "Motion heavy",
       "facet": "a11y",
-      "count": 11,
+      "count": 14,
       "slugs": [
         "stagger",
         "spring",
@@ -256,10 +262,13 @@
         "scroll-driven",
         "view-transitions",
         "skeleton-shimmer",
+        "dock-magnify",
         "sticky-stack",
         "marquee",
         "aurora-gradient",
-        "char-reveal"
+        "meteor-shower",
+        "char-reveal",
+        "typewriter"
       ]
     },
     {
@@ -281,11 +290,12 @@
       "nameZh": "只能指针操作",
       "nameEn": "Pointer only",
       "facet": "a11y",
-      "count": 4,
+      "count": 5,
       "slugs": [
         "cursor-follower",
         "hover-lift",
         "magnetic-button",
+        "dock-magnify",
         "spotlight-glow"
       ]
     },
@@ -294,7 +304,7 @@
       "nameZh": "可以直接用",
       "nameEn": "Safe to ship",
       "facet": "support",
-      "count": 32,
+      "count": 34,
       "slugs": [
         "stagger",
         "spring",
@@ -322,12 +332,14 @@
         "grain-noise",
         "aurora-gradient",
         "mask-fade",
+        "meteor-shower",
         "gradient-text",
         "char-reveal",
         "variable-font",
         "count-up",
         "text-stroke",
-        "tabular-numbers"
+        "tabular-numbers",
+        "typewriter"
       ]
     },
     {

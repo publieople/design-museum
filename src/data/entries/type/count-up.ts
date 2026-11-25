@@ -26,6 +26,10 @@ const entry: Entry = {
       with: '等宽数字',
       diff: '等宽数字只是把每个数字字形固定成同一宽度（font-variant-numeric: tabular-nums），数值本身不变；数字滚动是数值在时间上从旧值增长到新值，通常还要配合等宽数字防止宽度抖动。',
     },
+    {
+      with: '打字机效果',
+      diff: '数字滚动改的是数值，字形不动，最后停在终值上；打字机效果改的是字符数量，文字一个接一个出现，通常还会循环重播。',
+    },
   ],
   pitfalls: [
     '位数变化会撑动布局（9 变 10、99 变 100），给容器预留宽度，并用 font-variant-numeric: tabular-nums 让每位数字等宽。',
@@ -119,6 +123,10 @@ const entry: Entry = {
       {
         with: 'Tabular Numbers',
         diff: 'Tabular numbers only give every digit the same advance width with font-variant-numeric: tabular-nums; the value never changes. Count up animates the value from old to new over time and usually pairs with tabular figures to stop the width from jittering.',
+      },
+      {
+        with: 'Typewriter',
+        diff: 'Count up changes a numeric value while the glyphs stay put and settles on the final number. A typewriter changes how many characters exist, revealing text one by one and usually looping.',
       },
     ],
     pitfalls: [

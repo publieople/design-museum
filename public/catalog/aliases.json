@@ -1,7 +1,13 @@
 {
   "version": 1,
-  "count": 258,
+  "count": 279,
   "aliases": [
+    {
+      "alias": "Dock 放大",
+      "slugs": [
+        "dock-magnify"
+      ]
+    },
     {
       "alias": "active state scale",
       "slugs": [
@@ -112,6 +118,12 @@
       ]
     },
     {
+      "alias": "caret blink",
+      "slugs": [
+        "typewriter"
+      ]
+    },
+    {
       "alias": "cascading entrance",
       "slugs": [
         "stagger"
@@ -202,6 +214,12 @@
       ]
     },
     {
+      "alias": "dock magnification",
+      "slugs": [
+        "dock-magnify"
+      ]
+    },
+    {
       "alias": "easing curve",
       "slugs": [
         "easing"
@@ -223,6 +241,12 @@
       "alias": "fade mask",
       "slugs": [
         "mask-fade"
+      ]
+    },
+    {
+      "alias": "falling stars",
+      "slugs": [
+        "meteor-shower"
       ]
     },
     {
@@ -334,6 +358,12 @@
       ]
     },
     {
+      "alias": "icon magnification",
+      "slugs": [
+        "dock-magnify"
+      ]
+    },
+    {
       "alias": "immediate UI",
       "slugs": [
         "optimistic-ui"
@@ -364,6 +394,12 @@
       ]
     },
     {
+      "alias": "magnify on hover",
+      "slugs": [
+        "dock-magnify"
+      ]
+    },
+    {
       "alias": "marquee",
       "slugs": [
         "marquee"
@@ -391,6 +427,18 @@
       "alias": "mesh gradient",
       "slugs": [
         "mesh-gradient"
+      ]
+    },
+    {
+      "alias": "meteor effect",
+      "slugs": [
+        "meteor-shower"
+      ]
+    },
+    {
+      "alias": "meteor shower",
+      "slugs": [
+        "meteor-shower"
       ]
     },
     {
@@ -469,6 +517,12 @@
       "alias": "pointer follower",
       "slugs": [
         "cursor-follower"
+      ]
+    },
+    {
+      "alias": "proximity scale",
+      "slugs": [
+        "dock-magnify"
       ]
     },
     {
@@ -577,6 +631,12 @@
       "alias": "shimmer loading",
       "slugs": [
         "skeleton-shimmer"
+      ]
+    },
+    {
+      "alias": "shooting stars",
+      "slugs": [
+        "meteor-shower"
       ]
     },
     {
@@ -703,6 +763,24 @@
       "alias": "touch ripple",
       "slugs": [
         "ripple"
+      ]
+    },
+    {
+      "alias": "type-on text",
+      "slugs": [
+        "typewriter"
+      ]
+    },
+    {
+      "alias": "typewriter effect",
+      "slugs": [
+        "typewriter"
+      ]
+    },
+    {
+      "alias": "typing effect",
+      "slugs": [
+        "typewriter"
       ]
     },
     {
@@ -898,6 +976,12 @@
       ]
     },
     {
+      "alias": "图标放大",
+      "slugs": [
+        "dock-magnify"
+      ]
+    },
+    {
       "alias": "多色渐变背景",
       "slugs": [
         "mesh-gradient"
@@ -1006,6 +1090,18 @@
       ]
     },
     {
+      "alias": "打字效果",
+      "slugs": [
+        "typewriter"
+      ]
+    },
+    {
+      "alias": "打字机",
+      "slugs": [
+        "typewriter"
+      ]
+    },
+    {
       "alias": "折叠展开",
       "slugs": [
         "accordion"
@@ -1072,6 +1168,12 @@
       ]
     },
     {
+      "alias": "斜向流星",
+      "slugs": [
+        "meteor-shower"
+      ]
+    },
+    {
       "alias": "无缝滚动",
       "slugs": [
         "marquee"
@@ -1135,6 +1237,18 @@
       "alias": "流式字号",
       "slugs": [
         "fluid-type"
+      ]
+    },
+    {
+      "alias": "流星",
+      "slugs": [
+        "meteor-shower"
+      ]
+    },
+    {
+      "alias": "流星拖尾",
+      "slugs": [
+        "meteor-shower"
       ]
     },
     {
@@ -1474,6 +1588,12 @@
       ]
     },
     {
+      "alias": "逐字打字",
+      "slugs": [
+        "typewriter"
+      ]
+    },
+    {
       "alias": "逐条入场",
       "slugs": [
         "stagger"
@@ -1513,6 +1633,12 @@
       "alias": "阅读进度条",
       "slugs": [
         "scroll-progress"
+      ]
+    },
+    {
+      "alias": "靠近放大",
+      "slugs": [
+        "dock-magnify"
       ]
     },
     {

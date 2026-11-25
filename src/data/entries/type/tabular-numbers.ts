@@ -94,8 +94,8 @@ const entry: Entry = {
     ],
     confusions: [
       {
-        with: 'count up',
-        diff: 'Count up is about how the value travels from A to B. Tabular numbers are about how much width each digit takes. They are usually paired so the row stops shivering.',
+        with: 'Count Up',
+        diff: 'Count up is about how the value travels from A to B. Tabular numbers are about how much width each digit takes. They are usually paired so the row width holds still while the digits roll.',
       },
       {
         with: 'proportional figures',

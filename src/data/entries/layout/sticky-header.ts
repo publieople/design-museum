@@ -67,7 +67,7 @@ const entry: Entry = {
   },
   loop: 'manual',
   en: {
-    oneLiner: 'A page header that stays pinned on scroll and often hides on the way down.',
+    oneLiner: 'A page header that stays pinned on scroll, often hiding as you scroll down and revealing itself as you scroll up.',
     whenToUse: [
       'Long pages where navigation and the primary action should stay reachable',
       'Keeping the cart, search, or the current section visible at all times',

@@ -2,7 +2,7 @@
 
 > 文字本身的形态与呈现方式
 
-> 本厅 8 条词条。全量目录见 https://publieople.github.io/design-museum/catalog.md（锚点与本文一致），分片索引见 https://publieople.github.io/design-museum/catalog/index.json。
+> 本厅 9 条词条。全量目录见 https://publieople.github.io/design-museum/catalog.md（锚点与本文一致），分片索引见 https://publieople.github.io/design-museum/catalog/index.json。
 
 ## 词条
 
@@ -146,6 +146,7 @@
 - 别搞混 · 机械翻牌 odometer：odometer 是每一位数字上下滚动或翻页，位与位之间有物理位移；数字滚动只是数值在变，字形本身不动。
 - 别搞混 · CSS @property 数值动画：@property 可以注册一个整数自定义属性再交给 counter() 渲染，纯 CSS 就能跑，但插值交给浏览器，格式和缓动不好控；要精确控制格式、缓动和重播，用 requestAnimationFrame 手写更稳。
 - 别搞混 · 等宽数字：等宽数字只是把每个数字字形固定成同一宽度（font-variant-numeric: tabular-nums），数值本身不变；数字滚动是数值在时间上从旧值增长到新值，通常还要配合等宽数字防止宽度抖动。
+- 别搞混 · 打字机效果：数字滚动改的是数值，字形不动，最后停在终值上；打字机效果改的是字符数量，文字一个接一个出现，通常还会循环重播。
 - 坑：位数变化会撑动布局（9 变 10、99 变 100），给容器预留宽度，并用 font-variant-numeric: tabular-nums 让每位数字等宽。
 - 坑：requestAnimationFrame 循环要在组件卸载时 cancel，否则组件没了还在 setState。
 - 坑：rAF 回调拿到的是高精度时间戳，用它减去开始时间；不要和 Date.now() 混算，也不要拿 setInterval 每帧加固定值，掉帧时会越走越慢。
@@ -209,3 +210,29 @@
 - Ask for it (English keywords): counter with font-variant-numeric: tabular-nums (legacy font-feature-settings: "tnum"), updated every 700ms without the row width shifting, right-aligned inside a min-width column so 9 to 10 does not resize the block, numbers in tables aligned with text-align: right
 - 相关：count-up, variable-font
 - 参考：[MDN · font-variant-numeric](https://developer.mozilla.org/docs/Web/CSS/font-variant-numeric) · [MDN · font-feature-settings](https://developer.mozilla.org/docs/Web/CSS/font-feature-settings)
+
+<a id="typewriter"></a>
+
+### T-09 打字机效果 · Typewriter
+
+- 地址：https://publieople.github.io/design-museum/entry/typewriter/
+- 展厅：type · 标签：js, main-thread, motion-heavy, stable · 形态：stage
+- 一句话：文字像被键盘一个字一个字敲出来，末尾光标一直闪。
+- 别名：打字效果、逐字打字、打字机、typewriter effect、typing effect、type-on text、caret blink
+- 关键词：typewriter effect, steps(), caret-color, setTimeout, Array.from, aria-live, prefers-reduced-motion
+- 什么时候用：首屏只有一句主张，想让读者跟着敲字的节奏往下读 / 终端、代码编辑器、复古机械感的界面语言 / AI 回答的流式预览、输入框旁的示例问题，用打字暗示「正在生成」
+- 别搞混 · 逐字显现：逐字显现是整句话早已排好版，每个字从透明和偏移回到原位，文本长度不变；打字机是文本真的一个字一个字长出来，后面还没打到的地方是空的，通常还配一个闪烁光标。
+- 别搞混 · 跑马灯：跑马灯是一整段文字横向循环滚动，适合放不下的长文本；打字机在原地逐字增加内容，不横向移动，长度到顶后一般停住或清空重打。
+- 别搞混 · 数字滚动：数字滚动只处理数字，靠插值让读数从旧值跳到新值；打字机处理任意字符序列，按固定节奏追加字符，不存在中间数值。
+- 坑：每敲一个字都会改变文本宽度并触发重排；给容器预留最终宽度或固定 min-height，避免标题下面的内容跟着上下跳。
+- 坑：读屏软件会随着每次追加不断朗读；把正在打的部分设成 aria-hidden，另放一份完整句子给读屏，并且不要开 aria-live。
+- 坑：逐字更新用 setInterval 容易在切后台后堆积回调；改用 setTimeout 递归、每次重算下一拍，或者在页面隐藏时暂停。
+- 坑：中英文混排时按 UTF-16 下标切字符会把 emoji 和组合字符切坏；用 Array.from 或 Intl.Segmenter 按字素切。
+- 坑：标点和句末要有比普通字更长的停顿，否则读起来像机器在赶工；prefers-reduced-motion 下一次显示整句，不要保留循环。
+- 推荐取值：每字间隔=50–80ms；标点停顿=150–250ms；光标闪烁=1–1.2s，steps(2) 硬切；打完停留=1.5–2.5s 再循环
+- 控件默认值：speed(每字间隔)=70ms；hold(打完停留)=1600ms；caret(闪烁光标)=true
+- 无障碍降级：prefers-reduced-motion: reduce 时跳过逐字过程，整句一次显示，光标不再闪烁，也不自动循环重打。
+- 提给 AI（中文）：做一个打字机效果（typewriter）：把「把想法一个字一个字敲进屏幕里。」逐字打进容器，每字间隔 70ms，逗号句号后多停 180ms，整句打完后停留 1600ms 再清空重打。末尾放一个 1ch 宽的光标，用 steps(2) 每 1s 硬切闪烁。文本用 Array.from 按字素切分，容器预留最终宽度避免重排跳动；正在打的部分 aria-hidden，另放完整句子给读屏；prefers-reduced-motion 时整句一次显示且不循环。
+- Ask for it (English keywords): typewriter effect: type the sentence one character at a time with 70ms per character, add a 180ms pause after punctuation, hold the finished line for 1600ms, then clear and retype. Show a 1ch caret at the end that blinks with steps(2) every 1s. Split text by grapheme with Array.from, reserve the final width so the layout does not reflow, mark the typing part aria-hidden and expose the full sentence to screen readers, and show the whole line at once under prefers-reduced-motion with no loop.
+- 相关：char-reveal, count-up, marquee
+- 参考：[MDN · steps() 缓动函数](https://developer.mozilla.org/docs/Web/CSS/easing-function/steps) · [MDN · caret-color](https://developer.mozilla.org/docs/Web/CSS/caret-color) · [web.dev · 用 transform 和 opacity 做动画](https://web.dev/articles/animations-guide)

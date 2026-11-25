@@ -2,7 +2,7 @@
 
 > 表面、材质、光与色彩的观感
 
-> 本厅 8 条词条。全量目录见 https://publieople.github.io/design-museum/catalog.md（锚点与本文一致），分片索引见 https://publieople.github.io/design-museum/catalog/index.json。
+> 本厅 9 条词条。全量目录见 https://publieople.github.io/design-museum/catalog.md（锚点与本文一致），分片索引见 https://publieople.github.io/design-museum/catalog/index.json。
 
 ## 词条
 
@@ -98,6 +98,7 @@
 - 别搞混 · 半透明黑色遮罩：蒙一层黑是整体压暗，亮度往下走；噪点让每个像素随机变亮或变暗，平均亮度不变，所以画面不黑，只是有了颗粒。
 - 别搞混 · 重复纹理贴图：平铺一张 png 会看到重复单元和接缝，放大后尤其明显；feTurbulence 生成的是程序化噪声，配合 stitchTiles="stitch" 几乎看不出重复，颗粒粗细还能随参数调。
 - 别搞混 · 抖动 dithering：抖动是渲染器为了压制色带自己做的，粒度跟像素对齐；颗粒噪点是你手动叠的一层材质，可以调大小、强度和混合模式。
+- 别搞混 · 流星雨：颗粒噪点是一层静止不动的程序化材质，整屏均匀分布；流星雨是若干条会移动、会消失的亮线，位置和出现时机都不均匀。
 - 坑：baseFrequency 低于 0.3 会变成大块云雾，不像颗粒；0.5–0.9 之间才是细砂
 - 坑：噪点层必须 pointer-events: none，不然整块区域都点不动
 - 坑：不透明度超过 15% 画面会发脏，文字对比度也跟着掉，3%–10% 通常刚好
@@ -127,6 +128,7 @@
 - 别搞混 · 跟随指针的拖尾：拖尾装饰的是鼠标本身，跟着指针满屏幕跑；聚光被裁在元素内部（overflow: hidden 或 mask），是打在表面的一层。
 - 别搞混 · 极光渐变：极光渐变是整片背景自己缓慢漂移，和指针无关；聚光光晕有一个跟随指针的圆心，被裁在元素内部，指针不动它就停住。
 - 别搞混 · 光标跟随：光标跟随的元素在元素外部跟着指针满屏移动，是独立的光标替代品；聚光光晕被 overflow: hidden 或 mask 裁在卡片内部，只是卡片表面的一层光，不能跑出边界。
+- 别搞混 · 流星雨：聚光光晕只有一个圆心，位置由指针决定，通常裁在卡片内部；流星雨是许多条独立的拖尾，按时间和倾角自己划过，和指针无关。
 - 坑：别在 pointermove 里 setState，一帧多次重渲染会卡；把坐标直接写进元素的 style.transform 或 CSS 变量
 - 坑：光斑要 overflow: hidden 裁在卡片里，否则看起来是飘在旁边的一个圆
 - 坑：触屏没有 hover，必须给一个默认居中或居下的静态光斑，否则移动端一片死黑
@@ -182,6 +184,7 @@
 - 什么时候用：落地页、产品首屏的大背景，要氛围但不要具体图形 / 深色界面想要一块会呼吸的底色 / 发布页、活动页需要持续流动感，又不想用视频或图片
 - 别搞混 · 网格渐变：网格渐变是多个径向渐变叠出来的静态柔光；极光是这些光团在位移（translate + blur + 饱和度），重点在「慢慢游动」。
 - 别搞混 · 光晕聚光：聚光跟着指针走，是人给的反馈；极光自己漂，有没有人都一样。
+- 别搞混 · 流星雨：极光渐变是一整片连续色场在慢速漂移，没有可数的个体；流星雨是几十条离散的拖尾按固定倾角划过，能数出数量，也各自有生命周期。
 - 坑：大面积模糊很贵：光斑要放在独立图层里用 transform 位移，别每帧改 background-position
 - 坑：光斑 3–5 团就够，堆多了只会糊成一片，看不出「极光」
 - 坑：动画要慢（一轮 20–40s），快了像故障闪烁
@@ -222,3 +225,29 @@
 - Ask for it (English keywords): fade the edges of this scrollable area with mask-image: linear-gradient(90deg, transparent, #000 12%, #000 88%, transparent) (plus -webkit-mask-image), so 12% of each end fades out and hints that there is more to scroll, applied symmetrically on both ends, not combined with backdrop-filter on the same element
 - 相关：marquee, scroll-snap
 - 参考：[MDN · mask-image](https://developer.mozilla.org/docs/Web/CSS/mask-image) · [MDN · CSS masking](https://developer.mozilla.org/docs/Web/CSS/CSS_masking)
+
+<a id="meteor-shower"></a>
+
+### V-09 流星雨 · Meteor Shower
+
+- 地址：https://publieople.github.io/design-museum/entry/meteor-shower/
+- 展厅：visual · 标签：css-only, composited, motion-heavy, stable · 形态：stage
+- 一句话：几条细长的光斜着划过，尾巴渐隐，像一场安静的流星雨。
+- 别名：流星、流星拖尾、斜向流星、meteor shower、shooting stars、meteor effect、falling stars
+- 关键词：meteor shower, linear-gradient, @keyframes, translate3d, animation-delay, opacity, will-change
+- 什么时候用：暗色首屏或节日活动页，想要一点「夜空」的氛围而不是满屏动效 / 加载等待、空状态的背景，让停顿不显得死 / 发布成功、订阅完成这类庆祝时刻的轻量装饰，比礼花克制
+- 别搞混 · 极光渐变：极光渐变是几团大面积色斑缓慢呼吸、互相叠加，没有方向也没有起点终点；流星雨是离散的细线沿固定倾角快速划过，一条结束才轮到下一条。
+- 别搞混 · 光晕聚光：光晕聚光是跟着指针或某个焦点的圆形光斑，位置由交互决定；流星雨的位置和节奏由动画自己安排，用户不操作也会持续发生。
+- 别搞混 · 颗粒噪点：颗粒噪点是整屏静态的随机纹理，用来去掉渐变的塑料感；流星雨是有明确运动方向和拖尾的动态元素，两者的目的是氛围与事件感。
+- 坑：别对每条流星用大半径 blur 或 box-shadow，叠加十几条会直接掉帧；用 transform 位移加线性渐变的尾迹，必要时才加一层很轻的发光。
+- 坑：流星太多会盖住正文：6–12 条、透明度压在 0.5 以下，并且整层 pointer-events: none、z-index 在内容之下。
+- 坑：浅色舞台上白色流星几乎看不见，用 var(--stage-ink) 或强调色；要固定夜空底就自己垫一层深色，不要假设页面背景是深色。
+- 坑：所有流星同时从同一点出发会像下雨而不是流星雨；用负的 animation-delay 和不同的起点、时长把它们打散。
+- 坑：prefers-reduced-motion 下停掉位移和闪烁，只留几条静止的斜向光带或纯渐变底。
+- 推荐取值：流星数量=6–12 条；单条时长=2–4s；倾角=35–55°；尾迹长度=80–160px
+- 控件默认值：count(流星数量)=8条；duration(单条时长)=3s；angle(倾角)=45
+- 无障碍降级：prefers-reduced-motion: reduce 时停掉位移动画，只保留几条静止的斜向光带或纯渐变背景，不闪不划。
+- 提给 AI（中文）：做一个流星雨（meteor shower）背景：8 条细长的流星从右上往左下以 45° 斜向划过，单条 3s 走完，尾迹 80–160px 并用 linear-gradient 从透明渐到亮端，透明度最高 0.5。用 CSS @keyframes 只动 transform 和 opacity，每条用负 animation-delay 和不同起点、时长打散，整体 pointer-events: none 并压在内容层下面；颜色取 var(--stage-ink) 或强调色，不写死白色。prefers-reduced-motion 时停掉动画，只留静止光带。
+- Ask for it (English keywords): meteor shower background: 8 thin meteors cross from the top right toward the bottom left at 45 degrees, each taking 3s, with an 80 to 160px tail drawn as a linear-gradient from transparent to a bright head and a peak opacity of 0.5. Animate transform and opacity only with CSS @keyframes, desynchronise them with negative animation-delay plus varied origins and durations, set pointer-events: none and keep the layer behind the content, and colour it with var(--stage-ink) or the accent colour instead of hard-coded white. Under prefers-reduced-motion stop the motion and keep only static diagonal streaks.
+- 相关：aurora-gradient, spotlight-glow, parallax
+- 参考：[MDN · @keyframes](https://developer.mozilla.org/docs/Web/CSS/@keyframes) · [MDN · linear-gradient()](https://developer.mozilla.org/docs/Web/CSS/gradient/linear-gradient) · [web.dev · 用 transform 和 opacity 做动画](https://web.dev/articles/animations-guide)

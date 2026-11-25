@@ -117,7 +117,7 @@ const entry: Entry = {
         diff: 'A typewriter types characters one at a time, usually with a caret and a monospace face, and the text keeps growing. Character reveal keeps every character on its final typeset position and animates each one from transparent and offset back to rest.',
       },
       {
-        with: 'staggered entrance',
+        with: 'Stagger',
         diff: 'Stagger applies the same delay pattern to a set of independent elements such as list rows or cards. Character reveal first splits one sentence into individual characters and then applies that pattern to the character run, and it takes extra work for screen readers.',
       },
     ],

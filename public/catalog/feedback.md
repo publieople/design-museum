@@ -2,7 +2,7 @@
 
 > 用户动手之后，界面怎么回应
 
-> 本厅 8 条词条。全量目录见 https://publieople.github.io/design-museum/catalog.md（锚点与本文一致），分片索引见 https://publieople.github.io/design-museum/catalog/index.json。
+> 本厅 9 条词条。全量目录见 https://publieople.github.io/design-museum/catalog.md（锚点与本文一致），分片索引见 https://publieople.github.io/design-museum/catalog/index.json。
 
 ## 词条
 
@@ -19,6 +19,7 @@
 - 别搞混 · 按压反馈：悬停抬升是指针停留在上面期间持续存在的状态，用 :hover；按压反馈是按下和松开那一瞬的反馈，用 :active。两者经常叠着用，但触发时机完全不同。
 - 别搞混 · 滚动视差（parallax）：悬停抬升只由指针驱动，鼠标进出才动；视差由滚动驱动，鼠标不动、只滚页面它也会移动。
 - 别搞混 · 磁吸按钮：悬停抬升只沿固定方向（通常 translateY(-4px)）位移，指针位置不影响方向；磁吸按钮把指针相对按钮中心的偏移乘一个系数，方向跟着指针走，指针离开才弹回。
+- 别搞混 · 停靠栏放大：悬停抬升只有指针进出两个状态，一次只抬起被指的那个元素；停靠栏放大按指针到每个图标的距离连续算缩放，整排图标一起起伏，指针停在两个图标之间时两边都会变大。
 - 坑：只加位移不加阴影，元素会像一张贴纸飘起来，没有重量感；位移和阴影要一起变
 - 坑：触摸设备没有 hover，点完 :hover 可能粘住不消失，所以静止态本身必须完整可读
 - 坑：位移超过 8px 会显得轻浮、像在跳，2–6px 通常刚好
@@ -69,6 +70,7 @@
 - 别搞混 · 悬停抬升：抬升的方向是固定的，永远垂直向上；磁吸会朝指针方向做二维偏移，指针在左下方就往左下方走。
 - 别搞混 · 指针视差（pointer parallax）：视差是整个容器跟着指针大范围移动，几十像素起步；磁吸只在按钮附近的小范围内移动几像素到十几像素。
 - 别搞混 · 光标跟随：光标跟随替换的是指针本身：一个元素追着指针满屏跑，指针的可见性由它接管；磁吸按钮仍用原生指针，只是按钮朝指针方向偏移几像素，指针一离开按钮就回弹。
+- 别搞混 · 停靠栏放大：磁吸按钮朝指针方向整体位移，追的是指针坐标；停靠栏放大的图标位置不动，只按距离从底边中心缩放，指针不需要落在任何图标上也能改变一排的大小。
 - 坑：触发半径开太大（超过按钮尺寸两倍）会满屏乱飘，1–1.5 倍按钮宽高就够
 - 坑：位移不设上限会让按钮躲开指针、点不中，最多 6–16px
 - 坑：每次 pointermove 都 setState 会掉帧，用 requestAnimationFrame 节流，或直接改 CSS 变量和 element.style
@@ -152,7 +154,7 @@
 - 无障碍降级：prefers-reduced-motion: reduce 下取消入场和退场的位移与淡出，直接出现、直接消失，停留时长保持不变。
 - 提给 AI（中文）：做一个轻提示（toast）组件：触发后从底部居中滑入，滑入距离 12px，入场 220ms ease-out，停留 3000ms 后自动消失。容器用 role="status" 和 aria-live="polite"，多条时纵向堆叠、最多同时 3 条。动画只用 transform: translateY 和 opacity，禁用状态别遮挡页面操作。系统减少动态效果时直接出现和消失。
 - Ask for it (English keywords): toast / snackbar component, slides in from 底部居中, translateY(12px) with 220ms ease-out, auto-dismiss after 3000ms, role="status" aria-live="polite", stack up to 3 toasts, animate transform + opacity only, non-blocking, no entry/exit animation under prefers-reduced-motion
-- 相关：optimistic-ui, skeleton-shimmer, sticky-header
+- 相关：optimistic-ui, skeleton-shimmer, sticky-header, command-palette
 - 参考：[MDN · ARIA live regions](https://developer.mozilla.org/docs/Web/Accessibility/ARIA/ARIA_Live_Regions) · [MDN · role="status"](https://developer.mozilla.org/docs/Web/Accessibility/ARIA/Roles/status_role) · [MDN · transition](https://developer.mozilla.org/docs/Web/CSS/transition)
 
 <a id="ripple"></a>
@@ -206,3 +208,29 @@
 - Ask for it (English keywords): command palette overlay, meta+k / ctrl+k plus / shortcut, live fuzzy filter over commands, top 6 results, arrow keys move the highlight, Enter runs the command, Escape closes, focus moves into the input on open and back to the trigger on close, aria-selected / aria-activedescendant on the active row, 150ms scale and fade in and out, opacity only under prefers-reduced-motion
 - 相关：accordion, toast
 - 参考：[MDN · role="listbox"](https://developer.mozilla.org/docs/Web/Accessibility/ARIA/Roles/listbox_role) · [MDN · aria-activedescendant](https://developer.mozilla.org/docs/Web/Accessibility/ARIA/Attributes/aria-activedescendant)
+
+<a id="dock-magnify"></a>
+
+### F-09 停靠栏放大 · Dock Magnification
+
+- 地址：https://publieople.github.io/design-museum/entry/dock-magnify/
+- 展厅：feedback · 标签：js, composited, pointer-dependent, motion-heavy · 形态：stage
+- 一句话：指针越靠近图标，图标放得越大，像 macOS 的 Dock。
+- 别名：Dock 放大、图标放大、靠近放大、dock magnification、icon magnification、proximity scale、magnify on hover
+- 关键词：dock magnification, pointer distance, scale(), transform-origin, pointermove, getBoundingClientRect, falloff
+- 什么时候用：底部或侧边的图标导航，想让「现在指着哪个」一眼可见 / 工具条、表情选择器这类图标密集、放不下文字标签的地方 / 想要一点活泼的手感，又不想让整排图标一起跳舞
+- 别搞混 · 悬停抬升：悬停抬升只判断指针进没进去，一个元素整体上浮加阴影，邻居完全不动；停靠栏放大是按指针到每个图标中心的距离连续算缩放，越近越大，还会把左右邻居一起带起来。
+- 别搞混 · 磁吸按钮：磁吸按钮是元素朝指针方向位移，像被吸过去；停靠栏放大的图标位置不动，只是围绕自己的底边变大，指针不需要按下去。
+- 别搞混 · 光标跟随：光标跟随有一个独立的光斑或自定义光标跟着指针跑；停靠栏放大没有跟随物，只有一排固定位置的图标按距离改变尺寸。
+- 坑：别用 width/height 做放大，那是在每帧触发布局；用 transform: scale()，并把 transform-origin 设成底边中心，图标才像从托盘里长出来。
+- 坑：缩放过渡超过 200ms 时，指针快速划过会拖出一串跟不上手的「果冻」；控制在 60–120ms，或干脆按帧直接写 transform。
+- 坑：放大后的图标会盖住邻居或顶出容器，给整排留出上方空间（padding-top 或 overflow: visible），别让最大的那颗被裁掉。
+- 坑：最大缩放别超过 2 倍、影响半径别超过整排宽度的一半，否则一次只看得清一个图标，导航反而变慢。
+- 坑：触屏没有 hover；粗指针设备或 prefers-reduced-motion 下保持原始大小，不要用点击去模拟悬停。
+- 推荐取值：最大缩放=1.5–1.8 倍；影响半径=100–160px；相邻缩放差=不超过 0.35 倍；缩放过渡=60–120ms
+- 控件默认值：maxScale(最大缩放)=1.55x；radius(影响半径)=120px；labels(显示名称)=true
+- 无障碍降级：prefers-reduced-motion: reduce 时整排图标保持原始尺寸，不做缩放和上浮，只用文字说明指针在哪一颗上。
+- 提给 AI（中文）：做一个停靠栏放大（dock magnification）的图标条：一排同尺寸图标，监听 pointermove，用 getBoundingClientRect 算出指针到每个图标中心的水平距离 d，缩放 = 1 + (1.55 - 1) × max(0, 1 - d / 120)²，transform-origin 设为 bottom center，过渡 80ms 线性，只动 transform；指针离开后回到 1 倍。图标下方保留名称标签。prefers-reduced-motion 时不做缩放，粗指针设备保持原始大小。
+- Ask for it (English keywords): dock magnification icon bar: a row of equally sized icons, listen to pointermove, measure the horizontal distance d from the pointer to each icon centre with getBoundingClientRect, scale = 1 + (1.55 - 1) * max(0, 1 - d / 120) squared, transform-origin bottom center, transition transform 80ms linear, animate transform only, reset to 1x on pointer leave. Keep a visible label under each icon. Keep icons at their natural size under prefers-reduced-motion and on coarse pointers.
+- 相关：magnetic-button, hover-lift, cursor-follower
+- 参考：[MDN · Pointer events](https://developer.mozilla.org/docs/Web/API/Pointer_events) · [MDN · scale()](https://developer.mozilla.org/docs/Web/CSS/scale) · [web.dev · 用 transform 和 opacity 做动画](https://web.dev/articles/animations-guide)

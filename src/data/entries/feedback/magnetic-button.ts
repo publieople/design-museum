@@ -26,6 +26,10 @@ const entry: Entry = {
       with: '光标跟随',
       diff: '光标跟随替换的是指针本身：一个元素追着指针满屏跑，指针的可见性由它接管；磁吸按钮仍用原生指针，只是按钮朝指针方向偏移几像素，指针一离开按钮就回弹。',
     },
+    {
+      with: '停靠栏放大',
+      diff: '磁吸按钮朝指针方向整体位移，追的是指针坐标；停靠栏放大的图标位置不动，只按距离从底边中心缩放，指针不需要落在任何图标上也能改变一排的大小。',
+    },
   ],
   pitfalls: [
     '触发半径开太大（超过按钮尺寸两倍）会满屏乱飘，1–1.5 倍按钮宽高就够',
@@ -83,6 +87,10 @@ const entry: Entry = {
       {
         with: 'Cursor Follower',
         diff: 'A cursor follower replaces the pointer itself, with an element chasing it across the screen. A magnetic button keeps the native pointer and only offsets the button a few pixels toward it, snapping back when the pointer leaves.',
+      },
+      {
+        with: 'Dock Magnification',
+        diff: 'A magnetic button translates as a whole toward the pointer and follows its coordinates. Dock magnification keeps every icon anchored and only scales from the bottom center by distance, so a row can change size without the pointer landing on any icon.',
       },
     ],
     pitfalls: [

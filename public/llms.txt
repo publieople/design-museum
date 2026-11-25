@@ -1,6 +1,6 @@
 # 前端设计博物馆 Design Museum
 
-> 把说不出口的前端效果做成可交互标本：41 条中英术语对照、参数可调、一键复制成给 AI 的设计需求。
+> 把说不出口的前端效果做成可交互标本：44 条中英术语对照、参数可调、一键复制成给 AI 的设计需求。
 
 ## 数据
 
@@ -12,15 +12,15 @@
 ## 分片（按展厅）
 
 - [动效与节奏 Motion & Timing](https://publieople.github.io/design-museum/catalog/motion.json)（9 条）· [Markdown](https://publieople.github.io/design-museum/catalog/motion.md)
-- [交互反馈 Interaction & Feedback](https://publieople.github.io/design-museum/catalog/feedback.json)（8 条）· [Markdown](https://publieople.github.io/design-museum/catalog/feedback.md)
+- [交互反馈 Interaction & Feedback](https://publieople.github.io/design-museum/catalog/feedback.json)（9 条）· [Markdown](https://publieople.github.io/design-museum/catalog/feedback.md)
 - [布局与结构 Layout & Structure](https://publieople.github.io/design-museum/catalog/layout.json)（8 条）· [Markdown](https://publieople.github.io/design-museum/catalog/layout.md)
-- [视觉质感 Visual & Material](https://publieople.github.io/design-museum/catalog/visual.json)（8 条）· [Markdown](https://publieople.github.io/design-museum/catalog/visual.md)
-- [排版与文字 Typography & Text](https://publieople.github.io/design-museum/catalog/type.json)（8 条）· [Markdown](https://publieople.github.io/design-museum/catalog/type.md)
+- [视觉质感 Visual & Material](https://publieople.github.io/design-museum/catalog/visual.json)（9 条）· [Markdown](https://publieople.github.io/design-museum/catalog/visual.md)
+- [排版与文字 Typography & Text](https://publieople.github.io/design-museum/catalog/type.json)（9 条）· [Markdown](https://publieople.github.io/design-museum/catalog/type.md)
 
 ## 分片（标签与别名）
 
 - [catalog/tags.json](https://publieople.github.io/design-museum/catalog/tags.json)：18 个受控标签 × 词条 slug（含 facet 与计数）
-- [catalog/aliases.json](https://publieople.github.io/design-museum/catalog/aliases.json)：258 条俗称 → 词条 slug（重复 alias 已合并）
+- [catalog/aliases.json](https://publieople.github.io/design-museum/catalog/aliases.json)：279 条俗称 → 词条 slug（重复 alias 已合并）
 
 ## 给 AI 的用法
 
@@ -46,6 +46,7 @@
 - [轻提示 Toast](https://publieople.github.io/design-museum/entry/toast/)：一条短消息从屏幕边缘滑进来，几秒后自己消失，不打断当前操作。
 - [涟漪反馈 Ripple](https://publieople.github.io/design-museum/entry/ripple/)：点下去的地方荡开一圈水波，告诉用户这一下收到了。
 - [命令面板 Command Palette](https://publieople.github.io/design-museum/entry/command-palette/)：按一个快捷键弹出一个搜索框，敲几个字就能跳到任何功能。
+- [停靠栏放大 Dock Magnification](https://publieople.github.io/design-museum/entry/dock-magnify/)：指针越靠近图标，图标放得越大，像 macOS 的 Dock。
 - [粘性头部 Sticky Header](https://publieople.github.io/design-museum/entry/sticky-header/)：页面滚动时头部留在顶部，常配合「下滑隐藏、上滑出现」。
 - [粘性堆叠卡片 Sticky Stacking Cards](https://publieople.github.io/design-museum/entry/sticky-stack/)：滚动时后面的卡片一张张压上来，前一张缩小留在底下。
 - [瀑布流 Masonry](https://publieople.github.io/design-museum/entry/masonry/)：卡片高度不齐，自动落进最短的那一列，底部不留大洞。
@@ -62,6 +63,7 @@
 - [渐变描边 Gradient Border](https://publieople.github.io/design-museum/entry/gradient-border/)：描边不是一种颜色，而是一条渐变沿着元素轮廓走一圈。
 - [极光渐变 Aurora Gradient](https://publieople.github.io/design-museum/entry/aurora-gradient/)：几团彩色光斑在底色上慢慢游动，像极光一样铺满整屏。
 - [边缘渐隐 Mask Fade](https://publieople.github.io/design-museum/entry/mask-fade/)：内容在边缘渐渐淡掉，暗示这一头还能继续滑。
+- [流星雨 Meteor Shower](https://publieople.github.io/design-museum/entry/meteor-shower/)：几条细长的光斜着划过，尾巴渐隐，像一场安静的流星雨。
 - [流体排版 Fluid Type](https://publieople.github.io/design-museum/entry/fluid-type/)：字号随容器宽度连续变化，不会在断点上突然跳一档。
 - [平衡折行 Text Balance](https://publieople.github.io/design-museum/entry/text-balance/)：多行标题的每行长度被拉齐，最后一行不再只剩一个孤字。
 - [渐变文字 Gradient Text](https://publieople.github.io/design-museum/entry/gradient-text/)：把文字当成蒙版，露出来的不是单色而是背后的渐变。
@@ -70,3 +72,4 @@
 - [数字滚动 Count Up](https://publieople.github.io/design-museum/entry/count-up/)：数字从 0 快速滚到目标值，然后停住。
 - [描边文字 Text Stroke](https://publieople.github.io/design-museum/entry/text-stroke/)：文字只留一圈轮廓、里面是空的，大标题一下就硬起来了。
 - [等宽数字 Tabular Numbers](https://publieople.github.io/design-museum/entry/tabular-numbers/)：让每个数字占一样宽，数值变化时整行不会左右抖。
+- [打字机效果 Typewriter](https://publieople.github.io/design-museum/entry/typewriter/)：文字像被键盘一个字一个字敲出来，末尾光标一直闪。

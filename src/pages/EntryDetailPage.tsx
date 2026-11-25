@@ -12,6 +12,7 @@ import { interactionHintKey, loopPolicy, shouldAutoLoop, type LoopPolicy } from 
 import { usePrefs } from '../lib/prefs'
 import { Link, navigate, useRoute } from '../lib/router'
 import { comparePath, entryPath, liveDemoPath } from '../lib/routes'
+import { similarEntries } from '../lib/similar'
 import { buttonClass } from '../components/Button'
 import { ControlPanel } from '../components/ControlPanel'
 import { DemoRunner } from '../components/DemoRunner'
@@ -79,6 +80,12 @@ export function EntryDetailPage({ slug }: { slug?: string }) {
         : [],
     [entry],
   )
+  // 相似展品只看首屏就有的 EntryMeta；手写 related 要由完整词条补进来
+  const similar = useMemo(() => {
+    if (!entry) return []
+    const self = ENTRY_META.find((meta) => meta.slug === entry.slug)
+    return self ? similarEntries(self, ENTRY_META, 4, entry.related) : []
+  }, [entry])
 
   if (!entry || !resolved) {
     return (
@@ -323,6 +330,30 @@ export function EntryDetailPage({ slug }: { slug?: string }) {
               ))}
             </ul>
           </Section>
+
+          {similar.length > 0 ? (
+            <Section title={t('entry.similar')}>
+              <p className="text-caption text-muted">{t('entry.similarHint')}</p>
+              <ul className="flex flex-col divide-y divide-line">
+                {similar.map((item) => (
+                  <li key={item.slug}>
+                    <Link
+                      to={entryPath(item.slug)}
+                      className="row-link -mx-2 flex items-baseline gap-3 px-2 py-2 no-underline"
+                    >
+                      <span className="font-mono text-[10px] text-accent">{item.code}</span>
+                      <span className="font-display text-caption font-semibold text-ink">
+                        {item.nameZh}
+                      </span>
+                      <span className="ml-auto truncate font-mono text-[10px] text-muted">
+                        {item.nameEn}
+                      </span>
+                    </Link>
+                  </li>
+                ))}
+              </ul>
+            </Section>
+          ) : null}
 
           {related.length > 0 ? (
             <Section title={t('entry.related')}>
