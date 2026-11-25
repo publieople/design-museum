@@ -22,6 +22,10 @@ const entry: Entry = {
       with: '光晕聚光',
       diff: '聚光跟着指针走，是人给的反馈；极光自己漂，有没有人都一样。',
     },
+    {
+      with: '流星雨',
+      diff: '极光渐变是一整片连续色场在慢速漂移，没有可数的个体；流星雨是几十条离散的拖尾按固定倾角划过，能数出数量，也各自有生命周期。',
+    },
   ],
   pitfalls: [
     '大面积模糊很贵：光斑要放在独立图层里用 transform 位移，别每帧改 background-position',
@@ -94,12 +98,16 @@ const entry: Entry = {
     ],
     confusions: [
       {
-        with: 'mesh gradient',
+        with: 'Mesh Gradient',
         diff: 'A mesh gradient stacks radial gradients into a still, soft glow. An aurora gradient adds the movement: translate, blur and saturation, so the blobs travel.',
       },
       {
-        with: 'spotlight card',
+        with: 'Spotlight Glow',
         diff: 'A spotlight follows the pointer, so it is feedback. An aurora drifts on its own, with or without a user.',
+      },
+      {
+        with: 'Meteor Shower',
+        diff: 'An aurora gradient is one continuous color field drifting slowly, with no countable parts. A meteor shower is dozens of discrete trails crossing at fixed angles, each with its own lifetime and count.',
       },
     ],
     pitfalls: [

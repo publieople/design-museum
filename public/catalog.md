@@ -1,6 +1,6 @@
 # 前端设计博物馆 · 词条目录 v1
 
-> 41 条前端效果词条，中英双语名字 + 口语别名 + 易混项 + 踩坑 + 推荐取值 + 控件默认值 + 可直接提给 AI 的中英需求句。
+> 44 条前端效果词条，中英双语名字 + 口语别名 + 易混项 + 踩坑 + 推荐取值 + 控件默认值 + 可直接提给 AI 的中英需求句。
 > 站点：https://publieople.github.io/design-museum/ · 机器可读版：https://publieople.github.io/design-museum/catalog.json
 
 ## 怎么用它
@@ -46,7 +46,7 @@
 - 无障碍降级：prefers-reduced-motion: reduce 时不播放位移与淡入，直接以最终状态渲染整组元素。
 - 提给 AI（中文）：给这组列表项做交错进场（stagger）动画：每项从下方 16px、opacity 0 进入最终位置，单项时长 420ms，缓动 cubic-bezier(0.22, 1, 0.36, 1)，相邻两项间隔 80ms。只在首次出现时播放一次，用 transform 和 opacity 实现。系统开启「减少动态效果」时直接显示最终状态。
 - Ask for it (English keywords): staggered entrance, animation-delay: index * 80ms, each item fades in with opacity 0 → 1 and translateY(16px) → 0, duration 420ms, easing cubic-bezier(0.22, 1, 0.36, 1), play once on first view, animate transform/opacity only, respect prefers-reduced-motion
-- 相关：scroll-reveal, easing, spring
+- 相关：scroll-reveal, easing, spring, char-reveal
 - 参考：[MDN · animation-delay](https://developer.mozilla.org/docs/Web/CSS/animation-delay) · [web.dev · 用 transform 和 opacity 做动画](https://web.dev/articles/animations-guide)
 
 <a id="easing"></a>
@@ -172,7 +172,7 @@
 - 无障碍降级：prefers-reduced-motion: reduce 时把时间线换成普通的固定时长动画，或让元素直接停在进度终点，进度条这类指示物保留但不跟着滚。
 - 提给 AI（中文）：用 CSS 滚动驱动动画（scroll-driven animations）做这个效果：卡片用 animation-timeline: view()、animation-range: entry 0% cover 60%，把滚动进度映射到 rotateZ(30deg) 和 opacity 上；顶部进度条用 animation-timeline: scroll() 配 transform: scaleX()。滚动事件里不要写 JS。Safari / Firefox 不支持时，用 intersection 触发一段 600ms 的普通动画兜底，并给出「不支持」的提示。
 - Ask for it (English keywords): scroll-driven animations, animation-timeline: view(), animation-range: entry 0% cover 60%, keyframes on rotateZ(30deg) and opacity, scroll progress bar via animation-timeline: scroll() with transform: scaleX(), no scroll event listeners, feature-detect with CSS.supports('animation-timeline: scroll()'), fallback to a 600ms reveal with IntersectionObserver, respect prefers-reduced-motion
-- 相关：scroll-reveal, parallax, sticky-header
+- 相关：scroll-reveal, parallax, sticky-header, view-transitions
 - 参考：[Chrome for Developers · 滚动驱动动画](https://developer.chrome.com/docs/css-ui/scroll-driven-animations) · [MDN · animation-timeline](https://developer.mozilla.org/docs/Web/CSS/animation-timeline)
 
 <a id="view-transitions"></a>
@@ -213,6 +213,7 @@
 - 别搞混 · 磁吸按钮：磁吸按钮是按钮朝指针靠过来，指针本身不动；光标跟随是替代指针的位置，元素永远慢半拍追着指针跑。
 - 别搞混 · 光标拖尾：拖尾会在后面留一串残影（几十个点或一条流线）；跟随只有一到两个点，重点是「滞后感」而不是「痕迹」。
 - 别搞混 · 光晕聚光：聚光光晕不动元素本身，只改卡片内部一层径向光的圆心，通常还裁在卡片里；光标跟随要让一个真实元素跟着指针跑，能离开卡片、盖住其它内容。
+- 别搞混 · 停靠栏放大：光标跟随是一个独立元素追着指针满屏跑，接管指针的可见性；停靠栏放大没有任何跟随物，只有一排固定图标按指针距离改变尺寸，系统指针照常显示。
 - 坑：把系统光标藏了，就必须保证键盘用户还能看清焦点：:focus-visible 的样式不能省
 - 坑：pointermove 里每帧 setState 会掉帧，用 requestAnimationFrame 或直接改元素的 transform
 - 坑：跟随元素要 pointer-events: none，否则它会挡住底下的点击
@@ -264,6 +265,7 @@
 - 别搞混 · 按压反馈：悬停抬升是指针停留在上面期间持续存在的状态，用 :hover；按压反馈是按下和松开那一瞬的反馈，用 :active。两者经常叠着用，但触发时机完全不同。
 - 别搞混 · 滚动视差（parallax）：悬停抬升只由指针驱动，鼠标进出才动；视差由滚动驱动，鼠标不动、只滚页面它也会移动。
 - 别搞混 · 磁吸按钮：悬停抬升只沿固定方向（通常 translateY(-4px)）位移，指针位置不影响方向；磁吸按钮把指针相对按钮中心的偏移乘一个系数，方向跟着指针走，指针离开才弹回。
+- 别搞混 · 停靠栏放大：悬停抬升只有指针进出两个状态，一次只抬起被指的那个元素；停靠栏放大按指针到每个图标的距离连续算缩放，整排图标一起起伏，指针停在两个图标之间时两边都会变大。
 - 坑：只加位移不加阴影，元素会像一张贴纸飘起来，没有重量感；位移和阴影要一起变
 - 坑：触摸设备没有 hover，点完 :hover 可能粘住不消失，所以静止态本身必须完整可读
 - 坑：位移超过 8px 会显得轻浮、像在跳，2–6px 通常刚好
@@ -314,6 +316,7 @@
 - 别搞混 · 悬停抬升：抬升的方向是固定的，永远垂直向上；磁吸会朝指针方向做二维偏移，指针在左下方就往左下方走。
 - 别搞混 · 指针视差（pointer parallax）：视差是整个容器跟着指针大范围移动，几十像素起步；磁吸只在按钮附近的小范围内移动几像素到十几像素。
 - 别搞混 · 光标跟随：光标跟随替换的是指针本身：一个元素追着指针满屏跑，指针的可见性由它接管；磁吸按钮仍用原生指针，只是按钮朝指针方向偏移几像素，指针一离开按钮就回弹。
+- 别搞混 · 停靠栏放大：磁吸按钮朝指针方向整体位移，追的是指针坐标；停靠栏放大的图标位置不动，只按距离从底边中心缩放，指针不需要落在任何图标上也能改变一排的大小。
 - 坑：触发半径开太大（超过按钮尺寸两倍）会满屏乱飘，1–1.5 倍按钮宽高就够
 - 坑：位移不设上限会让按钮躲开指针、点不中，最多 6–16px
 - 坑：每次 pointermove 都 setState 会掉帧，用 requestAnimationFrame 节流，或直接改 CSS 变量和 element.style
@@ -397,7 +400,7 @@
 - 无障碍降级：prefers-reduced-motion: reduce 下取消入场和退场的位移与淡出，直接出现、直接消失，停留时长保持不变。
 - 提给 AI（中文）：做一个轻提示（toast）组件：触发后从底部居中滑入，滑入距离 12px，入场 220ms ease-out，停留 3000ms 后自动消失。容器用 role="status" 和 aria-live="polite"，多条时纵向堆叠、最多同时 3 条。动画只用 transform: translateY 和 opacity，禁用状态别遮挡页面操作。系统减少动态效果时直接出现和消失。
 - Ask for it (English keywords): toast / snackbar component, slides in from 底部居中, translateY(12px) with 220ms ease-out, auto-dismiss after 3000ms, role="status" aria-live="polite", stack up to 3 toasts, animate transform + opacity only, non-blocking, no entry/exit animation under prefers-reduced-motion
-- 相关：optimistic-ui, skeleton-shimmer, sticky-header
+- 相关：optimistic-ui, skeleton-shimmer, sticky-header, command-palette
 - 参考：[MDN · ARIA live regions](https://developer.mozilla.org/docs/Web/Accessibility/ARIA/ARIA_Live_Regions) · [MDN · role="status"](https://developer.mozilla.org/docs/Web/Accessibility/ARIA/Roles/status_role) · [MDN · transition](https://developer.mozilla.org/docs/Web/CSS/transition)
 
 <a id="ripple"></a>
@@ -451,6 +454,32 @@
 - Ask for it (English keywords): command palette overlay, meta+k / ctrl+k plus / shortcut, live fuzzy filter over commands, top 6 results, arrow keys move the highlight, Enter runs the command, Escape closes, focus moves into the input on open and back to the trigger on close, aria-selected / aria-activedescendant on the active row, 150ms scale and fade in and out, opacity only under prefers-reduced-motion
 - 相关：accordion, toast
 - 参考：[MDN · role="listbox"](https://developer.mozilla.org/docs/Web/Accessibility/ARIA/Roles/listbox_role) · [MDN · aria-activedescendant](https://developer.mozilla.org/docs/Web/Accessibility/ARIA/Attributes/aria-activedescendant)
+
+<a id="dock-magnify"></a>
+
+### F-09 停靠栏放大 · Dock Magnification
+
+- 地址：https://publieople.github.io/design-museum/entry/dock-magnify/
+- 展厅：feedback · 标签：js, composited, pointer-dependent, motion-heavy · 形态：stage
+- 一句话：指针越靠近图标，图标放得越大，像 macOS 的 Dock。
+- 别名：Dock 放大、图标放大、靠近放大、dock magnification、icon magnification、proximity scale、magnify on hover
+- 关键词：dock magnification, pointer distance, scale(), transform-origin, pointermove, getBoundingClientRect, falloff
+- 什么时候用：底部或侧边的图标导航，想让「现在指着哪个」一眼可见 / 工具条、表情选择器这类图标密集、放不下文字标签的地方 / 想要一点活泼的手感，又不想让整排图标一起跳舞
+- 别搞混 · 悬停抬升：悬停抬升只判断指针进没进去，一个元素整体上浮加阴影，邻居完全不动；停靠栏放大是按指针到每个图标中心的距离连续算缩放，越近越大，还会把左右邻居一起带起来。
+- 别搞混 · 磁吸按钮：磁吸按钮是元素朝指针方向位移，像被吸过去；停靠栏放大的图标位置不动，只是围绕自己的底边变大，指针不需要按下去。
+- 别搞混 · 光标跟随：光标跟随有一个独立的光斑或自定义光标跟着指针跑；停靠栏放大没有跟随物，只有一排固定位置的图标按距离改变尺寸。
+- 坑：别用 width/height 做放大，那是在每帧触发布局；用 transform: scale()，并把 transform-origin 设成底边中心，图标才像从托盘里长出来。
+- 坑：缩放过渡超过 200ms 时，指针快速划过会拖出一串跟不上手的「果冻」；控制在 60–120ms，或干脆按帧直接写 transform。
+- 坑：放大后的图标会盖住邻居或顶出容器，给整排留出上方空间（padding-top 或 overflow: visible），别让最大的那颗被裁掉。
+- 坑：最大缩放别超过 2 倍、影响半径别超过整排宽度的一半，否则一次只看得清一个图标，导航反而变慢。
+- 坑：触屏没有 hover；粗指针设备或 prefers-reduced-motion 下保持原始大小，不要用点击去模拟悬停。
+- 推荐取值：最大缩放=1.5–1.8 倍；影响半径=100–160px；相邻缩放差=不超过 0.35 倍；缩放过渡=60–120ms
+- 控件默认值：maxScale(最大缩放)=1.55x；radius(影响半径)=120px；labels(显示名称)=true
+- 无障碍降级：prefers-reduced-motion: reduce 时整排图标保持原始尺寸，不做缩放和上浮，只用文字说明指针在哪一颗上。
+- 提给 AI（中文）：做一个停靠栏放大（dock magnification）的图标条：一排同尺寸图标，监听 pointermove，用 getBoundingClientRect 算出指针到每个图标中心的水平距离 d，缩放 = 1 + (1.55 - 1) × max(0, 1 - d / 120)²，transform-origin 设为 bottom center，过渡 80ms 线性，只动 transform；指针离开后回到 1 倍。图标下方保留名称标签。prefers-reduced-motion 时不做缩放，粗指针设备保持原始大小。
+- Ask for it (English keywords): dock magnification icon bar: a row of equally sized icons, listen to pointermove, measure the horizontal distance d from the pointer to each icon centre with getBoundingClientRect, scale = 1 + (1.55 - 1) * max(0, 1 - d / 120) squared, transform-origin bottom center, transition transform 80ms linear, animate transform only, reset to 1x on pointer leave. Keep a visible label under each icon. Keep icons at their natural size under prefers-reduced-motion and on coarse pointers.
+- 相关：magnetic-button, hover-lift, cursor-follower
+- 参考：[MDN · Pointer events](https://developer.mozilla.org/docs/Web/API/Pointer_events) · [MDN · scale()](https://developer.mozilla.org/docs/Web/CSS/scale) · [web.dev · 用 transform 和 opacity 做动画](https://web.dev/articles/animations-guide)
 
 <a id="sticky-header"></a>
 
@@ -576,7 +605,7 @@
 - 无障碍降级：吸附本身不是动画，不用关；但用 scroll-behavior: smooth 滚到某一张时，prefers-reduced-motion: reduce 下应改回 auto，直接跳过去。
 - 提给 AI（中文）：做一个横向滚动的卡片选择器：滚动容器用 scroll-snap-type: x mandatory，子项用 scroll-snap-align: start，容器加 scroll-padding: 12px，子项加 scroll-snap-stop: always，防止一次滑动跳过好几张。容器自身要有固定高度和 overflow-x: auto，让原生惯性和键盘滚动都可用。系统开启「减少动态效果」时 scroll-behavior 用 auto。
 - Ask for it (English keywords): horizontal snap slider, scroll container with scroll-snap-type: x mandatory, items with scroll-snap-align: start, scroll-padding: 12px, scroll-snap-stop: always to prevent skipping multiple slides, overflow-x: auto container with fixed height, native momentum scrolling and keyboard support, scroll-behavior: auto under prefers-reduced-motion
-- 相关：scroll-driven, sticky-header, masonry
+- 相关：scroll-driven, sticky-header, masonry, virtual-scrolling
 - 参考：[MDN · CSS scroll snap](https://developer.mozilla.org/docs/Web/CSS/CSS_scroll_snap) · [MDN · scroll-snap-type](https://developer.mozilla.org/docs/Web/CSS/scroll-snap-type)
 
 <a id="accordion"></a>
@@ -641,6 +670,7 @@
 - 什么时候用：客户 logo 墙、合作方列表这类「多到放不下但每条都很短」的内容 / 公告、注意事项这类要一直提醒但不值得占一整屏的信息 / 标签流、作品缩略图做背景装饰，让画面一直在动
 - 别搞混 · 自动轮播：轮播是分页的：一屏一屏地翻，还有指示点；跑马灯是匀速连续滚动，没有「第几屏」的概念。
 - 别搞混 · 滚动捕捉：滚动捕捉是用户自己滑、停下时吸附到某一项；跑马灯是自己走、用户只读，停下来只是因为悬停。
+- 别搞混 · 打字机效果：跑马灯把一整条内容横向平移，文字本身一次就全部存在；打字机是在原地逐个增加字符，宽度随字数增长，还带一个闪烁光标。
 - 坑：无缝要复制一份内容并整体平移 50%（或正好一整份的宽度），否则会看到「唰」地跳回起点
 - 坑：用 transform: translate3d 做位移，别用 margin-left / left，后者每帧都要重排
 - 坑：悬停或聚焦时暂停是惯例，最好再给一个暂停按钮，否则读屏和慢读的用户永远读不完
@@ -747,6 +777,7 @@
 - 别搞混 · 半透明黑色遮罩：蒙一层黑是整体压暗，亮度往下走；噪点让每个像素随机变亮或变暗，平均亮度不变，所以画面不黑，只是有了颗粒。
 - 别搞混 · 重复纹理贴图：平铺一张 png 会看到重复单元和接缝，放大后尤其明显；feTurbulence 生成的是程序化噪声，配合 stitchTiles="stitch" 几乎看不出重复，颗粒粗细还能随参数调。
 - 别搞混 · 抖动 dithering：抖动是渲染器为了压制色带自己做的，粒度跟像素对齐；颗粒噪点是你手动叠的一层材质，可以调大小、强度和混合模式。
+- 别搞混 · 流星雨：颗粒噪点是一层静止不动的程序化材质，整屏均匀分布；流星雨是若干条会移动、会消失的亮线，位置和出现时机都不均匀。
 - 坑：baseFrequency 低于 0.3 会变成大块云雾，不像颗粒；0.5–0.9 之间才是细砂
 - 坑：噪点层必须 pointer-events: none，不然整块区域都点不动
 - 坑：不透明度超过 15% 画面会发脏，文字对比度也跟着掉，3%–10% 通常刚好
@@ -776,6 +807,7 @@
 - 别搞混 · 跟随指针的拖尾：拖尾装饰的是鼠标本身，跟着指针满屏幕跑；聚光被裁在元素内部（overflow: hidden 或 mask），是打在表面的一层。
 - 别搞混 · 极光渐变：极光渐变是整片背景自己缓慢漂移，和指针无关；聚光光晕有一个跟随指针的圆心，被裁在元素内部，指针不动它就停住。
 - 别搞混 · 光标跟随：光标跟随的元素在元素外部跟着指针满屏移动，是独立的光标替代品；聚光光晕被 overflow: hidden 或 mask 裁在卡片内部，只是卡片表面的一层光，不能跑出边界。
+- 别搞混 · 流星雨：聚光光晕只有一个圆心，位置由指针决定，通常裁在卡片内部；流星雨是许多条独立的拖尾，按时间和倾角自己划过，和指针无关。
 - 坑：别在 pointermove 里 setState，一帧多次重渲染会卡；把坐标直接写进元素的 style.transform 或 CSS 变量
 - 坑：光斑要 overflow: hidden 裁在卡片里，否则看起来是飘在旁边的一个圆
 - 坑：触屏没有 hover，必须给一个默认居中或居下的静态光斑，否则移动端一片死黑
@@ -831,6 +863,7 @@
 - 什么时候用：落地页、产品首屏的大背景，要氛围但不要具体图形 / 深色界面想要一块会呼吸的底色 / 发布页、活动页需要持续流动感，又不想用视频或图片
 - 别搞混 · 网格渐变：网格渐变是多个径向渐变叠出来的静态柔光；极光是这些光团在位移（translate + blur + 饱和度），重点在「慢慢游动」。
 - 别搞混 · 光晕聚光：聚光跟着指针走，是人给的反馈；极光自己漂，有没有人都一样。
+- 别搞混 · 流星雨：极光渐变是一整片连续色场在慢速漂移，没有可数的个体；流星雨是几十条离散的拖尾按固定倾角划过，能数出数量，也各自有生命周期。
 - 坑：大面积模糊很贵：光斑要放在独立图层里用 transform 位移，别每帧改 background-position
 - 坑：光斑 3–5 团就够，堆多了只会糊成一片，看不出「极光」
 - 坑：动画要慢（一轮 20–40s），快了像故障闪烁
@@ -871,6 +904,32 @@
 - Ask for it (English keywords): fade the edges of this scrollable area with mask-image: linear-gradient(90deg, transparent, #000 12%, #000 88%, transparent) (plus -webkit-mask-image), so 12% of each end fades out and hints that there is more to scroll, applied symmetrically on both ends, not combined with backdrop-filter on the same element
 - 相关：marquee, scroll-snap
 - 参考：[MDN · mask-image](https://developer.mozilla.org/docs/Web/CSS/mask-image) · [MDN · CSS masking](https://developer.mozilla.org/docs/Web/CSS/CSS_masking)
+
+<a id="meteor-shower"></a>
+
+### V-09 流星雨 · Meteor Shower
+
+- 地址：https://publieople.github.io/design-museum/entry/meteor-shower/
+- 展厅：visual · 标签：css-only, composited, motion-heavy, stable · 形态：stage
+- 一句话：几条细长的光斜着划过，尾巴渐隐，像一场安静的流星雨。
+- 别名：流星、流星拖尾、斜向流星、meteor shower、shooting stars、meteor effect、falling stars
+- 关键词：meteor shower, linear-gradient, @keyframes, translate3d, animation-delay, opacity, will-change
+- 什么时候用：暗色首屏或节日活动页，想要一点「夜空」的氛围而不是满屏动效 / 加载等待、空状态的背景，让停顿不显得死 / 发布成功、订阅完成这类庆祝时刻的轻量装饰，比礼花克制
+- 别搞混 · 极光渐变：极光渐变是几团大面积色斑缓慢呼吸、互相叠加，没有方向也没有起点终点；流星雨是离散的细线沿固定倾角快速划过，一条结束才轮到下一条。
+- 别搞混 · 光晕聚光：光晕聚光是跟着指针或某个焦点的圆形光斑，位置由交互决定；流星雨的位置和节奏由动画自己安排，用户不操作也会持续发生。
+- 别搞混 · 颗粒噪点：颗粒噪点是整屏静态的随机纹理，用来去掉渐变的塑料感；流星雨是有明确运动方向和拖尾的动态元素，两者的目的是氛围与事件感。
+- 坑：别对每条流星用大半径 blur 或 box-shadow，叠加十几条会直接掉帧；用 transform 位移加线性渐变的尾迹，必要时才加一层很轻的发光。
+- 坑：流星太多会盖住正文：6–12 条、透明度压在 0.5 以下，并且整层 pointer-events: none、z-index 在内容之下。
+- 坑：浅色舞台上白色流星几乎看不见，用 var(--stage-ink) 或强调色；要固定夜空底就自己垫一层深色，不要假设页面背景是深色。
+- 坑：所有流星同时从同一点出发会像下雨而不是流星雨；用负的 animation-delay 和不同的起点、时长把它们打散。
+- 坑：prefers-reduced-motion 下停掉位移和闪烁，只留几条静止的斜向光带或纯渐变底。
+- 推荐取值：流星数量=6–12 条；单条时长=2–4s；倾角=35–55°；尾迹长度=80–160px
+- 控件默认值：count(流星数量)=8条；duration(单条时长)=3s；angle(倾角)=45
+- 无障碍降级：prefers-reduced-motion: reduce 时停掉位移动画，只保留几条静止的斜向光带或纯渐变背景，不闪不划。
+- 提给 AI（中文）：做一个流星雨（meteor shower）背景：8 条细长的流星从右上往左下以 45° 斜向划过，单条 3s 走完，尾迹 80–160px 并用 linear-gradient 从透明渐到亮端，透明度最高 0.5。用 CSS @keyframes 只动 transform 和 opacity，每条用负 animation-delay 和不同起点、时长打散，整体 pointer-events: none 并压在内容层下面；颜色取 var(--stage-ink) 或强调色，不写死白色。prefers-reduced-motion 时停掉动画，只留静止光带。
+- Ask for it (English keywords): meteor shower background: 8 thin meteors cross from the top right toward the bottom left at 45 degrees, each taking 3s, with an 80 to 160px tail drawn as a linear-gradient from transparent to a bright head and a peak opacity of 0.5. Animate transform and opacity only with CSS @keyframes, desynchronise them with negative animation-delay plus varied origins and durations, set pointer-events: none and keep the layer behind the content, and colour it with var(--stage-ink) or the accent colour instead of hard-coded white. Under prefers-reduced-motion stop the motion and keep only static diagonal streaks.
+- 相关：aurora-gradient, spotlight-glow, parallax
+- 参考：[MDN · @keyframes](https://developer.mozilla.org/docs/Web/CSS/@keyframes) · [MDN · linear-gradient()](https://developer.mozilla.org/docs/Web/CSS/gradient/linear-gradient) · [web.dev · 用 transform 和 opacity 做动画](https://web.dev/articles/animations-guide)
 
 <a id="fluid-type"></a>
 
@@ -1012,6 +1071,7 @@
 - 别搞混 · 机械翻牌 odometer：odometer 是每一位数字上下滚动或翻页，位与位之间有物理位移；数字滚动只是数值在变，字形本身不动。
 - 别搞混 · CSS @property 数值动画：@property 可以注册一个整数自定义属性再交给 counter() 渲染，纯 CSS 就能跑，但插值交给浏览器，格式和缓动不好控；要精确控制格式、缓动和重播，用 requestAnimationFrame 手写更稳。
 - 别搞混 · 等宽数字：等宽数字只是把每个数字字形固定成同一宽度（font-variant-numeric: tabular-nums），数值本身不变；数字滚动是数值在时间上从旧值增长到新值，通常还要配合等宽数字防止宽度抖动。
+- 别搞混 · 打字机效果：数字滚动改的是数值，字形不动，最后停在终值上；打字机效果改的是字符数量，文字一个接一个出现，通常还会循环重播。
 - 坑：位数变化会撑动布局（9 变 10、99 变 100），给容器预留宽度，并用 font-variant-numeric: tabular-nums 让每位数字等宽。
 - 坑：requestAnimationFrame 循环要在组件卸载时 cancel，否则组件没了还在 setState。
 - 坑：rAF 回调拿到的是高精度时间戳，用它减去开始时间；不要和 Date.now() 混算，也不要拿 setInterval 每帧加固定值，掉帧时会越走越慢。
@@ -1075,3 +1135,29 @@
 - Ask for it (English keywords): counter with font-variant-numeric: tabular-nums (legacy font-feature-settings: "tnum"), updated every 700ms without the row width shifting, right-aligned inside a min-width column so 9 to 10 does not resize the block, numbers in tables aligned with text-align: right
 - 相关：count-up, variable-font
 - 参考：[MDN · font-variant-numeric](https://developer.mozilla.org/docs/Web/CSS/font-variant-numeric) · [MDN · font-feature-settings](https://developer.mozilla.org/docs/Web/CSS/font-feature-settings)
+
+<a id="typewriter"></a>
+
+### T-09 打字机效果 · Typewriter
+
+- 地址：https://publieople.github.io/design-museum/entry/typewriter/
+- 展厅：type · 标签：js, main-thread, motion-heavy, stable · 形态：stage
+- 一句话：文字像被键盘一个字一个字敲出来，末尾光标一直闪。
+- 别名：打字效果、逐字打字、打字机、typewriter effect、typing effect、type-on text、caret blink
+- 关键词：typewriter effect, steps(), caret-color, setTimeout, Array.from, aria-live, prefers-reduced-motion
+- 什么时候用：首屏只有一句主张，想让读者跟着敲字的节奏往下读 / 终端、代码编辑器、复古机械感的界面语言 / AI 回答的流式预览、输入框旁的示例问题，用打字暗示「正在生成」
+- 别搞混 · 逐字显现：逐字显现是整句话早已排好版，每个字从透明和偏移回到原位，文本长度不变；打字机是文本真的一个字一个字长出来，后面还没打到的地方是空的，通常还配一个闪烁光标。
+- 别搞混 · 跑马灯：跑马灯是一整段文字横向循环滚动，适合放不下的长文本；打字机在原地逐字增加内容，不横向移动，长度到顶后一般停住或清空重打。
+- 别搞混 · 数字滚动：数字滚动只处理数字，靠插值让读数从旧值跳到新值；打字机处理任意字符序列，按固定节奏追加字符，不存在中间数值。
+- 坑：每敲一个字都会改变文本宽度并触发重排；给容器预留最终宽度或固定 min-height，避免标题下面的内容跟着上下跳。
+- 坑：读屏软件会随着每次追加不断朗读；把正在打的部分设成 aria-hidden，另放一份完整句子给读屏，并且不要开 aria-live。
+- 坑：逐字更新用 setInterval 容易在切后台后堆积回调；改用 setTimeout 递归、每次重算下一拍，或者在页面隐藏时暂停。
+- 坑：中英文混排时按 UTF-16 下标切字符会把 emoji 和组合字符切坏；用 Array.from 或 Intl.Segmenter 按字素切。
+- 坑：标点和句末要有比普通字更长的停顿，否则读起来像机器在赶工；prefers-reduced-motion 下一次显示整句，不要保留循环。
+- 推荐取值：每字间隔=50–80ms；标点停顿=150–250ms；光标闪烁=1–1.2s，steps(2) 硬切；打完停留=1.5–2.5s 再循环
+- 控件默认值：speed(每字间隔)=70ms；hold(打完停留)=1600ms；caret(闪烁光标)=true
+- 无障碍降级：prefers-reduced-motion: reduce 时跳过逐字过程，整句一次显示，光标不再闪烁，也不自动循环重打。
+- 提给 AI（中文）：做一个打字机效果（typewriter）：把「把想法一个字一个字敲进屏幕里。」逐字打进容器，每字间隔 70ms，逗号句号后多停 180ms，整句打完后停留 1600ms 再清空重打。末尾放一个 1ch 宽的光标，用 steps(2) 每 1s 硬切闪烁。文本用 Array.from 按字素切分，容器预留最终宽度避免重排跳动；正在打的部分 aria-hidden，另放完整句子给读屏；prefers-reduced-motion 时整句一次显示且不循环。
+- Ask for it (English keywords): typewriter effect: type the sentence one character at a time with 70ms per character, add a 180ms pause after punctuation, hold the finished line for 1600ms, then clear and retype. Show a 1ch caret at the end that blinks with steps(2) every 1s. Split text by grapheme with Array.from, reserve the final width so the layout does not reflow, mark the typing part aria-hidden and expose the full sentence to screen readers, and show the whole line at once under prefers-reduced-motion with no loop.
+- 相关：char-reveal, count-up, marquee
+- 参考：[MDN · steps() 缓动函数](https://developer.mozilla.org/docs/Web/CSS/easing-function/steps) · [MDN · caret-color](https://developer.mozilla.org/docs/Web/CSS/caret-color) · [web.dev · 用 transform 和 opacity 做动画](https://web.dev/articles/animations-guide)

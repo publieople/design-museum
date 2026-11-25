@@ -45,7 +45,7 @@ const entry: Entry = {
     { label: 'MDN · animation-delay', url: 'https://developer.mozilla.org/docs/Web/CSS/animation-delay' },
     { label: 'web.dev · 用 transform 和 opacity 做动画', url: 'https://web.dev/articles/animations-guide' },
   ],
-  related: ['scroll-reveal', 'easing', 'spring'],
+  related: ['scroll-reveal', 'easing', 'spring', 'char-reveal'],
   scenes: ['list', 'page', 'nav'],
   feel: ['crisp', 'playful'],
   intent: ['hierarchy', 'attention'],

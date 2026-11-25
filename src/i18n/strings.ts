@@ -446,6 +446,11 @@ export const STRINGS = {
   'loop.continuous': { zh: '常驻循环', en: 'Loop' },
   'loop.manual': { zh: '手动触发', en: 'Manual' },
   'entry.code': { zh: '编号', en: 'No.' },
+  'entry.similar': { zh: '相似展品', en: 'Similar specimens' },
+  'entry.similarHint': {
+    zh: '按展厅、标签与适用场景自动推荐',
+    en: 'Suggested from hall, tags and use cases',
+  },
 
   'reverse.matches': { zh: '匹配 {n} 条', en: '{n} matches' },
   'reverse.rank': { zh: '按匹配度', en: 'Ranked by match' },

@@ -623,6 +623,10 @@ export const ENTRY_META: EntryMeta[] = [
       {
         "with": "光晕聚光",
         "diff": "聚光光晕不动元素本身，只改卡片内部一层径向光的圆心，通常还裁在卡片里；光标跟随要让一个真实元素跟着指针跑，能离开卡片、盖住其它内容。"
+      },
+      {
+        "with": "停靠栏放大",
+        "diff": "光标跟随是一个独立元素追着指针满屏跑，接管指针的可见性；停靠栏放大没有任何跟随物，只有一排固定图标按指针距离改变尺寸，系统指针照常显示。"
       }
     ],
     "pitfalls": [
@@ -794,6 +798,10 @@ export const ENTRY_META: EntryMeta[] = [
       {
         "with": "磁吸按钮",
         "diff": "悬停抬升只沿固定方向（通常 translateY(-4px)）位移，指针位置不影响方向；磁吸按钮把指针相对按钮中心的偏移乘一个系数，方向跟着指针走，指针离开才弹回。"
+      },
+      {
+        "with": "停靠栏放大",
+        "diff": "悬停抬升只有指针进出两个状态，一次只抬起被指的那个元素；停靠栏放大按指针到每个图标的距离连续算缩放，整排图标一起起伏，指针停在两个图标之间时两边都会变大。"
       }
     ],
     "pitfalls": [
@@ -955,6 +963,10 @@ export const ENTRY_META: EntryMeta[] = [
       {
         "with": "光标跟随",
         "diff": "光标跟随替换的是指针本身：一个元素追着指针满屏跑，指针的可见性由它接管；磁吸按钮仍用原生指针，只是按钮朝指针方向偏移几像素，指针一离开按钮就回弹。"
+      },
+      {
+        "with": "停靠栏放大",
+        "diff": "磁吸按钮朝指针方向整体位移，追的是指针坐标；停靠栏放大的图标位置不动，只按距离从底边中心缩放，指针不需要落在任何图标上也能改变一排的大小。"
       }
     ],
     "pitfalls": [
@@ -1408,6 +1420,89 @@ export const ENTRY_META: EntryMeta[] = [
     }
   },
   {
+    "slug": "dock-magnify",
+    "code": "F-09",
+    "nameZh": "停靠栏放大",
+    "nameEn": "Dock Magnification",
+    "aliases": [
+      "Dock 放大",
+      "图标放大",
+      "靠近放大",
+      "dock magnification",
+      "icon magnification",
+      "proximity scale",
+      "magnify on hover"
+    ],
+    "category": "feedback",
+    "oneLiner": "指针越靠近图标，图标放得越大，像 macOS 的 Dock。",
+    "whenToUse": [
+      "底部或侧边的图标导航，想让「现在指着哪个」一眼可见",
+      "工具条、表情选择器这类图标密集、放不下文字标签的地方",
+      "想要一点活泼的手感，又不想让整排图标一起跳舞"
+    ],
+    "confusions": [
+      {
+        "with": "悬停抬升",
+        "diff": "悬停抬升只判断指针进没进去，一个元素整体上浮加阴影，邻居完全不动；停靠栏放大是按指针到每个图标中心的距离连续算缩放，越近越大，还会把左右邻居一起带起来。"
+      },
+      {
+        "with": "磁吸按钮",
+        "diff": "磁吸按钮是元素朝指针方向位移，像被吸过去；停靠栏放大的图标位置不动，只是围绕自己的底边变大，指针不需要按下去。"
+      },
+      {
+        "with": "光标跟随",
+        "diff": "光标跟随有一个独立的光斑或自定义光标跟着指针跑；停靠栏放大没有跟随物，只有一排固定位置的图标按距离改变尺寸。"
+      }
+    ],
+    "pitfalls": [
+      "别用 width/height 做放大，那是在每帧触发布局；用 transform: scale()，并把 transform-origin 设成底边中心，图标才像从托盘里长出来。",
+      "缩放过渡超过 200ms 时，指针快速划过会拖出一串跟不上手的「果冻」；控制在 60–120ms，或干脆按帧直接写 transform。",
+      "放大后的图标会盖住邻居或顶出容器，给整排留出上方空间（padding-top 或 overflow: visible），别让最大的那颗被裁掉。",
+      "最大缩放别超过 2 倍、影响半径别超过整排宽度的一半，否则一次只看得清一个图标，导航反而变慢。",
+      "触屏没有 hover；粗指针设备或 prefers-reduced-motion 下保持原始大小，不要用点击去模拟悬停。"
+    ],
+    "keywords": [
+      "dock magnification",
+      "pointer distance",
+      "scale()",
+      "transform-origin",
+      "pointermove",
+      "getBoundingClientRect",
+      "falloff"
+    ],
+    "scenes": [
+      "nav",
+      "button"
+    ],
+    "feel": [
+      "playful",
+      "soft"
+    ],
+    "intent": [
+      "affordance",
+      "attention"
+    ],
+    "tags": [
+      "js",
+      "composited",
+      "pointer-dependent",
+      "motion-heavy"
+    ],
+    "demo": {
+      "shape": "stage",
+      "minHeight": 240
+    },
+    "loop": "manual",
+    "en": {
+      "oneLiner": "Icons grow as the pointer gets closer, the way a macOS Dock does."
+    },
+    "defaults": {
+      "maxScale": 1.55,
+      "radius": 120,
+      "labels": true
+    }
+  },
+  {
     "slug": "sticky-header",
     "code": "L-01",
     "nameZh": "粘性头部",
@@ -1478,7 +1573,7 @@ export const ENTRY_META: EntryMeta[] = [
     },
     "loop": "manual",
     "en": {
-      "oneLiner": "A page header that stays pinned on scroll and often hides on the way down."
+      "oneLiner": "A page header that stays pinned on scroll, often hiding as you scroll down and revealing itself as you scroll up."
     },
     "defaults": {
       "threshold": 60,
@@ -2000,6 +2095,10 @@ export const ENTRY_META: EntryMeta[] = [
       {
         "with": "滚动捕捉",
         "diff": "滚动捕捉是用户自己滑、停下时吸附到某一项；跑马灯是自己走、用户只读，停下来只是因为悬停。"
+      },
+      {
+        "with": "打字机效果",
+        "diff": "跑马灯把一整条内容横向平移，文字本身一次就全部存在；打字机是在原地逐个增加字符，宽度随字数增长，还带一个闪烁光标。"
       }
     ],
     "pitfalls": [
@@ -2340,6 +2439,10 @@ export const ENTRY_META: EntryMeta[] = [
       {
         "with": "抖动 dithering",
         "diff": "抖动是渲染器为了压制色带自己做的，粒度跟像素对齐；颗粒噪点是你手动叠的一层材质，可以调大小、强度和混合模式。"
+      },
+      {
+        "with": "流星雨",
+        "diff": "颗粒噪点是一层静止不动的程序化材质，整屏均匀分布；流星雨是若干条会移动、会消失的亮线，位置和出现时机都不均匀。"
       }
     ],
     "pitfalls": [
@@ -2431,6 +2534,10 @@ export const ENTRY_META: EntryMeta[] = [
       {
         "with": "光标跟随",
         "diff": "光标跟随的元素在元素外部跟着指针满屏移动，是独立的光标替代品；聚光光晕被 overflow: hidden 或 mask 裁在卡片内部，只是卡片表面的一层光，不能跑出边界。"
+      },
+      {
+        "with": "流星雨",
+        "diff": "聚光光晕只有一个圆心，位置由指针决定，通常裁在卡片内部；流星雨是许多条独立的拖尾，按时间和倾角自己划过，和指针无关。"
       }
     ],
     "pitfalls": [
@@ -2607,6 +2714,10 @@ export const ENTRY_META: EntryMeta[] = [
       {
         "with": "光晕聚光",
         "diff": "聚光跟着指针走，是人给的反馈；极光自己漂，有没有人都一样。"
+      },
+      {
+        "with": "流星雨",
+        "diff": "极光渐变是一整片连续色场在慢速漂移，没有可数的个体；流星雨是几十条离散的拖尾按固定倾角划过，能数出数量，也各自有生命周期。"
       }
     ],
     "pitfalls": [
@@ -2746,6 +2857,88 @@ export const ENTRY_META: EntryMeta[] = [
       "fade": 12,
       "axis": "x",
       "hardEdge": false
+    }
+  },
+  {
+    "slug": "meteor-shower",
+    "code": "V-09",
+    "nameZh": "流星雨",
+    "nameEn": "Meteor Shower",
+    "aliases": [
+      "流星",
+      "流星拖尾",
+      "斜向流星",
+      "meteor shower",
+      "shooting stars",
+      "meteor effect",
+      "falling stars"
+    ],
+    "category": "visual",
+    "oneLiner": "几条细长的光斜着划过，尾巴渐隐，像一场安静的流星雨。",
+    "whenToUse": [
+      "暗色首屏或节日活动页，想要一点「夜空」的氛围而不是满屏动效",
+      "加载等待、空状态的背景，让停顿不显得死",
+      "发布成功、订阅完成这类庆祝时刻的轻量装饰，比礼花克制"
+    ],
+    "confusions": [
+      {
+        "with": "极光渐变",
+        "diff": "极光渐变是几团大面积色斑缓慢呼吸、互相叠加，没有方向也没有起点终点；流星雨是离散的细线沿固定倾角快速划过，一条结束才轮到下一条。"
+      },
+      {
+        "with": "光晕聚光",
+        "diff": "光晕聚光是跟着指针或某个焦点的圆形光斑，位置由交互决定；流星雨的位置和节奏由动画自己安排，用户不操作也会持续发生。"
+      },
+      {
+        "with": "颗粒噪点",
+        "diff": "颗粒噪点是整屏静态的随机纹理，用来去掉渐变的塑料感；流星雨是有明确运动方向和拖尾的动态元素，两者的目的是氛围与事件感。"
+      }
+    ],
+    "pitfalls": [
+      "别对每条流星用大半径 blur 或 box-shadow，叠加十几条会直接掉帧；用 transform 位移加线性渐变的尾迹，必要时才加一层很轻的发光。",
+      "流星太多会盖住正文：6–12 条、透明度压在 0.5 以下，并且整层 pointer-events: none、z-index 在内容之下。",
+      "浅色舞台上白色流星几乎看不见，用 var(--stage-ink) 或强调色；要固定夜空底就自己垫一层深色，不要假设页面背景是深色。",
+      "所有流星同时从同一点出发会像下雨而不是流星雨；用负的 animation-delay 和不同的起点、时长把它们打散。",
+      "prefers-reduced-motion 下停掉位移和闪烁，只留几条静止的斜向光带或纯渐变底。"
+    ],
+    "keywords": [
+      "meteor shower",
+      "linear-gradient",
+      "@keyframes",
+      "translate3d",
+      "animation-delay",
+      "opacity",
+      "will-change"
+    ],
+    "scenes": [
+      "page",
+      "card"
+    ],
+    "feel": [
+      "calm",
+      "soft"
+    ],
+    "intent": [
+      "attention"
+    ],
+    "tags": [
+      "css-only",
+      "composited",
+      "motion-heavy",
+      "stable"
+    ],
+    "demo": {
+      "shape": "stage",
+      "minHeight": 280
+    },
+    "loop": "continuous",
+    "en": {
+      "oneLiner": "A few thin streaks of light cross the sky on a diagonal, tails fading as they go."
+    },
+    "defaults": {
+      "count": 8,
+      "duration": 3,
+      "angle": "45"
     }
   },
   {
@@ -3187,6 +3380,10 @@ export const ENTRY_META: EntryMeta[] = [
       {
         "with": "等宽数字",
         "diff": "等宽数字只是把每个数字字形固定成同一宽度（font-variant-numeric: tabular-nums），数值本身不变；数字滚动是数值在时间上从旧值增长到新值，通常还要配合等宽数字防止宽度抖动。"
+      },
+      {
+        "with": "打字机效果",
+        "diff": "数字滚动改的是数值，字形不动，最后停在终值上；打字机效果改的是字符数量，文字一个接一个出现，通常还会循环重播。"
       }
     ],
     "pitfalls": [
@@ -3395,6 +3592,87 @@ export const ENTRY_META: EntryMeta[] = [
       "tabular": true,
       "compare": true,
       "interval": 700
+    }
+  },
+  {
+    "slug": "typewriter",
+    "code": "T-09",
+    "nameZh": "打字机效果",
+    "nameEn": "Typewriter",
+    "aliases": [
+      "打字效果",
+      "逐字打字",
+      "打字机",
+      "typewriter effect",
+      "typing effect",
+      "type-on text",
+      "caret blink"
+    ],
+    "category": "type",
+    "oneLiner": "文字像被键盘一个字一个字敲出来，末尾光标一直闪。",
+    "whenToUse": [
+      "首屏只有一句主张，想让读者跟着敲字的节奏往下读",
+      "终端、代码编辑器、复古机械感的界面语言",
+      "AI 回答的流式预览、输入框旁的示例问题，用打字暗示「正在生成」"
+    ],
+    "confusions": [
+      {
+        "with": "逐字显现",
+        "diff": "逐字显现是整句话早已排好版，每个字从透明和偏移回到原位，文本长度不变；打字机是文本真的一个字一个字长出来，后面还没打到的地方是空的，通常还配一个闪烁光标。"
+      },
+      {
+        "with": "跑马灯",
+        "diff": "跑马灯是一整段文字横向循环滚动，适合放不下的长文本；打字机在原地逐字增加内容，不横向移动，长度到顶后一般停住或清空重打。"
+      },
+      {
+        "with": "数字滚动",
+        "diff": "数字滚动只处理数字，靠插值让读数从旧值跳到新值；打字机处理任意字符序列，按固定节奏追加字符，不存在中间数值。"
+      }
+    ],
+    "pitfalls": [
+      "每敲一个字都会改变文本宽度并触发重排；给容器预留最终宽度或固定 min-height，避免标题下面的内容跟着上下跳。",
+      "读屏软件会随着每次追加不断朗读；把正在打的部分设成 aria-hidden，另放一份完整句子给读屏，并且不要开 aria-live。",
+      "逐字更新用 setInterval 容易在切后台后堆积回调；改用 setTimeout 递归、每次重算下一拍，或者在页面隐藏时暂停。",
+      "中英文混排时按 UTF-16 下标切字符会把 emoji 和组合字符切坏；用 Array.from 或 Intl.Segmenter 按字素切。",
+      "标点和句末要有比普通字更长的停顿，否则读起来像机器在赶工；prefers-reduced-motion 下一次显示整句，不要保留循环。"
+    ],
+    "keywords": [
+      "typewriter effect",
+      "steps()",
+      "caret-color",
+      "setTimeout",
+      "Array.from",
+      "aria-live",
+      "prefers-reduced-motion"
+    ],
+    "scenes": [
+      "text",
+      "page"
+    ],
+    "feel": [
+      "crisp",
+      "playful"
+    ],
+    "intent": [
+      "attention"
+    ],
+    "tags": [
+      "js",
+      "main-thread",
+      "motion-heavy",
+      "stable"
+    ],
+    "demo": {
+      "shape": "stage"
+    },
+    "loop": "replay",
+    "en": {
+      "oneLiner": "Text is knocked out one character at a time, with a blinking caret at the end."
+    },
+    "defaults": {
+      "speed": 70,
+      "hold": 1600,
+      "caret": true
     }
   }
 ]

@@ -2,13 +2,13 @@
   "version": 1,
   "site": "https://publieople.github.io/design-museum",
   "counts": {
-    "entries": 41,
+    "entries": 44,
     "perCategory": {
       "motion": 9,
-      "feedback": 8,
+      "feedback": 9,
       "layout": 8,
-      "visual": 8,
-      "type": 8
+      "visual": 9,
+      "type": 9
     },
     "tags": 18
   },
@@ -325,7 +325,8 @@
       "related": [
         "scroll-reveal",
         "easing",
-        "spring"
+        "spring",
+        "char-reveal"
       ],
       "scenes": [
         "list",
@@ -849,7 +850,8 @@
       "related": [
         "scroll-reveal",
         "parallax",
-        "sticky-header"
+        "sticky-header",
+        "view-transitions"
       ],
       "scenes": [
         "scroll",
@@ -1743,7 +1745,8 @@
       "related": [
         "optimistic-ui",
         "skeleton-shimmer",
-        "sticky-header"
+        "sticky-header",
+        "command-palette"
       ],
       "scenes": [
         "button",
@@ -1997,6 +2000,96 @@
       }
     },
     {
+      "slug": "dock-magnify",
+      "code": "F-09",
+      "url": "https://publieople.github.io/design-museum/entry/dock-magnify/",
+      "category": "feedback",
+      "nameZh": "停靠栏放大",
+      "nameEn": "Dock Magnification",
+      "aliases": [
+        "Dock 放大",
+        "图标放大",
+        "靠近放大",
+        "dock magnification",
+        "icon magnification",
+        "proximity scale",
+        "magnify on hover"
+      ],
+      "oneLiner": "指针越靠近图标，图标放得越大，像 macOS 的 Dock。",
+      "oneLinerEn": "Icons grow as the pointer gets closer, the way a macOS Dock does.",
+      "keywords": [
+        "dock magnification",
+        "pointer distance",
+        "scale()",
+        "transform-origin",
+        "pointermove",
+        "getBoundingClientRect",
+        "falloff"
+      ],
+      "related": [
+        "magnetic-button",
+        "hover-lift",
+        "cursor-follower"
+      ],
+      "scenes": [
+        "nav",
+        "button"
+      ],
+      "feel": [
+        "playful",
+        "soft"
+      ],
+      "intent": [
+        "affordance",
+        "attention"
+      ],
+      "tags": [
+        "js",
+        "composited",
+        "pointer-dependent",
+        "motion-heavy"
+      ],
+      "demo": {
+        "shape": "stage",
+        "minHeight": 240
+      },
+      "controls": [
+        {
+          "id": "maxScale",
+          "kind": "range",
+          "label": "Maximum scale",
+          "def": 1.55,
+          "unit": "x",
+          "min": 1.2,
+          "max": 2.2
+        },
+        {
+          "id": "radius",
+          "kind": "range",
+          "label": "Influence radius",
+          "def": 120,
+          "unit": "px",
+          "min": 40,
+          "max": 220
+        },
+        {
+          "id": "labels",
+          "kind": "toggle",
+          "label": "Show labels",
+          "def": true
+        }
+      ],
+      "loop": "manual",
+      "prompt": {
+        "zh": "做一个停靠栏放大（dock magnification）的图标条：一排同尺寸图标，监听 pointermove，用 getBoundingClientRect 算出指针到每个图标中心的水平距离 d，缩放 = 1 + (1.55 - 1) × max(0, 1 - d / 120)²，transform-origin 设为 bottom center，过渡 80ms 线性，只动 transform；指针离开后回到 1 倍。图标下方保留名称标签。prefers-reduced-motion 时不做缩放，粗指针设备保持原始大小。",
+        "en": "dock magnification icon bar: a row of equally sized icons, listen to pointermove, measure the horizontal distance d from the pointer to each icon centre with getBoundingClientRect, scale = 1 + (1.55 - 1) * max(0, 1 - d / 120) squared, transform-origin bottom center, transition transform 80ms linear, animate transform only, reset to 1x on pointer leave. Keep a visible label under each icon. Keep icons at their natural size under prefers-reduced-motion and on coarse pointers."
+      },
+      "detail": {
+        "page": "https://publieople.github.io/design-museum/entry/dock-magnify/",
+        "markdown": "https://publieople.github.io/design-museum/catalog.md#dock-magnify"
+      }
+    },
+    {
       "slug": "sticky-header",
       "code": "L-01",
       "url": "https://publieople.github.io/design-museum/entry/sticky-header/",
@@ -2012,7 +2105,7 @@
         "hide on scroll"
       ],
       "oneLiner": "页面滚动时头部留在顶部，常配合「下滑隐藏、上滑出现」。",
-      "oneLinerEn": "A page header that stays pinned on scroll and often hides on the way down.",
+      "oneLinerEn": "A page header that stays pinned on scroll, often hiding as you scroll down and revealing itself as you scroll up.",
       "keywords": [
         "position: sticky",
         "scroll direction",
@@ -2415,7 +2508,8 @@
       "related": [
         "scroll-driven",
         "sticky-header",
-        "masonry"
+        "masonry",
+        "virtual-scrolling"
       ],
       "scenes": [
         "scroll",
@@ -3621,6 +3715,109 @@
       }
     },
     {
+      "slug": "meteor-shower",
+      "code": "V-09",
+      "url": "https://publieople.github.io/design-museum/entry/meteor-shower/",
+      "category": "visual",
+      "nameZh": "流星雨",
+      "nameEn": "Meteor Shower",
+      "aliases": [
+        "流星",
+        "流星拖尾",
+        "斜向流星",
+        "meteor shower",
+        "shooting stars",
+        "meteor effect",
+        "falling stars"
+      ],
+      "oneLiner": "几条细长的光斜着划过，尾巴渐隐，像一场安静的流星雨。",
+      "oneLinerEn": "A few thin streaks of light cross the sky on a diagonal, tails fading as they go.",
+      "keywords": [
+        "meteor shower",
+        "linear-gradient",
+        "@keyframes",
+        "translate3d",
+        "animation-delay",
+        "opacity",
+        "will-change"
+      ],
+      "related": [
+        "aurora-gradient",
+        "spotlight-glow",
+        "parallax"
+      ],
+      "scenes": [
+        "page",
+        "card"
+      ],
+      "feel": [
+        "calm",
+        "soft"
+      ],
+      "intent": [
+        "attention"
+      ],
+      "tags": [
+        "css-only",
+        "composited",
+        "motion-heavy",
+        "stable"
+      ],
+      "demo": {
+        "shape": "stage",
+        "minHeight": 280
+      },
+      "controls": [
+        {
+          "id": "count",
+          "kind": "range",
+          "label": "Meteor count",
+          "def": 8,
+          "unit": "条",
+          "min": 3,
+          "max": 16
+        },
+        {
+          "id": "duration",
+          "kind": "range",
+          "label": "Per-meteor duration",
+          "def": 3,
+          "unit": "s",
+          "min": 1,
+          "max": 6
+        },
+        {
+          "id": "angle",
+          "kind": "select",
+          "label": "Angle",
+          "def": "45",
+          "options": [
+            {
+              "value": "30",
+              "label": "30°（更平）"
+            },
+            {
+              "value": "45",
+              "label": "45°（经典）"
+            },
+            {
+              "value": "60",
+              "label": "60°（更陡）"
+            }
+          ]
+        }
+      ],
+      "loop": "continuous",
+      "prompt": {
+        "zh": "做一个流星雨（meteor shower）背景：8 条细长的流星从右上往左下以 45° 斜向划过，单条 3s 走完，尾迹 80–160px 并用 linear-gradient 从透明渐到亮端，透明度最高 0.5。用 CSS @keyframes 只动 transform 和 opacity，每条用负 animation-delay 和不同起点、时长打散，整体 pointer-events: none 并压在内容层下面；颜色取 var(--stage-ink) 或强调色，不写死白色。prefers-reduced-motion 时停掉动画，只留静止光带。",
+        "en": "meteor shower background: 8 thin meteors cross from the top right toward the bottom left at 45 degrees, each taking 3s, with an 80 to 160px tail drawn as a linear-gradient from transparent to a bright head and a peak opacity of 0.5. Animate transform and opacity only with CSS @keyframes, desynchronise them with negative animation-delay plus varied origins and durations, set pointer-events: none and keep the layer behind the content, and colour it with var(--stage-ink) or the accent colour instead of hard-coded white. Under prefers-reduced-motion stop the motion and keep only static diagonal streaks."
+      },
+      "detail": {
+        "page": "https://publieople.github.io/design-museum/entry/meteor-shower/",
+        "markdown": "https://publieople.github.io/design-museum/catalog.md#meteor-shower"
+      }
+    },
+    {
       "slug": "fluid-type",
       "code": "T-01",
       "url": "https://publieople.github.io/design-museum/entry/fluid-type/",
@@ -4442,6 +4639,94 @@
       "detail": {
         "page": "https://publieople.github.io/design-museum/entry/tabular-numbers/",
         "markdown": "https://publieople.github.io/design-museum/catalog.md#tabular-numbers"
+      }
+    },
+    {
+      "slug": "typewriter",
+      "code": "T-09",
+      "url": "https://publieople.github.io/design-museum/entry/typewriter/",
+      "category": "type",
+      "nameZh": "打字机效果",
+      "nameEn": "Typewriter",
+      "aliases": [
+        "打字效果",
+        "逐字打字",
+        "打字机",
+        "typewriter effect",
+        "typing effect",
+        "type-on text",
+        "caret blink"
+      ],
+      "oneLiner": "文字像被键盘一个字一个字敲出来，末尾光标一直闪。",
+      "oneLinerEn": "Text is knocked out one character at a time, with a blinking caret at the end.",
+      "keywords": [
+        "typewriter effect",
+        "steps()",
+        "caret-color",
+        "setTimeout",
+        "Array.from",
+        "aria-live",
+        "prefers-reduced-motion"
+      ],
+      "related": [
+        "char-reveal",
+        "count-up",
+        "marquee"
+      ],
+      "scenes": [
+        "text",
+        "page"
+      ],
+      "feel": [
+        "crisp",
+        "playful"
+      ],
+      "intent": [
+        "attention"
+      ],
+      "tags": [
+        "js",
+        "main-thread",
+        "motion-heavy",
+        "stable"
+      ],
+      "demo": {
+        "shape": "stage"
+      },
+      "controls": [
+        {
+          "id": "speed",
+          "kind": "range",
+          "label": "Per-character interval",
+          "def": 70,
+          "unit": "ms",
+          "min": 20,
+          "max": 160
+        },
+        {
+          "id": "hold",
+          "kind": "range",
+          "label": "Hold before looping",
+          "def": 1600,
+          "unit": "ms",
+          "min": 400,
+          "max": 3000
+        },
+        {
+          "id": "caret",
+          "kind": "toggle",
+          "label": "Blinking caret",
+          "def": true
+        }
+      ],
+      "loop": "replay",
+      "prompt": {
+        "zh": "做一个打字机效果（typewriter）：把「把想法一个字一个字敲进屏幕里。」逐字打进容器，每字间隔 70ms，逗号句号后多停 180ms，整句打完后停留 1600ms 再清空重打。末尾放一个 1ch 宽的光标，用 steps(2) 每 1s 硬切闪烁。文本用 Array.from 按字素切分，容器预留最终宽度避免重排跳动；正在打的部分 aria-hidden，另放完整句子给读屏；prefers-reduced-motion 时整句一次显示且不循环。",
+        "en": "typewriter effect: type the sentence one character at a time with 70ms per character, add a 180ms pause after punctuation, hold the finished line for 1600ms, then clear and retype. Show a 1ch caret at the end that blinks with steps(2) every 1s. Split text by grapheme with Array.from, reserve the final width so the layout does not reflow, mark the typing part aria-hidden and expose the full sentence to screen readers, and show the whole line at once under prefers-reduced-motion with no loop."
+      },
+      "detail": {
+        "page": "https://publieople.github.io/design-museum/entry/typewriter/",
+        "markdown": "https://publieople.github.io/design-museum/catalog.md#typewriter"
       }
     }
   ]

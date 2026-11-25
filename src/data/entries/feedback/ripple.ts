@@ -83,7 +83,7 @@ const entry: Entry = {
     ],
     confusions: [
       {
-        with: 'press feedback',
+        with: 'Press Feedback',
         diff: 'Press feedback changes the whole control (scale or dim). A ripple spreads from the exact press point. They are often stacked.',
       },
       {

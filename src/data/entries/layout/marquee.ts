@@ -22,6 +22,10 @@ const entry: Entry = {
       with: '滚动捕捉',
       diff: '滚动捕捉是用户自己滑、停下时吸附到某一项；跑马灯是自己走、用户只读，停下来只是因为悬停。',
     },
+    {
+      with: '打字机效果',
+      diff: '跑马灯把一整条内容横向平移，文字本身一次就全部存在；打字机是在原地逐个增加字符，宽度随字数增长，还带一个闪烁光标。',
+    },
   ],
   pitfalls: [
     '无缝要复制一份内容并整体平移 50%（或正好一整份的宽度），否则会看到「唰」地跳回起点',
@@ -90,10 +94,14 @@ const entry: Entry = {
         with: 'scroll snap',
         diff: 'Scroll snap is user-driven and settles on an item. A marquee drives itself while the user just reads, pausing only when they hover.',
       },
+      {
+        with: 'Typewriter',
+        diff: 'A marquee translates one full strip horizontally while every character already exists. A typewriter adds characters in place, so the line grows with each one and a caret keeps blinking.',
+      },
     ],
     pitfalls: [
       'Duplicate the content and translate by exactly 50% (or one full copy), otherwise the loop snaps back visibly',
-      'Move with transform: translate3d, not margin-left or left, which re-layout every frame',
+      'Move with transform: translate3d, not margin-left or left, which forces a re-layout every frame',
       'Pausing on hover and focus is expected; add an explicit pause control so slow readers and screen readers are not forced to keep up',
       'Mark the duplicated copy aria-hidden, or screen readers read the content twice',
       'An offscreen animation still burns power: stop it with IntersectionObserver or animation-play-state',

@@ -27,12 +27,12 @@ pnpm check        # 下面三项一条命令（typecheck + lint + test）
 pnpm typecheck    # tsc -b，零错误
 pnpm lint         # oxlint，零 error（目前也是零 warning）
 pnpm test         # vitest 全绿
-pnpm build        # 产物进 dist/（最后一步跑 scripts/prerender.mjs：74 个静态页 + sitemap）
+pnpm build        # 产物进 dist/（最后一步跑 scripts/prerender.mjs：77 个静态页 + sitemap）
 ```
 
 `pnpm validate` 只跑内容校验，改词条时可以先跑它快速回归。
 
-新增词条先 `pnpm find:entry "口语说法"` 查重，再用 `pnpm new:entry <slug> --hall <厅> --shape <形态>` 生成骨架；
+新增词条按 [docs/ENTRY-PIPELINE.md](docs/ENTRY-PIPELINE.md) 的流水线走：先从 [docs/ENTRY-SOURCES.md](docs/ENTRY-SOURCES.md) 的来源里找、用六格拆解，查重用 `pnpm find:entry "口语说法"`，候选登记进 `docs/entry-backlog.json` 并用 `pnpm backlog` 校验，再用 `pnpm new:entry <slug> --hall <厅> --shape <形态>` 生成骨架；
 删词条不是删文件：在 `src/data/retired.ts` 立墓碑，构建期会为它生成跳转页（GitHub Pages 做不了 301）。
 
 本地跑不过就别开 PR —— CI 会挡，来回一轮比本地跑一次慢。
@@ -119,6 +119,9 @@ scope 可选，如 `fix(router): …`。一条提交只做一件事；正文写"
 - [ ] 四项命令作者本地跑过，CI 全绿
 - [ ] 改过词条内容或 `metaOf.ts` 的话，`pnpm gen:meta` 已跑，生成物与词条一致
 - [ ] 条目符合 [docs/ENTRY-SPEC.md](docs/ENTRY-SPEC.md)：四条判据过关，`confusions` 与本条最像的条目互相指认
+- [ ] 候选池状态已更新：`pnpm backlog` 通过（shipped 条目必须有词条文件，在册词条必须 shipped）
+- [ ] `en` 覆盖层与中文逐字段对齐，`entryTranslation.test.ts` 与英文详情页冒烟通过
+- [ ] `pnpm check` 里的 a11y 自检通过（对比度、标题层级、可访问名、焦点可见、reduced-motion）
 - [ ] 新增词条跑过 `pnpm find:entry` 查重；删词条在 `src/data/retired.ts` 有墓碑且 `replacedBy` 指向在册条目（`pnpm build` 输出里能看到墓碑页）
 - [ ] `tags` 用词表内的 id，2–6 个、至少 1 个 tech；没有自造标签，没有孤儿标签
 - [ ] `demo.shape` 与容器需求一致，非 `stage` 形态给了 `thumb: 'still'`，滚动类不依赖整页滚动

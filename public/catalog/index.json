@@ -2,13 +2,13 @@
   "version": 1,
   "site": "https://publieople.github.io/design-museum",
   "counts": {
-    "entries": 41,
+    "entries": 44,
     "perCategory": {
       "motion": 9,
-      "feedback": 8,
+      "feedback": 9,
       "layout": 8,
-      "visual": 8,
-      "type": 8
+      "visual": 9,
+      "type": 9
     },
     "tags": 18
   },
@@ -184,7 +184,7 @@
       "letter": "F",
       "nameZh": "交互反馈",
       "nameEn": "Interaction & Feedback",
-      "count": 8,
+      "count": 9,
       "json": "catalog/feedback.json",
       "markdown": "catalog/feedback.md"
     },
@@ -202,7 +202,7 @@
       "letter": "V",
       "nameZh": "视觉质感",
       "nameEn": "Visual & Material",
-      "count": 8,
+      "count": 9,
       "json": "catalog/visual.json",
       "markdown": "catalog/visual.md"
     },
@@ -211,7 +211,7 @@
       "letter": "T",
       "nameZh": "排版与文字",
       "nameEn": "Typography & Text",
-      "count": 8,
+      "count": 9,
       "json": "catalog/type.json",
       "markdown": "catalog/type.md"
     }

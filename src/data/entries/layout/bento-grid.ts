@@ -86,7 +86,7 @@ const entry: Entry = {
     pitfalls: [
       'Spans have to match the column count: a span of 3 in a 4-column grid leaves an awkward empty edge, and changing the count means recomputing every span',
       'If every tile is the same size it is just a grid; the point of bento is the mix of sizes',
-      'Auto-placement does not backfill holes by default (grid-auto-flow: row). dense fills them but scrambles the visual order.',
+      'Auto-placement does not backfill holes by default (grid-auto-flow: row). dense fills them but scrambles the visual order',
       'With a fixed row height, text overflows as soon as it grows; add rows instead of clipping the text',
     ],
     spec: [

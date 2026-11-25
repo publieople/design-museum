@@ -123,7 +123,7 @@ const entry: Entry = {
     ],
     confusions: [
       {
-        with: 'frosted glass',
+        with: 'Frosted Glass',
         diff: 'Frosted glass does one thing: blurs the backdrop (backdrop-filter: blur). Glassmorphism is a whole look: blur plus a translucent white diagonal gradient, a 1px bright border, an inset top highlight, and an outer shadow, almost always over something colorful. A single blur is not glassmorphism.',
       },
       {

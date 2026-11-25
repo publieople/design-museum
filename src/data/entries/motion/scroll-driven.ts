@@ -62,7 +62,7 @@ const entry: Entry = {
     { label: 'Chrome for Developers · 滚动驱动动画', url: 'https://developer.chrome.com/docs/css-ui/scroll-driven-animations' },
     { label: 'MDN · animation-timeline', url: 'https://developer.mozilla.org/docs/Web/CSS/animation-timeline' },
   ],
-  related: ['scroll-reveal', 'parallax', 'sticky-header'],
+  related: ['scroll-reveal', 'parallax', 'sticky-header', 'view-transitions'],
   scenes: ['scroll', 'page', 'nav'],
   feel: ['crisp', 'calm'],
   intent: ['attention', 'affordance'],

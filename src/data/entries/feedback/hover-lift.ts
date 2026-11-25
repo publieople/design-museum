@@ -26,6 +26,10 @@ const entry: Entry = {
       with: '磁吸按钮',
       diff: '悬停抬升只沿固定方向（通常 translateY(-4px)）位移，指针位置不影响方向；磁吸按钮把指针相对按钮中心的偏移乘一个系数，方向跟着指针走，指针离开才弹回。',
     },
+    {
+      with: '停靠栏放大',
+      diff: '悬停抬升只有指针进出两个状态，一次只抬起被指的那个元素；停靠栏放大按指针到每个图标的距离连续算缩放，整排图标一起起伏，指针停在两个图标之间时两边都会变大。',
+    },
   ],
   pitfalls: [
     '只加位移不加阴影，元素会像一张贴纸飘起来，没有重量感；位移和阴影要一起变',
@@ -101,10 +105,14 @@ const entry: Entry = {
     ],
     confusions: [
       { with: 'Press feedback', diff: 'Hover lift is a state that lasts the whole time the pointer rests on the element, driven by :hover; press feedback answers the press and the release, driven by :active. They are often stacked, but they fire at completely different moments.' },
-      { with: 'Scroll parallax', diff: 'Hover lift is driven only by the pointer, so it moves as the cursor enters and leaves; parallax is driven by scroll, so it moves when you scroll the page even with the mouse still.' },
+      { with: 'Parallax', diff: 'Hover lift is driven only by the pointer, so it moves as the cursor enters and leaves; parallax is driven by scroll, so it moves when you scroll the page even with the mouse still.' },
       {
         with: 'Magnetic Button',
         diff: 'Hover lift moves in one fixed direction, usually translateY(-4px), regardless of where the pointer is. A magnetic button multiplies the pointer offset from the button center by a factor, so the direction follows the pointer and snaps back only when it leaves.',
+      },
+      {
+        with: 'Dock Magnification',
+        diff: 'Hover lift has only two states and raises just the pointed element. Dock magnification computes a continuous scale from the pointer distance to every icon, so the whole row breathes and both neighbours grow when the pointer sits between them.',
       },
     ],
     pitfalls: [

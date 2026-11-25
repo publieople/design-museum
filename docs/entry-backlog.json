@@ -1,0 +1,517 @@
+{
+  "version": 1,
+  "updated": "2026-11-25",
+  "hallTarget": 12,
+  "items": [
+    {
+      "slug": "dock-magnify",
+      "nameZh": "停靠栏放大",
+      "nameEn": "Dock Magnification",
+      "hall": "feedback",
+      "shape": "stage",
+      "source": "macOS Dock 行为观察 + MDN Pointer events https://developer.mozilla.org/docs/Web/API/Pointer_events",
+      "status": "shipped",
+      "note": "按指针到图标的距离连续缩放整排图标，补上「悬停抬升」只对单个元素上浮的空白。"
+    },
+    {
+      "slug": "typewriter",
+      "nameZh": "打字机效果",
+      "nameEn": "Typewriter",
+      "hall": "type",
+      "shape": "stage",
+      "source": "MDN steps() https://developer.mozilla.org/docs/Web/CSS/easing-function/steps",
+      "status": "shipped",
+      "note": "文本真的逐字增长并配闪烁光标，与「逐字显现」整句排好后落位区分开。"
+    },
+    {
+      "slug": "meteor-shower",
+      "nameZh": "流星雨",
+      "nameEn": "Meteor Shower",
+      "hall": "visual",
+      "shape": "stage",
+      "source": "MDN @keyframes https://developer.mozilla.org/docs/Web/CSS/@keyframes",
+      "status": "shipped",
+      "note": "离散流星沿固定倾角快速划过，区别于整屏缓慢呼吸的「极光渐变」。"
+    },
+    {
+      "slug": "tilt-card",
+      "nameZh": "3D 倾斜卡片",
+      "nameEn": "3D Tilt Card",
+      "hall": "motion",
+      "shape": "interactive",
+      "source": "Codrops https://tympanus.net/codrops/",
+      "status": "planned",
+      "note": "整张卡片按指针位置做 perspective 旋转，悬停抬升只上浮不转向。"
+    },
+    {
+      "slug": "horizontal-pin",
+      "nameZh": "横向钉住",
+      "nameEn": "Horizontal Pin",
+      "hall": "motion",
+      "shape": "scroll",
+      "source": "Codrops https://tympanus.net/codrops/",
+      "status": "planned",
+      "note": "纵向滚动被转成横向推进并钉住一段，跑马灯是无止境的自动横滚。"
+    },
+    {
+      "slug": "text-scramble",
+      "nameZh": "文字解码",
+      "nameEn": "Text Scramble",
+      "hall": "motion",
+      "shape": "sequence",
+      "source": "React Bits https://reactbits.dev",
+      "status": "planned",
+      "note": "字符先显示成乱码再逐位落定，逐字显现从一开始就是正确字符。"
+    },
+    {
+      "slug": "drag-inertia",
+      "nameZh": "拖拽惯性",
+      "nameEn": "Drag Inertia",
+      "hall": "motion",
+      "shape": "interactive",
+      "source": "Codrops https://tympanus.net/codrops/",
+      "status": "triaged",
+      "note": "松手后按拖动速度继续滑行再衰减，弹簧动画只回弹、不带速度传递。"
+    },
+    {
+      "slug": "ken-burns",
+      "nameZh": "缓推镜头",
+      "nameEn": "Ken Burns",
+      "hall": "motion",
+      "shape": "stage",
+      "source": "CSS-Tricks https://css-tricks.com",
+      "status": "triaged",
+      "note": "静图长期缓慢推拉，视差滚动靠滚动位置驱动多层位移。"
+    },
+    {
+      "slug": "split-flap",
+      "nameZh": "翻牌文字",
+      "nameEn": "Split-Flap Text",
+      "hall": "motion",
+      "shape": "sequence",
+      "source": "Codrops https://tympanus.net/codrops/",
+      "status": "candidate",
+      "note": "每个字符像机场翻牌器绕水平轴翻转，逐字显现只是位移加淡入。"
+    },
+    {
+      "slug": "blur-reveal",
+      "nameZh": "模糊聚焦",
+      "nameEn": "Blur Reveal",
+      "hall": "motion",
+      "shape": "stage",
+      "source": "MagicUI https://magicui.design",
+      "status": "candidate",
+      "note": "靠 filter: blur 从糊到清，滚动揭示只改位置与透明度。"
+    },
+    {
+      "slug": "image-trail",
+      "nameZh": "图片拖尾",
+      "nameEn": "Image Trail",
+      "hall": "motion",
+      "shape": "interactive",
+      "source": "Codrops https://tympanus.net/codrops/",
+      "status": "candidate",
+      "note": "沿指针路径连续铺开历史图像，光标跟随只有一个跟随物。"
+    },
+    {
+      "slug": "screen-shake",
+      "nameZh": "屏幕震动",
+      "nameEn": "Screen Shake",
+      "hall": "motion",
+      "shape": "stage",
+      "source": "Hover.dev https://www.hover.dev",
+      "status": "candidate",
+      "note": "整块内容短促抖动表示失败，错误抖动只作用在单个输入框。"
+    },
+    {
+      "slug": "velocity-skew",
+      "nameZh": "速度倾斜",
+      "nameEn": "Velocity Skew",
+      "hall": "motion",
+      "shape": "scroll",
+      "source": "Codrops https://tympanus.net/codrops/",
+      "status": "candidate",
+      "note": "按滚动速度给内容加斜切形变，视差滚动只改位移不改形变。"
+    },
+    {
+      "slug": "confetti-burst",
+      "nameZh": "彩纸礼花",
+      "nameEn": "Confetti Burst",
+      "hall": "feedback",
+      "shape": "stage",
+      "source": "MagicUI https://magicui.design",
+      "status": "planned",
+      "note": "成功瞬间喷出带重力的彩纸粒子，涟漪只在点击点扩散水波。"
+    },
+    {
+      "slug": "submit-success",
+      "nameZh": "提交转圈到对勾",
+      "nameEn": "Submit Success",
+      "hall": "feedback",
+      "shape": "sequence",
+      "source": "Uiverse.io https://uiverse.io",
+      "status": "planned",
+      "note": "按钮内部从加载态切到完成态，轻提示是浮层消息、不留在按钮里。"
+    },
+    {
+      "slug": "inline-validation",
+      "nameZh": "行内校验",
+      "nameEn": "Inline Validation",
+      "hall": "feedback",
+      "shape": "interactive",
+      "source": "web.dev https://web.dev",
+      "status": "triaged",
+      "note": "失焦立刻在字段旁标出对错，乐观更新是先改界面再回滚。"
+    },
+    {
+      "slug": "pull-to-refresh",
+      "nameZh": "下拉刷新",
+      "nameEn": "Pull to Refresh",
+      "hall": "feedback",
+      "shape": "interactive",
+      "source": "CSS-Tricks https://css-tricks.com",
+      "status": "candidate",
+      "note": "把列表往下拉出加载指示，骨架屏只是占位、不接收手势。"
+    },
+    {
+      "slug": "like-burst",
+      "nameZh": "双击点赞",
+      "nameEn": "Like Burst",
+      "hall": "feedback",
+      "shape": "stage",
+      "source": "Hover.dev https://www.hover.dev",
+      "status": "candidate",
+      "note": "双击后爱心放大并迸出小粒子，按压反馈只做按下的缩放。"
+    },
+    {
+      "slug": "error-shake",
+      "nameZh": "错误抖动",
+      "nameEn": "Error Shake",
+      "hall": "feedback",
+      "shape": "stage",
+      "source": "Uiverse.io https://uiverse.io",
+      "status": "candidate",
+      "note": "输入框左右快速抖动提示错误，屏幕震动是整页级别的。"
+    },
+    {
+      "slug": "undo-snackbar",
+      "nameZh": "撤销提示条",
+      "nameEn": "Undo Snackbar",
+      "hall": "feedback",
+      "shape": "stage",
+      "source": "CSS-Tricks https://css-tricks.com",
+      "status": "candidate",
+      "note": "操作后给一条带撤销按钮的倒计时条，轻提示没有撤销动作。"
+    },
+    {
+      "slug": "long-press-confirm",
+      "nameZh": "长按确认",
+      "nameEn": "Long Press Confirm",
+      "hall": "feedback",
+      "shape": "interactive",
+      "source": "Uiverse.io https://uiverse.io",
+      "status": "candidate",
+      "note": "按住让进度环走满才触发，按压反馈只是瞬时按下。"
+    },
+    {
+      "slug": "dropzone",
+      "nameZh": "拖拽上传区",
+      "nameEn": "Dropzone",
+      "hall": "feedback",
+      "shape": "interactive",
+      "source": "Uiverse.io https://uiverse.io",
+      "status": "candidate",
+      "note": "文件拖入时整块高亮并提示松手，悬停抬升不接收文件。"
+    },
+    {
+      "slug": "scrollytelling",
+      "nameZh": "滚动叙事",
+      "nameEn": "Scrollytelling",
+      "hall": "layout",
+      "shape": "scroll",
+      "source": "Codrops https://tympanus.net/codrops/",
+      "status": "planned",
+      "note": "图文按滚动进度逐步替换并锁定章节，滚动揭示只是元素进场。"
+    },
+    {
+      "slug": "bottom-sheet",
+      "nameZh": "底部弹层",
+      "nameEn": "Bottom Sheet",
+      "hall": "layout",
+      "shape": "interactive",
+      "source": "CSS-Tricks https://css-tricks.com",
+      "status": "planned",
+      "note": "从底部升起、可拖拽停靠的移动端面板，轻提示会自动消失。"
+    },
+    {
+      "slug": "before-after-slider",
+      "nameZh": "前后对比滑块",
+      "nameEn": "Before/After Slider",
+      "hall": "layout",
+      "shape": "interactive",
+      "source": "CSS-Tricks https://css-tricks.com",
+      "status": "triaged",
+      "note": "一条可拖动的分割线控制两张图露出比例，边缘渐隐是静态遮罩。"
+    },
+    {
+      "slug": "sticky-sidebar",
+      "nameZh": "粘性侧栏",
+      "nameEn": "Sticky Sidebar",
+      "hall": "layout",
+      "shape": "scroll",
+      "source": "CSS-Tricks https://css-tricks.com",
+      "status": "candidate",
+      "note": "正文滚动时侧栏一直吸附在视口内，粘性头部吸的是顶部整条。"
+    },
+    {
+      "slug": "off-canvas-drawer",
+      "nameZh": "抽屉导航",
+      "nameEn": "Off-canvas Drawer",
+      "hall": "layout",
+      "shape": "interactive",
+      "source": "CSS-Tricks https://css-tricks.com",
+      "status": "candidate",
+      "note": "从屏幕边缘滑出的整块导航，命令面板是浮在中间的可搜索列表。"
+    },
+    {
+      "slug": "mega-menu",
+      "nameZh": "超级菜单",
+      "nameEn": "Mega Menu",
+      "hall": "layout",
+      "shape": "interactive",
+      "source": "CSS-Tricks https://css-tricks.com",
+      "status": "candidate",
+      "note": "悬停展开多列分组的大面板，折叠面板只在原地展开单块内容。"
+    },
+    {
+      "slug": "card-flip",
+      "nameZh": "卡片翻转",
+      "nameEn": "Card Flip",
+      "hall": "layout",
+      "shape": "interactive",
+      "source": "Uiverse.io https://uiverse.io",
+      "status": "candidate",
+      "note": "卡片绕 Y 轴翻面显示背面，3D 倾斜卡片只做小角度跟随。"
+    },
+    {
+      "slug": "curtain-reveal",
+      "nameZh": "幕布揭开",
+      "nameEn": "Curtain Reveal",
+      "hall": "layout",
+      "shape": "scroll",
+      "source": "Codrops https://tympanus.net/codrops/",
+      "status": "candidate",
+      "note": "整块内容像幕布被卷走露出下一屏，边缘渐隐是遮罩逐渐变淡。"
+    },
+    {
+      "slug": "tab-indicator",
+      "nameZh": "滑动标签指示器",
+      "nameEn": "Tab Indicator",
+      "hall": "layout",
+      "shape": "interactive",
+      "source": "Uiverse.io https://uiverse.io",
+      "status": "candidate",
+      "note": "下划线在标签间滑动并跟随文字宽度，跑马灯是持续横向滚动。"
+    },
+    {
+      "slug": "grid-reveal",
+      "nameZh": "网格揭开",
+      "nameEn": "Grid Reveal",
+      "hall": "layout",
+      "shape": "scroll",
+      "source": "Codrops https://tympanus.net/codrops/",
+      "status": "candidate",
+      "note": "网格单元按行列错峰揭开，滚动揭示是整块元素各自进场。"
+    },
+    {
+      "slug": "duotone",
+      "nameZh": "双色调",
+      "nameEn": "Duotone",
+      "hall": "visual",
+      "shape": "stage",
+      "source": "CSS-Tricks https://css-tricks.com",
+      "status": "planned",
+      "note": "图片压成两种颜色的明暗映射，颗粒噪点只加纹理不改色相。"
+    },
+    {
+      "slug": "chromatic-glitch",
+      "nameZh": "色差故障",
+      "nameEn": "Chromatic Glitch",
+      "hall": "visual",
+      "shape": "stage",
+      "source": "Codrops https://tympanus.net/codrops/",
+      "status": "planned",
+      "note": "RGB 三通道错位加随机切片，渐变网格是柔和连续的色场。"
+    },
+    {
+      "slug": "holographic-foil",
+      "nameZh": "镭射膜",
+      "nameEn": "Holographic Foil",
+      "hall": "visual",
+      "shape": "stage",
+      "source": "Codrops https://tympanus.net/codrops/",
+      "status": "triaged",
+      "note": "随角度变化的彩虹干涉色，极光渐变是大面积慢速色斑。"
+    },
+    {
+      "slug": "halftone",
+      "nameZh": "半调网点",
+      "nameEn": "Halftone",
+      "hall": "visual",
+      "shape": "stage",
+      "source": "Codrops https://tympanus.net/codrops/",
+      "status": "candidate",
+      "note": "用大小不同的圆点模拟连续调，点阵遮罩是均匀网格的遮罩。"
+    },
+    {
+      "slug": "scanlines",
+      "nameZh": "扫描线",
+      "nameEn": "Scanlines",
+      "hall": "visual",
+      "shape": "stage",
+      "source": "CSS-Tricks https://css-tricks.com",
+      "status": "candidate",
+      "note": "等距横线叠加出 CRT 质感，颗粒噪点是随机像素。"
+    },
+    {
+      "slug": "neumorphism",
+      "nameZh": "新拟态",
+      "nameEn": "Neumorphism",
+      "hall": "visual",
+      "shape": "stage",
+      "source": "Uiverse.io https://uiverse.io",
+      "status": "candidate",
+      "note": "同色底上用双向阴影压出或浮起，玻璃拟态靠透明与背景模糊。"
+    },
+    {
+      "slug": "claymorphism",
+      "nameZh": "黏土拟态",
+      "nameEn": "Claymorphism",
+      "hall": "visual",
+      "shape": "stage",
+      "source": "Uiverse.io https://uiverse.io",
+      "status": "candidate",
+      "note": "大圆角加内外双阴影做出橡皮泥厚度，新拟态没有彩色体积感。"
+    },
+    {
+      "slug": "dot-matrix",
+      "nameZh": "点阵遮罩",
+      "nameEn": "Dot Matrix",
+      "hall": "visual",
+      "shape": "stage",
+      "source": "CSS-Tricks https://css-tricks.com",
+      "status": "candidate",
+      "note": "用重复圆点做半调遮罩或品牌图形，边缘渐隐是线性淡出。"
+    },
+    {
+      "slug": "ascii-shader",
+      "nameZh": "ASCII 字符化",
+      "nameEn": "ASCII Shader",
+      "hall": "visual",
+      "shape": "interactive",
+      "source": "Codrops https://tympanus.net/codrops/",
+      "status": "candidate",
+      "note": "把画面按亮度映射成字符，渐变文字只是给文字填渐变色。"
+    },
+    {
+      "slug": "dither-gradient",
+      "nameZh": "抖动渐变",
+      "nameEn": "Dither Gradient",
+      "hall": "visual",
+      "shape": "stage",
+      "source": "CSS-Tricks https://css-tricks.com",
+      "status": "candidate",
+      "note": "用有序抖动模拟更多色阶，渐变网格是平滑插值。"
+    },
+    {
+      "slug": "kinetic-type",
+      "nameZh": "动态字体",
+      "nameEn": "Kinetic Type",
+      "hall": "type",
+      "shape": "stage",
+      "source": "Codrops https://tympanus.net/codrops/",
+      "status": "planned",
+      "note": "整行字随滚动或时间改变字号、字重与位置，逐字显现只做一次性入场。"
+    },
+    {
+      "slug": "marker-highlight",
+      "nameZh": "马克笔高亮",
+      "nameEn": "Marker Highlight",
+      "hall": "type",
+      "shape": "stage",
+      "source": "CSS-Tricks https://css-tricks.com",
+      "status": "triaged",
+      "note": "像荧光笔从左往右涂过一行字，渐变文字是整字填充渐变。"
+    },
+    {
+      "slug": "text-on-path",
+      "nameZh": "路径文字",
+      "nameEn": "Text on Path",
+      "hall": "type",
+      "shape": "stage",
+      "source": "MDN SVG textPath https://developer.mozilla.org/docs/Web/SVG/Element/textPath",
+      "status": "candidate",
+      "note": "文字沿 SVG path 弯曲排列，流体排版只改字号。"
+    },
+    {
+      "slug": "word-rotate",
+      "nameZh": "词语轮播",
+      "nameEn": "Word Rotate",
+      "hall": "type",
+      "shape": "sequence",
+      "source": "MagicUI https://magicui.design",
+      "status": "candidate",
+      "note": "同一位置按节奏换词并做进出，数字滚动只换数字。"
+    },
+    {
+      "slug": "animated-underline",
+      "nameZh": "滑动下划线",
+      "nameEn": "Animated Underline",
+      "hall": "type",
+      "shape": "stage",
+      "source": "CSS-Tricks https://css-tricks.com",
+      "status": "candidate",
+      "note": "链接下划线从中间或一端生长，描边文字是整字轮廓。"
+    },
+    {
+      "slug": "vertical-text",
+      "nameZh": "竖排文字",
+      "nameEn": "Vertical Text",
+      "hall": "type",
+      "shape": "stage",
+      "source": "MDN writing-mode https://developer.mozilla.org/docs/Web/CSS/writing-mode",
+      "status": "candidate",
+      "note": "文字竖排并控制标点旋转，平衡折行只管换行位置。"
+    },
+    {
+      "slug": "drop-cap",
+      "nameZh": "首字下沉",
+      "nameEn": "Drop Cap",
+      "hall": "type",
+      "shape": "stage",
+      "source": "CSS-Tricks https://css-tricks.com",
+      "status": "candidate",
+      "note": "段落首字放大占多行，流体排版是整体字号缩放。"
+    },
+    {
+      "slug": "text-mask-wipe",
+      "nameZh": "文字遮罩擦除",
+      "nameEn": "Text Mask Wipe",
+      "hall": "type",
+      "shape": "scroll",
+      "source": "Codrops https://tympanus.net/codrops/",
+      "status": "candidate",
+      "note": "用遮罩把文字一块块擦出来，逐字显现是逐字符位移。"
+    },
+    {
+      "slug": "letter-spread",
+      "nameZh": "字距展开",
+      "nameEn": "Letter Spread",
+      "hall": "type",
+      "shape": "stage",
+      "source": "Hover.dev https://www.hover.dev",
+      "status": "candidate",
+      "note": "悬停时字距拉开、字重变粗，可变字体是连续调字重轴。"
+    }
+  ]
+}

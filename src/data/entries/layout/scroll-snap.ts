@@ -52,7 +52,7 @@ const entry: Entry = {
     { label: 'MDN · CSS scroll snap', url: 'https://developer.mozilla.org/docs/Web/CSS/CSS_scroll_snap' },
     { label: 'MDN · scroll-snap-type', url: 'https://developer.mozilla.org/docs/Web/CSS/scroll-snap-type' },
   ],
-  related: ['scroll-driven', 'sticky-header', 'masonry'],
+  related: ['scroll-driven', 'sticky-header', 'masonry', 'virtual-scrolling'],
   scenes: ['scroll', 'nav', 'card'],
   feel: ['crisp', 'calm'],
   intent: ['affordance', 'hierarchy'],
@@ -123,7 +123,7 @@ const entry: Entry = {
     ],
     pitfalls: [
       'scroll-snap-type goes on the scroll container and scroll-snap-align on the children; swap them and nothing happens',
-      'The container needs a definite size and overflow. When the content is shorter than the container there is nothing to scroll and nothing to snap.',
+      'The container needs a definite size and overflow. When the content is shorter than the container there is nothing to scroll and nothing to snap',
       'mandatory on a vertical area taller than the viewport traps the user and they cannot reach the bottom; use proximity for long content',
       'When an item is larger than the container, align: start hides the tail of that item for good',
       'Padding around the snap position comes from scroll-padding on the container; margins on the children do not count',

@@ -87,12 +87,12 @@ const entry: Entry = {
         diff: 'A text shadow sits outside the glyph and leaves its weight alone. A stroke traces the outline and eats half the stroke width, so the type looks thinner.',
       },
       {
-        with: 'gradient text',
+        with: 'Gradient Text',
         diff: 'Gradient text fills the inside of the glyph; outlined text leaves it empty. Combine them when you want a gradient fill inside a stroke.',
       },
     ],
     pitfalls: [
-      '-webkit-text-stroke is non-standard (though all three engines support it) and paints from the outline centre outwards: thin strokes vanish at small sizes, so use it large',
+      '-webkit-text-stroke is non-standard (though all three engines support it) and paints outwards from the outline centre: at a small size the stroke swallows the thin parts of the glyph, so use it large',
       'Keep the stroke width in px rather than em, or a big heading loses its thin strokes',
       'Hollow type must still hit contrast: an outline on a light background is nearly invisible',
       'paint-order: stroke fill draws the stroke first so the fill is not covered',

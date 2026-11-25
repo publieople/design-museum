@@ -36,7 +36,8 @@
       "related": [
         "scroll-reveal",
         "easing",
-        "spring"
+        "spring",
+        "char-reveal"
       ],
       "scenes": [
         "list",
@@ -560,7 +561,8 @@
       "related": [
         "scroll-reveal",
         "parallax",
-        "sticky-header"
+        "sticky-header",
+        "view-transitions"
       ],
       "scenes": [
         "scroll",

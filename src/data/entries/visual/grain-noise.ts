@@ -27,6 +27,10 @@ const entry: Entry = {
       with: '抖动 dithering',
       diff: '抖动是渲染器为了压制色带自己做的，粒度跟像素对齐；颗粒噪点是你手动叠的一层材质，可以调大小、强度和混合模式。',
     },
+    {
+      with: '流星雨',
+      diff: '颗粒噪点是一层静止不动的程序化材质，整屏均匀分布；流星雨是若干条会移动、会消失的亮线，位置和出现时机都不均匀。',
+    },
   ],
   pitfalls: [
     'baseFrequency 低于 0.3 会变成大块云雾，不像颗粒；0.5–0.9 之间才是细砂',
@@ -132,6 +136,10 @@ const entry: Entry = {
       {
         with: 'dithering',
         diff: 'Dithering is what the renderer does on its own to suppress banding, and its grain aligns with pixel boundaries. Grain noise is a material layer you add by hand, with control over scale, strength, and blend mode.',
+      },
+      {
+        with: 'Meteor Shower',
+        diff: 'Grain noise is a still procedural material spread evenly over the whole surface. A meteor shower is a handful of bright streaks that travel and vanish, uneven in position and timing.',
       },
     ],
     pitfalls: [

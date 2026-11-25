@@ -25,7 +25,7 @@
         "hide on scroll"
       ],
       "oneLiner": "页面滚动时头部留在顶部，常配合「下滑隐藏、上滑出现」。",
-      "oneLinerEn": "A page header that stays pinned on scroll and often hides on the way down.",
+      "oneLinerEn": "A page header that stays pinned on scroll, often hiding as you scroll down and revealing itself as you scroll up.",
       "keywords": [
         "position: sticky",
         "scroll direction",
@@ -428,7 +428,8 @@
       "related": [
         "scroll-driven",
         "sticky-header",
-        "masonry"
+        "masonry",
+        "virtual-scrolling"
       ],
       "scenes": [
         "scroll",

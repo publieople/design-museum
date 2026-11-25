@@ -26,6 +26,10 @@ const entry: Entry = {
       with: '光晕聚光',
       diff: '聚光光晕不动元素本身，只改卡片内部一层径向光的圆心，通常还裁在卡片里；光标跟随要让一个真实元素跟着指针跑，能离开卡片、盖住其它内容。',
     },
+    {
+      with: '停靠栏放大',
+      diff: '光标跟随是一个独立元素追着指针满屏跑，接管指针的可见性；停靠栏放大没有任何跟随物，只有一排固定图标按指针距离改变尺寸，系统指针照常显示。',
+    },
   ],
   pitfalls: [
     '把系统光标藏了，就必须保证键盘用户还能看清焦点：:focus-visible 的样式不能省',
@@ -111,6 +115,10 @@ const entry: Entry = {
       {
         with: 'Spotlight Glow',
         diff: 'A spotlight glow does not move an element; it moves the center of a radial light layer inside the card, usually clipped to it. A cursor follower moves an actual element with the pointer, free to leave the card and cover other content.',
+      },
+      {
+        with: 'Dock Magnification',
+        diff: 'A cursor follower is an independent element chasing the pointer across the screen and taking over its visibility. Dock magnification has no follower: a fixed row of icons changes size by distance while the native pointer stays visible.',
       },
     ],
     pitfalls: [

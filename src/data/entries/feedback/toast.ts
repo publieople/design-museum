@@ -43,7 +43,7 @@ const entry: Entry = {
     { label: 'MDN · role="status"', url: 'https://developer.mozilla.org/docs/Web/Accessibility/ARIA/Roles/status_role' },
     { label: 'MDN · transition', url: 'https://developer.mozilla.org/docs/Web/CSS/transition' },
   ],
-  related: ['optimistic-ui', 'skeleton-shimmer', 'sticky-header'],
+  related: ['optimistic-ui', 'skeleton-shimmer', 'sticky-header', 'command-palette'],
   scenes: ['button', 'form', 'page'],
   feel: ['calm', 'soft'],
   intent: ['waiting', 'affordance'],

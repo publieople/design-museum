@@ -28,7 +28,7 @@
 - 无障碍降级：prefers-reduced-motion: reduce 时不播放位移与淡入，直接以最终状态渲染整组元素。
 - 提给 AI（中文）：给这组列表项做交错进场（stagger）动画：每项从下方 16px、opacity 0 进入最终位置，单项时长 420ms，缓动 cubic-bezier(0.22, 1, 0.36, 1)，相邻两项间隔 80ms。只在首次出现时播放一次，用 transform 和 opacity 实现。系统开启「减少动态效果」时直接显示最终状态。
 - Ask for it (English keywords): staggered entrance, animation-delay: index * 80ms, each item fades in with opacity 0 → 1 and translateY(16px) → 0, duration 420ms, easing cubic-bezier(0.22, 1, 0.36, 1), play once on first view, animate transform/opacity only, respect prefers-reduced-motion
-- 相关：scroll-reveal, easing, spring
+- 相关：scroll-reveal, easing, spring, char-reveal
 - 参考：[MDN · animation-delay](https://developer.mozilla.org/docs/Web/CSS/animation-delay) · [web.dev · 用 transform 和 opacity 做动画](https://web.dev/articles/animations-guide)
 
 <a id="easing"></a>
@@ -154,7 +154,7 @@
 - 无障碍降级：prefers-reduced-motion: reduce 时把时间线换成普通的固定时长动画，或让元素直接停在进度终点，进度条这类指示物保留但不跟着滚。
 - 提给 AI（中文）：用 CSS 滚动驱动动画（scroll-driven animations）做这个效果：卡片用 animation-timeline: view()、animation-range: entry 0% cover 60%，把滚动进度映射到 rotateZ(30deg) 和 opacity 上；顶部进度条用 animation-timeline: scroll() 配 transform: scaleX()。滚动事件里不要写 JS。Safari / Firefox 不支持时，用 intersection 触发一段 600ms 的普通动画兜底，并给出「不支持」的提示。
 - Ask for it (English keywords): scroll-driven animations, animation-timeline: view(), animation-range: entry 0% cover 60%, keyframes on rotateZ(30deg) and opacity, scroll progress bar via animation-timeline: scroll() with transform: scaleX(), no scroll event listeners, feature-detect with CSS.supports('animation-timeline: scroll()'), fallback to a 600ms reveal with IntersectionObserver, respect prefers-reduced-motion
-- 相关：scroll-reveal, parallax, sticky-header
+- 相关：scroll-reveal, parallax, sticky-header, view-transitions
 - 参考：[Chrome for Developers · 滚动驱动动画](https://developer.chrome.com/docs/css-ui/scroll-driven-animations) · [MDN · animation-timeline](https://developer.mozilla.org/docs/Web/CSS/animation-timeline)
 
 <a id="view-transitions"></a>
@@ -195,6 +195,7 @@
 - 别搞混 · 磁吸按钮：磁吸按钮是按钮朝指针靠过来，指针本身不动；光标跟随是替代指针的位置，元素永远慢半拍追着指针跑。
 - 别搞混 · 光标拖尾：拖尾会在后面留一串残影（几十个点或一条流线）；跟随只有一到两个点，重点是「滞后感」而不是「痕迹」。
 - 别搞混 · 光晕聚光：聚光光晕不动元素本身，只改卡片内部一层径向光的圆心，通常还裁在卡片里；光标跟随要让一个真实元素跟着指针跑，能离开卡片、盖住其它内容。
+- 别搞混 · 停靠栏放大：光标跟随是一个独立元素追着指针满屏跑，接管指针的可见性；停靠栏放大没有任何跟随物，只有一排固定图标按指针距离改变尺寸，系统指针照常显示。
 - 坑：把系统光标藏了，就必须保证键盘用户还能看清焦点：:focus-visible 的样式不能省
 - 坑：pointermove 里每帧 setState 会掉帧，用 requestAnimationFrame 或直接改元素的 transform
 - 坑：跟随元素要 pointer-events: none，否则它会挡住底下的点击
